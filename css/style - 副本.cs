@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 
 /**
  * global variables and mixins
@@ -4216,6 +4216,30 @@ img.img-gray:hover,
   -o-filter: grayscale(0);
   filter: grayscale(0);
 }
+/*
+
+/*img-rotate*/
+
+img.img-rotate,
+.img-rotate img {
+  -webkit-transition: -webkit-transform 0.3s ease;
+  transition: -webkit-transform 0.3s ease;
+  transition: transform 0.3s ease;
+  transition: transform 0.3s ease,-webkit-transform 0.3s ease;
+}
+
+img.img-rotate:hover,
+.img-rotate:hover img {
+  transform: rotate(360deg);
+  -ms-transform: rotate(360deg);
+  /* IE 9 */
+  -moz-transform: rotate(360deg);
+  /* Firefox */
+  -webkit-transform: rotate(360deg);
+  /* Safari and Chrome */
+  -o-transform: rotate(360deg);
+}
+
 
 
 /*img-burn*/
@@ -4234,6 +4258,7 @@ img.img-burn:hover,
   transform: scale(1.2) rotate(2deg);
 }
 
+*/
 
 /*hover-up*/
 
