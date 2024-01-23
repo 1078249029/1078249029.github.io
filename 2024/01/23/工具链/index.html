@@ -19,15 +19,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"wumingzi.top","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="工具链 ¶Git ¶Git本地操作 版本控制系统分为2种  集中式版本控制系统 如SVN 分布式版本控制系统 如Git  相比SVN，Git可靠性高但操作复杂 1234567891011121314git init [dir]&#x2F;&#x2F;在dir下创建新的本地仓库，缺省则在当前目录创建&#x2F;* 全局配置git仓库的用户名，对所有仓库生效，省略则为本地仓库有效 *&#x2F; git config --global us">
+    <meta name="description" content="工具链 ¶Git ¶Git本地操作 版本控制系统分为2种  集中式版本控制系统 如SVN 分布式版本控制系统 如Git">
 <meta property="og:type" content="article">
 <meta property="og:title" content="工具链">
 <meta property="og:url" content="https://wumingzi.top/2024/01/23/%E5%B7%A5%E5%85%B7%E9%93%BE/">
 <meta property="og:site_name" content="吾铭子">
-<meta property="og:description" content="工具链 ¶Git ¶Git本地操作 版本控制系统分为2种  集中式版本控制系统 如SVN 分布式版本控制系统 如Git  相比SVN，Git可靠性高但操作复杂 1234567891011121314git init [dir]&#x2F;&#x2F;在dir下创建新的本地仓库，缺省则在当前目录创建&#x2F;* 全局配置git仓库的用户名，对所有仓库生效，省略则为本地仓库有效 *&#x2F; git config --global us">
+<meta property="og:description" content="工具链 ¶Git ¶Git本地操作 版本控制系统分为2种  集中式版本控制系统 如SVN 分布式版本控制系统 如Git">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-01-23T01:35:09.000Z">
-<meta property="article:modified_time" content="2024-01-23T01:35:21.505Z">
+<meta property="article:modified_time" content="2024-01-23T02:27:17.146Z">
 <meta property="article:author" content="吾铭子">
 <meta name="twitter:card" content="summary">
 
@@ -251,6 +251,7 @@
 <li>集中式版本控制系统 如SVN</li>
 <li>分布式版本控制系统 如Git</li>
 </ul>
+<span id="more"></span>
 <p>相比SVN，Git可靠性高但操作复杂</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">git init [dir]//在dir下创建新的本地仓库，缺省则在当前目录创建</span><br><span class="line"></span><br><span class="line">/* 全局配置git仓库的用户名，对所有仓库生效，省略则为本地仓库有效 */ </span><br><span class="line">git config --global user.name &quot;用户名&quot; </span><br><span class="line"></span><br><span class="line">/* 全局配置git仓库的邮箱，对所有仓库生效，省略则为本地仓库有效 */ </span><br><span class="line">git config --global user.email &quot;邮箱&quot; </span><br><span class="line"></span><br><span class="line">/* 保存用户名和密码 */</span><br><span class="line">git config --global credential.helper store</span><br><span class="line"></span><br><span class="line">/* 查看当前git配置 */</span><br><span class="line">git config --global --list</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>![2024-01-02_15-10](vx_images/382591015251580.png =600x)<br>

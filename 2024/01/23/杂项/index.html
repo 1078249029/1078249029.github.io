@@ -19,15 +19,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"wumingzi.top","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="杂项 ¶知识点 SOC: system on chip 电机会有死区电压，表现为电压很低时电机不能启动，死区电压约占额定电压的10%，此时需要给一PWM占空比最小值从而避免死区电压 ![2023-12-20_22-20](vx_images&#x2F;113862122249687.png &#x3D;600x) 处于三相电PWM调功率中的开关器件(如IGBT)，换相时为防止三相电任意上半桥和下半桥同时开启导致短路，">
+    <meta name="description" content="杂项 ¶知识点 SOC: system on chip 电机会有死区电压，表现为电压很低时电机不能启动，死区电压约占额定电压的10%，此时需要给一PWM占空比最小值从而避免死区电压">
 <meta property="og:type" content="article">
 <meta property="og:title" content="杂项">
 <meta property="og:url" content="https://wumingzi.top/2024/01/23/%E6%9D%82%E9%A1%B9/">
 <meta property="og:site_name" content="吾铭子">
-<meta property="og:description" content="杂项 ¶知识点 SOC: system on chip 电机会有死区电压，表现为电压很低时电机不能启动，死区电压约占额定电压的10%，此时需要给一PWM占空比最小值从而避免死区电压 ![2023-12-20_22-20](vx_images&#x2F;113862122249687.png &#x3D;600x) 处于三相电PWM调功率中的开关器件(如IGBT)，换相时为防止三相电任意上半桥和下半桥同时开启导致短路，">
+<meta property="og:description" content="杂项 ¶知识点 SOC: system on chip 电机会有死区电压，表现为电压很低时电机不能启动，死区电压约占额定电压的10%，此时需要给一PWM占空比最小值从而避免死区电压">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-01-23T01:38:14.000Z">
-<meta property="article:modified_time" content="2024-01-23T01:38:29.520Z">
+<meta property="article:modified_time" content="2024-01-23T02:28:05.350Z">
 <meta property="article:author" content="吾铭子">
 <meta name="twitter:card" content="summary">
 
@@ -246,8 +246,9 @@
         <h1>杂项</h1>
 <h2 id="知识点"><a class="header-anchor" href="#知识点">¶</a>知识点</h2>
 <p>SOC: system on chip<br>
-电机会有死区电压，表现为电压很低时电机不能启动，死区电压约占额定电压的10%，此时需要给一PWM占空比最小值从而避免死区电压<br>
-![2023-12-20_22-20](vx_images/113862122249687.png =600x)<br>
+电机会有死区电压，表现为电压很低时电机不能启动，死区电压约占额定电压的10%，此时需要给一PWM占空比最小值从而避免死区电压</p>
+<span id="more"></span>
+<p>![2023-12-20_22-20](vx_images/113862122249687.png =600x)<br>
 处于三相电PWM调功率中的开关器件(如IGBT)，换相时为防止三相电任意上半桥和下半桥同时开启导致短路，我们要给死区时间，一般会占整个周期的百分之几，但当PWM占空比极小时，死区时间就会产生很大影响，最终影响输出纹波</p>
 <p>常量保存在Flash里，全局初始化非零的变量保存在SRAM的.data段内，静态变量或者全局初始化为零的变量保存在.bss段内，函数和函数内的局部变量保存在栈上</p>
 <p>尽量把数据保存在栈上，这样防止产生内存安全问题，并且栈上访问数据速度更快(数据局部性原理？)<br>

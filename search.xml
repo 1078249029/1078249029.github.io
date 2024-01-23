@@ -197,8 +197,9 @@ ST公司出品的Microcontroller(微控制器) Cortex-M内核 学习的是M3内�
 供电电压 2.0V-3.6V(标准3.3V)，USB输出电压是5V<br>
 AHB 先进高性能总线<br>
 APB 外设总线<br>
-内核的外设不需要开启时钟<br>
-![](vx_images/262091315231061.png =600x)<br>
+内核的外设不需要开启时钟</p>
+<span id="more"></span>
+<p>![](vx_images/262091315231061.png =600x)<br>
 复用输入指的是同一引脚默认有很多输入功能，需要对GPIO指定使用哪个功能(TIM4就无复用功能)，而重定义则是非默认功能，需要进行AFIO选择进而变为复用功能 ？？？？？？？？？？？？？？？<br>
 ![2024-01-04_15-49](vx_images/384774915259273.png =600x)<br>
 ![2023-10-16_22-3845](vx_images/581333822257516.png =600x)<br>
@@ -426,10 +427,11 @@ RTC时钟优先选择LSE，因为频率为2<sup>15</sup>因而容易分频<br>
     <title>FreeRTOS</title>
     <url>/2024/01/23/FreeRTOS/</url>
     <content><![CDATA[<h1>FreeRTOS</h1>
-<p>![2023-12-24_09-51](vx_images/520675109231265.png =600x)<br>
-使用静态创建任务函数的话，返回值就是句柄，因此，要想对静态函数创建出来的任务进行操作的话需要创建一个临时变量以记录其返回值<br>
-使用vTaskDelet函数要注意不要在自己的进程内部自杀，这样会导致空闲任务无法清理内存<br>
-![2023-12-19_15-36](vx_images/261583815249686.png =600x)<br>
+<p>使用静态创建任务函数的话，返回值就是句柄，因此，要想对静态函数创建出来的任务进行操作的话需要创建一个临时变量以记录其返回值<br>
+使用vTaskDelet函数要注意不要在自己的进程内部自杀，这样会导致空闲任务无法清理内存</p>
+<span id="more"></span>
+<p>![2023-12-24_09-51](vx_images/520675109231265.png =600x)</p>
+<p>![2023-12-19_15-36](vx_images/261583815249686.png =600x)<br>
 TCB结构体内部包含函数指针，SP位置，优先级，函数名字，函数参数等，但并不包括函数的指针(用来执行本函数)，也不包括函数参数，CPU通过保存所有寄存器的值来保存这两项，保存的位置在该函数栈的顶部，其中R0，R1…保存了函数的参数(约定俗成)，R15(PC)保存了函数的指针，来进行函数的跳转操作<br>
 优先级最大值只能取到最大值-1，高于这个值的会自动变为最大值-1<br>
 空闲任务(xIdleTask)是启动调度器时就自动创建的，空闲任务可以使用自带的钩子函数创建出来，也可以用来处理下列任务</p>
@@ -606,8 +608,9 @@ heap5与heap4的不同点在于heap5支持多块内存，在使用heap5时需要
 变量名第一个字母不能是数字<br>
 ANSI C C99 C11 关键字数量分别是32 32+5 37+7<br>
 %11.2f代表输出11个占位符，其中浮点型输出到小数点后2位，如果%<a href="http://a.bf">a.bf</a>，其中b比a大，则直接输出到小数点后b位而忽略a的值<br>
-%x: 十六进制 (hex) %o: 八进制(oct) %d: 十进制(dec)<br>
-![2023-09-19_08-38](vx_images/581673908249386.png =274x)<br>
+%x: 十六进制 (hex) %o: 八进制(oct) %d: 十进制(dec)</p>
+<span id="more"></span>
+<p>![2023-09-19_08-38](vx_images/581673908249386.png =274x)<br>
 ![2023-09-19_08-39](vx_images/90294008237253.png =401x)<br>
 &quot;   代表 &quot;   \ 代表 \<br>
 /*    */代表多行注释<br>
@@ -786,8 +789,9 @@ O 新建上一行并切换到编辑模式<br>
 [n]x  包括光标的后n位剪切，若改为X，则是光标前n位但包括光标所在的字符<br>
 [n]yy 包括光标的后n行复制<br>
 [n]dd 包括光标的后n行剪切<br>
-[n]p 粘贴复制的内容n遍<br>
-D 包括光标的之后当前行的所有字符剪切<br>
+[n]p 粘贴复制的内容n遍</p>
+<span id="more"></span>
+<p>D 包括光标的之后当前行的所有字符剪切<br>
 dG 包括光标的之后所有行剪切<br>
 J 将下一行合并到上一行，并用空格连接<br>
 .  执行上一次操作<br>
@@ -815,8 +819,9 @@ G   光标移到最后一行行首<br>
     <content><![CDATA[<h1>杂项</h1>
 <h2 id="知识点"><a class="header-anchor" href="#知识点">¶</a>知识点</h2>
 <p>SOC: system on chip<br>
-电机会有死区电压，表现为电压很低时电机不能启动，死区电压约占额定电压的10%，此时需要给一PWM占空比最小值从而避免死区电压<br>
-![2023-12-20_22-20](vx_images/113862122249687.png =600x)<br>
+电机会有死区电压，表现为电压很低时电机不能启动，死区电压约占额定电压的10%，此时需要给一PWM占空比最小值从而避免死区电压</p>
+<span id="more"></span>
+<p>![2023-12-20_22-20](vx_images/113862122249687.png =600x)<br>
 处于三相电PWM调功率中的开关器件(如IGBT)，换相时为防止三相电任意上半桥和下半桥同时开启导致短路，我们要给死区时间，一般会占整个周期的百分之几，但当PWM占空比极小时，死区时间就会产生很大影响，最终影响输出纹波</p>
 <p>常量保存在Flash里，全局初始化非零的变量保存在SRAM的.data段内，静态变量或者全局初始化为零的变量保存在.bss段内，函数和函数内的局部变量保存在栈上</p>
 <p>尽量把数据保存在栈上，这样防止产生内存安全问题，并且栈上访问数据速度更快(数据局部性原理？)<br>
@@ -836,6 +841,7 @@ G   光标移到最后一行行首<br>
 编译器输出编译的文件</p>
 <p>字面量：写在代码中的值，可以被分为整数，浮点数，字符串，元组，列表等<br>
 python的单引号和双引号意义相同，但是使用单引号可以打出双引号，但不能打出单引号。使用双引号则反之，如果想使用单引号打出单引号，则需要加上反斜杠代表转义字符</p>
+<span id="more"></span>
 <h3 id="注释的写法"><a class="header-anchor" href="#注释的写法">¶</a>注释的写法</h3>
 <figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 这是单行注释</span></span><br><span class="line"></span><br><span class="line"><span class="string">&quot;&quot;&quot; </span></span><br><span class="line"><span class="string">这是多</span></span><br><span class="line"><span class="string">行注释 </span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span> </span><br></pre></td></tr></table></figure>
 <p>python中变量无类型而数据有类型，可以通过type(数据)来查看数据拥有的数据类型，同时也可以使用type(变量)来查看变量拥有的数据类型</p>
@@ -997,6 +1003,7 @@ pass</p>
 <li>集中式版本控制系统 如SVN</li>
 <li>分布式版本控制系统 如Git</li>
 </ul>
+<span id="more"></span>
 <p>相比SVN，Git可靠性高但操作复杂</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git init [dir]//在dir下创建新的本地仓库，缺省则在当前目录创建</span><br><span class="line"></span><br><span class="line">/* 全局配置git仓库的用户名，对所有仓库生效，省略则为本地仓库有效 */ </span><br><span class="line">git config --global user.name &quot;用户名&quot; </span><br><span class="line"></span><br><span class="line">/* 全局配置git仓库的邮箱，对所有仓库生效，省略则为本地仓库有效 */ </span><br><span class="line">git config --global user.email &quot;邮箱&quot; </span><br><span class="line"></span><br><span class="line">/* 保存用户名和密码 */</span><br><span class="line">git config --global credential.helper store</span><br><span class="line"></span><br><span class="line">/* 查看当前git配置 */</span><br><span class="line">git config --global --list</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>![2024-01-02_15-10](vx_images/382591015251580.png =600x)<br>
@@ -1050,6 +1057,7 @@ release 均来源于develop，测试稳定后发布到main，发现bug发布到d
 <blockquote>
 <p>一个工程如果没有 main 函数是编译不成功的,会出错。因为系统在开始执行的时候先执行启动文件里面的复位程序,复位程序里面会调用 C 库函数__main,__main 的作用是初始化好系统变量,如全局变量,只读的,可读可写的等等。__main 最后会调用__rtentry,再由__rtentry 调用 main 函数,从而由汇编跳入到 C 的世界,这里面的 main 函数就需要我们手动编写,如果没有编写 main 函数,就会出现 main 函数没有定义的错误。</p>
 </blockquote>
+<span id="more"></span>
 <p>生成的startup_ARMCM3.s负责启动startup_ARMCM3.c负责时钟配置，本项目默认的时钟为25M</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*----------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">  Define clocks</span></span><br><span class="line"><span class="comment"> *----------------------------------------------------------------------------*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span>  XTAL            ( 5000000UL)      <span class="comment">/* Oscillator frequency */</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span>  SYSTEM_CLOCK    (5U * XTAL)</span></span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">![<span class="number">2024</span><span class="number">-01</span><span class="number">-02</span>_10<span class="number">-16</span>](vx_images/<span class="number">419821610240143.</span>png =<span class="number">600</span>x)</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">对于这种多行宏定义，每行结尾要加 \ 表示该行未结束</span><br><span class="line">  </span><br><span class="line">::: alert-danger</span><br><span class="line">若使用 \ 表示该行未完结务必注意 \ 后不能加任何字符，尤其是空格或者Tab。报错如下![<span class="number">2024</span><span class="number">-01</span><span class="number">-02</span>_12<span class="number">-05</span>](vx_images/<span class="number">481670512259271.</span>png =<span class="number">600</span>x)</span><br><span class="line">:::</span><br><span class="line">    </span><br><span class="line">![<span class="number">2024</span><span class="number">-01</span><span class="number">-02</span>_10<span class="number">-44</span>](vx_images/<span class="number">400010311258569.</span>png =<span class="number">600</span>x)</span><br><span class="line">  </span><br><span class="line">![<span class="number">2024</span><span class="number">-01</span><span class="number">-02</span>_11<span class="number">-04</span>](vx_images/<span class="number">7600511266602.</span>png =<span class="number">600</span>x)</span><br><span class="line">  </span><br><span class="line">左值不能进行类型转换，类型转换本质上是在寄存器内对原值进行位操作，得到的结果不放入内存，而左值是需要放进内存的，因此类型转换与左值冲突，若要类型转换，则需要对右值进行操作</span><br><span class="line"></span><br><span class="line">:::alert-danger</span><br><span class="line">当一个a.c文件需要b.h，而b.h包含了c.h，且c.h也包含了b.h时，会发生编译冲突。表现为有未定义的类型或变量，详情参考[博客园](https:<span class="comment">//www.cnblogs.com/skullboyer/p/8891579.html)，解决办法是理清编译关系，去除重复包含的头文件</span></span><br><span class="line">![<span class="number">2024</span><span class="number">-01</span><span class="number">-03</span>_13<span class="number">-26</span>](vx_images/<span class="number">211612613258570.</span>png =<span class="number">600</span>x)</span><br><span class="line">:::  </span><br><span class="line"></span><br><span class="line">栈由高地址向低地址增长，栈顶是第一个进栈的元素，栈底是最后一个进栈的元素</span><br><span class="line">因为<span class="number">32</span>位机一般指令都是<span class="number">32</span>位的，栈顶指针只需<span class="number">4</span>字节对齐即可，但是考虑兼容浮点运算的<span class="number">64</span>位操作则需要<span class="number">8</span>字节。对齐完成后，栈顶指针即可确定位置，而后开辟空间  </span><br><span class="line"></span><br><span class="line">![<span class="number">2024</span><span class="number">-01</span><span class="number">-03</span>_16<span class="number">-01</span>](vx_images/<span class="number">151190216246437.</span>png =<span class="number">600</span>x)</span><br><span class="line">项目的.c 与 .h文件可以不重名，位置可以不同，例如port.c文件放在\freertos\Source\portable\RVDS\ARM_CM3，但是引用port.c内容的portable.h放在\freertos\Source\include    </span><br><span class="line"></span><br><span class="line">```c</span><br><span class="line"><span class="comment">/* 这行代码的意思是定义了TaskFunction_t类型的函数指针，参数和返回值都是void，这样就可以进行函数“赋值”，进而从Task1，Task2中抽象出TaskFunction_t这一类型了，并且使用起来很方便 */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">void</span> (*TaskFunction_t)( <span class="type">void</span> * );</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 类似用法如下 */</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> tech(<span class="type">void</span>) &#123; <span class="built_in">printf</span>(<span class="string">&quot;tech dreamer&quot;</span>); &#125;</span><br><span class="line"><span class="comment">//命名一个类型，那么这个时候func不可以直接调用，而是一个类型了</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">void</span> (*func)();</span><br><span class="line"><span class="type">void</span> main()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//定义一个可调用的指针变量（函数）：myfunc</span></span><br><span class="line">    func myfunc;</span><br><span class="line">    myfunc = &amp;tech; <span class="comment">//&amp;可以不加</span></span><br><span class="line">    <span class="comment">/* 下面两种方法体现了函数名和函数地址是一回事 */</span></span><br><span class="line">    myfunc();         <span class="comment">//第一种调用方式，带参数也可以</span></span><br><span class="line">    (*myfunc)();      <span class="comment">//第二种调用方式，带参数也可以</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h3 id="实现就绪链表"><a class="header-anchor" href="#实现就绪链表">¶</a>实现就绪链表</h3>
