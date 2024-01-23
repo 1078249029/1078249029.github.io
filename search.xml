@@ -188,4 +188,1162 @@
         <tag>历史</tag>
       </tags>
   </entry>
+  <entry>
+    <title>STM32</title>
+    <url>/2024/01/23/STM32/</url>
+    <content><![CDATA[<h1>STM32</h1>
+<p>STM32 常用寄存器缩写: CR 控制寄存器 SR 状态寄存器 DR 数据寄存器<br>
+ST公司出品的Microcontroller(微控制器) Cortex-M内核 学习的是M3内核<br>
+供电电压 2.0V-3.6V(标准3.3V)，USB输出电压是5V<br>
+AHB 先进高性能总线<br>
+APB 外设总线<br>
+内核的外设不需要开启时钟<br>
+![](vx_images/262091315231061.png =600x)<br>
+复用输入指的是同一引脚默认有很多输入功能，需要对GPIO指定使用哪个功能(TIM4就无复用功能)，而重定义则是非默认功能，需要进行AFIO选择进而变为复用功能 ？？？？？？？？？？？？？？？<br>
+![2024-01-04_15-49](vx_images/384774915259273.png =600x)<br>
+![2023-10-16_22-3845](vx_images/581333822257516.png =600x)<br>
+![2023-10-13_16-2857](vx_images/198312916249480.png =600x)<br>
+![2023-10-13_17-0326](vx_images/285460417237347.png =600x)<br>
+最小系统电路: 单独的芯片不能工作，需要连接最基本的电路，由这些电路组成的就是最小系统电路</p>
+<h2 id="GPIO"><a class="header-anchor" href="#GPIO">¶</a>GPIO</h2>
+<p>RCC : 复位和时钟控制<br>
+GPIO(General Purpose Input Output)通用输入输出口<br>
+GPIO高低电平看外部输入输出,输入情况下,与外部电平极性相同.如果外部信号非常小,则为避免引入干扰源选择浮空输入,不清楚外部信号的情况下也选择浮空输入,输出情况下看外部负载电压要求<br>
+AIN是模拟输入专用模式，此时GPIO不输入输出，防止对外界信号干扰<br>
+AF_PP是复用推挽模式，片上外设使用这种模式<br>
+![2023-10-14_16-5334](vx_images/231855213249483.png =600x)<br>
+![2023-10-14_16-5138](vx_images/216535216249481.png =600x)<br>
+![2023-10-15_09-3232](vx_images/447993209231056.png =600x)<br>
+VDD 3.3V     VSS 0V<br>
+GPIO 控制流程：1.激活 RCC 时钟    2.使用 GPIO_Init 初始化 GPIO 函数<br>
+施密特触发器的作用是对外界信号进行滤波，规定上下限，使得当超过上限输出为1，低于下限输出为0，上下限之间输出不变，这样可以维持信号的稳定性<br>
+在输出模式下，输入也是有效的<br>
+OLED函数showhexnum与shownum每逢10相差6，hexnum的数值比num高6</p>
+<h2 id="中断"><a class="header-anchor" href="#中断">¶</a>中断</h2>
+<p>NVIC (Nested Vectored Interrupt Controller) 嵌套中断向量控制器: 统一分配中断优先级和管理中断<br>
+响应优先级: 完成当前任务后进行响应优先级的任务    中断优先级: 立即结束当前任务并进行中断优先级任务(可以决定中断嵌套,抢占优先级高的可以进行中断嵌套)<br>
+两个优先级相同的情况下按中断号排队,所以并不是先来后到<br>
+NVIC 分组在整个项目中只需要执行一次<br>
+![2023-10-17_08-4844](vx_images/543234908231058.png =600x)<br>
+EXTI (external interrupt) 外部中断控制器<br>
+EXTI 负责监控GPIO的电平变化,当产生跳变时,EXTI向NVIC发送中断申请,经NVIC裁决优先级后执行中断程序<br>
+![2023-10-16_13-5138](vx_images/571455113231057.png =600x)<br>
+![2023-10-16_15-0452](vx_images/49500515237350.png =600x)<br>
+GPIO_EXTILineConfig(GPIO_PortSourceGPIOx,GPIO_PinSourcex) 是配置AFIO的函数，参数是GPIO的通道和引脚</p>
+<h2 id="定时器"><a class="header-anchor" href="#定时器">¶</a>定时器</h2>
+<p>TIM (timer) 定时器<br>
+TRGO(Trigger Out)定时器主模式，可以不用进中断就可以执行程序<br>
+![2023-10-18_13-4440](vx_images/63075813242496.png =600x)<br>
+预分频器(PSC)对时钟频率进行分频,置0 不分频,置1 频率=原时钟频率/2  置2 频率=原时钟频率/3 等等<br>
+下列公式注意预分频器需要加 1,ARR加1的原因是ARR从 0 开始计数 CK_PSC是 72MHz<br>
+![2023-10-18_14-4239](vx_images/209484414237352.png =600x)<br>
+![2023-10-18_14-4245](vx_images/359324514257518.png =600x)<br>
+![图片1](vx_images/232241114249485.jpg =600x)<br>
+![2023-10-18_13-4450](vx_images/215645813260376.png =600x)<br>
+OC(output compare) : 输出比较<br>
+PWM(pause width modulation) : 脉冲宽度调制<br>
+![2023-10-18_20-4321](vx_images/378974320231059.png =600x)<br>
+![2023-10-18_20-5305](vx_images/290555320249485.png =600x)<br>
+IC(Input Capture): 输入捕获<br>
+输入捕获每次CNT转运到CCR时需要清0,此时可以配置从模式,让硬件电路自动清零<br>
+![2023-10-20_16-3336](vx_images/45323416249487.png =600x)<br>
+FP(filter polarity)，滤波器极性选择<br>
+主模式:让定时器内部信号映射到TRGO引脚,用于触发别的外设    从模式:接受其他外设或自身的信号用于控制自身定时器的运行<br>
+![2023-10-23_16-0729](vx_images/57140816231064.png =600x)<br>
+![2023-10-20_16-3416](vx_images/275013416237354.png =600x)<br>
+滤波器也是计数器,但不会改变信号原有的频率,原理是当有x个信号均为同一性质(高电平或低电平时)才滞后输出信号,x是给定的参数值<br>
+通道3,4不支持PWMI配置<br>
+使用编码器时,定时器的其他功能就无法使用了<br>
+通道3,4不支持编码器<br>
+![2023-10-20_18-0044](vx_images/586090018257520.png =600x)<br>
+![2023-10-23_19-5640](vx_images/126585719249490.png =600x)<br>
+![2023-12-22_10-22](vx_images/440272210231263.png =600x)<br>
+TI1可以选择接到TI1FP1上也可以选择TI1FP2上，这样可以通过极性选择来计算出上升沿到下降沿的时间，这个功能可以在PWMI模式中体现<br>
+![2023-10-20_22-4215](vx_images/373924222231061.png =600x)<br>
+编码器会接管时钟,所以不需要TIM_InternalClockConfig()<br>
+uint16_t 中比0小一位是65535，如果想变为-1需要把uint强制转换为int</p>
+<h2 id="ADC"><a class="header-anchor" href="#ADC">¶</a>ADC</h2>
+<p>ADC(Analog-Digital Converter)<br>
+STM32 ADC是12位的 最大值4096 可以测量0-3.3V<br>
+PWM是DAC的一种，具有功率损耗小的优点，常用来给大型直流电机调速，32没有DAC外设<br>
+ADC数据来源于比较器的结果，其核心是未知的外界信号与芯片给定的信号进行比较，并用逐次逼近寄存器(SAR)采用二分法分分割芯片信号，直至与外界信号相等，此时SAR的值即为外界信号值<br>
+规则组支持16通道，注入组支持4通道，但规则组只有一个数据寄存器，注入组有四个。使用规则组时可以申请DMA来帮助通道转换效率<br>
+EOC(End Of Convert) 规则组: EOC 注入组: JEOC<br>
+注意要开启RCC_ADC的时钟<br>
+![2023-10-21_12-5239](vx_images/130635312231062.png =600x)<br>
+通道数大于 1 扫描模式才有意义，转换是对循环而言<br>
+在连续转换模式下，会自动读取EOC的值，所以不需要手动写 while 判断是否转换完毕<br>
+![2023-10-21_12-5301](vx_images/206605312249488.png =600x)<br>
+![2023-12-23_11-46](vx_images/273734611234218.png =600x)<br>
+![2023-12-23_11-46_1](vx_images/342044611243165.png =600x)<br>
+![2023-12-23_11-46_2](vx_images/408774611236050.png =600x)<br>
+单次连续模式是针对某个通道，扫描非扫描模式针对所有通道<br>
+保持时间越长，越能抵抗毛刺信号的干扰<br>
+![2023-10-21_13-0507](vx_images/238990513237355.png =600x)<br>
+![2023-10-21_13-0729](vx_images/415310713257521.png =600x)<br>
+ADC数据对齐方式一般选右对齐，左对齐是为了直接取出数据的高n位，方便裁剪分辨率，但是也可以通过右对齐然后读取出的数据进行右移的方式来操作分辨率</p>
+<h2 id="DMA"><a class="header-anchor" href="#DMA">¶</a>DMA</h2>
+<p>DMA(Direct Memory Access)直接存储器访问<br>
+STM32有7个DMA1通道,每个通道支持软件触发和特定的硬件触发<br>
+如果是<strong>Flash到SRAM</strong>的数据搬运,应使用<strong>软件触发</strong>,此时数据运输速率最快,如果是外设到SRAM,应使用硬件触发,此时不需要以最快的速度转运数据,而是需要特定时机才触发转运<br>
+DMA只操作存储器到存储器的数据搬运,上面提的外设到SRAM是指外设的存储器到SRAM<br>
+内核外设: NVIC SysTick<br>
+DCode总线专门访问Flash<br>
+DMA虽然有多个通道,但是只有一条DMA总线,需要仲裁器进行仲裁,使优先级高的通过获得数据,通道号越小优先级越高<br>
+![2023-10-22_11-5155](vx_images/193325211231063.png =600x)<br>
+数据宽度参数  字节: 8位 半字: 16位 字: 32位<br>
+自动重装器决定传输计数器自减到0后是否恢复到初值,如果恢复到初值则为连续模式,否则为单次模式<br>
+软件触发不能与自动重装器同时使用,那样DMA就停不下来了<br>
+M2M位置1是软件触发,M2M置0是硬件触发<br>
+<strong>传输计数器等于0后需要将DMA_Cmd DISABLE,然后改变传输计数器的值,再DMA_Cmd ENABLE,DMA才能重新工作,简而言之,写传输计数器需要关闭DMA</strong><br>
+小位数数据转移到大位数数据会在高位补0,大位数数据转移到小位数数据会舍弃高位<br>
+DMA和CPU对同一地址进行访问时,仲裁器会优先选择CPU进行访问,但是也会为DMA保留一半的总线带宽<br>
+Flash存储编译后的C代码和常量数据<br>
+const定义的常量存储在Flash里 普通变量存储在SRAM里<br>
+ADC -&gt; DR 得到的是DR的值 &amp;ADC -&gt; DR得到的是DR的地址</p>
+<h2 id="USART"><a class="header-anchor" href="#USART">¶</a>USART</h2>
+<p>![2023-11-08_14-4250](vx_images/217544314231149.png =600x)<br>
+全双工: 通信双方能够同时双向通信    一般两根通信线，一根发射一根接收<br>
+半双工: 通信双方同时只能有一方通信<br>
+单工：无论何时都只有一方能进行通信，另一方始终接收<br>
+全双工: 打电话    半双工: 对讲机    对讲机: 广播<br>
+差分信号抗干扰能力强，传输速度和距离会很高<br>
+硬件流控制: 当信息发送方和接收方<br>
+I2C 和 SPI 有时钟线，所以是同步时钟<br>
+USART默认为低位先行<br>
+![2023-12-23_11-25](vx_images/393512511231714.png =600x)<br>
+![2023-11-08_15-0206](vx_images/164010215249575.png =600x)<br>
+RS232 1 0 位如此设置的原因是增加抗干扰能力<br>
+RS485 是差分信号，传输距离可达上千米<br>
+![2023-11-08_15-1736](vx_images/575961815237442.png =600x)<br>
+二进制调制情况下波特率 == 比特率<br>
+奇偶校验: 校验位补 0 或 1 使得数据位+校验位有偶数或奇数个 1<br>
+![](vx_images/580015516231149.png =600x)<br>
+数据流控的: 通过告知其他带有数据流控的设备，本机是否可以接受或发送数据，从而解决通信双方处理数据能力不同而导致一方在忙，另一方发送的数据丢失或覆盖之前发送数据的问题<br>
+![2023-11-08_17-0036](vx_images/540040017249575.png =600x)<br>
+TXE(发送数据寄存器非空)与RXNE(接受移位寄存器非空) 是TDR与RDR置位的<br>
+单片机的TX和RX与USB转串口模块的TX和RX要交叉连接<br>
+![2023-11-08_17-1603](vx_images/211121617237442.png =600x)<br>
+![2023-11-08_17-1643](vx_images/514231617257608.png =600x)<br>
+波特率除以16是因为采样时钟(fpclk)是以波特率的16倍速度进行采样的，具体数值硬件会帮忙算，我们只需要直接给出波特率就行<br>
+Odd 奇数 Even 偶数<br>
+![2023-11-09_21-4348](vx_images/27624421231150.png =600x)<br>
+固定包长适合载荷数据与包头包尾重复率高的情况，这样利于分割以及接收数据<br>
+![2023-12-23_11-21](vx_images/278622111241184.png =300x)<br>
+在发送数据时需要加上包头包尾(个人规定0xFF为包头，0xFE为包尾)<br>
+相比文本数据包，HEX数据包效率高，因为文本还需要编码译码的过程<br>
+![2023-11-09_22-0509](vx_images/215810522249576.png =600x)<br>
+HEX数据包接收运用了状态机的思想，通过不同的S的值进中断后的行为不同，进而执行相应的动</p>
+<h2 id="I2C"><a class="header-anchor" href="#I2C">¶</a>I2C</h2>
+<p>I2C(inter IC Bus)<br>
+同步协议需要时钟线来控制数据的读写，好处是对时钟要求不严格，不需要硬件电路的配合，而异步需要硬件电路产生准确的时钟信号才能通信。因此同步协议主打低端市场。同时，如果主机进入中断，异步协议就会出错，而同步协议利用时钟线则不会出错<br>
+第一个数据帧最低位0为写，1为读<br>
+![2023-11-10_14-5525](vx_images/366935514231151.png =600x)<br>
+![2023-11-10_15-1740](vx_images/506021715249577.png =600x)<br>
+I2C两根总线为避免主从设备同时输出造成电源短路现象，规定了SDA与SCL均采用开漏输出模式，这样，无论主从设备是否同时输出，均不会达到强上拉，而是在外接电阻R的作用下被限制为弱上拉，下拉模式不受影响。同时，在下拉状态中，多主机情况下可以进行I2C控制权的仲裁<br>
+![2023-11-10_15-1740](vx_images/9423215237444.png =600x)<br>
+![2023-11-20_12-1845](vx_images/42071912231161.png =600x)<br>
+![2023-12-23_12-09](vx_images/487730912263614.png =600x)<br>
+![2023-11-10_15-5315](vx_images/241635315246834.png =600x)<br>
+0表示应答 1表示非应答<br>
+SCL低电平变换SDA数据，高电平读取SDA数据<br>
+由于I2C对硬件要求不高，因此软件可以完全模拟I2C协议<br>
+![2023-11-11_17-0558](vx_images/106080617231152.png =600x)<br>
+![2023-11-11_17-0623](vx_images/292720617249578.png =600x)<br>
+硬件I2C与USART类似，都是通过TXE和RXNE寄存器控制数据收发，只不过I2C是高位先行，因此移位寄存器向左移位，而USART低位先行，是向右移位，这里的高低位先行指的是HEX数据的发送接收模式，正常的文本模式下仍按照人类的从左至右(从高到低)发送文本<br>
+7位寻址与10位寻址的区别是，10位寻址时前两个数据包是寻址，之后的是数据，而7位则是第一个数据包是寻址<br>
+EV(event): 事件，产生多个标志位<br>
+![2023-11-13_15-5406](vx_images/349465415231154.png =600x)<br>
+![2023-11-13_15-5518](vx_images/326215515249580.png =600x)<br>
+I2C在频率很高时，由于开漏模式弱上拉的作用，实际的SCL和SDA并不完美，当频率快到一定程度时，SCL的方波甚至会被压缩至三角波，为了给SDA传送数据时所需要的上拉一定时间，所以需要SCL低电平时占空比适当增加<br>
+由于I2C的弱上拉的作用，使得在标准模式下支持100KHz的信号，快速模式下也只能支持400KHz的信号<br>
+硬件I2C下，STM32默认为从模式<br>
+STM32的I2C被分为主从两种模式，每种模式又被分为发送和接受两种模式<br>
+![2023-11-21_13-1436](vx_images/12961513231162.png =600x)<br>
+![2023-11-21_13-1509](vx_images/156651513249588.png =600x)<br>
+硬件I2C接收模式下，要在发送最后一个字节前将STOP置1，并把Ack置0，这是因为停止位(EV7_1)配置位于接收数据之前，只有接受下个数据后，才能把之前设置的停止事件发送出去。而发送模式的停止事件(EV8_2)位于发送数据后</p>
+<h2 id="SPI"><a class="header-anchor" href="#SPI">¶</a>SPI</h2>
+<p>SPI(serial peripheral interface)，应用领域与I2C类似，都用来负责主控与外挂芯片之间的通信，支持一主多从但不支持多主机。通信模式为同步，全双工。与I2C区别在于，I2C是用最少的硬件资源实现最多的功能.<br>
+SPI有四根通信线，分别为SCK(serial clock)，MOSI(master output slave input)，MISO(master input slave output)，SS(slave select)<br>
+SPI与I2C一样，均采用高位先行的传输模式<br>
+SPI没有应答机制，有几个从机就有几个SS线<br>
+为防止多个从机的MISO互相冲突，SPI规定当从机的SS没有被选中(置0)时，从机的MISO默认为高阻态，SS被选中时，MISO才被改为推挽输出。主机输入为上拉输出(MISO)，主机输出为推挽(包括片选，时钟，MOSI)<br>
+输出引脚为推挽输出，输入引脚为浮空或上拉<br>
+SPI的理解可以不采用江科大的上升下降沿分别移入移出的思想，可以采用纯采样的思想<a href="https://blog.csdn.net/p0o9i83463rrfd4/article/details/123900524">CSDN</a><br>
+![2023-12-23_16-38](vx_images/67613916231376.png =600x)<br>
+![2023-12-23_16-41](vx_images/164584216231515.png =600x)<br>
+<a href="https://zhuanlan.zhihu.com/p/290620901">知乎</a><br>
+![2023-11-14_16-1847](vx_images/468571916231155.png =600x)<br>
+![2023-11-14_17-0955](vx_images/2221017249581.png =600x)<br>
+![2023-11-14_17-1008](vx_images/157911017237448.png =600x)<br>
+存储器划分 Block - Sector，并且，整个存储空间全被划分成了Page<br>
+发送的3个字节组成的地址，最低位是页里的字节地址，高2个字节是页地址<br>
+由于结构特性，Flash的数据bit位只能由1变为0，不能由0变为1，因此写入数据前必须先擦除，将所有数据由0“擦除”至1，而后写入数据.<br>
+![2023-11-14_19-4334](vx_images/502194319257614.png =600x)<br>
+为了防止误操作，Flash使用前需要先写使能<br>
+驱动层是沟通应用层与通信层的桥梁<br>
+事前等待就是把WaitBusy放在读写函数之前的位置，这样可以提高效率，但安全性会降低(因为程序在读写操作后可能会运行其他代码，这样可以节省时间，但安全性会降低，比如读写操作后再次进行类似读写的操作)，事后代码效率较低但安全性高。并且需要注意的是事前等待需要放在读写函数之前，但事后等待仅放在写函数后即可<br>
+写入不能跨页，读取能跨页，写入超过页的限制之后会从页头开始覆盖<br>
+SPI要想接收数据必须发送数据，因此可以发一些没用的数据(Dummy Data)给从机</p>
+<h2 id="BKP与RTC"><a class="header-anchor" href="#BKP与RTC">¶</a>BKP与RTC</h2>
+<p>![2023-12-01_21-0209](vx_images/262320221231242.png =600x)<br>
+UNIX时间戳默认从1970年1月1日开始，而有些C库默认为1900年开始<br>
+![2023-12-01_21-0358](vx_images/49470421249668.png =600x)<br>
+![2023-12-01_21-0419](vx_images/277330421237535.png =600x)<br>
+![2023-12-01_21-0438](vx_images/467510421257701.png =600x)<br>
+![2023-12-23_17-26](vx_images/467672617243605.png =600x)<br>
+HSE(高速外部时钟)<br>
+RTC时钟优先选择LSE，因为频率为2<sup>15</sup>因而容易分频<br>
+![2023-12-01_21-2350](vx_images/68282421250370.png =600x)<br>
+![2023-12-01_21-2355](vx_images/250002421246925.png =600x)</p>
+<h2 id="PWR"><a class="header-anchor" href="#PWR">¶</a>PWR</h2>
+<p>只有外部中断才能唤醒STM32的停止模式，因此PVD，RTC，USB，ETH等可以通向EXTI中断<br>
+![2023-12-02_13-5934](vx_images/451815913249669.png =600x)<br>
+![2023-12-02_13-5301](vx_images/132775313231243.png =600x)<br>
+![2023-12-03_12-4826](vx_images/447284812231244.png =600x)<br>
+![2023-12-03_12-4853](vx_images/25854912249670.png =600x)<br>
+![2023-12-03_12-4910](vx_images/191684912237537.png =600x)<br>
+从上到下越来越省电，但也越来越难被唤醒<br>
+系统进入停机模式时，HSI被选为系统时钟，此时系统主频8MHz，而正常情况下使用的是HSE*9=72MHz，因此会发生Running刷新不及时的现象，此时需要SystemInit来重新初始化时钟<br>
+待机模式唤醒后，程序从头开始执行，因此，不需要调用SystemInit</p>
+<h2 id="看门狗"><a class="header-anchor" href="#看门狗">¶</a>看门狗</h2>
+<p>看门狗负责复位程序<br>
+独立看门狗精度低，使用LSI时钟(40KHz)，窗口看门狗精度高，使用PCLK1的时钟(APB1的时钟，36MHz)<br>
+![2023-12-03_12-1627](vx_images/481471612231244.png =600x)<br>
+键寄存器可以以理解为多位的控制寄存器，这样设计是为了防止外界干扰导致一位的控制寄存器失效，因此设置多位<br>
+![2023-12-03_12-1833](vx_images/430081812249670.png =600x)<br>
+![2023-12-03_12-1854](vx_images/63541912237537.png =600x)<br>
+![2023-12-03_12-1925](vx_images/316311912257703.png =600x)<br>
+![2023-12-03_12-1945](vx_images/514261912250372.png =600x)<br>
+早期唤醒中断可以进行保存数据，再次喂狗等紧急操作，以防止程序未被喂狗而复位<br>
+![2023-12-03_12-2117](vx_images/352252112242681.png =600x)<br>
+窗口时间即为进入WWDG最小的时间，并非通常意义的&quot;窗口&quot;时间<br>
+![2023-12-03_12-2142](vx_images/486482112260561.png =600x)<br>
+利用内部闪存编程时，当读取内部闪存时CPU会被暂停，因为程序放在闪存里，CPU运行的程序需要从闪存中取出，如果此时正在执行中断函数时中断会卡住一段时间。//CPU暂停了那谁在执行读闪存的任务？</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>FreeRTOS</title>
+    <url>/2024/01/23/FreeRTOS/</url>
+    <content><![CDATA[<h1>FreeRTOS</h1>
+<p>![2023-12-24_09-51](vx_images/520675109231265.png =600x)<br>
+使用静态创建任务函数的话，返回值就是句柄，因此，要想对静态函数创建出来的任务进行操作的话需要创建一个临时变量以记录其返回值<br>
+使用vTaskDelet函数要注意不要在自己的进程内部自杀，这样会导致空闲任务无法清理内存<br>
+![2023-12-19_15-36](vx_images/261583815249686.png =600x)<br>
+TCB结构体内部包含函数指针，SP位置，优先级，函数名字，函数参数等，但并不包括函数的指针(用来执行本函数)，也不包括函数参数，CPU通过保存所有寄存器的值来保存这两项，保存的位置在该函数栈的顶部，其中R0，R1…保存了函数的参数(约定俗成)，R15(PC)保存了函数的指针，来进行函数的跳转操作<br>
+优先级最大值只能取到最大值-1，高于这个值的会自动变为最大值-1<br>
+空闲任务(xIdleTask)是启动调度器时就自动创建的，空闲任务可以使用自带的钩子函数创建出来，也可以用来处理下列任务</p>
+<ol>
+<li>执行一些低优先级的，后台的，需要连续执行的函数</li>
+<li>进入省电模式</li>
+<li>测量系统空闲时间</li>
+</ol>
+<p>空闲任务的限制： 不能让空闲任务进入阻塞状态或者暂停状态<br>
+取消支持时间片流转会使优先级相同的其中一个任务在未被高优先级打断前始终霸占CPU<br>
+调度策略配置项</p>
+<ol>
+<li>是否抢占(高优先级任务是否可以立即打断低优先级的执行)</li>
+<li>允许抢占时，是否允许时间片流转(同一优先级任务执行时，是否允许相互打断执行)</li>
+<li>允许抢占并且允许时间片流转时，是否允许空闲任务让步(空闲任务和用户任务在同一优先级时，空闲任务是否让出时间片)<br>
+<a href="https://www.cnblogs.com/weidongshan/p/15624113.html">博客园</a></li>
+</ol>
+<p>![2023-12-16_10-16](vx_images/24251810231257.png =600x)<br>
+采用这种方式运行并发程序会导致Task3 Task4在将锁置为1之前就都已经进入if语句内部了，这就会导致概率性并发Bug<br>
+写队列函数xQueueSend与xQueueSendToBack是一样的，都是默认在队列尾部写入数据，而xQueueSendToFront则是在头部写入数据(头部就是pcReadFrom指针所指的地址，并不是队列的最右侧)，此时还需要将pcReadFrom指针减去一个ItemSize的地址<br>
+使用队列集并在队列里面写入数据时会把任务的数据写在队列里，并把任务的Handle写在队列集(Queue Set)里，读一次Queue Set后返回的Queue只能读一次，不能读多次，普通的Queue也一样因为读队列后系统自动删除数据<br>
+二值信号量的Give函数会检测信号量是否为1，若为1则会返回失败，而Take函数则会检查信号量是否为0，并且可以设置阻塞时间<br>
+信号量不能是负值<br>
+创建二值型信号量时默认初始值是0，需要Give一下，互斥量则不需要<br>
+信号量：Semaphore    互斥量：Mutex<br>
+只有申请方和接收方有锁的情况下才会产生优先级反转，如果其中一方无锁则正常调度就不会产生优先级反转，解决优先级反转的办法是优先级继承<br>
+互斥量有优先级继承的功能，而信号量则没有<br>
+死锁的原因有两种</p>
+<ol>
+<li>A函数内部二次上锁，A将自己阻塞了但其他任务并不能解锁造成死锁: A获得了锁，A调用一个库函数，这个库函数需要获得上面那个锁，死锁发生</li>
+<li>A依赖B的锁，B又依赖A的锁，此时会死锁<br>
+互斥量解决了第1点，办法是使用递归锁(Recursive Mutex)，递归锁解决了第2点，采用了谁持有谁释放的方法</li>
+</ol>
+<p>事件组要么等待事件中的某一个发生，要么等待事件中的所有都发生，不能等待事件中的指定某几个发生<br>
+![2023-12-17_19-34](vx_images/28523719231258.png =600x)<br>
+![2023-12-17_19-38](vx_images/2063919250386.png =600x)<br>
+![2023-12-17_19-34_1](vx_images/280143719249684.png =300x)<br>
+![2023-12-17_19-35](vx_images/371893719237551.png =600x)<br>
+![2023-12-17_19-35_1](vx_images/462943719257717.png =300x)<br>
+切换任务后是直接执行在任务中断处执行，一般为while(1)循环内继续执行，因此对于在循环外部的初始化变量一定小心，例如在while(1)外部定义了i，while(1)循环内部定义了for循环，使用的变量是前面的i，这样，当第一次while(1)循环结束后i的是值为跳出循环的值，从本次循环开始，就不会再进入for内部了<br>
+任务通知是多对一的关系<br>
+对于任务通知来说，发送方发送的结果只有两种，要么成功要么失败，并不会等待，而对于接收方则有三种情况<br>
+![2023-12-18_17-35](vx_images/221873617231259.png =300x)<br>
+xQueueReceive()与xEventGroupWaitBits()中的WaitForAllBits数量有关，如果WaitForAllBits是pdFalse时，则需要一个xQueueReceive()就够了，否则会造成从未赋值的中间变量中取数据的Bug，造成的现象是同时多个数据被写入队列时会产生数据被读取多次，次数取决于并发的程序数量，不同时写入数据则会只覆盖队列中第一个数据，第二个数据始终被保留。而WaitForAllBits是pdTure时，则需要多个xQueueReceive()，这样才会有足够多的中间变量存储数据，而后被一次读走(具体实验可以看24_freertos_example_tasknotify_event_group)<br>
+使用任务通知构造轻量化事件组无法等待指定的某个任务，但是可以通过判断xTaskNotifyWait()中的pulNotificationValue值来进行等待某个指定任务<br>
+定时器函数在守护任务中被执行，每当产生Tick时定时器函数会比较当前Tick与预设Tick，并根据结果来执行回调函数(CallBackFun)，想要设置其定时器函数的具体参数需要经过队列通信来完成<br>
+![2023-12-19_17-09](vx_images/335880917237553.png =600x)<br>
+调用如上函数时，如果不加static关键字会导致每次调用函数都会产生新的栈和新的int，这样int的值就不是理想的，如果初始化cnt为0，则每次都会打印0，也不符合逻辑，解决办法是使用static关键字来存储每次产生的cnt<br>
+FreeRTOS对于中断会使用不同的ISR(Interrupt Service Routines)函数，这是为了保证ISR执行的时候不能处于阻塞状态，这样才能保证实时性<br>
+临界资源是指能够被多个进程共享，但是同一时间只能由一个进程访问的资源，因此是互斥的<br>
+用到syscall的中断可以通过调用系统函数被屏蔽掉，这样即使是优先级比较低的中断也可以安心访问临界资源，CotexM3/M4调用syscall的中断位于中断向量表的191<sub>255位，0</sub>255位是可编程异常，-3<sub>0位分别是复位、NMI、硬件错误，屏蔽中断本质上是调用191号中断，从而将191</sub>255中断屏蔽<br>
+在中断中调用中断恢复函数会将中断恢复至原来的状态，可能是中断开启也可能是中断屏蔽，而在任务中调用中断恢复宏定义则会将中断打开，因此，中断恢复函数有返回值<br>
+任务切换一定要给延时！尽量不要在定时器回调函数内部进行延时操作，定时器守护任务优先级及其栈深度在Config文件内被定义，默认为4，要想抢占定时器回调函数注意修改配置<br>
+任务自杀后就永远不会被执行，除非被再次创建<br>
+编程时，一般的逻辑错误都容易解决。难以处理的是内存越界、栈溢出等。<br>
+并没有很好的方法检测内存越界，但是可以提供一些回调函数：</p>
+<ul>
+<li>使用pvPortMalloc失败时，如果在FreeRTOSConfig.h里配置<code>configUSE_MALLOC_FAILED_HOOK</code>为1，会调用：</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vApplicationMallocFailedHook</span><span class="params">( <span class="type">void</span> )</span>;</span><br></pre></td></tr></table></figure>
+<p>在切换任务(vTaskSwitchContext)时调用taskCHECK_FOR_STACK_OVERFLOW来检测栈是否溢出，如果溢出会调用：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vApplicationStackOverflowHook</span><span class="params">( TaskHandle_t xTask, <span class="type">char</span> * pcTaskName )</span>;</span><br></pre></td></tr></table></figure>
+<p>怎么判断栈溢出？有两种方法：</p>
+<ul>
+<li>方法1：
+<ul>
+<li>当前任务被切换出去之前，它的整个运行现场都被保存在栈里，这时<strong>很可能</strong>就是它对栈的使用到达了峰值。</li>
+<li>这方法很高效，但是并不精确</li>
+<li>比如：任务在运行过程中调用了函数A大量地使用了栈，调用完函数A后才被调度。</li>
+</ul>
+</li>
+<li>方法2：
+<ul>
+<li>创建任务时，它的栈被填入固定的值，比如：0xa5</li>
+<li>检测栈里最后16字节的数据，如果不是0xa5的话表示栈即将、或者已经被用完了</li>
+<li>没有方法1快速，但是也足够快</li>
+<li>能捕获<strong>几乎所有</strong>的栈溢出</li>
+<li>为什么是几乎所有？可能有些函数使用栈时，非常凑巧地把栈设置为0xa5：几乎不可能</li>
+</ul>
+</li>
+</ul>
+<p>简而言之，使用上面两个Hook函数需要配置Config.h，并要求自己实现Hook函数的功能(内存回收以防止nalloc失败等)</p>
+<h1>FreeRTOS的内部机制</h1>
+<p>Arm架构汇编指令:<br>
+读指令 LDR (Load Register)    LDR R0, [addr]<br>
+写指令 STR (Store Register)    STR R0, [addr]<br>
+加指令 ADD     ADD R0,R1,R2    //R0=R1+R2<br>
+PUSH指令本质是写指令， Push {R3,LR}把LR，R3 Push到内存中的栈，把LR放在高地址，R3放在低地址<br>
+CPU中重要的寄存器: SP(R13) 栈顶指针寄存器 LR(R14) 返回地址寄存器 PC(R15) 当前指令寄存器 CPSR(A64架构) 状态寄存器，LR是一种特殊的PC<br>
+POP指令本质是读指令 POP {R3,LR}<br>
+栈可以用来保存现场，任务可以理解为函数+函数的栈<br>
+保存现场的三种情况</p>
+<ul>
+<li>切换任务时，保存所有的寄存器</li>
+<li>调用其他函数时，但由于前几个寄存器(R0,R1,R2…)被用来传参，因此不需要保存</li>
+<li>硬件中断时，硬件会自动保存一部分寄存器，但是还需要软件保存一部分</li>
+</ul>
+<p>栈的大小取决于局部变量的大小以及函数调用的深度，函数调用需要Push LR<br>
+TCB结构体内部包含函数指针，SP位置，优先级，函数名字，函数参数等，但并不包括函数的指针(用来执行本函数)，也不包括函数参数，CPU通过保存所有寄存器的值来保存这两项，保存的位置在该函数栈的顶部，其中R0，R1…保存了函数的参数(约定俗成)，R15(PC)保存了函数的指针，来进行函数的跳转操作<br>
+![2023-12-30_10-48](vx_images/450634810237564.png =600x)<br>
+申请堆栈的指令名为SPACE，这是在初始化文件里就执行的<br>
+![2023-12-24_21-33_1](vx_images/240683821237558.png =600x)<br>
+main函数的栈是在STM32汇编文件文件中设置的，与芯片厂商相关，步骤如下</p>
+<ol>
+<li>在内存中申请一段空间(首地址为__initial_sp，也是msp(Main_Stack_Pointer,也是sp)，同时会给中断函数的栈使用</li>
+<li>然后转入向量表，找到__initial_sp</li>
+<li>执行Reset_Handle，在Reset_Handle内部跳转到了main函数</li>
+</ol>
+<p>任务调度原理: 任务存在三个大类链表中，分别是ReadyList链表数组，DelayList，PendingList。其中ReadyList链表数组按照优先级排列(0-4)共有五个链表，FreeRTOS会先从ReadyList中最高优先级的一个开始寻找任务并执行，当高优先级任务发生阻塞时会将其从ReadyList移到DelayList，这时就不会执行了，而是去找低优先级的任务去执行。当创建任务时，会有指针指向当前创建的<strong>优先级最高的任务</strong>，因此，最后创建的任务总会先执行，然后再按前文所说按优先级高低依次执行其他任务。<br>
+选要注意的是，当所有任务优先级为0时，最后创建的是IdleTask。因此指针指向的是空闲任务。最终程序首先执行的IdleTask并没有现象，程序“看起来”好像是从最初的Task开始运行的<br>
+![2023-12-25_09-14](vx_images/585701409231266.png =600x)<br>
+在整个任务调度的过程中利用的是任务的TCB结构体<br>
+为防止写队列过程中发生调度导致失败，所以在写队列中需要互斥，这是通过关闭中断来实现的(任务调度本质上是定时器产生中断)<br>
+一函数写队列时，会唤醒其他等待队列的函数，当其他等待队列的函数条件符合时会准备进行切换任务，条件不符合时会将写队列的函数进行休眠以节省CPU资源。当使用队列且函数休眠时不仅把自己从ReadyList移到DelayList，还会在等待队列中写入自身，等待其他任务写队列时来唤醒它<br>
+在使用队列读写数据时，首先关中断，之后读写数据，在读写之后还需要进行链表操作来调度和通知任务，最后再开中断<br>
+因此使用队列有两点好处</p>
+<ul>
+<li>实现互斥</li>
+<li>节省CPU资源，提高程序运行效率<br>
+队列要点</li>
+<li>关中断实现互斥</li>
+<li>环形缓冲区保存数据</li>
+<li>链表实现休眠唤醒</li>
+</ul>
+<p>内存中队列的构成: Queue_t(队列头)+Buffer(数据缓冲区)，队列头由队列结构体构成，内部包含xTaskWaitingToSend链表以及xTaskWaitingToReceive链表及其对应的指针，数据缓冲区大小 = ItemSize * Length<br>
+xTaskWaitingToSend以及xTaskWaitingToReceive仅仅是为了记录哪个任务需要读写数据，真正的调度还需要去执行ReadyList与DelayList之间的操作，这样是为了防止在中断内部阻塞<br>
+critical: 临界区<br>
+读队列内核操作<br>
+![2023-12-25_11-40](vx_images/35974111249692.png =600x)<br>
+信号量是一种特殊的队列，它不传递数据，因此它只有Queue_t(队列头)，在Queue_t内部还有个链表用来记录Take失败的任务，以便之后唤醒<br>
+互斥量优先级继承是通过高优先级任务的优先级赋值给低优先级任务完成的，在这之前还需要记录低优先级任务的优先级，这样才能保证Give互斥量之后回到原优先级<br>
+事件组某些位被设置后会唤醒事件组里所有DelayList的任务将其移到ReadyList，然后每个任务依次检查是否符合执行条件，符合的执行，不符合的再次进入DelayList<br>
+使用队列和信号量时为了防止其他任务干扰需要关调度器，同时为了防止其他中断任干扰也要关中断，但是关中断后再关调度器也就没有意义了，因此在其内部源码中只是关闭中断而已。而事件组只是关闭调度器即可，这是因为FreeRTOS不会在中断中使用事件组，本质原因是事件组的FromISR函数并没有实际切换任务，而是写一个链表，等待事件组的FromISR函数执行完毕后才会进行实际的任务切换，这样一旦对事件组的某些位设置就不会在中断中唤醒所有任务了，否则会在中断内消耗大量时间。<br>
+任务通知能且只能点对点的唤醒任务，具体过程和前几种方法类似，都是先关中断，然后发通知的一方设置eaction的值，等通知的一方需要接受值，判断执行什么指令。之后由系统进行链表操作及状态转移，最后开中断<br>
+对于定时器任务， FreeRTOS的处理与其他操作系统不同。其他操作系统由硬件定时器(systick)出发形成软件定时器，在软件定时器内部直接调用待处理任务。而FreeRTOS认为，软件定时器也是中断，为了防止在中断内部直接处理任务会导致阻塞，因此采用了队列的方式处理任务，这与xTaskWaitingToSend以及xTaskWaitingToReceive在关中断内记录要更改的链表操作类似<br>
+定时器队列中，写队列一侧是systick，读队列一侧是守护任务。有趣的是创建Timer任务和启动Timer也是写队列，所以在函数xTimerStart(xTimer，xTicksToWait)中有两个参数，第二个参数给的就是当定时器队列满时是否接受等待<br>
+中断的优先级: systick服务于任务调度，pendsv服务于任务切换，其他的类似GPIO的中断用于业务，为了能够让业务正常执行，GPIO中断优先级最高，systick和pendsv优先级最低<br>
+![2023-12-27_10-19](vx_images/575191910231268.png =600x)<br>
+pendsv本质上是保存现场和任务切换的汇编代码</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">taskENTER_CRITICAL();</span><br><span class="line"><span class="comment">/*访问临界资源，防止其他任务，ISR破坏*/</span></span><br><span class="line">taskEXIT_CRITICAL();</span><br><span class="line">----------------------------</span><br><span class="line">vTaskSuspendAll();</span><br><span class="line"><span class="comment">/*关闭调度器，防止其他任务破坏性访问*/</span></span><br><span class="line">xTaskResumeAll();</span><br></pre></td></tr></table></figure>
+<p>![2023-12-30_09-55](vx_images/333245509231271.png =600x)<br>
+可以通过116行将宏消除(因为宏未定义，编译器会消除宏)<br>
+![2023-12-30_10-22](vx_images/243322210249697.png =600x)<br>
+FreeRTOS的链表构成如上图，xList负责产生头xMINI_List_Item，并记录链表中信息(如元素个数，当前指针的位置)，xMINI_List_Item本身作为链表头，xList_Item产生节点。要注意xList_Item的pvOwner才是学习链表时的&quot;container&quot;(容器)，container内部有下一个Node，Node里面也有下一个的container，而对应Node节点的就是FreeRTOS的Item。此时的pxContainer是指向新加入元素的那个List的指针<br>
+内存管理:<br>
+有些芯片支持对指针取指赋值，有些芯片则根本不支持，考虑的原因是防止内存不对齐而引发错误，在使用malloc函数中需要注意<br>
+生成堆的本质就是申请一块全局数组<br>
+heap1到heap5内存回收机制逐渐增强，一般常用heap4<br>
+heap_1.c里，只实现了pvPortMalloc函数，vPortFree函数并未实现。并在malloc函数内实现了互斥，以防止其他任务再次进行malloc<br>
+![](vx_images/305274714257730.png =600x)<br>
+使用heap1进行内存申请时，首先heap1内部会定义两个指针，pucAlignedHeap与xWantedSize，pucAlignedHeap主要负责内存对齐，每次pucAlignedHeap移动到下一个内存对齐的地址(最大移动8个地址)。xWantedSize负责给出申请空间的尾地址，这样将xWantedSize赋值给pucAlignedHeap就可以知道下一次该在何处对齐内存。例如，想在0x4000 0001处申请99字节的空间，首先pucAlignedHeap会指向0x4000 0004处(32位机内存块大小为4*8字节，所以pucAlignedHeap最大偏移量为4)，而后计算xWantedSize大小，考虑99不能被4整除，因此向上取整为100，所以新申请的内存地址为0x4000 0004至0x4000 0104，而0x4000 0001到0x4000 0003处内存被丢弃<br>
+heap2实现了内存回收，但没有解决内存碎片问题<br>
+![](vx_images/528693015258192.png =600x)<br>
+![](vx_images/177122815242708.png =600x)<br>
+![](vx_images/249192815260588.png =600x)<br>
+heap2实现的内存分配的方法是，首先生成一个链表，让链表头指向一个未分配的很大的heap(大小17k)，每当申请空间时首先会在已经空闲的block中找出是否能拆分出需求大小的block，如果不能，则从未划分block的堆中划分出一个新block，划分出的block内部包含申请空间的大小以及下一个空闲内存的指针。如果找到大于申请内存大小的block时，首先将该block裁剪为申请内存的大小，并在新申请的block记录该block大小，之后会将链表内的指针指向下一个未被占用的block。<br>
+heap2实现的内存回收的方法是，当需要free时，链表头就会free指定的地址，并将当前指针向前移动(pxNextFreeBlock+xBlockSize)个地址，从而找到block起始位置，但是这种方法并没有实现将这些已经free的内存重新归还到整个未被使用的内存中，因此这种free的空间在整个内存上来看是被各种pxNextFreeBlock+xBlockSize结构体分割出来的，这就是 <strong>内存的碎片化</strong><br>
+需要注意的是，使用heap2进行malloc操作的时候，链表申请是从小到大排序的，这样方便查找需要的block<br>
+heap能够进行内存碎片回收，链表按地址排序<br>
+![2023-12-31_15-26](vx_images/505642615231272.png =600x)<br>
+为了增加程序的健壮性，heap4加入了block使用的标志位(1&lt;&lt;31)<br>
+![2024-01-01_12-36](vx_images/598883612258568.png =600x)<br>
+![2024-01-01_12-29](vx_images/544572912240142.png =600x)<br>
+heap5与heap4的不同点在于heap5支持多块内存，在使用heap5时需要手动调用vPortDefineHeapRegions()函数，并以数组方式传入想要划分为堆的地址，这个数组以NULL结尾来确定数组结束的标志<br>
+![](vx_images/568893712246435.png =600x)</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>C复健计划</title>
+    <url>/2024/01/23/C%E5%A4%8D%E5%81%A5%E8%AE%A1%E5%88%92/</url>
+    <content><![CDATA[<h1>C复健计划</h1>
+<p>printf函数无法打印多行字符串，若要打印多行字符串则需要在每行后加换行符\n<br>
+\n代表换行，\n\代表下一行是上一行的延续，如果改为\n则会报错<br>
+变量名第一个字母不能是数字<br>
+ANSI C C99 C11 关键字数量分别是32 32+5 37+7<br>
+%11.2f代表输出11个占位符，其中浮点型输出到小数点后2位，如果%<a href="http://a.bf">a.bf</a>，其中b比a大，则直接输出到小数点后b位而忽略a的值<br>
+%x: 十六进制 (hex) %o: 八进制(oct) %d: 十进制(dec)<br>
+![2023-09-19_08-38](vx_images/581673908249386.png =274x)<br>
+![2023-09-19_08-39](vx_images/90294008237253.png =401x)<br>
+&quot;   代表 &quot;   \ 代表 \<br>
+/*    */代表多行注释<br>
+&lt;&gt;表示导入系统文件  &quot;&quot;表示导入自定义文件`<br>
+Tab == 8个空格，或者4个空格</p>
+<p>编译分为四步</p>
+<ol>
+<li>预编译：宏定义展开，头文件展开，条件编译等，并将注释删除（条件编译是指根据系统位数，编译库的选择确定编译环境）</li>
+<li>编译：将预编译后的文件生成汇编文件</li>
+<li>汇编：将汇编文件生成为目标文件（二进制代码）</li>
+<li>链接：把库链接到可执行程序中（预编译只是说明函数格式）</li>
+</ol>
+<p>![2023-09-22_08-5949](vx_images/499670009249389.png =646x)<br>
+float 默认保留六位小数，%.2 表示保留小数点后两位（四舍五入）<br>
+常量定义方法：（不能对值进行修改）<br>
+const 数据类型 常量名 = 值 或 数据类型 const 常量名 = 值 ( 在函数中定义的常量不安全，而全局常量则安全 )<br>
+# define 常量名 值<br>
+第一种不安全，利用指针可以修改 const 定义的值<br>
+十六进制用 0x 开头 八进制用 0 开头 C不支持定义二进制数<br>
+有符号数最高位是符号位，0 代表正数，1 代表负数<br>
+scanf(“%d”,&amp;a); 不要加\n<br>
+%hd 短整型 %p 输出指针的地址<br>
+char ‘单个字母’ 此时 %c 打印字母 %d 打印ASC2码<br>
+%c 对应的变量如果是整型，则输出ASC2码所对的字符<br>
+0 的ASC2码是 48 A 65 a 97 小写字母 - 大写字母 == 32<br>
+科学计数法赋值: float a = 3.2e3     <a href="//3.2">//3.2</a>*1000<br>
+%e 以科学计数法表示数字<br>
+WORD 双字节 16bit   DWORD (double word) 32bit<br>
+![2023-09-27_09-3508](vx_images/342723609249394.png =631x)<br>
+正数: 原码 == 反码 == 补码<br>
+负数: 反码 == 原码除符号位取反        补码 == 反码 + 1 (若最高位进位，则进位舍弃)<br>
+数据存储时，把 -0 定为区间最小值:  1111 1111 (-127) 1000 0000 (-128) 对于8bit数据，取值范围是: 2^7-1 ~ -2^7<br>
+%s 输出一个字符串，遇到\0停止<br>
+\0 代表字符串的结尾 printf(“hello\0 word\n”); 输出的只有hello<br>
+scanf(“%d,%d”,&amp;a,&amp;b);  键盘输入的时候应严格双引号中的格式输入，只能输入 整数，整数 不能输入 整数 整数 或其它格式。<br>
+putchar getchar 只能对单个字符进行操作<br>
+![2023-09-23_16-2638](vx_images/54091209249391.png =443x)<br>
+![2023-09-23_16-2611](vx_images/248901309257424.png =373x)<br>
+![2023-09-23_16-5554](vx_images/227301209237258.png =400x)<br>
+![2023-09-23_17-2827](vx_images/543921309250093.png =297x)<br>
+![2023-09-23_17-3207](vx_images/48801409246648.png =267x)<br>
+所有非 0 的值都是真值<br>
+C语言浮点型数据不能取余<br>
+单目运算符优先级高于双目运算符<br>
+int a = 10; int b = 20;  则 a &amp;&amp; b == 1<br>
+![2023-09-25_10-4453](vx_images/259954510230966.png =363x)<br>
+强制类型转换不考虑四舍五入，后果是损失精度，系统自动类型转换时也会损失精度<br>
+(int) a*b 是先将 a,b 损失精度，再计算结果  (int) (a*b)是先保留精度计算，再损失精度<br>
+表达式 ? 语句1 : 语句2  表达式为真，执行语句1，否则执行语句2<br>
+switch 中可加 default 并且 case 后要接 break<br>
+for 循环可以有多个判断代码，需用 , 隔开，只要一个表达式不满足就跳出循环<br>
+goto FLAG;  ………… FLAG: …………<br>
+数组下标必须是常量，不能写为下例：int i = 10;  int arr[i];<br>
+当一个数组初始化（开辟内存空间）时，内部元素默认是乱码。只有当赋值时，默认才是0<br>
+eg： int arr[4] = {1}; //内部元素：1,0,0,0  int arr[4]; arr[0] = 1; //内部元素：1,数字,数字,数字<br>
+数字 0 等同于 \0 但不等同于字符 ‘0’<br>
+char arr[] = “hello”; 此时arr数组共有6位（最后一位是\0）<br>
+char arr[5] = {‘h’,‘e’,‘l’,‘l’,‘o’}; 此时只有六位，打印的时候到 o 不会停止，会继续打印乱码，所以char arr[n]的数组只能存储n-1个字符<br>
+scanf接收到空格或回车就代表接收的结束<br>
+gets() 与 scanf() 的区别是，get 能接收空格，scanf 则不能<br>
+sizeof() 测量字符串数组长度时包括 /0 strlen() 则不包括<br>
+函数返回值传给寄存器后内存中的函数会被销毁<br>
+函数声明: extern int fun_name( type a, type b );   ==   int fun_name( type a, type b );    ==     int fun_name( type , type  ); 可以不用写在主函数之内<br>
+声明不需要内存<br>
+exit(); 在子函数中使用主函数也会退出<br>
+导入自己的头文件用 “myfile.h”<br>
+#ifndef “myfile.h” #define    文件名    #endif<br>
+char 占1个字节分配1个地址    int 占4个字节分配4个地址<br>
+win 存储方式是小端对齐 即 低位数据存在低位地址中<br>
+&amp; 是取址符号，是升维的    * 是取值符号，是降维<br>
+野指针:    指向某一个未知空间的指针变量<br>
+int const *p == const int* p  只能给 p 赋值，不能给 p 指向的变量赋值 因为 const 离 “*”近</p>
+<p>int* const p 只能给 p 指向的变量赋值，不能给 p 赋值，因为 const 离 “p” 近<br>
+指针 +1 == 内存地址 +(sizeof(type 指针))<br>
+数组做为函数参数时会退化为指针，损失数组的大小信息，所以需要额外的数组长度做为函数参数<br>
+p[-2] 等于当前指向某一数组的指针 p 向前数2个的那个元素<br>
+2个指针相减后的结果是步长，不能相加<br>
+int* arr[3]    指针数组<br>
+arr[i] == *(arr+i)<br>
+一级指针加偏移量相当于跳过元素，二级指针加偏移量相当于跳过一维数组<br>
+![2023-09-27_18-0028](vx_images/150863710249470.png =473x)<br>
+![2023-09-27_18-0047](vx_images/293363710237337.png =500x)<br>
+![2023-10-01_12-4448](vx_images/58503810257503.png =534x)<br>
+![2023-10-03_10-1645](vx_images/196183810250172.png =592x)<br>
+![2023-10-03_10-2054](vx_images/292473810246727.png =494x)<br>
+![2023-10-03_10-3451](vx_images/488983810242481.png =437x)<br>
+’ 字母 ’ 代表字母的ASCII码值，并可以用 %c 输出其值<br>
+while 是先判断后执行<br>
+![2023-10-03_20-2457](vx_images/194092820260361.png =500x)<br>
+主函数是程序的入口，是程序首先执行的函数<br>
+全局变量作用域 : 整个项目的所有文件，其他文件调用时需要声明 extern int a; 生命周期是从程序创建到程序销毁<br>
+全局变量可以与局部变量重名，调用时程序采用就近原则的方法<br>
+静态局部变量在数据区存储，只会初始化一次并且发生在函数创建前，作用域 : 函数内部 生命周期 : 从程序创建到销毁 ( 作用域与局部变量一样，生命周期与全局变量一样 )<br>
+静态全局变量作用域 : 只可在本文件中使用，但不能在其他文件中使用，生命周期 : 从程序创建到程序结束<br>
+![2023-10-07_14-4543](vx_images/78774614231048.png =700x)<br>
+![2023-10-07_13-5845](vx_images/117464714237341.png =400x)<br>
+定义函数默认是全局的，可以在其他文件中调用，静态函数只能在本文件中使用，即使在其他文件中声明也不能使用<br>
+即使没有声明也可以调用函数，但是在 vstudio 转到定义功能不能使用<br>
+静态函数可以和全局函数重名<br>
+malloc 开辟的是连续的堆空间<br>
+![2023-10-07_15-0913](vx_images/194954608231049.png =600x)<br>
+![2023-10-07_16-4537](vx_images/383464808257508.png =500x)<br>
+![2023-10-07_16-4817](vx_images/3774908250177.png =600x)<br>
+![2023-10-07_16-5929](vx_images/252204908246732.png =600x)<br>
+![2023-10-07_17-2152](vx_images/380904908242486.png =600x)<br>
+栈由高地址向低地址增长，栈底是第一个进栈的数据，栈顶就是最后一个进栈的数据。<br>
+![2023-10-08_19-2651](vx_images/238732719249475.png =600x)<br>
+同理，申请0字节的空间也会报上述错误<br>
+![2023-10-08_19-2937](vx_images/94153019237342.png =500x)<br>
+下图报错原因是对 NULL 指针进行赋值操作。本质上由于68行函数开辟了一个堆空间同时创建形参p，在申请10个int大小的空间后fun08就被销毁了，同时销毁的还有形参p。相当于68行是废语句<br>
+![2023-10-08_19-5338](vx_images/563595319257508.png =500x)<br>
+free 空指针不会报错<br>
+结构体成员大小按最大结构体成员的倍数取，，下图中， char name 的大小为 21( sizeof(name) ==21 )，但是偏移对齐过后为24 ( int的整数倍 )<br>
+![2023-10-09_11-3636](vx_images/519123611231050.png =500x)<br>
+typedef 类型名 别名;<br>
+struct 结构体类型名 {};    struct 结构体类型名 结构体名 = {}；//注意{}中的变量用 ; 隔开<br>
+结构体指针 -&gt; 成员    结构体变量 . 成员<br>
+联合体 union 所有数据共用一块内存空间，只能输出最后一次被赋值的成员<br>
+![2023-10-09_16-5317](vx_images/14900717249476.png =500x)<br>
+文件操作中的分隔符推荐以 / 正斜杠表示，如果是反斜杠，则需要输入两次<br>
+读取文件若干个字符时不能修改文件指针，文件在读取时指针会自动向下加 1<br>
+文件默认结尾是 -1 和 EOF<br>
+![2023-10-11_13-1126](vx_images/7011213231052.png =600x)<br>
+结构变量名不是地址<br>
+for函数条件用 ; 隔开<br>
+可以将枚举值赋给其他变量<br>
+define 只做替换，所以不加 ; 否则会出现 #define NUM  3; printf(“%d”,3;);<br>
+退出函数后，static的变量不会被销毁，仍然保留在静态区内，但是此变量只能在本函数内部使用<br>
+define 在预处理阶段有效，仅作字符串替换，typedef 在编译阶段有效，因此会做类型检查<br>
+&amp;&amp;: 逻辑与    &amp;: 按位与    || : 逻辑或    | : 按位或<br>
+左移丢弃符号位，右移补偿符号位<br>
+数字前面补零编译器会认为是八进制数字，因此数字为09时编译器会报错<br>
+![2023-12-03_17-2714](vx_images/61053117237537.png =600x)<br>
+<a href="http://jeremybai.github.io/blog/2014/01/01/const-volatile">博客链接</a><br>
+volatile用法：如果开启了编译器优化，或者利用无意义加减变量进行其他工作，亦或者多线程编程，读写与硬件相关的存储器时，需要加volatile关键字，防止编译器优化并提示编译器注意一致性问题，使其每次使用变量时都要去内存中取值。</p>
+<ul>
+<li>
+<p>一个参数既可以是const又可以是volatile么？</p>
+<ul>
+<li>const volatile常用在对于状态寄存器重新读取数值的时候，因为状态寄存器的值易变，因此加volatile，因为程序不应该修改状态寄存器的值，因此为const</li>
+</ul>
+</li>
+<li>
+<p>一个指针可以是volatile的么？</p>
+<ul>
+<li>可以但不常见，当需要一个经常被修改的指针时需要这么做，比如在中断子程序中修改的buffer指针</li>
+</ul>
+</li>
+</ul>
+<p><a href="https://blog.csdn.net/wujiangguizhen/article/details/10244627">上述答案详解</a></p>
+<p>SRAM没有电容结构，因此充放电比DRAM快，读取数据也就比DRAM快，并且也不需要刷新数据<br>
+需要使用malloc来申请结构体的情况:</p>
+<ol>
+<li>结构体大小需要动态分配(结构体内包含本身的指针)</li>
+<li>结构体生命周期较长，需要在函数结束时不销毁结构体时需要</li>
+<li>对性能要求不大，在栈上分配和释放内存通常比堆上快，对性能不做要求时可以使用malloc<br>
+即使在函数参数给出了const限定，但是依然有变量被更改的风险</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span>* <span class="type">const</span> a,<span class="type">int</span>* <span class="type">const</span> b)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span>* temp1 = a;</span><br><span class="line">    <span class="type">int</span>* temp2 = b;</span><br><span class="line">    *temp1 = <span class="number">6</span>;</span><br><span class="line">    *temp2 = <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">return</span> *a+*b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">5</span>;</span><br><span class="line">    <span class="type">int</span> b = <span class="number">3</span>;</span><br><span class="line">    <span class="type">int</span> c = add(&amp;a,&amp;b);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,c);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>::: alert-danger<br>
+结果是10<br>
+:::<br>
+![2023-12-28_11-40](vx_images/65104211231269.png =600x)<br>
+对新生成的链表进行操作时，注意新生成的链表的内存是否是malloc动态分配的，否则会出现Segmentation fault(为啥啊？)<br>
+define定义宏的时候不用括号括起来可能导致运算错误</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> N 3+2</span></span><br><span class="line"><span class="type">int</span> a = N*N; <span class="comment">//a = 3+2*3+2</span></span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>Vim复健计划</title>
+    <url>/2024/01/23/Vim%E5%A4%8D%E5%81%A5%E8%AE%A1%E5%88%92/</url>
+    <content><![CDATA[<h1>Vim复健计划</h1>
+<p>命令模式<br>
+o  新建下一行并切换到编辑模式<br>
+O 新建上一行并切换到编辑模式<br>
+[n]x  包括光标的后n位剪切，若改为X，则是光标前n位但包括光标所在的字符<br>
+[n]yy 包括光标的后n行复制<br>
+[n]dd 包括光标的后n行剪切<br>
+[n]p 粘贴复制的内容n遍<br>
+D 包括光标的之后当前行的所有字符剪切<br>
+dG 包括光标的之后所有行剪切<br>
+J 将下一行合并到上一行，并用空格连接<br>
+.  执行上一次操作<br>
+Shift+I 光标移到行首并进入编辑模式<br>
+Shift+A 光标移到行尾并进入编辑模式<br>
+Ctrl+f 向下滚屏（可以用PageDown）<br>
+Ctrl+b  向上滚屏（可以用PageUp）<br>
+gg 光标移到第一行行首<br>
+G   光标移到最后一行行首<br>
+[n]gg 或[n]G 光标移到第n行行首<br>
+/内容  查找内容    n 转到下一个   N 转到上一个<br>
+？ 查找上一次搜索的内容 （?内容 与 /内容 作用一样）<br>
+/^内容 查找以内容开头的字符串<br>
+/内容$ 查找以内容结尾的字符串<br>
+/a…b   查找以a开头b结尾，中间有3个任意字符的字符串<br>
+:r 文件名 在光标下一行插入文件的内容<br>
+:%s/aaa/bbb/gc 全文中aaa被替换为bbb，替换时确认<br>
+% 全文 s 替换 g 当前行所有字符 c 确认<br>
+:set nu 显示行号 :set nonu 不显示行号</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>杂项</title>
+    <url>/2024/01/23/%E6%9D%82%E9%A1%B9/</url>
+    <content><![CDATA[<h1>杂项</h1>
+<h2 id="知识点"><a class="header-anchor" href="#知识点">¶</a>知识点</h2>
+<p>SOC: system on chip<br>
+电机会有死区电压，表现为电压很低时电机不能启动，死区电压约占额定电压的10%，此时需要给一PWM占空比最小值从而避免死区电压<br>
+![2023-12-20_22-20](vx_images/113862122249687.png =600x)<br>
+处于三相电PWM调功率中的开关器件(如IGBT)，换相时为防止三相电任意上半桥和下半桥同时开启导致短路，我们要给死区时间，一般会占整个周期的百分之几，但当PWM占空比极小时，死区时间就会产生很大影响，最终影响输出纹波</p>
+<p>常量保存在Flash里，全局初始化非零的变量保存在SRAM的.data段内，静态变量或者全局初始化为零的变量保存在.bss段内，函数和函数内的局部变量保存在栈上</p>
+<p>尽量把数据保存在栈上，这样防止产生内存安全问题，并且栈上访问数据速度更快(数据局部性原理？)<br>
+栈是从高地址向低地址增长，堆是从低地址向高地址增长</p>
+<p>操作Flash前需要关中断</p>
+<p>计算机底层是小端存储的原因是在C程序员眼里，小端更符合直觉，在不定长的int，char中可以相互转换而不改变变量值(变量长度小于int、char最小值的情况下)，但是对于传输协议来说，大部分为定长字段传输，这就造成了大端存储更符合从左至右的阅读习惯</p>
+<h2 id="项目Bug"><a class="header-anchor" href="#项目Bug">¶</a>项目Bug</h2>
+]]></content>
+  </entry>
+  <entry>
+    <title>Python</title>
+    <url>/2024/01/23/Python/</url>
+    <content><![CDATA[<h1>Python</h1>
+<h2 id="Python基础"><a class="header-anchor" href="#Python基础">¶</a>Python基础</h2>
+<h3 id="解释器与编译器"><a class="header-anchor" href="#解释器与编译器">¶</a>解释器与编译器</h3>
+<p>解释器输出运行的结果<br>
+编译器输出编译的文件</p>
+<p>字面量：写在代码中的值，可以被分为整数，浮点数，字符串，元组，列表等<br>
+python的单引号和双引号意义相同，但是使用单引号可以打出双引号，但不能打出单引号。使用双引号则反之，如果想使用单引号打出单引号，则需要加上反斜杠代表转义字符</p>
+<h3 id="注释的写法"><a class="header-anchor" href="#注释的写法">¶</a>注释的写法</h3>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 这是单行注释</span></span><br><span class="line"></span><br><span class="line"><span class="string">&quot;&quot;&quot; </span></span><br><span class="line"><span class="string">这是多</span></span><br><span class="line"><span class="string">行注释 </span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span> </span><br></pre></td></tr></table></figure>
+<p>python中变量无类型而数据有类型，可以通过type(数据)来查看数据拥有的数据类型，同时也可以使用type(变量)来查看变量拥有的数据类型</p>
+<h3 id="类型转换"><a class="header-anchor" href="#类型转换">¶</a>类型转换</h3>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="built_in">int</span>(x) <span class="comment"># 将x转换为int类型</span></span><br><span class="line"><span class="built_in">float</span>(x) <span class="comment"># 将x转换为float类型</span></span><br></pre></td></tr></table></figure>
+<p>float转换为int会丢失精度<br>
+python舍弃精度时是<strong>四舍五入</strong></p>
+<h3 id="运算符"><a class="header-anchor" href="#运算符">¶</a>运算符</h3>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="number">9</span>//<span class="number">4</span>) <span class="comment"># 结果为2</span></span><br><span class="line"><span class="built_in">print</span>(<span class="number">9</span>%<span class="number">4</span>)  <span class="comment"># 结果为1</span></span><br><span class="line"><span class="comment"># ** 代表取幂运算</span></span><br></pre></td></tr></table></figure>
+<p>字符串可以通过转义字符来包含引号</p>
+<h3 id="拼接"><a class="header-anchor" href="#拼接">¶</a>拼接</h3>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 可以进行字符串之间的拼接，也可以进行字面量和变量之间的拼接</span></span><br><span class="line">name = lzx</span><br><span class="line">printf(<span class="string">&quot;The computer belong to &quot;</span> + lzx + <span class="string">&quot;since 2023.&quot;</span>)</span><br><span class="line"><span class="comment"># 但是不能将整数或其它类型与字符串拼接，例如</span></span><br><span class="line">tel = <span class="number">155</span></span><br><span class="line">printf(<span class="string">&quot;The computer belong to &quot;</span> + lzx + <span class="string">&quot;since 2023.&quot;</span> + <span class="string">&quot;tel is&quot;</span> + tel) <span class="comment">#运行报错，提示int类型不能与str类型进行拼接，想要拼接首先要进行格式化</span></span><br></pre></td></tr></table></figure>
+<h3 id="占位符与格式化"><a class="header-anchor" href="#占位符与格式化">¶</a>占位符与格式化</h3>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line">birth = <span class="number">2001</span></span><br><span class="line">name = <span class="string">&quot;lzx&quot;</span></span><br><span class="line">message = <span class="string">&quot;我是：%s，出生于：%d&quot;</span> %(name,birth)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line"></span><br><span class="line">message = <span class="string">f&quot;我是：<span class="subst">&#123;name&#125;</span>，出生于：<span class="subst">&#123;birth&#125;</span>&quot;</span> </span><br><span class="line"><span class="comment"># 但是这种用法不能对精度进行控制，也不会考虑数据类型</span></span><br></pre></td></tr></table></figure>
+<h3 id="输入函数"><a class="header-anchor" href="#输入函数">¶</a>输入函数</h3>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="built_in">input</span>(<span class="string">&quot;提示语&quot;</span>) <span class="comment"># input得到的数据永远是字符串类型</span></span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line"><span class="comment">### 条件语句  </span></span><br><span class="line"></span><br><span class="line">python用<span class="number">4</span>个空格来划分所属关系</span><br><span class="line"></span><br><span class="line">```py</span><br><span class="line"><span class="keyword">if</span> condition:</span><br><span class="line">    <span class="comment"># todo</span></span><br><span class="line"><span class="keyword">elif</span> condition:</span><br><span class="line">    <span class="comment"># todo</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="comment"># todo</span></span><br></pre></td></tr></table></figure>
+<h3 id="循环语句"><a class="header-anchor" href="#循环语句">¶</a>循环语句</h3>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> condition:</span><br><span class="line">    <span class="comment"># todo</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">for</span> 临时变量 <span class="keyword">in</span> 数据集 <span class="comment"># for循环无法定义循环条件</span></span><br><span class="line">    <span class="comment">#todo</span></span><br></pre></td></tr></table></figure>
+<p>:::alert-info<br>
+for循环里的临时变量会自动自增，但是while需要手动自增<br>
+:::</p>
+<h3 id="range"><a class="header-anchor" href="#range">¶</a>range</h3>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="built_in">range</span>(num) <span class="comment"># 获得一个从0开始不含num的数字序列，例如range(5)，获得一个0，1，2，3，4的序列</span></span><br><span class="line"><span class="built_in">range</span>(num1,num2,step) <span class="comment">#获得一个从num1开始，到num结束，步进为step的不含num2的数字序列</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#range常用来配合for循环使用</span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="函数"><a class="header-anchor" href="#函数">¶</a>函数</h3>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">functionname</span>(<span class="params">parameter</span>)</span><br><span class="line">    <span class="comment"># function body</span></span><br><span class="line">    <span class="keyword">return</span> returnvalue </span><br><span class="line"></span><br><span class="line">temp = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fun1</span>()</span><br><span class="line">    <span class="keyword">global</span> temp <span class="comment"># 声明全局变量</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+<p>函数无返回值，返回的是None<br>
+对于一些不想要设置初始值而需要定义的变量来说，可以先让这个变量赋值为None</p>
+<p>函数作为参数传递</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">fun1</span>(<span class="params">fun</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;fun1&quot;</span>)</span><br><span class="line">    fun()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;fun1&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fun2</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;fun2&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">fun1(fun2) <span class="comment"># 注意这里fun2不带()</span></span><br></pre></td></tr></table></figure>
+<h3 id="数据容器"><a class="header-anchor" href="#数据容器">¶</a>数据容器</h3>
+<p>![2024-01-20_13-37](vx_images/445473713240161.png =600x)</p>
+<p>![2024-01-20_13-38](vx_images/357703813258587.png =600x)</p>
+<h4 id="数据容器的转换"><a class="header-anchor" href="#数据容器的转换">¶</a>数据容器的转换</h4>
+<p>其他数据容器不能转换为字典</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将其他数据容器转换为列表</span></span><br><span class="line"><span class="built_in">list</span>(tuple_name()) <span class="comment"># 字符串转列表会将字符串变为字符再装载进列表，字典转列表只会将Key值放进列表</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将其他数据容器转换为元组</span></span><br><span class="line"><span class="built_in">tuple</span>(dict_name) <span class="comment"># 情况与字符串列表类似</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将其他数据容器转换为字符串</span></span><br><span class="line"><span class="built_in">str</span>(list_name) <span class="comment"># 其他数据类型任意转换为字符串</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将其他数据容器转换为集合</span></span><br><span class="line"><span class="built_in">set</span>(str_name) <span class="comment"># 情况与字符串列表类似</span></span><br></pre></td></tr></table></figure>
+<h4 id="列表-list"><a class="header-anchor" href="#列表-list">¶</a>列表(list)</h4>
+<p>![2024-01-19_21-28](vx_images/392002821240160.png =600x)</p>
+<p>列表可以存储不同数据类型的元素，并按照一定下标排序，允许重复数据存在</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 列表的字面量定义</span></span><br><span class="line">[Item1,Item2,Item3] </span><br><span class="line"></span><br><span class="line"><span class="comment"># 列表内的元素带有下标，可以通过下标索引到元素，索引方向分为从左至右和从右至左两种，下方列表中Item3的下标可以是2，也可以是-1</span></span><br><span class="line"><span class="comment"># 列表的变量定义</span></span><br><span class="line">list_name = [Item1,Item2,Item3]</span><br><span class="line"></span><br><span class="line"><span class="comment">#定义空列表</span></span><br><span class="line">list_name = []</span><br><span class="line">list_name = <span class="built_in">list</span>()</span><br></pre></td></tr></table></figure>
+<p>嵌套列表获取元素list_name[0][1]</p>
+<p>将函数定义为类中的成员，我们称这种函数叫做方法</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="comment">#查询元素</span></span><br><span class="line">list_name.index(Item1) <span class="comment"># 查询Item1的下标，如果找不到则报错ValueError</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#插入元素</span></span><br><span class="line">list_name.insert(index，Item2) <span class="comment"># 在index处插入Item2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#追加元素</span></span><br><span class="line">list_name.append(Item3) <span class="comment"># 在列表尾部追加append</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#追加数据容器</span></span><br><span class="line">list_name.extend(其他数据容器) <span class="comment">#在列表尾部追加extend</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#删除元素</span></span><br><span class="line">element = list_name.pop(index) <span class="comment"># 取出index的那个元素并赋值给element，最后在列表中删除</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#清空整个列表</span></span><br><span class="line">list_name.clear()</span><br><span class="line"></span><br><span class="line"><span class="comment">#统计某个元素在列表中的数量</span></span><br><span class="line">list_name.count(Item4) </span><br><span class="line"></span><br><span class="line"><span class="comment">#统计列表中有多少元素</span></span><br><span class="line"><span class="built_in">len</span>(list_name) <span class="comment"># 返回值为列表中元素的个数</span></span><br></pre></td></tr></table></figure>
+<h4 id="元组-tuple"><a class="header-anchor" href="#元组-tuple">¶</a>元组(tuple)</h4>
+<p>元组一旦定义好，内部的元素就不可修改。但如果元组内嵌套了list，则可以修改list的内容,可以将元组视为不可修改元素的list<br>
+元组内部数据类型可以不同</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 定义元组字面量</span></span><br><span class="line">(Item1，Item2，Item3)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义元组变量</span></span><br><span class="line">tuple_name = (Item1，Item2，Item3)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义空元组</span></span><br><span class="line">tuple_name = <span class="built_in">tuple</span>()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="字符串-str"><a class="header-anchor" href="#字符串-str">¶</a>字符串(str)</h4>
+<p>字符串是一个<strong>不可修改</strong>的数据容器</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line">my_str = <span class="string">&quot;hellow world&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 字符串的替换</span></span><br><span class="line">new_str1 = my_str.replace(<span class="string">&quot;hellow&quot;</span>,<span class="string">&quot;hello&quot;</span>) <span class="comment"># 原字符串不可修改，但得到了一个新的字符串</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#字符串的分割</span></span><br><span class="line">new_str2 = my_str.split(<span class="string">&quot; &quot;</span>) <span class="comment"># 按空格切分字符串</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="序列"><a class="header-anchor" href="#序列">¶</a>序列</h4>
+<p>序列是指内容连续，有序，可使用下标索引的一类数据容器</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 语法</span></span><br><span class="line">数据容器[start:end:step] <span class="comment"># 在数据容器中从start下标开始到end下标结束(不包括end下标)，每隔step-1个元素取出一个数据组成新的序列，步长为负数则代表序列从后向前取</span></span><br><span class="line"></span><br><span class="line">newlist = list_name[::<span class="number">2</span>]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="集合-set"><a class="header-anchor" href="#集合-set">¶</a>集合(set)</h4>
+<p>集合内元素不能重复且无序，但允许修改<br>
+因为集合不支持下标索引，所以不支持while循环，但支持for循环</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 定义集合字面量</span></span><br><span class="line">&#123;Item1，Item2，Item3&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义集合变量</span></span><br><span class="line">set_name = &#123;Item1，Item2，Item3&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义空集合</span></span><br><span class="line">set_name = <span class="built_in">set</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加元素</span></span><br><span class="line">set_name.add(<span class="string">&quot;Item4&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 移除元素</span></span><br><span class="line">set_name.remove(<span class="string">&quot;Item5&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 清空集合</span></span><br><span class="line">set_name.clear()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 随机取元素</span></span><br><span class="line">set_name.pop(<span class="string">&quot;Item6&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 取出集合1不同于集合2的元素</span></span><br><span class="line">set1 = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;</span><br><span class="line">set2 = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>&#125;</span><br><span class="line">set3 = set1.difference(set2)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 消除两个集合的差集</span></span><br><span class="line">set1.difference_update(set2) <span class="comment"># 结果set1 = &#123;2,3&#125;，set2不变</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 集合的合并</span></span><br><span class="line">set3 = set1.union(set2)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="字典-dict"><a class="header-anchor" href="#字典-dict">¶</a>字典(dict)</h4>
+<p>字典无序没有索引，只能通过Key值找到对应的value<br>
+字典的Key不可重复<br>
+字典的Key和value可以为任意数据类型(但Key不可为字典)</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 字典的定义</span></span><br><span class="line">dict_name = &#123;Key:value,Key:value,Key:value&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 空字典的定义</span></span><br><span class="line">dict_name = <span class="built_in">dict</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 找到Key对应的value</span></span><br><span class="line">keyvalue = <span class="built_in">dict</span>[Key]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加或更新元素</span></span><br><span class="line">dict_name[Key] = value <span class="comment"># 有对应的key则更新元素，否则添加新的key及其对应元素</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除元素</span></span><br><span class="line">Item = dict_name.pop(Key)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 清空元素</span></span><br><span class="line">dict_name.clear()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取全部的Key </span></span><br><span class="line">AllKeys = dict_name.keys()</span><br><span class="line"><span class="comment"># 找到全部Key后遍历字典</span></span><br><span class="line"><span class="keyword">for</span> key <span class="keyword">in</span> AllKeys</span><br><span class="line">    <span class="comment"># todo</span></span><br><span class="line"><span class="comment"># 或者直接遍历</span></span><br><span class="line"><span class="keyword">for</span> key <span class="keyword">in</span> dict_name:</span><br><span class="line">    <span class="comment"># todo</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="函数进阶"><a class="header-anchor" href="#函数进阶">¶</a>函数进阶</h3>
+<h4 id="多返回值函数"><a class="header-anchor" href="#多返回值函数">¶</a>多返回值函数</h4>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">fun_name</span>()</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>,<span class="number">2</span></span><br><span class="line">    </span><br><span class="line">x,y = fun_name()</span><br></pre></td></tr></table></figure>
+<ul>
+<li>函数参数种类：
+<ul>
+<li>位置参数 fun_name(“小明”,10,“男”)</li>
+<li>关键字参数 fun_name(name = “小明”,gender = “男”,age = 10)，顺序可以调换，但与位置参数混用时，需要放在位置参数后面</li>
+<li>缺省参数 函数定义时在参数列表中给参数赋值即可指定缺省参数，设置缺省参数时，设置的参数要放在参数列表最后，否则会报错</li>
+<li>不定长参数
+<ul>
+<li>位置参数的形式：fun_name(*args)，传参示例：<code>10，20，30</code>会将传进去的参数合并成一个元组</li>
+<li>关键字传递的形式：fun_name(**kwargs)，传参示例：<code>age = 10，gender = male</code>会将传进去的参数合并成一个字典 kwargs(key word args)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="lambda函数"><a class="header-anchor" href="#lambda函数">¶</a>lambda函数</h4>
+<p>lambda函数是一种临时函数，使用一次后就被销毁了，下次使用只能再次重写lambda函数并且lambda函数只能写一行</p>
+<p>lambda函数语法：lambda 参数 : 函数体</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">test_fun</span>(<span class="params">compete</span>)</span><br><span class="line">    result = compete(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line">    </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">compete</span>(<span class="params">x,y</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line">    </span><br><span class="line">test_fun(compete)</span><br><span class="line"></span><br><span class="line"><span class="comment">#############与下列lambda函数相同#################</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_fun</span>(<span class="params">compete</span>)</span><br><span class="line">    result = compete(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line">    </span><br><span class="line">test_fun(<span class="keyword">lambda</span> x, y: x + y)</span><br><span class="line"> </span><br></pre></td></tr></table></figure>
+<h3 id="异常"><a class="header-anchor" href="#异常">¶</a>异常</h3>
+<h4 id="异常的捕获"><a class="header-anchor" href="#异常的捕获">¶</a>异常的捕获</h4>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span>：</span><br><span class="line">    可能发生异常的代码</span><br><span class="line">    </span><br><span class="line"><span class="keyword">except</span>：</span><br><span class="line">    处理异常的代码</span><br><span class="line">    </span><br><span class="line"><span class="comment">#######################例子如下#########################</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 捕获到读取文件异常后(即文件不存在)，就以写的方式创建文件</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    f = <span class="built_in">open</span>(<span class="string">&quot;linux.txt&quot;</span>,<span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">execept: <span class="comment"># execept可以后加异常名称，这样就会接受指定异常，例如 execept (NameError，ZeroDivisionError) as object:，默认情况则捕获所有异常并命名为 object，或者可以写为execept Exeception:，这也是捕获所有异常的写法</span></span><br><span class="line">    f = <span class="built_in">open</span>(<span class="string">&quot;linux.txt&quot;</span>,<span class="string">&#x27;w&#x27;</span>)</span><br><span class="line">    </span><br><span class="line"><span class="keyword">else</span>: <span class="comment"># 没有异常则执行的代码</span></span><br><span class="line">    <span class="comment"># todo</span></span><br><span class="line"><span class="keyword">finally</span>: <span class="comment">#无论是否出现异常都执行的代码</span></span><br><span class="line">    <span class="comment"># todo</span></span><br></pre></td></tr></table></figure>
+<h4 id="异常的传递"><a class="header-anchor" href="#异常的传递">¶</a>异常的传递</h4>
+<p>异常可以根据函数调用呈现传递性</p>
+<p>![2024-01-20_16-31](vx_images/368333116246454.png =600x)</p>
+<h3 id="模块"><a class="header-anchor" href="#模块">¶</a>模块</h3>
+<p>模块就是一个python文件，可以将模块视作功能包<br>
+不同的模块，相同名称的功能，后导入进来的会覆盖先导入进来的<br>
+[]代表可选的意思</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 只使用import会将模块中所有内容全部导入，而使用from则会将模块中的某一部分导入</span></span><br><span class="line"><span class="comment"># 例如 from time import sleep 使用方法：sleep 或者 import time 使用方法 time.sleep </span></span><br><span class="line">[<span class="keyword">from</span> 模块名] <span class="keyword">import</span> [模块 | 类 | 方法 | *] [<span class="keyword">as</span> 别名]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="包"><a class="header-anchor" href="#包">¶</a>包</h3>
+<p>python包 = __init__.py + 若干模块文件</p>
+<p>可以在 __init__.py文件内添加 __all__ = [“模块名”]来定义 from package import * 的导入范围</p>
+<p>![2024-01-20_17-33](vx_images/236873317266620.png =600x)</p>
+<h3 id="面向对象"><a class="header-anchor" href="#面向对象">¶</a>面向对象</h3>
+<h4 id="类的定义"><a class="header-anchor" href="#类的定义">¶</a>类的定义</h4>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">类名称</span>:</span><br><span class="line">    成员变量</span><br><span class="line">    成员方法(函数)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义类的方法时与普通的函数定义有细微差别，需要在形参列表最前方加入self关键字</span></span><br><span class="line"><span class="comment"># 在成员方法内部调用或赋值成员变量需要用到self.来引出</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">self,para1,para2</span>):</span><br><span class="line">    <span class="comment"># todo    </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建类的对象</span></span><br><span class="line"><span class="built_in">object</span> = calss_name()</span><br></pre></td></tr></table></figure>
+<h4 id="构造方法"><a class="header-anchor" href="#构造方法">¶</a>构造方法</h4>
+<p>构造方法需要使用__init__()方法，与C++构造函数类似，即使不给出__init__()方法，系统也会自动调用</p>
+<p>类进行初始化的时候会首先调用__init__()方法，，这个函数可以初始化类的成员变量</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">student</span>:</span><br><span class="line">    name = <span class="literal">None</span></span><br><span class="line">    age = <span class="literal">None</span></span><br><span class="line">    tel = <span class="literal">None</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,name,age,tel</span>)</span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">        self.tel = tel    </span><br><span class="line">     </span><br></pre></td></tr></table></figure>
+<h4 id="魔术方法"><a class="header-anchor" href="#魔术方法">¶</a>魔术方法</h4>
+<p>python中，由两个下划线前后包围起来的方法称为魔术方法<br>
+定义__str__方法后，以后将类转换为字符串就会输出__str__方法中的内容<br>
+__lt__，__le__，__eq__是比较两个类大小的魔术方法，由于两个类不能比较，所以需要在这三种方法内部重写比较方法，一般比较的是两个类中成员的大小</p>
+<h4 id="封装"><a class="header-anchor" href="#封装">¶</a>封装</h4>
+<p>在成员或者方法前加两个下划线即可将成员或方法变为私有</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">student</span>:</span><br><span class="line">    name = <span class="literal">None</span></span><br><span class="line">    __age = <span class="number">18</span> <span class="comment"># 私有成员</span></span><br><span class="line">    tel = <span class="literal">None</span> </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__print_tel</span>(<span class="params">self</span>): <span class="comment"># 私有方法</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;self.tel&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="继承"><a class="header-anchor" href="#继承">¶</a>继承</h4>
+<p>class 类名(父类名):<br>
+类的内容</p>
+<p>想要继承多个父类时使用：<br>
+class 类名(父类1,父类2,父类3):<br>
+类的内容</p>
+<p>如果只想继承若干个父类，而不想写类的内容，可以使用<code>pass</code>关键字，以补全类的内容<br>
+class 类名(父类1,父类2,父类3):<br>
+pass</p>
+<p>当父类1与父类2中有同名的成员变量或成员方法时，优先继承父类1的内容，遵循先来后到原则</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">student</span>:</span><br><span class="line">    name = <span class="literal">None</span></span><br><span class="line">    age = <span class="literal">None</span></span><br><span class="line">    tel = <span class="literal">None</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Newstu</span>(<span class="title class_ inherited__">student</span>): <span class="comment"># 继承</span></span><br><span class="line">    gender = <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+<p>当需要对父类的成员变量或者成员方法进行改动时，可以在子类中重新定义，以达到复写的效果</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">student</span>:</span><br><span class="line">    name = <span class="literal">None</span></span><br><span class="line">    age = <span class="number">18</span></span><br><span class="line">    tel = <span class="literal">None</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Newstu</span>(<span class="title class_ inherited__">student</span>): </span><br><span class="line">    age = <span class="number">80</span></span><br></pre></td></tr></table></figure>
+<h4 id="多态"><a class="header-anchor" href="#多态">¶</a>多态</h4>
+<p>多态：同一个函数，使用不同的对象，产生不同的结果</p>
+<p>通过多子类父类以及继承方式可以实现多态，例如</p>
+<ul>
+<li>定义空调父类，定义空调的制冷方法</li>
+<li>定义格力空调，美的空调子类，并在其内部重写制冷方法</li>
+<li>实现通用制冷函数，可以调用传进来的类的方法</li>
+<li>在制冷函数内传入美的或者格力空调子类，这样就实现了多态现象</li>
+</ul>
+<p>此时父类称为抽象类或接口，只做大体框架或者顶层实现</p>
+<p>![2024-01-21_14-40](vx_images/256514014258588.png =600x)</p>
+<h3 id="闭包"><a class="header-anchor" href="#闭包">¶</a>闭包</h3>
+<p>闭包的好处是可以将外层函数的变量置于函数内部，这样可以防止其他函数或操作修改外层函数的变量，使程序更安全。但同时内部函数会持续引用外部函数的值，增大了内存的开销</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">outer</span>(<span class="params">add</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">inner</span>(<span class="params">name</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;&lt;<span class="subst">&#123;add&#125;</span>&gt;<span class="subst">&#123;name&#125;</span>&lt;<span class="subst">&#123;add&#125;</span>&gt;&quot;</span>) <span class="comment"># 如果想要修改add的值，只需要在add前加nonlocal关键字修饰即可</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line">fn1 = outer(<span class="string">&quot;海城&quot;</span>) <span class="comment"># 按正常的操作，需要定义一个海城的全局变量来传参，但是这样做全局变量有被其他函数修改的风险，使用了闭包后则不会修改这个变量</span></span><br><span class="line">fn1(<span class="string">&quot;李政轩&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>![2024-01-21_14-53](vx_images/515795314246455.png =300x)</p>
+<h3 id="装饰器"><a class="header-anchor" href="#装饰器">¶</a>装饰器</h3>
+<p>装饰器是闭包的一种特殊用法，他将闭包中的全局变量改为函数，可以增加原函数的功能，并支持语法糖</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="comment">#############普通的装饰器##########</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">outer</span>(<span class="params">fun</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">inner</span>():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;海城&quot;</span>)</span><br><span class="line">        fun()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;李政轩&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fun1</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;四中&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">fn = outer(fun1)</span><br><span class="line">fn()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#############带语法糖的装饰器###########</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">outer</span>(<span class="params">fun</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">inner</span>():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;海城&quot;</span>)</span><br><span class="line">        fun()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;李政轩&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@outer </span><span class="comment"># 跟随outer函数名称改变而改变</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fun1</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;四中&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">fun1() <span class="comment"># 调用的是fun1，而不是outer，这样适合对原函数增加功能后继续调用</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="设计模式"><a class="header-anchor" href="#设计模式">¶</a>设计模式</h3>
+<h4 id="单例模式"><a class="header-anchor" href="#单例模式">¶</a>单例模式</h4>
+<p>类的实例化只进行一次，以后均使用这个实例化的类，这样可以节省内存，多用于工具类的创建</p>
+<h4 id="工厂模式"><a class="header-anchor" href="#工厂模式">¶</a>工厂模式</h4>
+<p>将杂散的对象由某个类统一创建，这样可以方便统一管理杂散的数据，并且当其中的数据进行重新赋值时，只进行类内部重新赋值即可而不需要找到每处实例化的对象</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>工具链</title>
+    <url>/2024/01/23/%E5%B7%A5%E5%85%B7%E9%93%BE/</url>
+    <content><![CDATA[<h1>工具链</h1>
+<h2 id="Git"><a class="header-anchor" href="#Git">¶</a>Git</h2>
+<h3 id="Git本地操作"><a class="header-anchor" href="#Git本地操作">¶</a>Git本地操作</h3>
+<p>版本控制系统分为2种</p>
+<ul>
+<li>集中式版本控制系统 如SVN</li>
+<li>分布式版本控制系统 如Git</li>
+</ul>
+<p>相比SVN，Git可靠性高但操作复杂</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git init [dir]//在dir下创建新的本地仓库，缺省则在当前目录创建</span><br><span class="line"></span><br><span class="line">/* 全局配置git仓库的用户名，对所有仓库生效，省略则为本地仓库有效 */ </span><br><span class="line">git config --global user.name &quot;用户名&quot; </span><br><span class="line"></span><br><span class="line">/* 全局配置git仓库的邮箱，对所有仓库生效，省略则为本地仓库有效 */ </span><br><span class="line">git config --global user.email &quot;邮箱&quot; </span><br><span class="line"></span><br><span class="line">/* 保存用户名和密码 */</span><br><span class="line">git config --global credential.helper store</span><br><span class="line"></span><br><span class="line">/* 查看当前git配置 */</span><br><span class="line">git config --global --list</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>![2024-01-02_15-10](vx_images/382591015251580.png =600x)<br>
+git的数据管理分为三部分</p>
+<ul>
+<li>工作区    .git所在目录，正常编辑代码的区域</li>
+<li>暂存区    .git/index所在目录，即将提交到git的文件区域</li>
+<li>本地仓库  .git/objectsgit所在目录 init生成的文件区域，是git存储代码和版本信息的主要位置<br>
+每次修改文件都需要提交很麻烦，因此产生了暂存区，当修改所有文件完毕后再统一提交至本地仓库<br>
+![2024-01-02_15-15](vx_images/510961515269460.png =600x)</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">/* 将filename文件添加到暂存区内，支持通配符( * . 等) */</span><br><span class="line">git add [filename]</span><br><span class="line"></span><br><span class="line">/* 查看当前文件状态 */</span><br><span class="line">git status </span><br><span class="line"></span><br><span class="line">/* 提交，支持通配符 */</span><br><span class="line">git commit -m &quot;提交说明&quot;</span><br><span class="line"></span><br><span class="line">/* 暂存且提交，支持通配符 */</span><br><span class="line">git commit -a -m &quot;提交说明&quot;</span><br><span class="line"></span><br><span class="line">/* 查看提交日志 */</span><br><span class="line">git log</span><br><span class="line"></span><br><span class="line">/* 查看暂存区文件 */</span><br><span class="line">git ls-files</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>:::alert-danger<br>
+需要将文件提交到暂存区内才能使用 git commit命令<br>
+:::</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">/* 回退到某一版本,保留工作区和暂存区内容 */</span><br><span class="line">git reset [版本id]  </span><br><span class="line">git reset --soft [版本id]</span><br><span class="line"></span><br><span class="line">/* 不保留工作区和暂存区内容 */</span><br><span class="line">git reset --hard</span><br><span class="line"></span><br><span class="line">/* 仅保留工作区内容 */</span><br><span class="line">git reset --mixed</span><br><span class="line"></span><br><span class="line">/* 恢复git reset --hard的操作 */</span><br><span class="line">git reflog</span><br><span class="line"></span><br><span class="line">/* 当在一个分支上进行修改而且需要转到另一个分支上时，可能会提示未保存修改，这时需要用到如下命令保存当前分支已修改的文件 */</span><br><span class="line">git stash</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>使用 --hard 参数需要谨慎考虑，git reset默认执行 --soft命令</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/* 从工作区和暂存区中删除文件 */</span><br><span class="line">git rm [filename]</span><br><span class="line"></span><br><span class="line">/* 仅在版本库中删除文件 */</span><br><span class="line">git rm --cached [filename]</span><br><span class="line"></span><br><span class="line">/* 查看工作区和暂存区的不同 */</span><br><span class="line">git diff</span><br><span class="line"></span><br><span class="line">/* 查看暂存区与本地仓库的不同 */</span><br><span class="line">git diff HEAD  </span><br><span class="line"></span><br><span class="line">/* 查看前第n个提交版本与当前提交版本的不同 */</span><br><span class="line">git diff HEAD~[n] HEAD</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>diff后红色内容表示删除内容，绿色表示增加内容</p>
+<h3 id="Git远程操作"><a class="header-anchor" href="#Git远程操作">¶</a>Git远程操作</h3>
+<p>![2024-01-02_18-19](vx_images/171151918267064.png =600x)<br>
+可以配置.gitignore来不想被版本控制的文件，只需将文件或文件夹添加到.gitignore即可，语法支持如上</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">/* eg git remote add origin git@github.com:1078249029/toyFreeRTOS.git */</span><br><span class="line">git remote add &lt;远程仓库别名&gt;&lt;远程仓库地址&gt; //仓库别名缺省为origin</span><br><span class="line"></span><br><span class="line">/* 将本地分支与远程仓库的远程分支联系起来 </span><br><span class="line">*   eg git push -u(upstream) origin main(远程分支与本地分支重名只写一个即可)  </span><br><span class="line">*/</span><br><span class="line">git push -u &lt;远程仓库名&gt;&lt;远程分支名&gt; &lt;本地分支名&gt;</span><br><span class="line"></span><br><span class="line">/* 获取远程仓库名，分支名等信息 */</span><br><span class="line">git remote -v</span><br><span class="line"></span><br><span class="line">/* 拉取远程仓库并自动合并 */</span><br><span class="line">git pull &lt;远程仓库名&gt;&lt;远程分支名&gt; &lt;本地分支名&gt;</span><br><span class="line"></span><br><span class="line">/* 查看分支列表 */</span><br><span class="line">git branch</span><br><span class="line"></span><br><span class="line">/* 图形化查看分支图 */</span><br><span class="line">git log --graph --oneline --decorate --all</span><br><span class="line"></span><br><span class="line">/* 创建分支 */</span><br><span class="line">git branch [branch-name]</span><br><span class="line"></span><br><span class="line">/* 切换分支 */</span><br><span class="line">git switch [branch-name]</span><br><span class="line"></span><br><span class="line">/* 合并分支 */</span><br><span class="line">git merge [branch-name]</span><br><span class="line"></span><br><span class="line">/* 将主分支文件同步到其他分支 */</span><br><span class="line">git merge [主分支名称]    //使用前需要切换到其他分支</span><br><span class="line"></span><br><span class="line">/* 删除分支 */</span><br><span class="line">git branch -d [branch-name]    //删除已合并分支</span><br><span class="line">git branch -D [branch-name]    //删除未合并分支</span><br><span class="line"></span><br><span class="line">/* 恢复某分支的状态 */</span><br><span class="line">git checkout -b [branch-name] [commit-id]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>::: alert-info<br>
+merge时需要切换到主分支<br>
+merge后分支依然存在，除非手动删除分支<br>
+:::</p>
+<p>![2024-01-02_21-52](vx_images/140045521268247.png =600x)</p>
+<h3 id="GitFlow"><a class="header-anchor" href="#GitFlow">¶</a>GitFlow</h3>
+<p>适用于团队水平适中的情况</p>
+<p>五种分支: main hotfix release develop feature</p>
+<p>main 包含项目最新的稳定代码<br>
+hotfix 用于解决线上问题，均从main分离出来<br>
+dev 用于开发测试<br>
+release 均来源于develop，测试稳定后发布到main，发现bug发布到dev</p>
+<p>主要分支包括dev和main</p>
+<h3 id="GitHub-Flow"><a class="header-anchor" href="#GitHub-Flow">¶</a>GitHub Flow</h3>
+<p>适用于团队水平较高的情况</p>
+<p>![2024-01-03_11-01](vx_images/371810311240144.png =600x)</p>
+<p>整个项目只有两个分支，开发者从Master中branch一个分支用于开发，需要进行merge时发起一个Pull Request请求，待团队审核后再merge到Master</p>
+<h3 id="GitHub"><a class="header-anchor" href="#GitHub">¶</a>GitHub</h3>
+<p>配置Github的SSH密钥时，最好把密钥统一放在.ssh文件夹下(win下是C:\Users\李政轩.ssh)，并且写好config文件来管理多份密钥</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>项目</title>
+    <url>/2024/01/23/%E9%A1%B9%E7%9B%AE/</url>
+    <content><![CDATA[<h1>项目</h1>
+<h2 id="FreeRTOS内核实现"><a class="header-anchor" href="#FreeRTOS内核实现">¶</a>FreeRTOS内核实现</h2>
+<p>参考书籍：《FreeRTOS 内核实现与应用开发实战指南》</p>
+<blockquote>
+<p>一个工程如果没有 main 函数是编译不成功的,会出错。因为系统在开始执行的时候先执行启动文件里面的复位程序,复位程序里面会调用 C 库函数__main,__main 的作用是初始化好系统变量,如全局变量,只读的,可读可写的等等。__main 最后会调用__rtentry,再由__rtentry 调用 main 函数,从而由汇编跳入到 C 的世界,这里面的 main 函数就需要我们手动编写,如果没有编写 main 函数,就会出现 main 函数没有定义的错误。</p>
+</blockquote>
+<p>生成的startup_ARMCM3.s负责启动startup_ARMCM3.c负责时钟配置，本项目默认的时钟为25M</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*----------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">  Define clocks</span></span><br><span class="line"><span class="comment"> *----------------------------------------------------------------------------*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span>  XTAL            ( 5000000UL)      <span class="comment">/* Oscillator frequency */</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span>  SYSTEM_CLOCK    (5U * XTAL)</span></span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">![<span class="number">2024</span><span class="number">-01</span><span class="number">-02</span>_10<span class="number">-16</span>](vx_images/<span class="number">419821610240143.</span>png =<span class="number">600</span>x)</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">对于这种多行宏定义，每行结尾要加 \ 表示该行未结束</span><br><span class="line">  </span><br><span class="line">::: alert-danger</span><br><span class="line">若使用 \ 表示该行未完结务必注意 \ 后不能加任何字符，尤其是空格或者Tab。报错如下![<span class="number">2024</span><span class="number">-01</span><span class="number">-02</span>_12<span class="number">-05</span>](vx_images/<span class="number">481670512259271.</span>png =<span class="number">600</span>x)</span><br><span class="line">:::</span><br><span class="line">    </span><br><span class="line">![<span class="number">2024</span><span class="number">-01</span><span class="number">-02</span>_10<span class="number">-44</span>](vx_images/<span class="number">400010311258569.</span>png =<span class="number">600</span>x)</span><br><span class="line">  </span><br><span class="line">![<span class="number">2024</span><span class="number">-01</span><span class="number">-02</span>_11<span class="number">-04</span>](vx_images/<span class="number">7600511266602.</span>png =<span class="number">600</span>x)</span><br><span class="line">  </span><br><span class="line">左值不能进行类型转换，类型转换本质上是在寄存器内对原值进行位操作，得到的结果不放入内存，而左值是需要放进内存的，因此类型转换与左值冲突，若要类型转换，则需要对右值进行操作</span><br><span class="line"></span><br><span class="line">:::alert-danger</span><br><span class="line">当一个a.c文件需要b.h，而b.h包含了c.h，且c.h也包含了b.h时，会发生编译冲突。表现为有未定义的类型或变量，详情参考[博客园](https:<span class="comment">//www.cnblogs.com/skullboyer/p/8891579.html)，解决办法是理清编译关系，去除重复包含的头文件</span></span><br><span class="line">![<span class="number">2024</span><span class="number">-01</span><span class="number">-03</span>_13<span class="number">-26</span>](vx_images/<span class="number">211612613258570.</span>png =<span class="number">600</span>x)</span><br><span class="line">:::  </span><br><span class="line"></span><br><span class="line">栈由高地址向低地址增长，栈顶是第一个进栈的元素，栈底是最后一个进栈的元素</span><br><span class="line">因为<span class="number">32</span>位机一般指令都是<span class="number">32</span>位的，栈顶指针只需<span class="number">4</span>字节对齐即可，但是考虑兼容浮点运算的<span class="number">64</span>位操作则需要<span class="number">8</span>字节。对齐完成后，栈顶指针即可确定位置，而后开辟空间  </span><br><span class="line"></span><br><span class="line">![<span class="number">2024</span><span class="number">-01</span><span class="number">-03</span>_16<span class="number">-01</span>](vx_images/<span class="number">151190216246437.</span>png =<span class="number">600</span>x)</span><br><span class="line">项目的.c 与 .h文件可以不重名，位置可以不同，例如port.c文件放在\freertos\Source\portable\RVDS\ARM_CM3，但是引用port.c内容的portable.h放在\freertos\Source\include    </span><br><span class="line"></span><br><span class="line">```c</span><br><span class="line"><span class="comment">/* 这行代码的意思是定义了TaskFunction_t类型的函数指针，参数和返回值都是void，这样就可以进行函数“赋值”，进而从Task1，Task2中抽象出TaskFunction_t这一类型了，并且使用起来很方便 */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">void</span> (*TaskFunction_t)( <span class="type">void</span> * );</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 类似用法如下 */</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> tech(<span class="type">void</span>) &#123; <span class="built_in">printf</span>(<span class="string">&quot;tech dreamer&quot;</span>); &#125;</span><br><span class="line"><span class="comment">//命名一个类型，那么这个时候func不可以直接调用，而是一个类型了</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">void</span> (*func)();</span><br><span class="line"><span class="type">void</span> main()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//定义一个可调用的指针变量（函数）：myfunc</span></span><br><span class="line">    func myfunc;</span><br><span class="line">    myfunc = &amp;tech; <span class="comment">//&amp;可以不加</span></span><br><span class="line">    <span class="comment">/* 下面两种方法体现了函数名和函数地址是一回事 */</span></span><br><span class="line">    myfunc();         <span class="comment">//第一种调用方式，带参数也可以</span></span><br><span class="line">    (*myfunc)();      <span class="comment">//第二种调用方式，带参数也可以</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="实现就绪链表"><a class="header-anchor" href="#实现就绪链表">¶</a>实现就绪链表</h3>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="title function_">void</span> <span class="params">(*TaskFunction_t)</span><span class="params">( <span class="type">void</span> * )</span>;<span class="comment">//将TaskFunction_t函数指针重定义为void*类型</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//FreeRTOS中TaskFunction_t内部包含了一个栈顶指针，因此返回值为uint32型</span></span><br></pre></td></tr></table></figure>
+<p>:::alert=info<br>
+在FreeRTOS里TaskHandle_t是个TCB_t的指针<br>
+在toyFreeRTOS里TaskHandle_t是个void*类型的指针，使用时需要类型强转<br>
+:::</p>
+<h4 id="设置任务栈时栈顶指针的移动"><a class="header-anchor" href="#设置任务栈时栈顶指针的移动">¶</a>设置任务栈时栈顶指针的移动</h4>
+<p>![2024-01-13_13-36](vx_images/434673613240154.png =600x)</p>
+<p>![2024-01-04_09-41](vx_images/386434109258571.png =600x)</p>
+<p>首先由外部函数prvInitialiseNewTask构造出的pxTopOfStack指针传入pxPortInitialiseStack函数，此时pxTopOfStack指针指向A位置，而后移动指针至B，C点从而将xPSR，PC，LR的值依次写入栈顶，方便之后寄存器读取。配置好自动加载到寄存器的内容后再将指针下移至D并返回，从而使任务得到空闲堆栈的指针</p>
+<h3 id="实现调度器"><a class="header-anchor" href="#实现调度器">¶</a>实现调度器</h3>
+<p>![2024-01-04_14-42](vx_images/5864314266604.png =600x)<br>
+向量表最前面是MSP的地址</p>
+<p>配置寄存器：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/* 对0xe000ed20地址处取值，此处为SHPR3寄存器，设置的是pendsv和systick优先级 */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> portNVIC_SYSPRI2_REG	*(( volatile uint32_t *) 0xe000ed20) </span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 配置 PendSV 和 SysTick 的中断优先级为最低 */</span></span><br><span class="line">	 portNVIC_SYSPRI2_REG |= portNVIC_PENDSV_PRI;	<span class="comment">//SHPR3寄存器被设置为 0x**FF ****</span></span><br><span class="line">	 portNVIC_SYSPRI2_REG |= portNVIC_SYSTICK_PRI;	<span class="comment">//SHPR3寄存器被设置为 0xFFFF ****</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>开启第一个任务：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/* 通过查找SCB_VTOR最终将__initial_sp处的指令传到msp内，然后调用svc启动第一个任务 */</span></span><br><span class="line">__asm <span class="type">void</span> <span class="title function_">prvStartFirstTask</span><span class="params">( <span class="type">void</span> )</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">/* 当前栈按照8字节对齐 */</span></span><br><span class="line">	PRESERVE8</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* 将SCB_VTOR寄存器地址加载到R0，SCB_VTOR寄存器存储__initial_sp的地址，</span></span><br><span class="line"><span class="comment">	__initial_sp也是msp的地址，还是向量表的起始地址，因为CM3支持更改向量表的起始地址，</span></span><br><span class="line"><span class="comment">	所以需要以下四条指令以重定位__initial_sp */</span></span><br><span class="line">	ldr r0, =<span class="number">0xE000ED08</span></span><br><span class="line">	<span class="comment">/* 将__initial_sp的地址加载进r0,STM32的__initial_sp为0x0800 0000 */</span></span><br><span class="line">	ldr r0, [r0]</span><br><span class="line">	<span class="comment">/* 将__initial_sp中的值，也就是msp初始化的值加载到r0，可能是0x20005B30 */</span></span><br><span class="line">	ldr r0, [r0]</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* 将上一步初始化__initial_sp在r0中的值加载到msp */</span></span><br><span class="line">	msr msp, r0</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* 开中断 */</span></span><br><span class="line">	cpsie i</span><br><span class="line">	cpsie f</span><br><span class="line">	<span class="comment">/* 等待上面所有指令执行完成 */</span></span><br><span class="line">	dsb</span><br><span class="line">	isb</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* 调用SVC去启动第一个任务 */</span></span><br><span class="line">	svc <span class="number">0</span></span><br><span class="line">	nop</span><br><span class="line">	nop</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">__asm <span class="type">void</span> vPortSVCHandler( <span class="type">void</span> )</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">extern</span> pxCurrentTCB;</span><br><span class="line"> PRESERVE8</span><br><span class="line"> ldr r3, =pxCurrentTCB    <span class="comment">//TCB_t volatile *pxCurrentTCB = NULL;</span></span><br><span class="line"> ldr r1, [r3]             <span class="comment">//volatile StackType_t *pxTopOfStack;</span></span><br><span class="line"> ldr r0, [r1]             <span class="comment">//r0 = *pxTopOfStack</span></span><br><span class="line"> ldmia r0!, &#123;r4-r11&#125;</span><br><span class="line"> msr psp, r0</span><br><span class="line"> isb</span><br><span class="line"> mov r0, #<span class="number">0</span></span><br><span class="line"> msr basepri, r0	<span class="comment">//开中断</span></span><br><span class="line"> orr r14, #<span class="number">0xd</span>		<span class="comment">//设置LR的值</span></span><br><span class="line"> bx r14				<span class="comment">//此处不会返回r14(LR),而是返回到任务堆栈，具体看CM3手册</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> __asm <span class="type">void</span> xPortPendSVHandler( <span class="type">void</span> )</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">extern</span> pxCurrentTCB;</span><br><span class="line">	<span class="keyword">extern</span> vTaskSwitchContext;</span><br><span class="line"></span><br><span class="line">	PRESERVE8</span><br><span class="line"></span><br><span class="line">	mrs r0, psp</span><br><span class="line">	isb</span><br><span class="line">	ldr r3, =pxCurrentTCB</span><br><span class="line">	ldr r2, [r3]</span><br><span class="line">	stmdb r0!, &#123;r4-r11&#125;</span><br><span class="line">	str r0, [r2]</span><br><span class="line">	stmdb sp!, &#123;r3, r14&#125;</span><br><span class="line">	mov r0, #configMAX_SYSCALL_INTERRUPT_PRIORITY</span><br><span class="line">	msr basepri, r0</span><br><span class="line">	dsb</span><br><span class="line">	isb</span><br><span class="line">	bl vTaskSwitchContext</span><br><span class="line">	mov r0, #<span class="number">0</span></span><br><span class="line">	msr basepri, r0</span><br><span class="line">	ldmia sp!, &#123;r3, r14&#125;</span><br><span class="line">	ldr r1, [r3]</span><br><span class="line">	ldr r0, [r1]</span><br><span class="line">	ldmia r0!, &#123;r4-r11&#125;</span><br><span class="line">	msr psp, r0</span><br><span class="line">	isb</span><br><span class="line">	bx r14	<span class="comment">//此处不会返回r14(LR),而是返回到任务堆栈</span></span><br><span class="line">	nop</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>为什么需要PendSV？
+<ul>
+<li>为了保证外部中断能够马上执行，防止出现类似“优先级翻转”的情况</li>
+</ul>
+</li>
+</ul>
+<p>![“内核的优先级翻转”](vx_images/241410816255828.png =600x)</p>
+<p>![任务正常执行](vx_images/295570916251582.png =600x)</p>
+<ul>
+<li>调用svc(请求管理调用)的原因
+<ul>
+<li>用户与内核进行操作，但如需使用内核中资源时，需要通过SVC异常来触发内核异常，从而来获得特权模式，这才能执行内核代码</li>
+</ul>
+</li>
+<li>为什么需要SVC启动第一个任务？
+<ul>
+<li>使用了os后，任务调度交给内核，因此不能同裸机一样使用任务函数来启动，必须通过内核的服务才能启动任务</li>
+</ul>
+</li>
+</ul>
+<p>![2024-01-05_10-23](vx_images/555312310258572.png =300x)</p>
+<p>![2024-01-05_10-23_1](vx_images/334622310240146.png =300x)</p>
+<p>:::alert-danger<br>
+for循环无循环体时末尾加分号<br>
+:::</p>
+<h4 id="实现调度器总结"><a class="header-anchor" href="#实现调度器总结">¶</a>实现调度器总结</h4>
+<p>![调度器的实现](vx_images/363240921259275.png =600x)</p>
+<ul>
+<li>
+<p>初始化任务步骤</p>
+<ul>
+<li>
+<p>调用创建静态任务函数</p>
+<ul>
+<li>设置TCB指针和栈指针</li>
+<li>调用创建新任务函数，传入Handle，函数名称，参数，栈的深度等参数</li>
+<li>返回Handle</li>
+</ul>
+</li>
+<li>
+<p>创建新任务函数操作：</p>
+<ul>
+<li>获取栈顶地址并对齐</li>
+<li>将任务名称复制到TCB中</li>
+<li>设置container与owner(container指的是处于哪个链表，owner是自身的TCB)</li>
+<li>调用初始化任务栈函数，并返回一个栈顶指针</li>
+<li>将任务的自身地址传给Handle，这样可以通过Handle控制任务</li>
+</ul>
+</li>
+<li>
+<p>初始化任务栈函数操作：</p>
+<ul>
+<li>对栈指针之前的16位进行设置以便加载到CPU寄存器中</li>
+<li>返回空闲堆栈的栈指针</li>
+</ul>
+</li>
+<li>
+<p>开启第一个任务步骤(汇编)：</p>
+<ul>
+<li>设置堆栈按8字节对齐</li>
+<li>从SCB_VTOR取出向量表地址，进而获得msp的内容（msp中的第一条指令是哪来的？）</li>
+<li>开中断</li>
+<li>调用svc指令去获取硬件权限，从而执行svc中断服务程序，并启动第一个任务(svc替代了以前的swi也就是软中断指令)</li>
+</ul>
+</li>
+<li>
+<p>svc中断服务程序的操作：</p>
+<ul>
+<li>将第一个任务的参数加载到寄存器，包括第一个函数的地址，形参，返回值</li>
+<li>开中断，使用psp寄存器，返回到任务堆栈，这样第一个任务就执行完了，CPU等待执行下一个任务</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>上下文切换的操作：</p>
+<ul>
+<li>总体与svc中断服务程序的操作类似，但是加上了将优先级载入到basepri的操作</li>
+<li>设置好优先级后直接运行至跳转上下文 c 函数</li>
+<li>最后开中断，使用psp寄存器，返回到任务堆栈，CPU等待执行下一个任务，调度器功能就实现了</li>
+</ul>
+</li>
+</ul>
+<p><a href="http://bbs.eeworld.com.cn/thread-617606-1-1.html">具体任务切换过程参考资料</a></p>
+<h3 id="临界段保护"><a class="header-anchor" href="#临界段保护">¶</a>临界段保护</h3>
+<p>临界段就是在执行时不能被中断的代码段，典型的就是全局变量，系统时基</p>
+<h4 id="中断管理"><a class="header-anchor" href="#中断管理">¶</a>中断管理</h4>
+<p>FreeRTOS中的中断管理通过汇编完成，对于关中断而言，其内部实现了两个中断函数，分别是能保存当前中断有返回值的函数，可以在中断中使用。另一个是不能保存当前中断无返回值的函数，不能在中断使用。  本质是操作basepri寄存器，大于等于basepri寄存器的值的中断会被屏蔽，小于则不会。但当basepri为0时，则不会屏蔽任何中断</p>
+<h4 id="关中断"><a class="header-anchor" href="#关中断">¶</a>关中断</h4>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 不带返回值的关中断函数,不能嵌套,不能在中断里面使用 */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> portDISABLE_INTERRUPTS() vPortRaiseBASEPRI()</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">vPortRaiseBASEPRI</span><span class="params">( <span class="type">void</span> )</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">//中断号大于191的中断全部被屏蔽</span></span><br><span class="line">	<span class="type">uint32_t</span> ulNewBASEPRI = configMAX_SYSCALL_INTERRUPT_PRIORITY;    </span><br><span class="line"></span><br><span class="line">	__asm</span><br><span class="line">	&#123;</span><br><span class="line"><span class="comment">//将FreeRTOS最大优先级的中断加载到basepri寄存器中，这样会屏蔽FreeRTOS管理的所有中断</span></span><br><span class="line">	</span><br><span class="line">		msr basepri, ulNewBASEPRI    </span><br><span class="line">		dsb</span><br><span class="line">		isb</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 带返回值的关中断函数,可以嵌套,可以在中断里面使用 */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> portSET_INTERRUPT_MASK_FROM_ISR() ulPortRaiseBASEPRI()</span></span><br><span class="line">ulPortRaiseBASEPRI( <span class="type">void</span> )</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">uint32_t</span> ulReturn, ulNewBASEPRI = configMAX_SYSCALL_INTERRUPT_PRIORITY; </span><br><span class="line"></span><br><span class="line">	__asm</span><br><span class="line">	&#123;</span><br><span class="line">		mrs ulReturn, basepri    <span class="comment">//先对当前中断进行保存并返回</span></span><br><span class="line">		msr basepri, ulNewBASEPRI</span><br><span class="line">		dsb</span><br><span class="line">		isb</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> ulReturn;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span> <span class="comment">/* PORTMACRO_H */</span></span></span><br><span class="line"></span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#### 开中断  </span><br><span class="line"></span><br><span class="line">```c</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 不带中断保护的开中断函数，与portDISABLE_INTERRUPTS()成对使用 */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> portENABLE_INTERRUPTS() vPortSetBASEPRI( 0 )</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 带中断保护的开中断函数，与portSET_INTERRUPT_MASK_FROM_ISR()成对使用 */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> portCLEAR_INTERRUPT_MASK_FROM_ISR(x) vPortSetBASEPRI(x) </span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">vPortSetBASEPRI</span><span class="params">( <span class="type">uint32_t</span> ulBASEPRI )</span> </span><br><span class="line">&#123;</span><br><span class="line">	__asm</span><br><span class="line">	&#123;</span><br><span class="line">		msr basepri, ulBASEPRI</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="inline关键字与内联函数"><a class="header-anchor" href="#inline关键字与内联函数">¶</a>inline关键字与内联函数</h4>
+<p>inline关键字用于C++，__inline，__forceinline既可用于C，也可以用于C++</p>
+<p>在程序中，如果在关键代码频繁调用某个函数，则会频繁的压栈出栈。为了<strong>提高效率</strong>，C语言提供了inline关键字来优化代码，例如在开关中断时需要inline关键字</p>
+<p>inline的原理是，将某个函数内容原封不动的放入引用处，这样就不会频繁的入栈出栈了。inline减少了函数调用的开销，但使代码膨胀。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span>  </span></span><br><span class="line"> </span><br><span class="line"><span class="comment">//函数定义为inline即:内联函数  </span></span><br><span class="line"><span class="keyword">inline</span> <span class="type">char</span>* <span class="title function_">dbtest</span><span class="params">(<span class="type">int</span> a)</span> </span><br><span class="line">&#123;  </span><br><span class="line">	<span class="keyword">return</span> (i % <span class="number">2</span> &gt; <span class="number">0</span>) ? <span class="string">&quot;奇&quot;</span> : <span class="string">&quot;偶&quot;</span>;  </span><br><span class="line">&#125;   </span><br><span class="line">  </span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>  </span><br><span class="line">&#123;  </span><br><span class="line">	<span class="type">int</span> i = <span class="number">0</span>;  </span><br><span class="line">	<span class="keyword">for</span> (i=<span class="number">1</span>; i &lt; <span class="number">100</span>; i++) </span><br><span class="line">	&#123;  </span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;i:%d    奇偶性:%s /n&quot;</span>, i, dbtest(i));      </span><br><span class="line">	&#125;  </span><br><span class="line">&#125; </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>更详细用法参考<a href="https://blog.csdn.net/jackailson/article/details/114781887">CSND</a></p>
+<p>inline，__inline，__forceinline等用法参考<a href="https://blog.51cto.com/u_15614325/5272494">51CTO</a></p>
+<h4 id="volatile作为左值时，即使类型相同右值也需要类型强转么？"><a class="header-anchor" href="#volatile作为左值时，即使类型相同右值也需要类型强转么？">¶</a>volatile作为左值时，即使类型相同右值也需要类型强转么？</h4>
+<p>不需要，Keil编译器问题，但是可能会报warning甚至error，最好类型强转一下</p>
+<h3 id="空闲任务与阻塞延时的实现"><a class="header-anchor" href="#空闲任务与阻塞延时的实现">¶</a>空闲任务与阻塞延时的实现</h3>
+<ul>
+<li>
+<p>为了能够自动进行任务调度，需要：</p>
+<ul>
+<li>设置CPU重装器，设置主频并调用系统中断向量表提供的SysTic中断服务函数</li>
+<li>提供一个函数，内部能够完成时基自增和任务延时自减**(后期会取消自减的设置，转而使用“<a href="#clock">闹钟</a>”的思想)**，并将这个函数放入上一步的SysTick服务函数中，这样能够定时触发从而进行时基自增，在放入SysTick中时，还需要注意此函数前后需要开关中断以保证时基的实时性</li>
+<li>将任务调度器函数<code>vTaskSwitchContext</code>重写，调度方式需要判定TCB中的任务延时，值为零，则触发SysTic中断服务函数，而后将任务放入就绪链表</li>
+</ul>
+</li>
+<li>
+<p>为了加入IdleTask支持，需要：</p>
+<ul>
+<li>在启动调度器函数 vTaskStartScheduler中加入空闲任务的启动，这需要设置IdleTask的TCB，栈，函数名称等参数，但<strong>不设置延时</strong>，因为CPU空闲时长不确定，设置完成后将其挂载到就绪列表</li>
+</ul>
+</li>
+</ul>
+<p>:::alert-danger<br>
+注意不要在IdleTask中加入任何阻塞或者死循环，否则由于IdleTask没有设置延时，会将同一优先级的所有任务阻塞！！！<br>
+:::</p>
+<h3 id="支持多优先级"><a class="header-anchor" href="#支持多优先级">¶</a>支持多优先级</h3>
+<p>CM内核有个计算前导零的指令，以此可以优化寻找最高优先级任务的方法<br>
+![2024-01-12_10-19](vx_images/100532010240153.png =600x)</p>
+<p>主要原理是：找到一个32位变量的最高非零位，此位就是最高的有任务的链表的优先级<br>
+支持多优先级实现过程如下</p>
+<ul>
+<li>将<code>uxPriority</code>添加到TCB及其相关的函数内使其支持优先级</li>
+<li>之后在<code>prvInitialiseNewTask</code>函数内添加初始化优先级，并做判断使任务初始化优先级大于等于<code>configMAX_PRIORITIES</code>的退化成<code>configMAX_PRIORITIES-1</code></li>
+<li>在<code>prvInitialiseTaskLists</code>中初始化5个就绪链表</li>
+<li>在<code>prvAddTaskToReadyList</code>宏函数中完成将任务移就绪入链表的操作
+<ul>
+<li>记录当前优先级并将当前任务插入到获得的那个优先级链表的尾部</li>
+</ul>
+</li>
+<li><strong>在<code>prvAddNewTaskToReadyList</code>函数</strong>中完成具体操作
+<ul>
+<li>如果<code>pxCurrentTCB</code>为空，意味着可能是第一次创建任务，则将传进来的<code>pxNewTCB</code>赋值给<code>pxCurrentTCB</code>，并且调用<code>prvInitialiseTaskLists</code>函数以创建任务链表</li>
+<li>如果<code>pxCurrentTCB</code>不为空，则根据优先级将<code>pxCurrentTCB</code>设置为优先级最高的那个任务，可能是<code>pxNewTCB</code>也可能是<code>pxCurrentTCB</code>，这需要做好判定再赋值</li>
+<li>最后调用<code>prvAddTaskToReadyList</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="任务延时列表的实现"><a class="header-anchor" href="#任务延时列表的实现">¶</a>任务延时列表的实现</h3>
+<ul>
+<li>
+<p>首先初始化两条链表<code>&amp;xDelayedTaskList1</code>与<code>&amp;xDelayedTaskList2</code>，并将其赋址给<code>pxDelayedTaskList</code>和<code>pxOverflowDelayedTaskList</code></p>
+</li>
+<li>
+<p>在<code>vTaskStartScheduler</code>中初始化全局变量<code>xNextTaskUnblockTime</code>为最大值，这个变量表示下一次任务被唤醒的时刻，也就是所提到的“<span id="clock"><strong>闹钟</strong></span>”</p>
+</li>
+<li>
+<p>在<code>vTaskDelay</code>函数中插入<code>prvAddCurrentTaskToDelayedList</code>函数，<code>prvAddCurrentTaskToDelayedList</code>函数实现如下</p>
+<ul>
+<li>将当前任务从就绪链表中移除，并检查移除任务后，就绪链表是否为空，若为空则将优先级位图上对应的位清除</li>
+<li>记录<code>xTimeToWake</code>的值，它等于当前时钟加上<code>vTaskDelay</code>的参数，也就是<code>闹钟值</code>，与<code>xNextTaskUnblockTime</code>相等，但是为局部变量，并将此值设置为链表节点的排序值</li>
+<li>比较<code>xTimeToWake</code>与<code>xConstTickCount</code>大小以判断是否闹钟溢出，溢出了就将当前任务移至<code>pxOverflowDelayedTaskList</code>链表，否则移至<code>pxDelayedTaskList</code>链表</li>
+<li>然后更新<code>xNextTaskUnblockTime</code>使其等于<code>xTimeToWake</code></li>
+</ul>
+</li>
+<li>
+<p>在<code>xTaskIncrementTick</code>函数中判断延时任务是否到期，若到期且延时链表为空，则将<code>xNextTaskUnblockTime</code>设为最大值。若到期但延时链表不为空，则将延时链表中的每个节点的值<code>xItemValue</code>取出并与当前时刻做对比，若<code>xItemValue</code>大于当前时刻，则将<code>xNextTaskUnblockTime</code>更新为<code>xItemValue</code>，然后将任务从延时链表移入就绪链表</p>
+</li>
+<li>
+<p>判断链表为空的方式：</p>
+<ul>
+<li>调用<code>uxListRemove</code>时会返回<code>pxList-&gt;uxNumberOfItems</code>，或者调用宏函数</li>
+</ul>
+</li>
+</ul>
+<p>FreeRTOS内部有两个延时链表，当系统时基计数器xTickCount没有溢出时，用一条链表(<code>pxDelayedTaskList</code>)，当xTickCount 溢出后，用另外一条链表(<code>pxOverflowDelayedTaskList</code>)。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="type">void</span> <span class="title function_">prvTaskExitError</span><span class="params">( <span class="type">void</span> )</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 没有可供执行的任务时会停在这里，如果发生了这种情况，看一下空闲任务是否被执行 */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 函数停止在这里 */</span></span><br><span class="line"><span class="keyword">for</span> (;;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="支持时间片"><a class="header-anchor" href="#支持时间片">¶</a>支持时间片</h3>
+<ul>
+<li>抢占式调度(configUSE_PREEMPTION)：高优先级任务可以打断低优先级任务
+<ul>
+<li>时间片流转(configUSE_TIME_SLICING)：同优先级任务之间每隔一定时间片进行任务切换
+<ul>
+<li>空闲任务让步(configIDLE_SHOULD_YIELD)：空闲任务与用户任务处于同一优先级时，空闲任务等待用户任务使用完CPU后才能获取资源</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>默认情况，FreeRTOS上面三个选项均开启</p>
+<ul>
+<li>支持时间片的操作非常简单
+<ul>
+<li>分别在<code>FreeRTOSConfig.h</code>与<code>FreeRTOS.h</code>文件中引入<code>configUSE_PREEMPTION</code>和<code>configUSE_TIME_SLICING</code>两个宏，默认为1</li>
+<li>修改<code>xPortSysTickHandler</code>函数，使得当<code>xTaskIncrementTick</code>返回值为<code>pdTrue</code>时才进行任务切换</li>
+<li>修改<code>xTaskIncrementTick</code>函数，使得在延时链表中有任务被唤醒时，判断被唤醒的延时任务优先级与当前任务优先级，若被唤醒的延时任务优先级高则返回<code>pdTrue</code>，意味着进行任务切换</li>
+<li>如果当就绪链表中任务数大于1，那么每进入<code>xTaskIncrementTick</code>函数就意味着过去了一个时间片，因此需要进行任务切换。注意在修改该函数时还需要判断上面两个宏是否为1</li>
+</ul>
+</li>
+</ul>
+<h3 id="自己实现"><a class="header-anchor" href="#自己实现">¶</a>自己实现</h3>
+<h4 id="信号量"><a class="header-anchor" href="#信号量">¶</a>信号量</h4>
+<ul>
+<li>初始化Semaphore链表并设置Semaphore结构体的值</li>
+<li>完成Take函数
+<ul>
+<li>检测当前Semaphore个数是否大于0，若大于0则关中断，Semaphore数量–，不大于零则说明没有Semaphore可供Take，所以需要进行任务切换</li>
+</ul>
+</li>
+<li>完成Give函数
+<ul>
+<li>Give函数简单很多，只需要归还Semaphore然后开中断，将任务管理权归还给调度器即可</li>
+</ul>
+</li>
+</ul>
+<h4 id="队列"><a class="header-anchor" href="#队列">¶</a>队列</h4>
+<ul>
+<li>为了保证数据能在不同函数间传递，静态创建资源时需要在创建资源的函数内传入在main函数中预设的结构体或数组的地址，对于Queue来说，官方使用<br>
+<code>xQueueCreateStatic(    UBaseType_t uxQueueLength,                           UBaseType_t uxItemSize,                           uint8_t *pucQueueStorageBuffer,                           StaticQueue_t *pxQueueBuffer    );</code>函数来传参</li>
+<li>在创建函数内还需要初始化Queue链表和结构体及其参数，最后返回一个void*类型的handle</li>
+<li>创建环形缓存区来保存数据，做好数据发送和接收的准备工作
+<ul>
+<li>Buffer实际上是有一个head标志变量和一个tail标志变量的数组，发送数据时head++，接收数据时tail++，当head或tail等于数组结尾时需要把他们设置为数组开头</li>
+<li>Buffer还要有检测是否为空的功能</li>
+</ul>
+</li>
+<li>队列发送函数<code>QueueSend</code>中，在发送数据前需要关中断，发送数据后开中断</li>
+<li>队列接收函数<code>QueueReceive</code>中，也需要同<code>QueueSend</code>开关中断</li>
+</ul>
+<h5 id="静态创建和动态创建的区别"><a class="header-anchor" href="#静态创建和动态创建的区别">¶</a>静态创建和动态创建的区别</h5>
+<p>静态创建因为需要防止函数退出时销毁数据和栈，因此需要传入指针，所需的内存大小以及需要保存相关结构的地址等条件</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 示例代码</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> QUEUE_LENGTH 10</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ITEM_SIZE sizeof( uint32_t )</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// xQueueBuffer用来保存队列结构体，内部存储了队列的相关参数</span></span><br><span class="line">StaticQueue_t xQueueBuffer;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ucQueueStorage 用来保存队列的数据</span></span><br><span class="line"><span class="comment">// 大小为:队列长度 * 数据大小</span></span><br><span class="line"><span class="type">uint8_t</span> ucQueueStorage[ QUEUE_LENGTH * ITEM_SIZE ];</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">vATask</span><span class="params">( <span class="type">void</span> *pvParameters )</span></span><br><span class="line">&#123;</span><br><span class="line">    QueueHandle_t xQueue1;</span><br><span class="line">    <span class="comment">// 创建队列: 可以容纳QUEUE_LENGTH个数据,每个数据大小是ITEM_SIZE</span></span><br><span class="line">    xQueue1 = xQueueCreateStatic( QUEUE_LENGTH,</span><br><span class="line">                                ITEM_SIZE,</span><br><span class="line">                                ucQueueStorage,</span><br><span class="line">                                &amp;xQueueBuffer );</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>动态存储使用malloc函数因此不需要传入指针，但是程序速度运行比静态分配慢还需要对内存进行管理</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">BaseType_t <span class="title function_">QueueReceive</span><span class="params">(QueueHandle_t QueueHandle, </span></span><br><span class="line"><span class="params">							<span class="type">void</span>* <span class="type">const</span> ReceiveData )</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">	Queue_t* QueueTemp;</span><br><span class="line">	QueueTemp = (Queue_t*)QueueHandle;</span><br><span class="line">	BaseType_t rtval = pdFALSE;</span><br><span class="line">	portDISABLE_INTERRUPTS();</span><br><span class="line">	rtval = BufferReceive( ReceiveData,</span><br><span class="line">						<span class="comment">/* 只能使用QueueTemp这种中间变量做强制类型转换，如果写成</span></span><br><span class="line"><span class="comment">						((Queue_t*)QueueHandle)-&gt;uxQueueLength则会找不到成员</span></span><br><span class="line"><span class="comment">						而报错 */</span></span><br><span class="line">						QueueTemp-&gt;uxQueueLength,</span><br><span class="line">						QueueTemp-&gt;uxItemSize,</span><br><span class="line">						QueueTemp-&gt;pvDataStore);</span><br><span class="line">	portENABLE_INTERRUPTS();</span><br><span class="line">	<span class="keyword">return</span> rtval;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="遇到的困难与学到的经验"><a class="header-anchor" href="#遇到的困难与学到的经验">¶</a>遇到的困难与学到的经验</h3>
+<ul>
+<li>
+<p>编译关系复杂，各种头文件相互包含导致类型重定义或者定义冲突</p>
+<ul>
+<li>理清编译关系，在项目之前做好文件规划，划分各文件的职责</li>
+<li>注意头文件引用顺序</li>
+<li>待补充</li>
+</ul>
+</li>
+<li>
+<p>Keil编译器有问题，有时候类型符合的赋值编译器不通过，必须类型强转才可编译通过。再或者，虽然已经定义了条件编译但还是对循环引用的头文件报错，这时就需要考虑编译器的问题了，Keil失效的通常的现象和解决办法：</p>
+<ul>
+<li>一般出现编译器问题的条件是：当一个错误卡住了很长时间，并且确定这段代码没有错误，而且当按照编译器的提示将这段代码彻底的进行修改后会爆出更多error，这时就可以考虑是编译器的问题了</li>
+<li>![2024-01-05_22-35](vx_images/548533722266605.png =600x)</li>
+<li>![2024-01-05_22-36](vx_images/278363822259274.png =600x)</li>
+<li>![2024-01-05_22-37](vx_images/341003822255829.png =600x)</li>
+<li>![2024-01-05_22-33](vx_images/129063322246439.png =300x)</li>
+<li>所有可能的解决办法都失效了，可以考虑是Keil的问题</li>
+<li>待补充</li>
+</ul>
+</li>
+</ul>
+<p>::: alert-danger</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">prvIdleTask</span><span class="params">( <span class="type">void</span> *p_arg )</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 永远不要在空闲任务里加入阻塞或者死循环！！！！！！！！！！！！！！！</span></span><br><span class="line"><span class="comment">	否则当其他任务优先级为0时，空闲任务会霸占整个时间片(没有设置时间片流转和抢占式调度的话)*/</span></span><br><span class="line"><span class="comment">//	for( ;; )</span></span><br><span class="line"><span class="comment">//	&#123;</span></span><br><span class="line"><span class="comment">//		flagIdle = 1;</span></span><br><span class="line"><span class="comment">//		flag1 = 0;</span></span><br><span class="line"><span class="comment">//		flag2 = 0;</span></span><br><span class="line"><span class="comment">//	&#125;</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">因为在第十章已经实现支持多优先级了，且Task1，Task2优先级均大于<span class="number">0</span>，因此此时空闲任务内可以加循环</span><br><span class="line">:::    </span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">* 遇到调不出来的Bug不要怕，解决方法如下</span><br><span class="line">    * 保持一个清醒的状态</span><br><span class="line">    * 快速定位问题的大概位置</span><br><span class="line">    * 在Bug大概位置处**逐步**调试</span><br><span class="line">    </span><br><span class="line">```c</span><br><span class="line"><span class="type">void</span> <span class="title function_">tickconst</span><span class="params">(<span class="type">int</span> tick)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> consttick = tick;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,consttick);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// void tickstatic(int tick)</span></span><br><span class="line"><span class="comment">// &#123;</span></span><br><span class="line"><span class="comment">//     static int statictick = tick;//static不能被变量赋值</span></span><br><span class="line"><span class="comment">//     printf(&quot;%d\n&quot;,statictick);</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        tickconst(i);<span class="comment">//const的值可以在定义的时候被修改，但不能在其他地方被修改，也就是说，const可以被变量赋值</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">在时基函数调用时会用到</span><br><span class="line">![<span class="number">2024</span><span class="number">-01</span><span class="number">-11</span>_19<span class="number">-53</span>](vx_images/<span class="number">350415319240152.</span>png =<span class="number">600</span>x)  </span><br><span class="line">  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">```c</span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> a = <span class="number">4</span>;</span><br><span class="line"><span class="type">int</span> b = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//宏定义地址交换会修改值，这是因为函数宏定义不会产生栈</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> swapdef(addra,addrb)\</span></span><br><span class="line"><span class="meta">&#123;\</span></span><br><span class="line"><span class="meta">    int *temp;\</span></span><br><span class="line"><span class="meta">    temp = a;\</span></span><br><span class="line"><span class="meta">    a = b;\</span></span><br><span class="line"><span class="meta">    b = temp;\</span></span><br><span class="line"><span class="meta">&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//地址交换不会修改值</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">swapadd</span><span class="params">(<span class="type">int</span>* a,<span class="type">int</span>* b)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span>* temp;</span><br><span class="line">    temp = a;</span><br><span class="line">    a = b;</span><br><span class="line">    b = temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">swapnum</span><span class="params">(<span class="type">int</span>* a,<span class="type">int</span>* b)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> temp;</span><br><span class="line">    temp = *a;</span><br><span class="line">    *a = *b;</span><br><span class="line">    *b = temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;原值=%d %d\n&quot;</span>,a,b);</span><br><span class="line">    swapdef(&amp;a,&amp;b);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;宏地址交换=%d %d\n&quot;</span>,a,b);</span><br><span class="line">    swapadd(&amp;a,&amp;b);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;函数地址交换=%d %d\n&quot;</span>,a,b);</span><br><span class="line">    swapnum(&amp;a,&amp;b);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;指针地址解引用交换=%d %d\n&quot;</span>,a,b);</span><br><span class="line">    a = <span class="number">6</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d %d\n&quot;</span>,a,b);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>![2024-01-11_20-48](vx_images/175724820240152.png =600x)</p>
+<p>:::alert-info<br>
+堆栈太小可能会导致程序停止在HardFault<br>
+:::</p>
+<h4 id="int-array-20-与-int-arrary-20-的不同"><a class="header-anchor" href="#int-array-20-与-int-arrary-20-的不同">¶</a>int (*array)[20] 与 int *arrary[20]的不同</h4>
+<p>前者代表一个指向具有20个整型元素数组的<strong>指针</strong>，后者代表一个具有20个指针元素的<strong>数组</strong></p>
+<h4 id="宏定义函数"><a class="header-anchor" href="#宏定义函数">¶</a>宏定义函数</h4>
+<ul>
+<li>为什么要使用宏定义函数？
+<ul>
+<li>宏定义函数可以在预编译阶段直接展开，省下了压栈出栈的资源</li>
+<li>那他与内联函数的区别是什么？
+<ul>
+<li>宏定义函数只做展开和替换，不检查参数类型。而内联函数需要检查参数类型</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="C99特性"><a class="header-anchor" href="#C99特性">¶</a>C99特性</h4>
+<p>在keil中可以在“魔术棒”的C/C++设置C99模式，指定后可以在<strong>非全局</strong>作用域下定义不定长数组</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> ListNum 5<span class="comment">//只能使用宏定义，变量赋值也不行</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ItemNum 10</span></span><br><span class="line"><span class="comment">/* 不能在全局作用域下定义，同时也不能加static关键字 */</span></span><br><span class="line"><span class="type">int</span> arr[ListNum][ItemNum];</span><br><span class="line"></span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">#### 不允许使用<span class="type">void</span>数组  </span><br><span class="line"></span><br><span class="line">```c</span><br><span class="line"><span class="type">void</span> arr[<span class="number">20</span>];<span class="comment">//非法定义，因为无法知道开辟空间的大小</span></span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
 </search>

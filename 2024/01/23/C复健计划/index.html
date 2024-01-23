@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"wumingzi.top","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="C复健计划 printf函数无法打印多行字符串，若要打印多行字符串则需要在每行后加换行符\n \n代表换行，\n\代表下一行是上一行的延续，如果改为\n则会报错 变量名第一个字母不能是数字 ANSI C C99 C11 关键字数量分别是32 32+5 37+7 %11.2f代表输出11个占位符，其中浮点型输出到小数点后2位，如果%a.bf，其中b比a大，则直接输出到小数点后b位而忽略a的值 %x:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C复健计划">
+<meta property="og:url" content="https://wumingzi.top/2024/01/23/C%E5%A4%8D%E5%81%A5%E8%AE%A1%E5%88%92/">
+<meta property="og:site_name" content="吾铭子">
+<meta property="og:description" content="C复健计划 printf函数无法打印多行字符串，若要打印多行字符串则需要在每行后加换行符\n \n代表换行，\n\代表下一行是上一行的延续，如果改为\n则会报错 变量名第一个字母不能是数字 ANSI C C99 C11 关键字数量分别是32 32+5 37+7 %11.2f代表输出11个占位符，其中浮点型输出到小数点后2位，如果%a.bf，其中b比a大，则直接输出到小数点后b位而忽略a的值 %x:">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-01-23T01:29:46.000Z">
+<meta property="article:modified_time" content="2024-01-23T01:30:04.739Z">
+<meta property="article:author" content="吾铭子">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://wumingzi.top/2024/01/23/C%E5%A4%8D%E5%81%A5%E8%AE%A1%E5%88%92/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://wumingzi.top/2024/01/23/C%E5%A4%8D%E5%81%A5%E8%AE%A1%E5%88%92/","path":"2024/01/23/C复健计划/","title":"C复健计划"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>C复健计划 | 吾铭子</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="吾铭子" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">吾铭子</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-schedule"><a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">C复健计划</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">吾铭子</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/31123236" title="Bilibili → https:&#x2F;&#x2F;space.bilibili.com&#x2F;31123236" rel="noopener me" target="_blank"><i class="fab fa-bilibili fa-fw"></i>Bilibili</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://bgm.tv/user/520931" title="Bangumi → https:&#x2F;&#x2F;bgm.tv&#x2F;user&#x2F;520931" rel="noopener me" target="_blank"><i class="fa fa-globe fa-fw"></i>Bangumi</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml" rel="noopener me"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wumingzi.top/2024/01/23/C%E5%A4%8D%E5%81%A5%E8%AE%A1%E5%88%92/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="吾铭子">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吾铭子">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="C复健计划 | 吾铭子">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C复健计划
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-01-23 09:29:46" itemprop="dateCreated datePublished" datetime="2024-01-23T09:29:46+08:00">2024-01-23</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1>C复健计划</h1>
+<p>printf函数无法打印多行字符串，若要打印多行字符串则需要在每行后加换行符\n<br>
+\n代表换行，\n\代表下一行是上一行的延续，如果改为\n则会报错<br>
+变量名第一个字母不能是数字<br>
+ANSI C C99 C11 关键字数量分别是32 32+5 37+7<br>
+%11.2f代表输出11个占位符，其中浮点型输出到小数点后2位，如果%<a target="_blank" rel="noopener" href="http://a.bf">a.bf</a>，其中b比a大，则直接输出到小数点后b位而忽略a的值<br>
+%x: 十六进制 (hex) %o: 八进制(oct) %d: 十进制(dec)<br>
+![2023-09-19_08-38](vx_images/581673908249386.png =274x)<br>
+![2023-09-19_08-39](vx_images/90294008237253.png =401x)<br>
+&quot;   代表 &quot;   \ 代表 \<br>
+/*    */代表多行注释<br>
+&lt;&gt;表示导入系统文件  &quot;&quot;表示导入自定义文件`<br>
+Tab == 8个空格，或者4个空格</p>
+<p>编译分为四步</p>
+<ol>
+<li>预编译：宏定义展开，头文件展开，条件编译等，并将注释删除（条件编译是指根据系统位数，编译库的选择确定编译环境）</li>
+<li>编译：将预编译后的文件生成汇编文件</li>
+<li>汇编：将汇编文件生成为目标文件（二进制代码）</li>
+<li>链接：把库链接到可执行程序中（预编译只是说明函数格式）</li>
+</ol>
+<p>![2023-09-22_08-5949](vx_images/499670009249389.png =646x)<br>
+float 默认保留六位小数，%.2 表示保留小数点后两位（四舍五入）<br>
+常量定义方法：（不能对值进行修改）<br>
+const 数据类型 常量名 = 值 或 数据类型 const 常量名 = 值 ( 在函数中定义的常量不安全，而全局常量则安全 )<br>
+# define 常量名 值<br>
+第一种不安全，利用指针可以修改 const 定义的值<br>
+十六进制用 0x 开头 八进制用 0 开头 C不支持定义二进制数<br>
+有符号数最高位是符号位，0 代表正数，1 代表负数<br>
+scanf(“%d”,&amp;a); 不要加\n<br>
+%hd 短整型 %p 输出指针的地址<br>
+char ‘单个字母’ 此时 %c 打印字母 %d 打印ASC2码<br>
+%c 对应的变量如果是整型，则输出ASC2码所对的字符<br>
+0 的ASC2码是 48 A 65 a 97 小写字母 - 大写字母 == 32<br>
+科学计数法赋值: float a = 3.2e3     <a target="_blank" rel="noopener" href="//3.2">//3.2</a>*1000<br>
+%e 以科学计数法表示数字<br>
+WORD 双字节 16bit   DWORD (double word) 32bit<br>
+![2023-09-27_09-3508](vx_images/342723609249394.png =631x)<br>
+正数: 原码 == 反码 == 补码<br>
+负数: 反码 == 原码除符号位取反        补码 == 反码 + 1 (若最高位进位，则进位舍弃)<br>
+数据存储时，把 -0 定为区间最小值:  1111 1111 (-127) 1000 0000 (-128) 对于8bit数据，取值范围是: 2^7-1 ~ -2^7<br>
+%s 输出一个字符串，遇到\0停止<br>
+\0 代表字符串的结尾 printf(“hello\0 word\n”); 输出的只有hello<br>
+scanf(“%d,%d”,&amp;a,&amp;b);  键盘输入的时候应严格双引号中的格式输入，只能输入 整数，整数 不能输入 整数 整数 或其它格式。<br>
+putchar getchar 只能对单个字符进行操作<br>
+![2023-09-23_16-2638](vx_images/54091209249391.png =443x)<br>
+![2023-09-23_16-2611](vx_images/248901309257424.png =373x)<br>
+![2023-09-23_16-5554](vx_images/227301209237258.png =400x)<br>
+![2023-09-23_17-2827](vx_images/543921309250093.png =297x)<br>
+![2023-09-23_17-3207](vx_images/48801409246648.png =267x)<br>
+所有非 0 的值都是真值<br>
+C语言浮点型数据不能取余<br>
+单目运算符优先级高于双目运算符<br>
+int a = 10; int b = 20;  则 a &amp;&amp; b == 1<br>
+![2023-09-25_10-4453](vx_images/259954510230966.png =363x)<br>
+强制类型转换不考虑四舍五入，后果是损失精度，系统自动类型转换时也会损失精度<br>
+(int) a*b 是先将 a,b 损失精度，再计算结果  (int) (a*b)是先保留精度计算，再损失精度<br>
+表达式 ? 语句1 : 语句2  表达式为真，执行语句1，否则执行语句2<br>
+switch 中可加 default 并且 case 后要接 break<br>
+for 循环可以有多个判断代码，需用 , 隔开，只要一个表达式不满足就跳出循环<br>
+goto FLAG;  ………… FLAG: …………<br>
+数组下标必须是常量，不能写为下例：int i = 10;  int arr[i];<br>
+当一个数组初始化（开辟内存空间）时，内部元素默认是乱码。只有当赋值时，默认才是0<br>
+eg： int arr[4] = {1}; //内部元素：1,0,0,0  int arr[4]; arr[0] = 1; //内部元素：1,数字,数字,数字<br>
+数字 0 等同于 \0 但不等同于字符 ‘0’<br>
+char arr[] = “hello”; 此时arr数组共有6位（最后一位是\0）<br>
+char arr[5] = {‘h’,‘e’,‘l’,‘l’,‘o’}; 此时只有六位，打印的时候到 o 不会停止，会继续打印乱码，所以char arr[n]的数组只能存储n-1个字符<br>
+scanf接收到空格或回车就代表接收的结束<br>
+gets() 与 scanf() 的区别是，get 能接收空格，scanf 则不能<br>
+sizeof() 测量字符串数组长度时包括 /0 strlen() 则不包括<br>
+函数返回值传给寄存器后内存中的函数会被销毁<br>
+函数声明: extern int fun_name( type a, type b );   ==   int fun_name( type a, type b );    ==     int fun_name( type , type  ); 可以不用写在主函数之内<br>
+声明不需要内存<br>
+exit(); 在子函数中使用主函数也会退出<br>
+导入自己的头文件用 “myfile.h”<br>
+#ifndef “myfile.h” #define    文件名    #endif<br>
+char 占1个字节分配1个地址    int 占4个字节分配4个地址<br>
+win 存储方式是小端对齐 即 低位数据存在低位地址中<br>
+&amp; 是取址符号，是升维的    * 是取值符号，是降维<br>
+野指针:    指向某一个未知空间的指针变量<br>
+int const *p == const int* p  只能给 p 赋值，不能给 p 指向的变量赋值 因为 const 离 “*”近</p>
+<p>int* const p 只能给 p 指向的变量赋值，不能给 p 赋值，因为 const 离 “p” 近<br>
+指针 +1 == 内存地址 +(sizeof(type 指针))<br>
+数组做为函数参数时会退化为指针，损失数组的大小信息，所以需要额外的数组长度做为函数参数<br>
+p[-2] 等于当前指向某一数组的指针 p 向前数2个的那个元素<br>
+2个指针相减后的结果是步长，不能相加<br>
+int* arr[3]    指针数组<br>
+arr[i] == *(arr+i)<br>
+一级指针加偏移量相当于跳过元素，二级指针加偏移量相当于跳过一维数组<br>
+![2023-09-27_18-0028](vx_images/150863710249470.png =473x)<br>
+![2023-09-27_18-0047](vx_images/293363710237337.png =500x)<br>
+![2023-10-01_12-4448](vx_images/58503810257503.png =534x)<br>
+![2023-10-03_10-1645](vx_images/196183810250172.png =592x)<br>
+![2023-10-03_10-2054](vx_images/292473810246727.png =494x)<br>
+![2023-10-03_10-3451](vx_images/488983810242481.png =437x)<br>
+’ 字母 ’ 代表字母的ASCII码值，并可以用 %c 输出其值<br>
+while 是先判断后执行<br>
+![2023-10-03_20-2457](vx_images/194092820260361.png =500x)<br>
+主函数是程序的入口，是程序首先执行的函数<br>
+全局变量作用域 : 整个项目的所有文件，其他文件调用时需要声明 extern int a; 生命周期是从程序创建到程序销毁<br>
+全局变量可以与局部变量重名，调用时程序采用就近原则的方法<br>
+静态局部变量在数据区存储，只会初始化一次并且发生在函数创建前，作用域 : 函数内部 生命周期 : 从程序创建到销毁 ( 作用域与局部变量一样，生命周期与全局变量一样 )<br>
+静态全局变量作用域 : 只可在本文件中使用，但不能在其他文件中使用，生命周期 : 从程序创建到程序结束<br>
+![2023-10-07_14-4543](vx_images/78774614231048.png =700x)<br>
+![2023-10-07_13-5845](vx_images/117464714237341.png =400x)<br>
+定义函数默认是全局的，可以在其他文件中调用，静态函数只能在本文件中使用，即使在其他文件中声明也不能使用<br>
+即使没有声明也可以调用函数，但是在 vstudio 转到定义功能不能使用<br>
+静态函数可以和全局函数重名<br>
+malloc 开辟的是连续的堆空间<br>
+![2023-10-07_15-0913](vx_images/194954608231049.png =600x)<br>
+![2023-10-07_16-4537](vx_images/383464808257508.png =500x)<br>
+![2023-10-07_16-4817](vx_images/3774908250177.png =600x)<br>
+![2023-10-07_16-5929](vx_images/252204908246732.png =600x)<br>
+![2023-10-07_17-2152](vx_images/380904908242486.png =600x)<br>
+栈由高地址向低地址增长，栈底是第一个进栈的数据，栈顶就是最后一个进栈的数据。<br>
+![2023-10-08_19-2651](vx_images/238732719249475.png =600x)<br>
+同理，申请0字节的空间也会报上述错误<br>
+![2023-10-08_19-2937](vx_images/94153019237342.png =500x)<br>
+下图报错原因是对 NULL 指针进行赋值操作。本质上由于68行函数开辟了一个堆空间同时创建形参p，在申请10个int大小的空间后fun08就被销毁了，同时销毁的还有形参p。相当于68行是废语句<br>
+![2023-10-08_19-5338](vx_images/563595319257508.png =500x)<br>
+free 空指针不会报错<br>
+结构体成员大小按最大结构体成员的倍数取，，下图中， char name 的大小为 21( sizeof(name) ==21 )，但是偏移对齐过后为24 ( int的整数倍 )<br>
+![2023-10-09_11-3636](vx_images/519123611231050.png =500x)<br>
+typedef 类型名 别名;<br>
+struct 结构体类型名 {};    struct 结构体类型名 结构体名 = {}；//注意{}中的变量用 ; 隔开<br>
+结构体指针 -&gt; 成员    结构体变量 . 成员<br>
+联合体 union 所有数据共用一块内存空间，只能输出最后一次被赋值的成员<br>
+![2023-10-09_16-5317](vx_images/14900717249476.png =500x)<br>
+文件操作中的分隔符推荐以 / 正斜杠表示，如果是反斜杠，则需要输入两次<br>
+读取文件若干个字符时不能修改文件指针，文件在读取时指针会自动向下加 1<br>
+文件默认结尾是 -1 和 EOF<br>
+![2023-10-11_13-1126](vx_images/7011213231052.png =600x)<br>
+结构变量名不是地址<br>
+for函数条件用 ; 隔开<br>
+可以将枚举值赋给其他变量<br>
+define 只做替换，所以不加 ; 否则会出现 #define NUM  3; printf(“%d”,3;);<br>
+退出函数后，static的变量不会被销毁，仍然保留在静态区内，但是此变量只能在本函数内部使用<br>
+define 在预处理阶段有效，仅作字符串替换，typedef 在编译阶段有效，因此会做类型检查<br>
+&amp;&amp;: 逻辑与    &amp;: 按位与    || : 逻辑或    | : 按位或<br>
+左移丢弃符号位，右移补偿符号位<br>
+数字前面补零编译器会认为是八进制数字，因此数字为09时编译器会报错<br>
+![2023-12-03_17-2714](vx_images/61053117237537.png =600x)<br>
+<a target="_blank" rel="noopener" href="http://jeremybai.github.io/blog/2014/01/01/const-volatile">博客链接</a><br>
+volatile用法：如果开启了编译器优化，或者利用无意义加减变量进行其他工作，亦或者多线程编程，读写与硬件相关的存储器时，需要加volatile关键字，防止编译器优化并提示编译器注意一致性问题，使其每次使用变量时都要去内存中取值。</p>
+<ul>
+<li>
+<p>一个参数既可以是const又可以是volatile么？</p>
+<ul>
+<li>const volatile常用在对于状态寄存器重新读取数值的时候，因为状态寄存器的值易变，因此加volatile，因为程序不应该修改状态寄存器的值，因此为const</li>
+</ul>
+</li>
+<li>
+<p>一个指针可以是volatile的么？</p>
+<ul>
+<li>可以但不常见，当需要一个经常被修改的指针时需要这么做，比如在中断子程序中修改的buffer指针</li>
+</ul>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wujiangguizhen/article/details/10244627">上述答案详解</a></p>
+<p>SRAM没有电容结构，因此充放电比DRAM快，读取数据也就比DRAM快，并且也不需要刷新数据<br>
+需要使用malloc来申请结构体的情况:</p>
+<ol>
+<li>结构体大小需要动态分配(结构体内包含本身的指针)</li>
+<li>结构体生命周期较长，需要在函数结束时不销毁结构体时需要</li>
+<li>对性能要求不大，在栈上分配和释放内存通常比堆上快，对性能不做要求时可以使用malloc<br>
+即使在函数参数给出了const限定，但是依然有变量被更改的风险</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span>* <span class="type">const</span> a,<span class="type">int</span>* <span class="type">const</span> b)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span>* temp1 = a;</span><br><span class="line">    <span class="type">int</span>* temp2 = b;</span><br><span class="line">    *temp1 = <span class="number">6</span>;</span><br><span class="line">    *temp2 = <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">return</span> *a+*b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">5</span>;</span><br><span class="line">    <span class="type">int</span> b = <span class="number">3</span>;</span><br><span class="line">    <span class="type">int</span> c = add(&amp;a,&amp;b);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,c);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>::: alert-danger<br>
+结果是10<br>
+:::<br>
+![2023-12-28_11-40](vx_images/65104211231269.png =600x)<br>
+对新生成的链表进行操作时，注意新生成的链表的内存是否是malloc动态分配的，否则会出现Segmentation fault(为啥啊？)<br>
+define定义宏的时候不用括号括起来可能导致运算错误</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> N 3+2</span></span><br><span class="line"><span class="type">int</span> a = N*N; <span class="comment">//a = 3+2*3+2</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/02/07/%E7%99%BE%E5%B9%B4%E5%B7%A5%E4%B8%9A/" rel="prev" title="百年工业">
+                  <i class="fa fa-chevron-left"></i> 百年工业
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/01/23/STM32/" rel="next" title="STM32">
+                  STM32 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2023 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">吾铭子</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
