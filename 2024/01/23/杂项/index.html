@@ -19,15 +19,13 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"wumingzi.top","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="杂项 ¶知识点 SOC: system on chip 电机会有死区电压，表现为电压很低时电机不能启动，死区电压约占额定电压的10%，此时需要给一PWM占空比最小值从而避免死区电压">
-<meta property="og:type" content="article">
+    <meta property="og:type" content="article">
 <meta property="og:title" content="杂项">
 <meta property="og:url" content="https://wumingzi.top/2024/01/23/%E6%9D%82%E9%A1%B9/">
 <meta property="og:site_name" content="吾铭子">
-<meta property="og:description" content="杂项 ¶知识点 SOC: system on chip 电机会有死区电压，表现为电压很低时电机不能启动，死区电压约占额定电压的10%，此时需要给一PWM占空比最小值从而避免死区电压">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-01-23T01:38:14.000Z">
-<meta property="article:modified_time" content="2024-01-23T02:28:05.350Z">
+<meta property="article:published_time" content="2024-01-23T03:31:32.000Z">
+<meta property="article:modified_time" content="2024-01-23T03:31:32.400Z">
 <meta property="article:author" content="吾铭子">
 <meta name="twitter:card" content="summary">
 
@@ -126,7 +124,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+    <div class="sidebar-inner sidebar-overview-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -139,7 +137,6 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">杂项</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-number">1.1.</span> <span class="nav-text">知识点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AEBug"><span class="nav-number">1.2.</span> <span class="nav-text">项目Bug</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -230,7 +227,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2024-01-23 09:38:14" itemprop="dateCreated datePublished" datetime="2024-01-23T09:38:14+08:00">2024-01-23</time>
+      <time title="创建时间：2024-01-23 11:31:32" itemprop="dateCreated datePublished" datetime="2024-01-23T11:31:32+08:00">2024-01-23</time>
     </span>
 
   
@@ -243,20 +240,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1>杂项</h1>
-<h2 id="知识点"><a class="header-anchor" href="#知识点">¶</a>知识点</h2>
-<p>SOC: system on chip<br>
-电机会有死区电压，表现为电压很低时电机不能启动，死区电压约占额定电压的10%，此时需要给一PWM占空比最小值从而避免死区电压</p>
-<span id="more"></span>
-<p>![2023-12-20_22-20](vx_images/113862122249687.png =600x)<br>
-处于三相电PWM调功率中的开关器件(如IGBT)，换相时为防止三相电任意上半桥和下半桥同时开启导致短路，我们要给死区时间，一般会占整个周期的百分之几，但当PWM占空比极小时，死区时间就会产生很大影响，最终影响输出纹波</p>
-<p>常量保存在Flash里，全局初始化非零的变量保存在SRAM的.data段内，静态变量或者全局初始化为零的变量保存在.bss段内，函数和函数内的局部变量保存在栈上</p>
-<p>尽量把数据保存在栈上，这样防止产生内存安全问题，并且栈上访问数据速度更快(数据局部性原理？)<br>
-栈是从高地址向低地址增长，堆是从低地址向高地址增长</p>
-<p>操作Flash前需要关中断</p>
-<p>计算机底层是小端存储的原因是在C程序员眼里，小端更符合直觉，在不定长的int，char中可以相互转换而不改变变量值(变量长度小于int、char最小值的情况下)，但是对于传输协议来说，大部分为定长字段传输，这就造成了大端存储更符合从左至右的阅读习惯</p>
-<h2 id="项目Bug"><a class="header-anchor" href="#项目Bug">¶</a>项目Bug</h2>
-
+        
     </div>
 
     
@@ -269,11 +253,14 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2024/01/23/Python/" rel="prev" title="Python">
-                  <i class="fa fa-chevron-left"></i> Python
+                <a href="/2024/01/23/%E5%B7%A5%E5%85%B7%E9%93%BE/" rel="prev" title="工具链">
+                  <i class="fa fa-chevron-left"></i> 工具链
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2024/01/23/%E9%A1%B9%E7%9B%AE/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>
