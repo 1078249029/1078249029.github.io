@@ -21,7 +21,7 @@
 
     <meta name="description" content="项目FreeRTOS内核实现参考书籍：《FreeRTOS 内核实现与应用开发实战指南》    一个工程如果没有 main 函数是编译不成功的,会出错。因为系统在开始执行的时候先执行启动文件里面的复位程序,复位程序里面会调用 C 库函数__main,__main 的作用是初始化好系统变量,如全局变量,只读的,可读可写的等等。__main 最后会调用__rtentry,再由__rtentry 调用 m">
 <meta property="og:type" content="article">
-<meta property="og:title" content="吾铭子">
+<meta property="og:title" content="项目">
 <meta property="og:url" content="https://wumingzi.top/2024/01/23/%E9%A1%B9%E7%9B%AE/">
 <meta property="og:site_name" content="吾铭子">
 <meta property="og:description" content="项目FreeRTOS内核实现参考书籍：《FreeRTOS 内核实现与应用开发实战指南》    一个工程如果没有 main 函数是编译不成功的,会出错。因为系统在开始执行的时候先执行启动文件里面的复位程序,复位程序里面会调用 C 库函数__main,__main 的作用是初始化好系统变量,如全局变量,只读的,可读可写的等等。__main 最后会调用__rtentry,再由__rtentry 调用 m">
@@ -40,8 +40,8 @@
 <meta property="og:image" content="https://wumingzi.top/vx_images/341003822255829.png">
 <meta property="og:image" content="https://wumingzi.top/vx_images/129063322246439.png">
 <meta property="og:image" content="https://wumingzi.top/vx_images/175724820240152.png">
-<meta property="article:published_time" content="2024-01-23T03:31:41.855Z">
-<meta property="article:modified_time" content="2024-01-23T03:38:25.194Z">
+<meta property="article:published_time" content="2024-01-23T03:52:32.000Z">
+<meta property="article:modified_time" content="2024-01-23T04:01:43.912Z">
 <meta property="article:author" content="吾铭子">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://wumingzi.top/vx_images/434673613240154.png">
@@ -51,10 +51,10 @@
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://wumingzi.top/2024/01/23/%E9%A1%B9%E7%9B%AE/","path":"2024/01/23/项目/","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://wumingzi.top/2024/01/23/%E9%A1%B9%E7%9B%AE/","path":"2024/01/23/项目/","title":"项目"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title> | 吾铭子</title>
+<title>项目 | 吾铭子</title>
   
 
 
@@ -229,12 +229,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | 吾铭子">
+      <meta itemprop="name" content="项目 | 吾铭子">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          
+          项目
         </h1>
 
         <div class="post-meta-container">
@@ -245,7 +245,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2024-01-23 11:31:41" itemprop="dateCreated datePublished" datetime="2024-01-23T11:31:41+08:00">2024-01-23</time>
+      <time title="创建时间：2024-01-23 11:52:32" itemprop="dateCreated datePublished" datetime="2024-01-23T11:52:32+08:00">2024-01-23</time>
     </span>
 
   
@@ -262,6 +262,8 @@
 <blockquote>
 <p>一个工程如果没有 main 函数是编译不成功的,会出错。因为系统在开始执行的时候先执行启动文件里面的复位程序,复位程序里面会调用 C 库函数__main,__main 的作用是初始化好系统变量,如全局变量,只读的,可读可写的等等。__main 最后会调用__rtentry,再由__rtentry 调用 main 函数,从而由汇编跳入到 C 的世界,这里面的 main 函数就需要我们手动编写,如果没有编写 main 函数,就会出现 main 函数没有定义的错误。  </p>
 </blockquote>
+<span id="more"></span>
+
 <p>生成的startup_ARMCM3.s负责启动startup_ARMCM3.c负责时钟配置，本项目默认的时钟为25M </p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*----------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">  Define clocks</span></span><br><span class="line"><span class="comment"> *----------------------------------------------------------------------------*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span>  XTAL            ( 5000000UL)      <span class="comment">/* Oscillator frequency */</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span>  SYSTEM_CLOCK    (5U * XTAL)</span></span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">![<span class="number">2024</span><span class="number">-01</span><span class="number">-02</span>_10<span class="number">-16</span>](vx_images/<span class="number">419821610240143.</span>png)</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">对于这种多行宏定义，每行结尾要加 \ 表示该行未结束</span><br><span class="line">  </span><br><span class="line">::: alert-danger</span><br><span class="line">若使用 \ 表示该行未完结务必注意 \ 后不能加任何字符，尤其是空格或者Tab。报错如下![<span class="number">2024</span><span class="number">-01</span><span class="number">-02</span>_12<span class="number">-05</span>](vx_images/<span class="number">481670512259271.</span>png)</span><br><span class="line">:::</span><br><span class="line">    </span><br><span class="line">![<span class="number">2024</span><span class="number">-01</span><span class="number">-02</span>_10<span class="number">-44</span>](vx_images/<span class="number">400010311258569.</span>png)</span><br><span class="line">  </span><br><span class="line">![<span class="number">2024</span><span class="number">-01</span><span class="number">-02</span>_11<span class="number">-04</span>](vx_images/<span class="number">7600511266602.</span>png)</span><br><span class="line">  </span><br><span class="line">左值不能进行类型转换，类型转换本质上是在寄存器内对原值进行位操作，得到的结果不放入内存，而左值是需要放进内存的，因此类型转换与左值冲突，若要类型转换，则需要对右值进行操作</span><br><span class="line"></span><br><span class="line">:::alert-danger</span><br><span class="line">当一个a.c文件需要b.h，而b.h包含了c.h，且c.h也包含了b.h时，会发生编译冲突。表现为有未定义的类型或变量，详情参考[博客园](https:<span class="comment">//www.cnblogs.com/skullboyer/p/8891579.html)，解决办法是理清编译关系，去除重复包含的头文件</span></span><br><span class="line">![<span class="number">2024</span><span class="number">-01</span><span class="number">-03</span>_13<span class="number">-26</span>](vx_images/<span class="number">211612613258570.</span>png)</span><br><span class="line">:::  </span><br><span class="line"></span><br><span class="line">栈由高地址向低地址增长，栈顶是第一个进栈的元素，栈底是最后一个进栈的元素</span><br><span class="line">因为<span class="number">32</span>位机一般指令都是<span class="number">32</span>位的，栈顶指针只需<span class="number">4</span>字节对齐即可，但是考虑兼容浮点运算的<span class="number">64</span>位操作则需要<span class="number">8</span>字节。对齐完成后，栈顶指针即可确定位置，而后开辟空间  </span><br><span class="line"></span><br><span class="line">![<span class="number">2024</span><span class="number">-01</span><span class="number">-03</span>_16<span class="number">-01</span>](vx_images/<span class="number">151190216246437.</span>png)</span><br><span class="line">项目的.c 与 .h文件可以不重名，位置可以不同，例如port.c文件放在\freertos\Source\portable\RVDS\ARM_CM3，但是引用port.c内容的portable.h放在\freertos\Source\include    </span><br><span class="line"></span><br><span class="line">```c</span><br><span class="line"><span class="comment">/* 这行代码的意思是定义了TaskFunction_t类型的函数指针，参数和返回值都是void，这样就可以进行函数“赋值”，进而从Task1，Task2中抽象出TaskFunction_t这一类型了，并且使用起来很方便 */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">void</span> (*TaskFunction_t)( <span class="type">void</span> * );</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 类似用法如下 */</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> tech(<span class="type">void</span>) &#123; <span class="built_in">printf</span>(<span class="string">&quot;tech dreamer&quot;</span>); &#125;</span><br><span class="line"><span class="comment">//命名一个类型，那么这个时候func不可以直接调用，而是一个类型了</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">void</span> (*func)();</span><br><span class="line"><span class="type">void</span> main()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//定义一个可调用的指针变量（函数）：myfunc</span></span><br><span class="line">    func myfunc;</span><br><span class="line">    myfunc = &amp;tech; <span class="comment">//&amp;可以不加</span></span><br><span class="line">    <span class="comment">/* 下面两种方法体现了函数名和函数地址是一回事 */</span></span><br><span class="line">    myfunc();         <span class="comment">//第一种调用方式，带参数也可以</span></span><br><span class="line">    (*myfunc)();      <span class="comment">//第二种调用方式，带参数也可以</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
@@ -515,14 +517,11 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2024/01/23/%E6%9D%82%E9%A1%B9/" rel="prev" title="杂项">
-                  <i class="fa fa-chevron-left"></i> 杂项
+                <a href="/2024/01/23/Python/" rel="prev" title="Python">
+                  <i class="fa fa-chevron-left"></i> Python
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2024/01/23/Python/" rel="next" title="Python">
-                  Python <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>

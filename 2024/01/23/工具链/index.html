@@ -19,15 +19,23 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"wumingzi.top","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta property="og:type" content="article">
+    <meta name="description" content="工具链GitGit本地操作版本控制系统分为2种  集中式版本控制系统 如SVN 分布式版本控制系统 如Git">
+<meta property="og:type" content="article">
 <meta property="og:title" content="工具链">
 <meta property="og:url" content="https://wumingzi.top/2024/01/23/%E5%B7%A5%E5%85%B7%E9%93%BE/">
 <meta property="og:site_name" content="吾铭子">
+<meta property="og:description" content="工具链GitGit本地操作版本控制系统分为2种  集中式版本控制系统 如SVN 分布式版本控制系统 如Git">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-01-23T03:31:23.000Z">
-<meta property="article:modified_time" content="2024-01-23T03:31:23.903Z">
+<meta property="og:image" content="https://wumingzi.top/vx_images/382591015251580.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/510961515269460.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/171151918267064.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/140045521268247.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/371810311240144.png">
+<meta property="article:published_time" content="2024-01-23T01:35:09.000Z">
+<meta property="article:modified_time" content="2024-01-23T03:58:14.897Z">
 <meta property="article:author" content="吾铭子">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wumingzi.top/vx_images/382591015251580.png">
 
 
 <link rel="canonical" href="https://wumingzi.top/2024/01/23/%E5%B7%A5%E5%85%B7%E9%93%BE/">
@@ -124,7 +132,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -137,6 +145,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B7%A5%E5%85%B7%E9%93%BE"><span class="nav-number">1.</span> <span class="nav-text">工具链</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Git"><span class="nav-number">1.1.</span> <span class="nav-text">Git</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Git%E6%9C%AC%E5%9C%B0%E6%93%8D%E4%BD%9C"><span class="nav-number">1.1.1.</span> <span class="nav-text">Git本地操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git%E8%BF%9C%E7%A8%8B%E6%93%8D%E4%BD%9C"><span class="nav-number">1.1.2.</span> <span class="nav-text">Git远程操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GitFlow"><span class="nav-number">1.1.3.</span> <span class="nav-text">GitFlow</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GitHub-Flow"><span class="nav-number">1.1.4.</span> <span class="nav-text">GitHub Flow</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GitHub"><span class="nav-number">1.1.5.</span> <span class="nav-text">GitHub</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -227,7 +236,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2024-01-23 11:31:23" itemprop="dateCreated datePublished" datetime="2024-01-23T11:31:23+08:00">2024-01-23</time>
+      <time title="创建时间：2024-01-23 09:35:09" itemprop="dateCreated datePublished" datetime="2024-01-23T09:35:09+08:00">2024-01-23</time>
     </span>
 
   
@@ -240,7 +249,44 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        
+        <h1 id="工具链"><a href="#工具链" class="headerlink" title="工具链"></a>工具链</h1><h2 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h2><h3 id="Git本地操作"><a href="#Git本地操作" class="headerlink" title="Git本地操作"></a>Git本地操作</h3><p>版本控制系统分为2种</p>
+<ul>
+<li>集中式版本控制系统 如SVN</li>
+<li>分布式版本控制系统 如Git</li>
+</ul>
+<span id="more"></span>
+
+<p>相比SVN，Git可靠性高但操作复杂</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">git init [dir]//在dir下创建新的本地仓库，缺省则在当前目录创建</span><br><span class="line"></span><br><span class="line">/* 全局配置git仓库的用户名，对所有仓库生效，省略则为本地仓库有效 */ </span><br><span class="line">git config --global user.name &quot;用户名&quot; </span><br><span class="line"></span><br><span class="line">/* 全局配置git仓库的邮箱，对所有仓库生效，省略则为本地仓库有效 */ </span><br><span class="line">git config --global user.email &quot;邮箱&quot; </span><br><span class="line"></span><br><span class="line">/* 保存用户名和密码 */</span><br><span class="line">git config --global credential.helper store</span><br><span class="line"></span><br><span class="line">/* 查看当前git配置 */</span><br><span class="line">git config --global --list</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/vx_images/382591015251580.png" alt="2024-01-02_15-10"><br>git的数据管理分为三部分</p>
+<ul>
+<li>工作区    .git所在目录，正常编辑代码的区域</li>
+<li>暂存区    .git&#x2F;index所在目录，即将提交到git的文件区域</li>
+<li>本地仓库  .git&#x2F;objectsgit所在目录 init生成的文件区域，是git存储代码和版本信息的主要位置<br>每次修改文件都需要提交很麻烦，因此产生了暂存区，当修改所有文件完毕后再统一提交至本地仓库<br><img src="/vx_images/510961515269460.png" alt="2024-01-02_15-15"></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/* 将filename文件添加到暂存区内，支持通配符( * . 等) */</span><br><span class="line">git add [filename]</span><br><span class="line"></span><br><span class="line">/* 查看当前文件状态 */</span><br><span class="line">git status </span><br><span class="line"></span><br><span class="line">/* 提交，支持通配符 */</span><br><span class="line">git commit -m &quot;提交说明&quot;</span><br><span class="line"></span><br><span class="line">/* 暂存且提交，支持通配符 */</span><br><span class="line">git commit -a -m &quot;提交说明&quot;</span><br><span class="line"></span><br><span class="line">/* 查看提交日志 */</span><br><span class="line">git log</span><br><span class="line"></span><br><span class="line">/* 查看暂存区文件 */</span><br><span class="line">git ls-files</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>:::alert-danger<br>需要将文件提交到暂存区内才能使用 git commit命令<br>:::</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/* 回退到某一版本,保留工作区和暂存区内容 */</span><br><span class="line">git reset [版本id]  </span><br><span class="line">git reset --soft [版本id]</span><br><span class="line"></span><br><span class="line">/* 不保留工作区和暂存区内容 */</span><br><span class="line">git reset --hard</span><br><span class="line"></span><br><span class="line">/* 仅保留工作区内容 */</span><br><span class="line">git reset --mixed</span><br><span class="line"></span><br><span class="line">/* 恢复git reset --hard的操作 */</span><br><span class="line">git reflog</span><br><span class="line"></span><br><span class="line">/* 当在一个分支上进行修改而且需要转到另一个分支上时，可能会提示未保存修改，这时需要用到如下命令保存当前分支已修改的文件 */</span><br><span class="line">git stash</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>使用 –hard 参数需要谨慎考虑，git reset默认执行 –soft命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">/* 从工作区和暂存区中删除文件 */</span><br><span class="line">git rm [filename]</span><br><span class="line"></span><br><span class="line">/* 仅在版本库中删除文件 */</span><br><span class="line">git rm --cached [filename]</span><br><span class="line"></span><br><span class="line">/* 查看工作区和暂存区的不同 */</span><br><span class="line">git diff</span><br><span class="line"></span><br><span class="line">/* 查看暂存区与本地仓库的不同 */</span><br><span class="line">git diff HEAD  </span><br><span class="line"></span><br><span class="line">/* 查看前第n个提交版本与当前提交版本的不同 */</span><br><span class="line">git diff HEAD~[n] HEAD</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>diff后红色内容表示删除内容，绿色表示增加内容</p>
+<h3 id="Git远程操作"><a href="#Git远程操作" class="headerlink" title="Git远程操作"></a>Git远程操作</h3><p><img src="/vx_images/171151918267064.png" alt="2024-01-02_18-19"><br>可以配置.gitignore来不想被版本控制的文件，只需将文件或文件夹添加到.gitignore即可，语法支持如上</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/* eg git remote add origin git@github.com:1078249029/toyFreeRTOS.git */</span><br><span class="line">git remote add &lt;远程仓库别名&gt;&lt;远程仓库地址&gt; //仓库别名缺省为origin</span><br><span class="line"></span><br><span class="line">/* 将本地分支与远程仓库的远程分支联系起来 </span><br><span class="line">*   eg git push -u(upstream) origin main(远程分支与本地分支重名只写一个即可)  </span><br><span class="line">*/</span><br><span class="line">git push -u &lt;远程仓库名&gt;&lt;远程分支名&gt; &lt;本地分支名&gt;</span><br><span class="line"></span><br><span class="line">/* 获取远程仓库名，分支名等信息 */</span><br><span class="line">git remote -v</span><br><span class="line"></span><br><span class="line">/* 拉取远程仓库并自动合并 */</span><br><span class="line">git pull &lt;远程仓库名&gt;&lt;远程分支名&gt; &lt;本地分支名&gt;</span><br><span class="line"></span><br><span class="line">/* 查看分支列表 */</span><br><span class="line">git branch</span><br><span class="line"></span><br><span class="line">/* 图形化查看分支图 */</span><br><span class="line">git log --graph --oneline --decorate --all</span><br><span class="line"></span><br><span class="line">/* 创建分支 */</span><br><span class="line">git branch [branch-name]</span><br><span class="line"></span><br><span class="line">/* 切换分支 */</span><br><span class="line">git switch [branch-name]</span><br><span class="line"></span><br><span class="line">/* 合并分支 */</span><br><span class="line">git merge [branch-name]</span><br><span class="line"></span><br><span class="line">/* 将主分支文件同步到其他分支 */</span><br><span class="line">git merge [主分支名称]    //使用前需要切换到其他分支</span><br><span class="line"></span><br><span class="line">/* 删除分支 */</span><br><span class="line">git branch -d [branch-name]    //删除已合并分支</span><br><span class="line">git branch -D [branch-name]    //删除未合并分支</span><br><span class="line"></span><br><span class="line">/* 恢复某分支的状态 */</span><br><span class="line">git checkout -b [branch-name] [commit-id]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>::: alert-info<br>merge时需要切换到主分支<br>merge后分支依然存在，除非手动删除分支<br>:::</p>
+<p><img src="/vx_images/140045521268247.png" alt="2024-01-02_21-52"></p>
+<h3 id="GitFlow"><a href="#GitFlow" class="headerlink" title="GitFlow"></a>GitFlow</h3><p>适用于团队水平适中的情况</p>
+<p>五种分支: main hotfix release develop feature</p>
+<p>main 包含项目最新的稳定代码<br>hotfix 用于解决线上问题，均从main分离出来<br>dev 用于开发测试<br>release 均来源于develop，测试稳定后发布到main，发现bug发布到dev  </p>
+<p>主要分支包括dev和main</p>
+<h3 id="GitHub-Flow"><a href="#GitHub-Flow" class="headerlink" title="GitHub Flow"></a>GitHub Flow</h3><p>适用于团队水平较高的情况</p>
+<p><img src="/vx_images/371810311240144.png" alt="2024-01-03_11-01">  </p>
+<p>整个项目只有两个分支，开发者从Master中branch一个分支用于开发，需要进行merge时发起一个Pull Request请求，待团队审核后再merge到Master</p>
+<h3 id="GitHub"><a href="#GitHub" class="headerlink" title="GitHub"></a>GitHub</h3><p>配置Github的SSH密钥时，最好把密钥统一放在.ssh文件夹下(win下是C:\Users\李政轩.ssh)，并且写好config文件来管理多份密钥</p>
+
     </div>
 
     
@@ -253,8 +299,8 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2024/01/23/FreeRTOS/" rel="prev" title="">
-                  <i class="fa fa-chevron-left"></i> 
+                <a href="/2024/01/23/FreeRTOS/" rel="prev" title="FreeRTOS">
+                  <i class="fa fa-chevron-left"></i> FreeRTOS
                 </a>
             </div>
             <div class="post-nav-item">
