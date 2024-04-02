@@ -58,8 +58,9 @@
 <meta property="og:image" content="https://wumingzi.top/vx_images/7011213231052.png">
 <meta property="og:image" content="https://wumingzi.top/vx_images/61053117237537.png">
 <meta property="og:image" content="https://wumingzi.top/vx_images/65104211231269.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/355601120263503">
 <meta property="article:published_time" content="2024-01-23T01:29:46.000Z">
-<meta property="article:modified_time" content="2024-01-23T03:57:13.740Z">
+<meta property="article:modified_time" content="2024-02-22T12:11:39.238Z">
 <meta property="article:author" content="吾铭子">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://wumingzi.top/vx_images/581673908249386.png">
@@ -185,7 +186,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -262,9 +263,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2024-01-23 09:29:46 / 修改时间：11:57:13" itemprop="dateCreated datePublished" datetime="2024-01-23T09:29:46+08:00">2024-01-23</time>
+      <time title="创建时间：2024-01-23 09:29:46" itemprop="dateCreated datePublished" datetime="2024-01-23T09:29:46+08:00">2024-01-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-02-22 20:11:39" itemprop="dateModified" datetime="2024-02-22T20:11:39+08:00">2024-02-22</time>
     </span>
 
   
@@ -308,8 +315,26 @@
 <li>结构体大小需要动态分配(结构体内包含本身的指针)</li>
 <li>结构体生命周期较长，需要在函数结束时不销毁结构体时需要</li>
 <li>对性能要求不大，在栈上分配和释放内存通常比堆上快，对性能不做要求时可以使用malloc<br>即使在函数参数给出了const限定，但是依然有变量被更改的风险<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span>* <span class="type">const</span> a,<span class="type">int</span>* <span class="type">const</span> b)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span>* temp1 = a;</span><br><span class="line">    <span class="type">int</span>* temp2 = b;</span><br><span class="line">    *temp1 = <span class="number">6</span>;</span><br><span class="line">    *temp2 = <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">return</span> *a+*b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">5</span>;</span><br><span class="line">    <span class="type">int</span> b = <span class="number">3</span>;</span><br><span class="line">    <span class="type">int</span> c = add(&amp;a,&amp;b);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,c);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-::: alert-danger<br>结果是10<br>:::<br><img src="/vx_images/65104211231269.png" alt="2023-12-28_11-40"><br>对新生成的链表进行操作时，注意新生成的链表的内存是否是malloc动态分配的，否则会出现Segmentation fault(为啥啊？)<br>define定义宏的时候不用括号括起来可能导致运算错误<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> N 3+2</span></span><br><span class="line"><span class="type">int</span> a = N*N; <span class="comment">//a = 3+2*3+2</span></span><br></pre></td></tr></table></figure></li>
+::: alert-danger<br>结果是10<br>:::<br><img src="/vx_images/65104211231269.png" alt="2023-12-28_11-40"><br>对新生成的链表进行操作时，注意新生成的链表的内存是否是malloc动态分配的，否则会出现Segmentation fault(为啥啊？)<br>define定义宏的时候不用括号括起来可能导致运算错误</li>
 </ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> N 3+2</span></span><br><span class="line"><span class="type">int</span> a = N*N; <span class="comment">//a = 3+2*3+2</span></span><br></pre></td></tr></table></figure>
+
+<p>内存对齐</p>
+<ul>
+<li>为什么要进行内存对齐<ul>
+<li>32位计算机是以地址为4的倍数读取数据的，如果不进行内存对齐可能会引发CPU额外进行数据裁剪与合并操作，降低CPU效率</li>
+</ul>
+</li>
+<li>怎样计算内存对齐？<ul>
+<li>gcc中默认#pragma pack(4)，即默认内存对齐有效值为4字节，我们可以在编译器内设置这个值。结构体一个成员的大小为有效值和那个成员的整数倍，并且满足结构体总大小为内存对齐有效值的整数倍</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="type">int</span> i;    </span><br><span class="line">    <span class="type">char</span> c1;  </span><br><span class="line">    <span class="type">char</span> c2;  </span><br><span class="line">&#125;x1;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">    <span class="type">char</span> c1;  </span><br><span class="line">    <span class="type">int</span> i;    </span><br><span class="line">    <span class="type">char</span> c2;  </span><br><span class="line">&#125;x2;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">    <span class="type">char</span> c1;  </span><br><span class="line">    <span class="type">char</span> c2; </span><br><span class="line">    <span class="type">int</span> i;    </span><br><span class="line">&#125;x3;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,<span class="keyword">sizeof</span>(x1));  <span class="comment">// 输出8</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,<span class="keyword">sizeof</span>(x2));  <span class="comment">// 输出12</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,<span class="keyword">sizeof</span>(x3));  <span class="comment">// 输出8</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>##可以表示粘连两个字符串，例如下面使用##定义了两个不同的变量NAMEa与NAMEb</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span>  </span></span><br><span class="line">   </span><br><span class="line"><span class="meta">#<span class="keyword">define</span> NAME(n) int_name##n  </span></span><br><span class="line">   </span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>  </span><br><span class="line">&#123;  </span><br><span class="line">      </span><br><span class="line">    <span class="type">int</span> <span class="title function_">NAME</span><span class="params">(a)</span>;  </span><br><span class="line">    <span class="type">int</span> <span class="title function_">NAME</span><span class="params">(b)</span>;  </span><br><span class="line">      </span><br><span class="line">    NAME(a) = <span class="number">520</span>;  </span><br><span class="line">    NAME(b) = <span class="number">111</span>;  </span><br><span class="line">      </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, NAME(a));  </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, NAME(b));  </span><br><span class="line">   </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果：<br><img src="/vx_images/355601120263503" alt="Center"></p>
 
     </div>
 

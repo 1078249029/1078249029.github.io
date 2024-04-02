@@ -35,6 +35,7 @@
 <meta property="og:image" content="https://wumingzi.top/vx_images/23054423266718.png">
 <meta property="og:image" content="https://wumingzi.top/vx_images/308534923259387.png">
 <meta property="og:image" content="https://wumingzi.top/vx_images/454445523255942.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/183812710258774.png">
 <meta property="og:image" content="https://wumingzi.top/vx_images/330711215258686.png">
 <meta property="og:image" content="https://wumingzi.top/vx_images/331411115240260.png">
 <meta property="og:image" content="https://wumingzi.top/vx_images/426695921246553.png">
@@ -43,9 +44,11 @@
 <meta property="og:image" content="https://wumingzi.top/vx_images/96661723255943.png">
 <meta property="og:image" content="https://wumingzi.top/vx_images/294182210240261.png">
 <meta property="og:image" content="https://wumingzi.top/vx_images/445734316258687.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/368701710269666.png">
 <meta property="og:image" content="https://wumingzi.top/vx_images/239433619246554.png">
 <meta property="og:image" content="https://wumingzi.top/vx_images/311334919266720.png">
-<meta property="og:image" content="https://wumingzi.top/vx_images/21203720259389.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/298425915256031.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/237874415266807.png">
 <meta property="og:image" content="https://wumingzi.top/vx_images/595081621255944.png">
 <meta property="og:image" content="https://wumingzi.top/vx_images/19941422251698.png">
 <meta property="og:image" content="https://wumingzi.top/vx_images/506282422269578.png">
@@ -59,7 +62,7 @@
 <meta property="og:image" content="https://wumingzi.top/vx_images/165440100243216.png">
 <meta property="og:image" content="https://wumingzi.top/vx_images/204334523240711.png">
 <meta property="article:published_time" content="2024-02-20T16:21:54.000Z">
-<meta property="article:modified_time" content="2024-02-20T16:24:50.349Z">
+<meta property="article:modified_time" content="2024-03-13T02:23:59.535Z">
 <meta property="article:author" content="吾铭子">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://wumingzi.top/vx_images/30092012266713.png">
@@ -185,7 +188,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -262,9 +265,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2024-02-21 00:21:54 / 修改时间：00:24:50" itemprop="dateCreated datePublished" datetime="2024-02-21T00:21:54+08:00">2024-02-21</time>
+      <time title="创建时间：2024-02-21 00:21:54" itemprop="dateCreated datePublished" datetime="2024-02-21T00:21:54+08:00">2024-02-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-03-13 10:23:59" itemprop="dateModified" datetime="2024-03-13T10:23:59+08:00">2024-03-13</time>
     </span>
 
   
@@ -285,8 +294,8 @@
 <h2 id="同步互斥的深入"><a href="#同步互斥的深入" class="headerlink" title="同步互斥的深入"></a>同步互斥的深入</h2><p>在单核CPU上关中断开中断是可以实现同步互斥的，但是在多核CPU上开关中断不能保证其他CPU不会修改临界变量</p>
 <h3 id="原子操作"><a href="#原子操作" class="headerlink" title="原子操作"></a>原子操作</h3><p>对于ARMv6之前的内核，通过关中断恢复中断来实现原子操作，但是在v6之后(包括v6)，由于arm支持SMP(多核CPU)，因此不能简单的使用开关中断来实现原子操作，而是使用ldrex，strex汇编语句来实现，其根本原理是在要ldr数据上打上标记，在要str的数据上消除标记，根据能否消除标记而返回不同的值，根据值来判断是否申请资源成功，不成功的话则再次重复，直到能申请资源为止</p>
 <p><img src="/vx_images/333854115259382.png" alt="2024-02-13_15-41">  </p>
-<h2 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h2><h3 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h3><p>自旋锁无法休眠，当一段临界区被加上自旋锁时，如果CPU0与CPU1都竞争临界区只有CPU0获得资源的话，那么CPU1不会休眠而是会反复请求资源，因此，使用自旋锁时临界区代码要尽量精简(5行左右)，且不能休眠</p>
-<p>自旋锁在**单核系统(UP)**还可以用来禁止调度防止抢占，对于不同的自旋锁他有不同的防止抢占方式，比如对于最普通的spin_lock()而言，他只能关闭调度，而对于spin_lock_irq()而言，它可以关闭中断</p>
+<h2 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h2><h3 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h3><p>自旋锁无法休眠，当一段临界区被加上自旋锁时，如果CPU0与CPU1都竞争临界区只有CPU0获得资源的话，那么CPU1不会休眠而是会反复请求资源(当写程序时，在进中断时也要加自旋锁来防止其他CPU打断当前CPU执行irq)，因此，使用自旋锁时临界区代码要尽量精简(5行左右)，且不能休眠</p>
+<p>自旋锁在 <strong>单核系统(UP)</strong> 还可以用来禁止调度防止抢占，对于不同的自旋锁他有不同的防止抢占方式，比如对于最普通的spin_lock()而言，他只能关闭调度，而对于spin_lock_irq()而言，它可以关闭中断</p>
 <p>自旋锁的实现：每个自旋锁上都有当前任务编号，和当前任务编号+1的下一个任务编号，内核会检查想要申请资源的自旋锁任务编号与当前自旋锁下一个任务编号是否相同，相同的话则获得锁，否则wfe休眠一段时间</p>
 <h3 id="睡眠锁"><a href="#睡眠锁" class="headerlink" title="睡眠锁"></a>睡眠锁</h3><p>睡眠锁有mutex和semaphore两种  </p>
 <p>对于信号量来说，它可以休眠，因此对于临界区代码可以比自旋锁复杂很多，信号量用于多进程间访问同步和互斥，而互斥锁用于保护某个临界资源</p>
@@ -301,7 +310,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;1    4    1    7&quot; &gt; /proc/sys/kernel/prink</span><br><span class="line">//可以修改打印级别，第一个1为console消息级别，4为默认级别</span><br></pre></td></tr></table></figure>
 
 <p><img src="/vx_images/348042421240255.png" alt="2024-02-14_21-24"></p>
-<h2 id="PCI与PCIe"><a href="#PCI与PCIe" class="headerlink" title="PCI与PCIe"></a>PCI与PCIe</h2><p>为了简化cpu与外部设备通信及硬件连线使得访问外设像访问内存一样，PCI总线应运而生。有了PCI后，CPU不必关注具体的操作细节，比如不使用PCI，CPU与GPIO，I2C等设备直接相连时，程序员需要关注GPIO，I2C等设备的具体实现，，而使用PCI总线时，直接访问PCI设备控制器即可，具体访问操作会由PCI硬件实现，同时也会简化硬件的连线复杂度<br>但是引入PCI总线也会导致设备地址空间分配问题，为了解决这个问题，PCI采用地址偏移量的思想：首先由CPU分配设备内存地址空间，并由PCI设备控制器维护并计算所需要的地址偏移量，待到CPU需要访问具体地址时，由PCI所记录的地址偏移量即可算出真实的物理地址，PCI地址数据线是复用的<br>为了保证传输速率，PCI一开始被设计为并行总线，但由于速率提高之后并行总线会导致信号干扰，因此新的PCIe总线也诞生了，它采用了串行总线差分信号的结构，这会支持更高的速率</p>
+<h2 id="PCI与PCIe"><a href="#PCI与PCIe" class="headerlink" title="PCI与PCIe"></a>PCI与PCIe</h2><p>为了简化CPU与外部设备通信及硬件连线使得访问外设像访问内存一样，PCI总线应运而生。有了PCI后，CPU不必关注具体的操作细节，比如不使用PCI，CPU与GPIO，I2C等设备直接相连时，程序员需要关注GPIO，I2C等设备的具体实现，而使用PCI总线时，直接访问PCI设备控制器即可，具体访问操作会由PCI硬件实现，同时也会简化硬件的连线复杂度<br>但是引入PCI总线也会导致设备地址空间分配问题，为了解决这个问题，PCI采用地址偏移量的思想：首先由CPU分配设备内存地址空间，并由PCI设备控制器维护并计算所需要的地址偏移量，待到CPU需要访问具体地址时，由PCI所记录的地址偏移量即可算出真实的物理地址，PCI地址数据线是复用的<br>为了保证传输速率，PCI一开始被设计为并行总线，但由于速率提高之后并行总线会导致信号干扰，因此新的PCIe总线也诞生了，它采用了串行总线差分信号的结构，这会支持更高的速率</p>
 <p>在PCIe中，一对发送接收差分线称为lane，对于低速PCIe，例如PCIe转串口而言只有一条lane，对于视频音频卡而言有多条lane，两PCIe设备之间称为一条link</p>
 <h3 id="PCI总线原理"><a href="#PCI总线原理" class="headerlink" title="PCI总线原理"></a>PCI总线原理</h3><p>由于PCI总线为并行传输，数据地址统一不做区分的发送到AD引脚上</p>
 <p><img src="/vx_images/289363023240259.png" alt="2024-02-18_23-30"></p>
@@ -310,15 +319,15 @@
 <p>如果想设置PCI设备的地址，首先要在IDSET引脚置高电平，然后由CPU发出cpuaddr，经PCI控制器转换后得到PCIaddr，再发送type1命令并根据type0的function number设置具体的功能，最后按照register number设置寄存器的值，具体的配置项如下图，此配置项写在PCI设备的寄存器内。包含了设备ID，厂家ID，创建设备时申请多大的PCI空间<br>如果想读写PCI设备的地址，需要按照手册在C&#x2F;BE引脚设置值，然后设置frame引脚，再发送type0命令，当frame引脚为低电平时遇到的第一个时钟发出的AD信号是addr，第二个发出的则是data</p>
 <p><img src="/vx_images/73993423258685.png" alt="2024-02-18_23-33"></p>
 <p><img src="/vx_images/23054423266718.png" alt="2024-02-18_23-43"></p>
-<p>对于桥设备而言<br>如果需要配置PCIe设备需要发送type1命令，若header type的值为01h则为桥设备，此时需要收到PCI设备根据收到的信息检测bus number，如果在子节点找到bus number那么就转发到下一层PCI设备，如果下一层设备还是桥设备的话就继续转发，直到遇到非桥设备且是目标设备为止，然后根据发送的信息判断是配置还是读写寄存器</p>
+<p>对于桥设备而言<br>如果需要配置PCI设备需要发送type1命令，若header type的值为01h则为桥设备，此时需要收到PCI设备根据收到的信息检测bus number，如果在子节点找到bus number那么就转发到下一层PCI设备，如果下一层设备还是桥设备的话就继续转发，直到遇到非桥设备且是目标设备为止，然后根据发送的信息判断是配置还是读写寄存器</p>
 <p><img src="/vx_images/308534923259387.png" alt="2024-02-18_23-48"></p>
 <p><img src="/vx_images/454445523255942.png" alt="2024-02-18_23-55"></p>
-<h3 id="PCIe总线原理"><a href="#PCIe总线原理" class="headerlink" title="PCIe总线原理"></a>PCIe总线原理</h3><p>PCIe的配置过程(基于ID的路由方式)：<br>PCIe采用深度优先的配置模式，首先由Host将配置信号发送至子设备，首先由 A设备先进行配置，A设备的上层总线号是Bus0，下层总线号是Bus1，于是A设备在其配置寄存器内记录，由于子设备数sub并不确定，A设备先令其值为255。而后再配置A的子设备C，同理将其配置为1，2，255，之后再配置D，<br>，当配置到Bus3的下层的具体设备时，会将bus，dev，fuction的值3，0，1、3，0，0记录在设备中，由于遇到了end point，所以返回至D端口，修改sub将其从255修改至3(bus的最大值)，但由于只配置了D，因此还需要配置同层的E设备，配置方式同D下面的end point。之后返回至上层C，将sub值修改为4(C设备下总线号的最大值)。</p>
-<p><img src="/vx_images/330711215258686.png" alt="2024-02-19_15-12"></p>
+<h3 id="PCIe总线原理"><a href="#PCIe总线原理" class="headerlink" title="PCIe总线原理"></a>PCIe总线原理</h3><p>PCIe的配置过程(基于ID的路由方式)：<br>PCIe采用深度优先的配置模式，首先由Host将配置信号发送至子设备，首先由 A设备先进行配置，A设备的上层总线号是Bus0，下层总线号是Bus1，于是A设备在其配置寄存器内记录，由于子设备数sub并不确定，A设备先令其值为255。而后再配置A的子设备C，同理将其配置为1，2，255，之后再配置D，当配置到Bus3的下层的具体设备时，会将bus，dev，fuction的值3，0，1、3，0，0记录在设备中，由于遇到了end point，所以返回至D端口，修改sub将其从255修改至3(bus的最大值)，但由于只配置了D，因此还需要配置同层的E设备，配置方式同D下面的end point。之后返回至上层C，将sub值修改为4(C设备下总线号的最大值)</p>
+<p><img src="/vx_images/183812710258774.png" alt="2024-03-07_10-25"><br><img src="/vx_images/330711215258686.png" alt="2024-02-19_15-12"></p>
 <p>PCIe将发送数据分为三层，分别为：事务层，数据链路层，物理层，每层将上下层数据处理后传递给下一层或者上一层，具体收发数据原理如下：</p>
 <p>发送数据时：</p>
 <ul>
-<li>首先由cpu发送原始数据至root complex，由rc处理数据后在事务层得到TLP</li>
+<li>首先由CPU发送原始数据至root complex，由rc处理数据后在事务层得到TLP</li>
 <li>事务层将原始数据前加入header，数据后加入CRC校验，header内包含数据是读写数据还是配置寄存器，包装后的数据被称为TLP，处理后将数据发至数据链路层</li>
 <li>数据链路层规定了数据的重传方式，为此在数据头部添加了seg段，在数据尾部添加了LCRC校验，数据处理完成后将数据发至物理层</li>
 <li>物理层负责将信号拆分并发送出去</li>
@@ -380,7 +389,7 @@
 <p><img src="/vx_images/99161123259388.png" alt="2024-02-19_23-11"></p>
 <p><img src="/vx_images/471142623251697.png"></p>
 <p>USB协议通信数据如下<br><img src="/vx_images/96661723255943.png"></p>
-<p>sop(start of package)，具体信号参见手册<br>end(end of package)，具体信号参见手册<br>sync，同步信号，由于USB没有时钟线只有两条数据线，因此sync是为了确定通信速率的</p>
+<p>sop(start of package)，具体信号参见手册<br>enp(end of package)，具体信号参见手册<br>sync，同步信号，由于USB没有时钟线只有两条数据线，因此sync是为了确定通信速率的</p>
 <h3 id="数据传输特点"><a href="#数据传输特点" class="headerlink" title="数据传输特点"></a>数据传输特点</h3><p>在数据传输方面，USB采用了NRZI(Non Return Zero Inverted Code，反向不归零编码)，NRZI的编码方式为：对于数据0，波形翻转；对于数据1，波形不变。例如对01011110为例，传输的结果是11000001，使用NRZI可以发送一串0来把时钟频率告诉对方<br>位填充：由于USB没有时钟线，因此还需要考虑通信双方晶振的误差对信号的影响，例如当传输100个0时，由于晶振的误差会产生接收端接收了99个或101个0的现象，因此协议规定数据包每隔6个1后插入1个0</p>
 <h3 id="协议内容"><a href="#协议内容" class="headerlink" title="协议内容"></a>协议内容</h3><p>一次传输由一个或多个事务实现，事务下层根据目的不同被划分成了三种包，令牌包指明传输的对象和地址，数据包只传输数据，握手包由接收方设备发出，内容为各种应答信号。每个包内部又分为各种域(field)，sop field代表传输的开始，sync field代表传输的速率，PID filed代表传输的包的ID，根据取值不同PID被分为四类，令牌类，数据类，握手类，特殊类，令牌类用于令牌包，表明发送的是令牌类数据。在PID field后的filed就是传输的数据，为了保证数据正确还需要CRC field，在传输的末尾还要加上eop field来表明传输完成</p>
 <p>对于握手包而言没有Data field与CRC field </p>
@@ -433,6 +442,7 @@
 <p>当插入OTG接口时，id引脚(typec模式时为cc引脚)被连接，id引脚的取值被Host设备的主控芯片(arm)所决定，当arm板以Device模式通信时，由于arm芯片内部有100k的上拉电阻因此三极管是导通的，EN引脚为低电平，5v的电源不能输出，此时为Device模式。而当转换器接入板子时，转换器内部的下拉电阻会将arm的上拉电阻拉低，导致5v电源能够输出，此时arm板可以给外界设备供电，工作在Host模式</p>
 <p><img src="/vx_images/445734316258687.png" alt="2024-02-20_16-43"></p>
 <h2 id="I2C深入"><a href="#I2C深入" class="headerlink" title="I2C深入"></a>I2C深入</h2><p>对于通用的platform_device在i2c驱动模型中被称为i2c_client</p>
+<p><img src="/vx_images/368701710269666.png" alt="2024-03-08_10-16"></p>
 <p>I2C驱动框架如图所示，在基础的设备总线驱动模型的基础上加入了adapter适配器，这可以使每一个I2C硬件设备支持不同的adapter使其产生不同的功能。具体的驱动编写框架如下：</p>
 <ul>
 <li>修改设备树或者对应.c文件</li>
@@ -441,13 +451,27 @@
 </ul>
 <p><img src="/vx_images/239433619246554.png" alt="2024-02-20_19-30"></p>
 <p><img src="/vx_images/311334919266720.png"></p>
+<p>总结：</p>
+<ul>
+<li>i2c驱动注册时：<ul>
+<li>由底层向高层注册，首先根据设备树的配置项注册adapter(i2c的Controller)，配置相关的时序，模式，频率等基本参数，使得芯片可以驱动i2c设备，在注册adapter的同时顺便把client注册了(cilent注册的时机是在adapter靠后的位置)，client负责具体的i2c外设，这由外设厂家编写，配置i2c的初始信号来访问某个固定的寄存器，确定信息传输完成后延时时间，以及对应外设芯片的寄存器配置，使得芯片可以与外设通信。</li>
+<li>在adapter注册时需要的模型是platform-bus模型，内核会根据设备树中的adapter的数量来确定有几个adapter即几条总线，并根据驱动程序和设备树来两两匹配。在每次注册adapter的过程中还需要顺便注册client，它是device-bus模型。内核在注册client时会发送探测信号来扫描总线上是否存在设备，并根据设备树和驱动来两两匹配并注册进内核</li>
+</ul>
+</li>
+<li>i2c驱动使用时：<ul>
+<li>由高层向底层调用，当app需要访问某个设备时，首先会找到对应外设的client，根据内部client经过内核的i2c_core找到对应adapter，再找到对应的xfer发送函数来控制adapter发送到对应外设</li>
+</ul>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://www.eet-china.com/mp/a228520.html">inux驱动：I2C驱动学习看这一篇就够了</a></p>
 <h2 id="SPI深入"><a href="#SPI深入" class="headerlink" title="SPI深入"></a>SPI深入</h2><p>SPI驱动程序设备树框架：</p>
 <ul>
 <li>对于SPI控制器而言，如果使用platform_bus的match函数匹配到了platform_device与platform_driver的话就会调用SPI控制器的probe函数注册生成一个spi_master，除此之外还会生成一个spi_device</li>
 <li>内核从上面得到的spi_device解析，并调用match函数来检测spi设备驱动spi_driver是否匹配，如果匹配就调用SPI设备的probe函数注册生成一个字符设备以及file_operation结构体</li>
 </ul>
 <p>对于SPI控制器而言可以扩展多个设备，具体可以看设备树文件<br>由于SPI控制器与SPI设备分别由内核解析，并且采用了分离的思想，因此在写SPI设备的驱动程序时需要调用Linux提供的函数接口来引入SPI控制器的资源，尤其是spi_master.transfer函数</p>
-<p><img src="/vx_images/21203720259389.png" alt="2024-02-20_20-26"></p>
+<p><img src="/vx_images/298425915256031.png" alt="2024-03-07_15-58"></p>
+<p><img src="/vx_images/237874415266807.png" alt="2024-03-07_15-43"></p>
 <p>在SPI子系统一个transfer对应一个传输，为了管理多个传输采用了链表结构，SPI控制器的驱动程序spi_master内部有一个queue，每一个具体设备spi_device都会生成一个message并挂载到queue，每一个message会有多种transfer，这些transfer会挂载到message上</p>
 <p><img src="/vx_images/595081621255944.png" alt="2024-02-20_21-16"></p>
 <p><img src="/vx_images/19941422251698.png" alt="2024-02-20_22-13"></p>
@@ -488,6 +512,9 @@
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2024/04/02/vx/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>
