@@ -19,17 +19,33 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"wumingzi.top","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="杂项知识点SOC: system on chip电机会有死区电压，表现为电压很低时电机不能启动，死区电压约占额定电压的10%，此时需要给一PWM占空比最小值从而避免死区电压">
+    <meta name="description" content="杂项硬件SOC: system on chip电机会有死区电压，表现为电压很低时电机不能启动，死区电压约占额定电压的10%，此时需要给一PWM占空比最小值从而避免死区电压">
 <meta property="og:type" content="article">
 <meta property="og:title" content="杂项">
 <meta property="og:url" content="https://wumingzi.top/2024/01/23/%E6%9D%82%E9%A1%B9/">
 <meta property="og:site_name" content="吾铭子">
-<meta property="og:description" content="杂项知识点SOC: system on chip电机会有死区电压，表现为电压很低时电机不能启动，死区电压约占额定电压的10%，此时需要给一PWM占空比最小值从而避免死区电压">
+<meta property="og:description" content="杂项硬件SOC: system on chip电机会有死区电压，表现为电压很低时电机不能启动，死区电压约占额定电压的10%，此时需要给一PWM占空比最小值从而避免死区电压">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wumingzi.top/vx_images/113862122249687.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/326561215267371.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/321153610251887.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/282042521240360.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/353604816258874.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/597195016246741.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/538480117266907.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/225970417259576.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/587770417256131.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/15434216240366.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/90255319258792.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/367155319266825.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/491142321259494.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/391243121256049.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/545560515269767.png">
 <meta property="article:published_time" content="2024-01-23T03:31:32.000Z">
-<meta property="article:modified_time" content="2024-01-23T04:09:11.036Z">
+<meta property="article:modified_time" content="2024-04-10T01:53:56.230Z">
 <meta property="article:author" content="吾铭子">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wumingzi.top/vx_images/113862122249687.png">
 
 
 <link rel="canonical" href="https://wumingzi.top/2024/01/23/%E6%9D%82%E9%A1%B9/">
@@ -139,7 +155,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9D%82%E9%A1%B9"><span class="nav-number">1.</span> <span class="nav-text">杂项</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-number">1.1.</span> <span class="nav-text">知识点</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9D%82%E9%A1%B9"><span class="nav-number">1.</span> <span class="nav-text">杂项</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A1%AC%E4%BB%B6"><span class="nav-number">1.1.</span> <span class="nav-text">硬件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%99%A8%E3%80%81C%E4%B8%8E%E5%86%85%E6%A0%B8"><span class="nav-number">1.2.</span> <span class="nav-text">编译器、C与内核</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GNU%E5%B7%A5%E5%85%B7%E9%93%BE"><span class="nav-number">1.2.1.</span> <span class="nav-text">GNU工具链</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GCC%E7%89%B9%E6%80%A7"><span class="nav-number">1.2.2.</span> <span class="nav-text">GCC特性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E4%BD%93%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">结构体初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%AD%E5%8F%A5%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">语句表达式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%93%BE%E6%8E%A5"><span class="nav-number">1.2.3.</span> <span class="nav-text">链接</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">静态链接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">动态链接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A3%85%E8%BD%BD%E6%97%B6%E9%87%8D%E5%AE%9A%E4%BD%8D%E5%92%8C%E5%9C%B0%E5%9D%80%E6%97%A0%E5%85%B3%E7%A0%81"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">装载时重定位和地址无关码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%BA%E5%BC%B1%E7%AC%A6%E5%8F%B7"><span class="nav-number">1.2.3.4.</span> <span class="nav-text">强弱符号</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux%E4%B8%AD%E7%9A%84OOP"><span class="nav-number">1.2.4.</span> <span class="nav-text">Linux中的OOP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%81%E8%A3%85"><span class="nav-number">1.2.5.</span> <span class="nav-text">封装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#alias"><span class="nav-number">1.2.6.</span> <span class="nav-text">alias</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#typeof"><span class="nav-number">1.2.7.</span> <span class="nav-text">typeof</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#container-of-%E5%AE%8F%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.2.8.</span> <span class="nav-text">container_of 宏实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E6%A0%B8%E4%B8%AD%E7%9A%84%E7%AC%A6%E5%8F%B7%E5%AF%BC%E5%87%BAEXPORT-SYMBOL"><span class="nav-number">1.2.9.</span> <span class="nav-text">内核中的符号导出EXPORT_SYMBOL()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VDSO"><span class="nav-number">1.2.10.</span> <span class="nav-text">VDSO</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%B7%B1%E7%9A%84printf"><span class="nav-number">1.2.11.</span> <span class="nav-text">自己的printf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#arm%E6%B1%87%E7%BC%96"><span class="nav-number">1.2.12.</span> <span class="nav-text">arm汇编</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%87%E5%87%86%E6%8C%87%E4%BB%A4"><span class="nav-number">1.2.12.1.</span> <span class="nav-text">标准指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%AA%E6%8C%87%E4%BB%A4"><span class="nav-number">1.2.12.2.</span> <span class="nav-text">伪指令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%BB%BA%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.13.</span> <span class="nav-text">内建函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#builtin-expect-exp-c"><span class="nav-number">1.2.13.1.</span> <span class="nav-text">__builtin_expect(exp,c)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%85%E6%A0%B8%E4%B8%AD%E7%9A%84-likely-%E5%92%8C-unlikely"><span class="nav-number">1.2.13.2.</span> <span class="nav-text">内核中的 likely 和 unlikely</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E6%A0%B8%E4%B8%AD%E7%9A%84%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.14.</span> <span class="nav-text">内核中的内联函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8EKeil%E7%BC%96%E8%AF%91%E5%90%8E%E7%9A%84%E6%96%87%E4%BB%B6"><span class="nav-number">1.2.15.</span> <span class="nav-text">对于Keil编译后的文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E6%96%87%E4%BB%B6%E4%B8%8E%E8%BF%90%E8%A1%8C%E6%96%87%E4%BB%B6"><span class="nav-number">1.2.16.</span> <span class="nav-text">程序文件与运行文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%88%E7%9B%B8%E5%85%B3"><span class="nav-number">1.2.17.</span> <span class="nav-text">栈相关</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%88%E5%A4%A7%E5%B0%8F"><span class="nav-number">1.2.17.1.</span> <span class="nav-text">栈大小</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E6%A0%88%E4%B8%8E%E8%BF%9B%E7%A8%8B%E6%A0%88"><span class="nav-number">1.2.17.2.</span> <span class="nav-text">函数栈与进程栈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%85%E6%A0%B8%E6%A0%88%E4%B8%8E%E7%94%A8%E6%88%B7%E6%A0%88"><span class="nav-number">1.2.17.3.</span> <span class="nav-text">内核栈与用户栈</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%AD%E6%96%AD%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.18.</span> <span class="nav-text">中断函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1"><span class="nav-number">1.2.19.</span> <span class="nav-text">进程间通信</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%EF%BC%8C%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%8D%8F%E7%A8%8B"><span class="nav-number">1.2.20.</span> <span class="nav-text">进程，线程与协程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ATPCS%E8%A7%84%E5%88%99"><span class="nav-number">1.2.21.</span> <span class="nav-text">ATPCS规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E4%B8%8E%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-number">1.2.22.</span> <span class="nav-text">生命周期与作用域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%8C%E6%BA%A2%E5%87%BA%EF%BC%8C%E8%AF%BB%E5%8F%96%E4%B8%8E%E5%AF%B9%E9%BD%90"><span class="nav-number">1.2.23.</span> <span class="nav-text">数据存储，溢出，读取与对齐</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A3%B0%E6%98%8E%E4%B8%8E%E5%BC%95%E7%94%A8"><span class="nav-number">1.2.24.</span> <span class="nav-text">声明与引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E9%92%88%E4%B8%8E%E6%95%B0%E7%BB%84"><span class="nav-number">1.2.25.</span> <span class="nav-text">指针与数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E7%A8%8B%E4%B9%A0%E6%83%AF"><span class="nav-number">1.2.26.</span> <span class="nav-text">编程习惯</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A5%BD%E7%94%A8%E7%9A%84%E5%B7%A5%E5%85%B7"><span class="nav-number">1.2.27.</span> <span class="nav-text">好用的工具</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E5%B7%A5%E5%85%B7"><span class="nav-number">1.2.27.1.</span> <span class="nav-text">内存工具</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="nav-number">1.3.</span> <span class="nav-text">体系结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#microcode"><span class="nav-number">1.3.1.</span> <span class="nav-text">microcode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81%E6%B0%B4%E7%BA%BF%E5%86%92%E9%99%A9"><span class="nav-number">1.3.2.</span> <span class="nav-text">流水线冒险</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%94%AF%E9%A2%84%E6%B5%8B"><span class="nav-number">1.3.3.</span> <span class="nav-text">分支预测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B9%B1%E5%BA%8F%E6%89%A7%E8%A1%8C"><span class="nav-number">1.3.4.</span> <span class="nav-text">乱序执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%8F%91%E5%B0%84"><span class="nav-number">1.3.5.</span> <span class="nav-text">多发射</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BA%BF"><span class="nav-number">1.3.6.</span> <span class="nav-text">总线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#arm%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%AF%84%E5%AD%98%E5%99%A8"><span class="nav-number">1.3.7.</span> <span class="nav-text">arm工作模式与寄存器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B6%85%E7%BA%BF%E7%A8%8B%E6%8A%80%E6%9C%AF"><span class="nav-number">1.3.8.</span> <span class="nav-text">超线程技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F"><span class="nav-number">1.3.9.</span> <span class="nav-text">启动方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AF%E8%AF%AD"><span class="nav-number">1.4.</span> <span class="nav-text">术语</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -152,7 +168,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -229,9 +245,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2024-01-23 11:31:32 / 修改时间：12:09:11" itemprop="dateCreated datePublished" datetime="2024-01-23T11:31:32+08:00">2024-01-23</time>
+      <time title="创建时间：2024-01-23 11:31:32" itemprop="dateCreated datePublished" datetime="2024-01-23T11:31:32+08:00">2024-01-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-04-10 09:53:56" itemprop="dateModified" datetime="2024-04-10T09:53:56+08:00">2024-04-10</time>
     </span>
 
   
@@ -244,14 +266,322 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="杂项"><a href="#杂项" class="headerlink" title="杂项"></a>杂项</h1><h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><p>SOC: system on chip<br>电机会有死区电压，表现为电压很低时电机不能启动，死区电压约占额定电压的10%，此时需要给一PWM占空比最小值从而避免死区电压  </p>
+        <h1 id="杂项"><a href="#杂项" class="headerlink" title="杂项"></a>杂项</h1><h2 id="硬件"><a href="#硬件" class="headerlink" title="硬件"></a>硬件</h2><p>SOC: system on chip<br>电机会有死区电压，表现为电压很低时电机不能启动，死区电压约占额定电压的10%，此时需要给一PWM占空比最小值从而避免死区电压  </p>
 <span id="more"></span>
 
-<p>![2023-12-20_22-20](vx_images&#x2F;113862122249687.png &#x3D;600x)<br>处于三相电PWM调功率中的开关器件(如IGBT)，换相时为防止三相电任意上半桥和下半桥同时开启导致短路，我们要给死区时间，一般会占整个周期的百分之几，但当PWM占空比极小时，死区时间就会产生很大影响，最终影响输出纹波  </p>
+<p><img src="/vx_images/113862122249687.png" alt="2023-12-20_22-20"><br>处于三相电PWM调功率中的开关器件(如IGBT)，换相时为防止三相电任意上半桥和下半桥同时开启导致短路，我们要给死区时间，一般会占整个周期的百分之几，但当PWM占空比极小时，死区时间就会产生很大影响，最终影响输出纹波  </p>
 <p>常量保存在Flash里，全局初始化非零的变量保存在SRAM的.data段内，静态变量或者全局初始化为零的变量保存在.bss段内，函数和函数内的局部变量保存在栈上  </p>
 <p>尽量把数据保存在栈上，这样防止产生内存安全问题，并且栈上访问数据速度更快(数据局部性原理？)<br>栈是从高地址向低地址增长，堆是从低地址向高地址增长  </p>
+<p><img src="/vx_images/326561215267371.png" alt="2024-04-09_15-12"></p>
+<p><img src="/vx_images/321153610251887.png" alt="2024-04-09_10-34"></p>
 <p>操作Flash前需要关中断  </p>
 <p>计算机底层是小端存储的原因是在C程序员眼里，小端更符合直觉，在不定长的int，char中可以相互转换而不改变变量值(变量长度小于int、char最小值的情况下)，但是对于传输协议来说，大部分为定长字段传输，这就造成了大端存储更符合从左至右的阅读习惯</p>
+<h2 id="编译器、C与内核"><a href="#编译器、C与内核" class="headerlink" title="编译器、C与内核"></a>编译器、C与内核</h2><h3 id="GNU工具链"><a href="#GNU工具链" class="headerlink" title="GNU工具链"></a>GNU工具链</h3><p>GNU工具集：binutils tools，其中包括</p>
+<ul>
+<li>readelf：查看二进制文件的各个段的信息</li>
+<li>objdump：2进制转16进制，常用于反汇编，当然也可以用来查看文件信息</li>
+<li>objcopy：段的复制</li>
+</ul>
+<h3 id="GCC特性"><a href="#GCC特性" class="headerlink" title="GCC特性"></a>GCC特性</h3><h4 id="结构体初始化"><a href="#结构体初始化" class="headerlink" title="结构体初始化"></a>结构体初始化</h4><p>在Linux内核中会经常看到如下结构体初始化方式：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">file_operations</span> <span class="title">led_drv</span> =</span> &#123;</span><br><span class="line">	.owner	 = THIS_MODULE,</span><br><span class="line">	.open    = led_drv_open,</span><br><span class="line">	.read    = led_drv_read,</span><br><span class="line">	.write   = led_drv_write,</span><br><span class="line">	.release = led_drv_close,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>这里利用了GCC编译器的特性，即采用结构体位域的注册方式，当一个结构体有许多成员时这样注册可以避免普通的结构体注册时将所有成员都注册一遍，那样的话注册<code>file_operations</code>就太繁琐了</p>
+<h4 id="语句表达式"><a href="#语句表达式" class="headerlink" title="语句表达式"></a>语句表达式</h4><p>({ &#x2F;* do something *&#x2F; })：语句表达式，其值等于最后一行代码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MAX(X,Y) (&#123;\</span></span><br><span class="line"><span class="meta">int x=X;\</span></span><br><span class="line"><span class="meta">int y=Y;\</span></span><br><span class="line"><span class="meta">x&gt;y?x:y;&#125;)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h3><p>链接过程包括：地址和空间分配，符号决议和重定位<br>编译阶段时，具体的函数，变量地址并未确定，每个需要重定位的地方称为重定位入口，因此还需要链接器在链接阶段进行变量，函数的重定位，这样就可以获得程序的加载地址了</p>
+<p>产生的.bss段在文件中并不占用空间，.bss只声明运行程序需要</p>
+<p><img src="/vx_images/282042521240360.png" alt="2024-03-19_21-25"></p>
+<p>编译产生的文件被称为目标文件，其包括可执行文件(linux的elf，或者unix的out)，动态链接库文件以及静态链接库(这两位也是可执行文件<strong>格式</strong>存储的)</p>
+<p>.comment保存的是编译器和系统版本信息，这些信息也是只读的</p>
+<p>符号表的段：.symtab</p>
+<p>链接时最后的exit()函数负责清理收尾工作，如果要自己重定位main函数入口的话，那么在程序最后就不能使用main了，否则会导致段错误</p>
+<p>section header table位于文件最后，它记录了各个段的段名，段大小，偏移值等，可以用readelf或objdump来查看</p>
+<h4 id="静态链接"><a href="#静态链接" class="headerlink" title="静态链接"></a>静态链接</h4><p>静态链接重定位过程:</p>
+<ul>
+<li>静态链接时，由于各个目标文件的各个段需要合并，因此在合并时需要对一些地址操作进行重定位。需要被重定位的代码被统一放在.rel.text段内，而需要被重定向的数据则需要被放在.rel.data段内，这两段也被称为重定位表。重定位时，在分配好目标文件的空间后，编译器会计算PC与需要重定位的数据或指令的地址偏移量，将计算的结果写入到重定位表后就可以找到对应的数据和进行地址操作了。</li>
+<li>在链接时还需要进强弱符号裁决，这时需要将弱符号放入COMMON块内，这个段放的是未知大小的数据。由于弱符号是声明但未初始化的符号，因此需要放入COMMON块内。当裁决完毕后，所有符号的大小都被确定了，这时放入COMMON块的如果是未初始化全局变量的弱符号，那么此时就会放入bss段</li>
+</ul>
+<p>在编译C++代码时，还需要做好重复代码消除和构造与析构的操作，在使用模板，虚函数表或者重载时会产生前者的问题，解决办法是在函数&#x2F;模板名后加_参数类型来避免符号重名。对于构造与析构解决的方法是是加入.init与.fini段，这两个段里的代码会分别在main函数前后阶段执行</p>
+<p>elf文件加载过程：<br>对于静态链接，OS首先调用fork来开辟一个新进程，然后使用execve来调用sys_execve，最后调用do_execve来进行elf文件的装载，下面是do_execve做的事</p>
+<ul>
+<li>装载之前要判断elf文件前的魔数从而获得文件格式(待加载文件也有可能是#!开头的脚本文件)</li>
+<li>对elf文件各段映射到内存中</li>
+<li>初始化可执行文件的环境(调用.init和文件开头的若干参数)，</li>
+<li>对于静态链接器来说，需要找到e_entry段从而获得可执行文件入口。对于动态链接来说，需要寻找动态链接.interp段从而找到动态链接器的路径<br>这样当从do_execve函数返回时就得到了elf文件的入口</li>
+</ul>
+<h4 id="动态链接"><a href="#动态链接" class="headerlink" title="动态链接"></a>动态链接</h4><p>动态链接实际上是把链接过程从装载前推迟到了装载时</p>
+<p>动态链接特点：</p>
+<ul>
+<li>优点<ul>
+<li>占用空间小，支持cow</li>
+<li>可以动态加载程序，这使得程序编写可以模块化，插件化，对于大型工程来说，这使得不同的子模块分别使用不同的语言成为可能</li>
+<li>方便程序进行更新升级</li>
+</ul>
+</li>
+<li>缺点        <ul>
+<li>由于每次运行程序都需要重新链接，因此程序性能受到损失，但是可以通过各种优化使得性能损失减少(优化后总损失约5%)</li>
+</ul>
+</li>
+</ul>
+<p>动态加载程序的地址空间中不仅有程序本身，还有依赖的其他动态库，C语言运行库(libc.so)以及动态链接器(ld-2.6.1.so)</p>
+<p>有趣的是真正的动态链接器位于内核，每个进程里的动态链接器是个软链接  ，而动态链接器本身是以静态链接的方式加载的</p>
+<p>静态链接时的重定位称为链接时重定位，动态链接时重定位称为装载时重定位，也被称为基址重置(Rebasing)</p>
+<h4 id="装载时重定位和地址无关码"><a href="#装载时重定位和地址无关码" class="headerlink" title="装载时重定位和地址无关码"></a>装载时重定位和地址无关码</h4><p>为了实现<strong>代码之间</strong>的地址无关，即多个进程可以使用同一份内存中的代码(这会造成装载和指令取址的问题)，我们可以通过装载时重定位和地址无关码来解决</p>
+<p>动态链接时代码装载时各个指令的地址无法确定，这样会给取指造成一定的困难，动态链接的解决办法是装载时才确定具体的指令地址</p>
+<ul>
+<li>装载时重定位：类似于静态链接时的重定位功能，但简单很多。因为装载时不需要考虑像编译阶段那样代码行数和地址操作的改变，因此程序是整段加载进内存的。所以只需要在地址上统一加上装载时的偏移即可</li>
+</ul>
+<p>装载时重定位只考虑了指令和变量的地址安排，但指令具体的地址操作就无能为力了。比如想要取0x80002000地址，对于静态链接这是链接阶段就写好的，而一旦这个地址规定好就只能给一个进程使用了。动态链接的解决办法是让代码段里的代码与地址无关</p>
+<ul>
+<li>地址无关码(PIC，Position-independent Code)：既然有的代码是与进程本身相关的，那么把这些代码分离出来的话剩下的代码不就与进程无关了么？这样就可以在进程中共享代码了。分离出来的代码放在哪？既然这部分代码与各自进程相关，那就放在对应进程的数据段。因此，在数据段中又分离出了一个新的段(.got，Global Offset Table)，这个段内放置了一个指向地址相关符号的数组，只要对里面元素进行解引用就可以找到符号地址了，这时操作由地址相关转化为地址无关(.got及其内部符号的位置是编译器规定的且知晓的)。.got不仅可以保存本进程的地址相关码，也可以保存其他进程的地址相关码，这样就可以共享全局变量和函数了</li>
+</ul>
+<p>由于动态链接会有一定的性能损失，这主要由工程内的大量函数引起(因为全局变量会增加模块耦合度，用的很少)，所以想办法降低模块的函数重定位消耗即可，因此我们还需要在PIC上做一定的改进</p>
+<ul>
+<li>延迟绑定(PLT，Procedure Linkage Table)：本质上是在调用函数时才进行重定位和绑定。plt较为复杂，首先它有两个段.rel.plt与.plt，前者本质是个数据段，用于plt的重定向，里面放置了需要重定向的各种符号，.plt段本质是个代码段，用于检测符号是否初始化完成以及跳转到.got段。延迟绑定的过程如下：<ul>
+<li>程序需要调用函数时需要在.plt段内判断是否被初始化<ul>
+<li>若未被初始化则需要执行汇编操作，从.rel.plt中获得符号地址并绑定，具体的绑定结果放入.got段内(具体操作也是在.plt段内执行的)</li>
+<li>若已经初始化则跳转到.got段内执行相关函数</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>程序加载后映射时如何使得内存占用最小</p>
+<ul>
+<li>无论是动态加载还是静态加载，为了使得内存占用最小。unix将各个段的接壤处不做分割处理，仍然位于同一页，但是在映射到虚拟内存的过程中会被映射两次</li>
+</ul>
+<p>内核模块文件.ko本质上也是动态加载的可重定位目标文件，与普通文件的区别是.ko文件运行在内核空间</p>
+<h4 id="强弱符号"><a href="#强弱符号" class="headerlink" title="强弱符号"></a>强弱符号</h4><p><a target="_blank" rel="noopener" href="https://www.zhaixue.cc/c-arm/c-arm-weak-attribute.html">宅学部落</a></p>
+<p>在一个程序中，无论是变量名，还是函数名，在编译器的眼里，就是一个符号而已。符号可以分为强符号和弱符号</p>
+<ul>
+<li>强符号：函数名、初始化的全局变量名，如int i&#x3D;10</li>
+<li>弱符号：未初始化的全局变量名，如int i</li>
+</ul>
+<p>对于同名强符号，链接阶段时会被报重定义错误，若强弱符号重名，编译器会优先选择强符号。若弱符号未被定义，则会被编译器初始化为0或NULL，因此此时的程序可以过编译链接，但是在运行时可能会得到不正确的结果或段错误</p>
+<p>GNU C 通过 __atttribute__ 声明weak属性，可以将一个强符号转换为弱符号</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span>  __attribute__((weak))  func(<span class="type">void</span>);</span><br><span class="line"><span class="type">int</span>  num  __attribte__((weak);</span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li>编译阶段：编译器以源文件为单位，将每一个源文件编译为一个 .o 后缀的目标文件。每一个目标文件由代码段、数据段、符号表等组成</li>
+<li>链接阶段：链接器将各个目标文件组装成一个大目标文件。链接器将各个目标文件中的代码段组装在一起，组成一个大的代码段；各个数据段组装在一起，组成一个大的数据段；各个符号表也会集中在一起，组成一个大的符号表。最后再将合并后的代码段、数据段、符号表等组合成一个大的目标文件</li>
+<li>重定位：因为各个目标文件重新组装，各个目标文件中的变量、函数的地址都发生了变化，所以要重新修正这些函数、变量的地址，这个过程称为重定位</li>
+</ul>
+<p>重定位结束后，就生成了可以在机器上运行的可执行程序</p>
+<p>最早的编译器为了支持汇编语言和C的程序可以互相调用，规定了C语言符号前加“_”来避免与汇编语句重名。现代的GCC抛弃了这种做法，但是msvc却保留了。为了支持C++的重载，命名空间不同时支持同名函数的功能，编译器利用了函数名，参数列表和命名空间名称一起修饰符号，从而获得新的符号名</p>
+<h3 id="Linux中的OOP"><a href="#Linux中的OOP" class="headerlink" title="Linux中的OOP"></a>Linux中的OOP</h3><p>为了最大化实现代码复用和分层分离思想，我们可以采用OOP方法</p>
+<h3 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h3><p>对于设备树来说，为了统一管理成千上万种设备，内核采用了OOP的思想：</p>
+<ul>
+<li>首先从所有设备中抽离出kobject对象，这个对象代表了任意一个设备，若干个设备被集合为同一种并被kset对象进行管理，下图中&#x2F;sys目录下的每一种设备都是kset。因此对于sysfs子系统(也就是&#x2F;sys目录)来说他有若干个kset组成<br><img src="/vx_images/353604816258874.png" alt="2024-04-07_16-47"></li>
+</ul>
+<p><img src="/vx_images/597195016246741.png" alt="2024-04-07_16-50">  </p>
+<ul>
+<li>之后device结构体又对kobject进行了封装，但是在封装的过程中又引入了bus_type，device_driver等特性来支持总线设备驱动模型，这完美体现了OOP思想</li>
+</ul>
+<p><img src="/vx_images/538480117266907.png" alt="2024-04-07_17-01"></p>
+<ul>
+<li>device只是对总线设备驱动模型的一次封装，对于具体的设备类型我们还需要再次封装来实例化device对象，例如对于USB设备驱动来说它有USB状态，速度等特性，因此有了下面的结构体</li>
+</ul>
+<p><img src="/vx_images/225970417259576.png" alt="2024-04-07_17-03">  </p>
+<p>总结：<br><img src="/vx_images/587770417256131.png" alt="2024-04-07_17-04"></p>
+<h3 id="alias"><a href="#alias" class="headerlink" title="alias"></a>alias</h3><p>GNU C 扩展了一个 alias 属性，这个属性很简单，主要用来给函数定义一个别名</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __f(<span class="type">void</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;__f\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">f</span><span class="params">()</span> __<span class="title function_">attribute__</span><span class="params">((alias(<span class="string">&quot;__f&quot;</span>)))</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    f();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__f</span><br></pre></td></tr></table></figure>
+
+<h3 id="typeof"><a href="#typeof" class="headerlink" title="typeof"></a>typeof</h3><p>GNU C 扩展了一个关键字 typeof，用来获取一个变量或表达式的类型</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> i = <span class="number">2</span>;</span><br><span class="line">    typeof(i) k = <span class="number">6</span>;</span><br><span class="line">    <span class="type">int</span> *p = &amp;k;</span><br><span class="line">    typeof(p) q = &amp;i;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;k = %d\n&quot;</span>, k);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;*p= %d\n&quot;</span>, *p);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;i = %d\n&quot;</span> ,i);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;*q= %d\n&quot;</span>, *q);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">k  = <span class="number">6</span></span><br><span class="line">*p = <span class="number">6</span></span><br><span class="line">i  = <span class="number">2</span></span><br><span class="line">*q = <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>有了typeof后就可以进行“泛型”编程了(虽然C标准不支持泛型)</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//swap支持多种类型的a,b进行交换</span></span><br><span class="line">    <span class="meta">#<span class="keyword">define</span> swap(a, b) \</span></span><br><span class="line"><span class="meta">    do &#123;               \</span></span><br><span class="line"><span class="meta">        typeof(a) __tmp = (a);  \</span></span><br><span class="line"><span class="meta">        (a) = (b);         \</span></span><br><span class="line"><span class="meta">        (b) = __tmp; \</span></span><br><span class="line"><span class="meta">    &#125; while (0)</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">//内核中的typeof应用</span></span><br><span class="line">    <span class="meta">#<span class="keyword">define</span> min(x, y) (&#123;                \</span></span><br><span class="line"><span class="meta">        typeof(x) _min1 = (x);          \</span></span><br><span class="line"><span class="meta">        typeof(y) _min2 = (y);          \</span></span><br><span class="line"><span class="meta">        <span class="comment">//这里的&amp;_min1 == &amp;_min2两个地址进行比较的意思是：两个指针能够进行比较的前提是类型相同，类型不同的指针进行比较会报需要类型转换的warning，这样就可以通过比较操作来判断出入的参数类型是否相同了           \</span></span></span><br><span class="line"><span class="comment"><span class="meta">        (void) (&amp;_min1 == &amp;_min2);      \</span></span></span><br><span class="line"><span class="comment"><span class="meta">        _min1 &lt; _min2 ? _min1 : _min2; &#125;)</span></span></span><br><span class="line">        </span><br><span class="line">    <span class="meta">#<span class="keyword">define</span> max(x, y) (&#123;                \</span></span><br><span class="line"><span class="meta">        typeof(x) _max1 = (x);          \</span></span><br><span class="line"><span class="meta">        typeof(y) _max2 = (y);          \</span></span><br><span class="line"><span class="meta">        (void) (&amp;_max1 == &amp;_max2);      \</span></span><br><span class="line"><span class="meta">        _max1 &gt; _max2 ? _max1 : _max2; &#125;)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="container-of-宏实现"><a href="#container-of-宏实现" class="headerlink" title="container_of 宏实现"></a>container_of 宏实现</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> offsetof(TYPE, MEMBER) ((size_t) &amp;((TYPE *)0)-&gt;MEMBER)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span>  container_of(ptr, type, member) (&#123;    \</span></span><br><span class="line"><span class="meta">         const typeof( ((type *)0)-&gt;member ) *__mptr = (ptr); \</span></span><br><span class="line"><span class="meta">         (type *)( (char *)__mptr - offsetof(type,member) );&#125;)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="内核中的符号导出EXPORT-SYMBOL"><a href="#内核中的符号导出EXPORT-SYMBOL" class="headerlink" title="内核中的符号导出EXPORT_SYMBOL()"></a>内核中的符号导出EXPORT_SYMBOL()</h3><p>本质上是通过将符号单独放入一个段内来导出，并在导出的过程中使用__visible保持目标在当前编译文件中可见<br><a target="_blank" rel="noopener" href="https://medium.com/@boutnaru/the-linux-kernel-macro-journey-visable-a03f7ba273b3">The Linux Kernel Macro Journey — __visible</a></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> __EXPORT_SYMBOL(sym, sec)				\</span></span><br><span class="line"><span class="meta">	extern typeof(sym) sym;					\</span></span><br><span class="line"><span class="meta">	__CRC_SYMBOL(sym, sec)					\</span></span><br><span class="line"><span class="meta">	static const char __kstrtab_##sym[]			\</span></span><br><span class="line"><span class="meta">	__attribute__((section(<span class="string">&quot;__ksymtab_strings&quot;</span>), aligned(1))) \</span></span><br><span class="line"><span class="meta">	= VMLINUX_SYMBOL_STR(sym);				\</span></span><br><span class="line"><span class="meta">	extern const struct kernel_symbol __ksymtab_##sym;	\</span></span><br><span class="line"><span class="meta">	__visible const struct kernel_symbol __ksymtab_##sym	\</span></span><br><span class="line"><span class="meta">	__used							\</span></span><br><span class="line"><span class="meta">	__attribute__((section(<span class="string">&quot;___ksymtab&quot;</span> sec <span class="string">&quot;+&quot;</span> #sym), unused))	\</span></span><br><span class="line"><span class="meta">	= &#123; (unsigned long)&amp;sym, __kstrtab_##sym &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> EXPORT_SYMBOL(sym)					\</span></span><br><span class="line"><span class="meta">	__EXPORT_SYMBOL(sym, <span class="string">&quot;&quot;</span>)</span></span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/iriczhao/p/15493106.html">linux 内核中EXPORT_SYMBOL（）分析与实践</a></p>
+<h3 id="VDSO"><a href="#VDSO" class="headerlink" title="VDSO"></a>VDSO</h3><p>vdso(Virtual Dynamic Shared Object)，其本质是个.so文件<br>发展历程：当APP想要触发软件中断时intel平台会触发sysenter，而AMD也会提供自己的指令，但是这些指令与内核int80中断在实现上有很大区别，为了弥合这些差异，LInux推出了vsyscall机制，其本质是对上面指令的二次封装。但是由于vsyscall采用了固定加载的方式产生了安全的问题。因此Linux又进一步将vsyscall变为了动态加载的.so文件。至此，经常触发系统调用的gettimeofday()，time()和getcpu()不仅解决了兼容性的问题，在后期还解决了int80中断性能低下的问题<br>vdso的出现还解决了glibc发的问题，早期的glibc不仅要支持linux各版本还要支持bsd，hurd等os。glibc和linux两个项目都需要进行协调，这在linux内核发行版兼容性上产生了很大的问题，为此linux允许将glibc这个项目作为内核的一部分发行，但运行时为了防止内核膨胀禁止其运行在内核空间。这样，在磁盘中并没有单独的glibc项目(因为已经随内核发行而被隐藏在内核内部了)，在运行时glibc为了避免内核膨胀而运行在用户态，同时glibc又管理着众多APP，因此glibc被加入了vdso使其在系统运行时就自动加载进用户空间</p>
+<h3 id="自己的printf"><a href="#自己的printf" class="headerlink" title="自己的printf"></a>自己的printf</h3><p>使用自己的printf可以方便的通过宏开关来设置是否打印调试信息<br><a target="_blank" rel="noopener" href="https://www.zhaixue.cc/c-arm/c-arm-format.html">宅学部落</a></p>
+<h3 id="arm汇编"><a href="#arm汇编" class="headerlink" title="arm汇编"></a>arm汇编</h3><h4 id="标准指令"><a href="#标准指令" class="headerlink" title="标准指令"></a>标准指令</h4><p>B指令：无条件跳转，常用B LOOP代表跳转到LOOP，跳转范围32MB<br>BEQ：两个值相等时跳转<br>BNE：两个值不相等时跳转<br>BL：带链接的跳转，跳转时会保存下一条指令到LR</p>
+<p>C语言中的指针操作，在汇编层次其实就是使用寄存器间接寻址实现的，即将寄存器中的值作为地址去访问内存</p>
+<p>寄存器和内存之间传送指令使用LDR&#x2F;STR，寄存器之间传送指令使用MOV</p>
+<h4 id="伪指令"><a href="#伪指令" class="headerlink" title="伪指令"></a>伪指令</h4><p>伪指令不是arm指令集中定义的标准指令，而是编译器厂商自定义的辅助指令</p>
+<p>LDR伪指令：LDR R0，&#x3D;0x80002000<br>由于arm指令操作码与操作数共享32位空间，操作码会挤压操作数的寻址空间，因而需要单独的伪指令来完成这一步骤，为了和arm本身的LDR指令区分开，LDR伪指令会在操作数前加“&#x3D;”。因此LDR指令支持4GB寻址</p>
+<h3 id="内建函数"><a href="#内建函数" class="headerlink" title="内建函数"></a>内建函数</h3><p>内建函数，顾名思义，就是编译器内部实现的函数。这些函数跟关键字一样，可以直接使用，无须像标准库函数那样，要 #include 对应的头文件才能使用</p>
+<p>内建函数的函数命名，通常以 __builtin 开头。这些函数主要在编译器内部使用，主要是为编译器服务的。内建函数的主要用途如下：</p>
+<ul>
+<li>用来处理变长参数列表；</li>
+<li>用来处理程序运行异常；</li>
+<li>程序的编译优化、性能优化；</li>
+<li>查看函数运行中的底层信息、堆栈信息等；</li>
+<li>C 标准库函数的内建版本</li>
+</ul>
+<h4 id="builtin-expect-exp-c"><a href="#builtin-expect-exp-c" class="headerlink" title="__builtin_expect(exp,c)"></a>__builtin_expect(exp,c)</h4><p>内建函数 __builtin_expect 也常常用来编译优化。这个函数有两个参数，返回值就是其中一个参数，仍是 exp。这个函数的意义主要就是告诉编译器：参数 exp 的值为 c 的可能性很大。然后编译器可能就会根据这个提示信息，做一些分支预测上的代码优化</p>
+<h4 id="内核中的-likely-和-unlikely"><a href="#内核中的-likely-和-unlikely" class="headerlink" title="内核中的 likely 和 unlikely"></a>内核中的 likely 和 unlikely</h4><p>likely与unlikely本质上是内建函数expect的应用</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> likely(x) __builtin_expect(!!(x),1)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> unlikely(x) __builtin_expect(!!(x),0)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="内核中的内联函数"><a href="#内核中的内联函数" class="headerlink" title="内核中的内联函数"></a>内核中的内联函数</h3><p>在内核中常见的内联函数定义位于头文件中，这时我们可能会有一点疑惑：头文件如果包含定义的话，而包含头文件的源文件又是多个，这对于作用域是全局的函数来说是致命的，因此可能导致重定义错误</p>
+<ul>
+<li>那么为什么还要把内联函数放在头文件中？这是因为inline关键字只对定义有效，而对声明无效，要想其他文件能够引用内联函数就必须将其定义在头文件中</li>
+<li>那么怎么解决上述问题呢？为了防止重定义错误，我们只需要改变内联函数的作用范围就行了，因此我们可以加上关键字static。这就变成了我们在内核中经常看到的内联函数：<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> <span class="title function_">func</span><span class="params">(<span class="type">int</span>, <span class="type">int</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//func body</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="对于Keil编译后的文件"><a href="#对于Keil编译后的文件" class="headerlink" title="对于Keil编译后的文件"></a>对于Keil编译后的文件</h3><p>axf文件：包含调试信息<br>hex文件：包含地址信息<br>bin文件：最直接的代码映像</p>
+<h3 id="程序文件与运行文件"><a href="#程序文件与运行文件" class="headerlink" title="程序文件与运行文件"></a>程序文件与运行文件</h3><p>程序文件的区域(在嵌入式领域存储于flash上)：</p>
+<ul>
+<li>代码区</li>
+<li>数据区</li>
+<li>常量区</li>
+</ul>
+<p>通过链接将各种.o文件链接为程序文件，链接过程中，各个程序文件的相同段被分配在一起并且还要给出在编译阶段时没有填充的虚拟地址，但在可执行文件中分配的.bss段不占用文件空间。bss虽然在可执行文件中不占用空间，但是我们依然可以使用readelf或者objdump来查看section header中.bss的大小，这也是程序<strong>运行时</strong>的bss段大小</p>
+<p>运行文件的区域(存储于ram上)：</p>
+<ul>
+<li>堆</li>
+<li>栈</li>
+<li>数据(.data&#x2F;.bss)</li>
+<li>代码</li>
+</ul>
+<p>程序文件加载到RAM时会被OS分配页表项(PTE)，使得OS和MMU分配的物理地址能够与进程虚拟地址相对应。还需要注意的是，在加载过程中，不同进程的相同段也会如程序文件那般被统一分配在一起</p>
+<p>因此为了能够在不同进程中相同的虚拟地址下访问不同的物理地址，OS是通过内核空间中不同进程的页表来访问的</p>
+<p>为了防止黑客获取程序信息，内核本身，堆，栈，mmap区在每次机器启动时都会相对其标准地址有一个偏移。在程序运行时，黑客可以通过利用内存溢出而覆盖LR的漏洞来跳转到自己的函数中，或者直接修改got表来达到自己目的</p>
+<h3 id="栈相关"><a href="#栈相关" class="headerlink" title="栈相关"></a>栈相关</h3><h4 id="栈大小"><a href="#栈大小" class="headerlink" title="栈大小"></a>栈大小</h4><p>Linux默认给每一个用户进程栈分配8MB大小的空间。栈的容量如果设置得过大，则会增加内存开销和启动时间；如果设置得过小，则程序超出栈设置的内存空间又容易发生栈溢出(Stack Overflow)，产生段错误，修改栈大小使用ulimit命令</p>
+<p>Linux内核栈大小是固定的，默认为8k</p>
+<h4 id="函数栈与进程栈"><a href="#函数栈与进程栈" class="headerlink" title="函数栈与进程栈"></a>函数栈与进程栈</h4><p>函数栈：保存了局部变量，函数参数，并预留一部分临时存储区<br>进程栈：保存了CPU寄存器，被打断的地址，任务现场。这是因为一个任务由多个函数构成，这些函数也会调用其他的函数，这一系列调用关系也就是一系列函数的栈帧组成了进程的栈</p>
+<h4 id="内核栈与用户栈"><a href="#内核栈与用户栈" class="headerlink" title="内核栈与用户栈"></a>内核栈与用户栈</h4><p>两者都是进程栈并且维护的都是函数调用关系的一系列栈帧。不同之处在于，用户态无法访问内核栈，因此需要在内核态开辟一块空间来存储内核态的函数的调用关系</p>
+<h3 id="中断函数"><a href="#中断函数" class="headerlink" title="中断函数"></a>中断函数</h3><p>因为中断函数返回时是恢复现场，中断函数返回地址、状态不确定，所以没有返回值。中断函数被调用的时间地点无法确定，因此不能给中断函数传参</p>
+<p>由于在中断中只保存了必要的寄存器，返回地址等少量数据，因此当在中断中访问其他区域的数据，如全局变量和静态变量时，程序的行为就会不可控。例如某些全局变量有锁，那么中断中访问这些变量的时间就不可确定，有可能造成中断丢失的现象。<br>为了解决上述问题，我们将中断分为可重入函数和不可重入函数，满足下列要求之一的就被称为不可重入函数：</p>
+<ul>
+<li>函数内部使用了全局变量或静态局部变量。</li>
+<li>函数返回值是一个全局变量或静态变量。</li>
+<li>函数内部调用了malloc()&#x2F;free()函数。</li>
+<li>函数内部使用了标准I&#x2F;O函数。</li>
+<li>函数内部调用了其他不可重入函数。<br>值得注意的是，不可重入函数只在中断环境中才有讨论的意义。可我们在中断中总要使用全局变量的，那有什么解决办法？我们可以对全局变量加锁，或者更为粗暴的关中断来实现但是代价会很大(不能相应其他中断)。了解这些后对于为甚恶魔不能在中断中使用malloc和就好理解了，malloc要维护一个全局的brk指针，这个指针是由glibc库中。而更何况malloc是耗时操作。虽然malloc是不可重入的，但是在不同线程中他是安全的，这一意味着malloc可以在多线程环境下使用，因此他是多线程安全的。对于标准IO函数来说来说，它不仅要维护相关的全局变量，同时也是耗时操作外。他更有可能在中断中获取文件锁，这就有可能造成死锁<br>从上面的结论可知，可重入函数一定是线程安全的，但是线程安全的不一定是可重入函数</li>
+</ul>
+<h3 id="进程间通信"><a href="#进程间通信" class="headerlink" title="进程间通信"></a>进程间通信</h3><p>对于不同进程间的通信，Linux有以下工具可以使用：</p>
+<ul>
+<li>无名管道:只能用于具有亲缘关系的进程之间的通信。</li>
+<li>有名管道:任意两进程间通信。</li>
+<li>信号量:进程间同步,包括system V信号量、POSIX信号量。</li>
+<li>消息队列:数据传输,包括system V消息队列、POSIX消息队列。</li>
+<li>共享内存:数据传输,包括system V共享内存、POSIX共享内存。</li>
+<li>信号:主要用于进程间的异步通信。</li>
+<li>Linux新增API:signalfd、timerfd、eventfd。</li>
+<li>Socket:套接字缓冲区,不同主机不同进程之间的通信。</li>
+<li>D-BUS:主要用于桌面应用程序之间的通信。</li>
+</ul>
+<h3 id="进程，线程与协程"><a href="#进程，线程与协程" class="headerlink" title="进程，线程与协程"></a>进程，线程与协程</h3><p>前两者不必多说，接下来主要介绍线程池和协程</p>
+<p>在一些频繁创建销毁线程的场景中，我们会产生额外的开销。而线程池就是为解决这一问题诞生的。<br>一个线程池会首先创建很多线程，这些线程统一由管理线程的模块管理。当线程无任务时会被阻塞在线程池中，有任务时就会被调度器调度。这样我们就可以减少创建和销毁线程的开销了</p>
+<p>虽然线程池技术极大的缓解了创建和销毁线程的开销，但是对于一些互联网开发领域，面对频繁，大量的互联网并发请求时，线程池就无能为力了。这就跟一家三口使用卫生间一样：如果每个人上厕所都要先申请锁，锁门，再开门，释放锁，时间久了会让人感觉很麻烦。一个更好的解决方法是上厕所时大家协商着来，这样就不用频繁地加锁、解锁了。<br>协程就是按照这个思路实现的，将对共享资源的访问交给程序本身维护和控制，不再使用锁对共享资源互斥访问，无调度开销，执行效率会更高。协程一般适用在彼此熟悉的合作式多任务中，上下文切换成本低，更适合高并发请求的应用场景。<br>从切换成本上看，进程的切换成本最大，协程 的切换成本最低。而从安全性上看，进程因为有内存管理保护反而最安全，一个进程崩溃了，操作系统会终止这个进程的运行，并不会影 响其他进程的正常运行，当然也不会影响到操作系统本身。 协程虽然上下文切换成本最低，但是也有缺陷，如无法利用多核CPU实现真正的并发。但这并不妨碍它在编程市场上的受欢迎程度，很多语言都开始支持使用协程编程：Python提供了yield&#x2F;send协程编程接口，从Python3.5开始又新增了async&#x2F;await接口。在C语言编程领域，虽然C语言本身并没有提供支持协程的机制，但目前市面上也有很多使用C&#x2F;C++实现的协程库，用户可以通过库接口函数去实现协程编程</p>
+<h3 id="ATPCS规则"><a href="#ATPCS规则" class="headerlink" title="ATPCS规则"></a>ATPCS规则</h3><p>ATPCS规则定义了子程序函数调用规则<br>子程序间要通过寄存器R0<del>R3(可记作a0</del>a3)传递参数，<strong>当参数个数大于4时，剩余的参数使用父函数的堆栈来传递</strong>，参数地址位于父函数的末尾，因此传递时采用FP寄存器向高地址偏移若干位来获得参数值</p>
+<ul>
+<li>子程序通过R0~R1返回结果</li>
+<li>子程序中使用R4<del>R11(可记作v1</del>v8)来保存局部变量</li>
+<li>R12作为调用过程中的临时寄存器，一般用来保存函数的栈帧基址，记作FP</li>
+<li>R13作为堆栈指针寄存器，一般记作SP</li>
+<li>R14作为链接寄存器，用来保存函数调用者的返回地址，记作LR</li>
+<li>R15作为程序计数器，总是指向当前正在取指的指令，记作PC</li>
+</ul>
+<h3 id="生命周期与作用域"><a href="#生命周期与作用域" class="headerlink" title="生命周期与作用域"></a>生命周期与作用域</h3><p>全局变量的作用域如下</p>
+<ul>
+<li>全局变量的作用域由文件来限定</li>
+<li>可使用extern进行扩展，被其他文件引用</li>
+<li>也可以使用static进行限制，只能在本文件中被引用</li>
+</ul>
+<p>局部变量的作用域如下。</p>
+<ul>
+<li>局部变量的作用域由{}限定</li>
+<li>可以使用static修饰局部变量来改变它们的存储属性(生命周期)，但不能改变其作用域</li>
+</ul>
+<h3 id="数据存储，溢出，读取与对齐"><a href="#数据存储，溢出，读取与对齐" class="headerlink" title="数据存储，溢出，读取与对齐"></a>数据存储，溢出，读取与对齐</h3><p>小端存储：低数据位在低地址</p>
+<p>内存中只有0和1，不区分符号位，是字符还是整型。只有等到使用printf解析时才会根据%来解析内存中的数据，根据不同的解析方式(%d，%u)会产生不同的结果</p>
+<p>对于无符号数，数据溢出会从0重新开始，对于有符号数溢出则会产生一个<strong>ub</strong></p>
+<p>结构体进行数据对齐时会按照结构体内数据类型的最大成员的对齐模数进行对齐，如果最大成员的对齐模数超过编译器的对齐模数的话就按照编译器的对齐模数来确定<strong>结构体整体的对齐模数</strong>。例如，对于GCC来说，对齐模数是4，即使结构体内部有double类型的数据，结构体整体也会按照4字节进行对齐。当结构体内嵌其他结构体来说对齐方式会按照内嵌结构体内部成员的最大对齐模数来对齐整个结构体。也就是说，对于普通的多层结构体来说，大概率对齐模数是8或者编译器规定的最大对齐模数</p>
+<p>size_t的一个优点是其大小并非是固定的，而是用来表征针对某平台的最大长度，因此它可以用来存储该平台地址或者开辟一个复制数据的变量而不担心溢出</p>
+<p>对于指针来说既然指针大小不会改变那为什么还要指定指针的类型呢？</p>
+<ul>
+<li>方便编译时编译器的类型检查</li>
+<li>不同类型指针的运算规则不一样</li>
+</ul>
+<h3 id="声明与引用"><a href="#声明与引用" class="headerlink" title="声明与引用"></a>声明与引用</h3><p>使用函数或者变量前必须声明，单文件编程时因为声明被定义和初始化代替了所以不需要考虑。但是当多文件编程时，如果没有声明而直接使用，编译器会自动在前面采用int类型进行声明，但这会造成隐式类型转换的问题</p>
+<p>extern用于声明其他文件的变量，这主要是为了编译阶段的类型，语法语义的检查。因此当需要extern一个结构体时，我们首先需要在extern前面定义这个结构体，否则编译器就没有类型检查的参考了(跨文件的将变量替换是在链接阶段干的事)</p>
+<p>前向引用：如果一个标识符在未声明完成之前，我们就对其引用，这被称为前向引用，一般的前向引用有如下特例：</p>
+<ul>
+<li>隐式声明(C99&#x2F;C11已被禁止)</li>
+<li>语句标号(goto标号)</li>
+<li>不完全类型</li>
+</ul>
+<p>对于一般的链表如</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">list_node</span>&#123;</span></span><br><span class="line">    <span class="type">int</span> val;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_node</span> *<span class="title">p</span>;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们会产生这样的疑问：为什么可以在list_node结构体未定义完全时就在其内部声明了一个指针变量？这是因为除了常见的对象类型和函数类型外还有一个不完全类型。常见的不完全类型如下</p>
+<ul>
+<li>void</li>
+<li>未知大小的数组，如int a[]</li>
+<li>未知内容的结构体或联合体类型，如上文中的链表</li>
+</ul>
+<p>当进行不完全类型的前向引用时(如链表)，我们一般只关注参数类型，而忽略其大小，值或者具体实现。这是因为作为不完全类型，虽然他们是不完全的，但是大小，值或者具体实现已经确定了，只是因为某些原因我们不能确定它的类型。例如void就是我们不能确定类型时所给出的暂时的空类型。对于链表这个例子来说，不完全类型的前向引用是个指针，这个指针的大小是完全可以确定的，我们使用的只是这个指针的类型，因此能通过编译。但当链表改为如下时就会编译报错，因为编译器并不知道这个不完全类型的大小</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">list_node</span>&#123;</span></span><br><span class="line">    <span class="type">int</span> val;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_node</span> <span class="title">node</span>;</span><span class="comment">//编译器没有办法知道list_node结构体的大小</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在xxx.c包含其本身库文件xxx.h是为了检查定义与声明的一致性，防止编程时粗心产生错误</p>
+<h3 id="指针与数组"><a href="#指针与数组" class="headerlink" title="指针与数组"></a>指针与数组</h3><p>两指针相减的结果以数据类型的长度为单位</p>
+<p>[]运算符是通过*来实现的，例如a[n]–&gt;*(a+n)</p>
+<p>数组名与指针的区别：</p>
+<ul>
+<li>指针与数组名的类型不同，对于int a[5]来说，它的类型是int (*) [5]</li>
+<li>数组名在不同场合有不同含义，当进行数组初始化时或者使用数组名和sizeof、取址运算<br>符&amp;结合使用时，数组名表示的是数组类型，此时与指针有本质不同。在其他情况下，数组名都是一个右值，表示数组首元素的地址，但是可以与间接访问运算符*构成一个左值表达式<br>，这时数组名就与指针很相似了</li>
+</ul>
+<h3 id="编程习惯"><a href="#编程习惯" class="headerlink" title="编程习惯"></a>编程习惯</h3><p>预防内存泄漏最好的方法就是：内存申请后及时地释放，两者要配对使用，内存释放后要及时将指针设置为NULL，使用内存指针前要进行非空判断</p>
+<p>宏定义时定义的内容使用小括号是个好习惯，这可以很大程度避免运算符号优先级，结合性与外部变量耦合的问题。当然，在定义中间变量时可以不用加小括号，因为这是宏定义的内部变量</p>
+<p>在内核进行宏定义时，我们会经常看到<code>do&#123;&#125;while(0)</code>的结构，这本质上是防止宏定义展开后与外部语句发生耦合，类似上一产生的bug。因此我们在这里需要的只有那个大括号，但是如果只使用大括号会造成语法错误(因为我们使用宏的时候会选择加分号)，这样宏展开后会在大括号末尾处加分号，虽然新的编译器会自动忽略分号但在老的编译器上就很可能报错</p>
+<h3 id="好用的工具"><a href="#好用的工具" class="headerlink" title="好用的工具"></a>好用的工具</h3><h4 id="内存工具"><a href="#内存工具" class="headerlink" title="内存工具"></a>内存工具</h4><p>内存泄漏检测：MTrace(linux系统自带)</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//mtrace.c</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;mcheck.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span> <span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    mtrace();<span class="comment">//开启跟踪</span></span><br><span class="line">    <span class="type">char</span> *p，*q;</span><br><span class="line">    p=(<span class="type">char</span> *)<span class="built_in">malloc</span>(<span class="number">8</span>);</span><br><span class="line">    q=(<span class="type">char</span> *)<span class="built_in">malloc</span>(<span class="number">8</span>);</span><br><span class="line">    <span class="built_in">strcpy</span>(p,“hello”);</span><br><span class="line">    <span class="built_in">strcpy</span>(q,“world”);</span><br><span class="line">    <span class="built_in">free</span>(p);</span><br><span class="line">    muntrace();<span class="comment">//关闭跟踪</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>之后就可以通过运行后生成的日志文件mtrace.log来定位内存泄漏在程序中的位置啦，注意编译时带上-g</p>
+<p>在实际工作中，如果你运气不好的话，有时候会遇到一种比段错误更头疼的错误:内存踩踏。内存踩踏如幽灵一般，比段错误更加隐蔽、更加难以定位，因为有时候内存踩踏并不会报错，然而你的程序却出现各种莫名其妙地运行错误。当你把代码看了一遍又一遍，找不出任何问题，甚至开始怀疑人生时，就要考虑内存踩踏了</p>
+<p>内存踩踏监测：mprotect(系统API)</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//mprotect.c</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;malloc.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span> <span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> *p;</span><br><span class="line">    p = memalign(<span class="number">4096</span>，<span class="number">512</span>);</span><br><span class="line">    *p=<span class="number">100</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;*p=%d\n&quot;</span>，*p);</span><br><span class="line">    mprotect(p，<span class="number">512</span>，PROT_READ);<span class="comment">//在p指针变量的后512个字节内检测内存踩踏，这段内存正常情况是只读的</span></span><br><span class="line">    *p= <span class="number">200</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;*p= %d\n&quot;</span>，*p);</span><br><span class="line">    <span class="built_in">free</span>(p);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>内存检测神器：Valgrind<br>除了使用系统提供的各种API函数，我们还可以使用内存工具检测不同类型的内存错误。以Valgrind为例，不仅可以检测内存泄漏，还可以对程序进行各种性能分析、代码覆盖测试、堆栈分析及CPU的Cache命中率、丢失率分析等<br>Valgrind包含一套工具集，其中一个内存检测工具Memcheck可以对我们的内存进行内存覆盖、内存泄漏、内存越界检测</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gcc -g mem_leak.c -o a.out</span><br><span class="line">valgrind --tool=memcheck ./a.out</span><br></pre></td></tr></table></figure>
+
+<h2 id="体系结构"><a href="#体系结构" class="headerlink" title="体系结构"></a>体系结构</h2><h3 id="microcode"><a href="#microcode" class="headerlink" title="microcode"></a>microcode</h3><p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%BE%AE%E7%A8%8B%E5%BA%8F">维基</a><br>微指令(microcode)，又称微码，是在CISC结构下，执行一些功能复杂的指令时，所分解一系列相对简单的指令。相关的概念最早在1947年开始出现</p>
+<h3 id="流水线冒险"><a href="#流水线冒险" class="headerlink" title="流水线冒险"></a>流水线冒险</h3><p>现在主流CPU有5级流水线：取指&#x2F;预取，译码，执行，访问内存，写回。但是对于性能强劲的处理器，如Intel i7-3960X，它拥有16级流水线。深度超过5级流水线的被称为超深流水线</p>
+<p>一旦预取指令失败，CPU就会丢失当前执行指令到预取指令间的所有指令，此时流水线就会发生停顿，我们称这种现象为流水线冒险</p>
+<p>流水线冒险一般由于数据冒险(两个不同操作在相邻指令中用到了同一个寄存器)，控制冒险(跳转指令导致取指失败)组成，我们可以采用插入空指令的方式来避免数据冒险(这在超深流水线中很有用)，而对于控制冒险我们可以通过优化代码和编译优化的方式来避免</p>
+<h3 id="分支预测"><a href="#分支预测" class="headerlink" title="分支预测"></a>分支预测</h3><p>分支预测主要分为动态预测和静态预测，静态预测是通过优化代码和编译优化，如内核中的 likely 和 unlikely 宏就采用了静态预测的方法。动态预测指的是程序运行时的预测优化，这一般由预测算法来实现，常见的动态预测方式有1-bit动态预测、n-bit动态预测、下一行预测、双模态预测、局部分支预测、全局分支预测、融合分支预测、循环预测等。</p>
+<p>随着APP的大量涌现，分支预测的硬件结构也越来越复杂，在CPU版图上面积占的最大的是Cache，其次就是分支预测结构了</p>
+<h3 id="乱序执行"><a href="#乱序执行" class="headerlink" title="乱序执行"></a>乱序执行</h3><p>除了前面提到的插入空指令来避免流水线冒险，我们更好的处理方式是将这些空指令替换为其他指令，这就是CPU的乱序执行</p>
+<p>乱序执行由CPU硬件来保证</p>
+<h3 id="多发射"><a href="#多发射" class="headerlink" title="多发射"></a>多发射</h3><p>在执行阶段时CPU有不同的执行单元，例如乘法器，加法器，FPU等，为了能够充分利用这些资源，CPU采用了多发射并行执行指令的方法，每一时刻，CPU都在同时运行不同的执行单元，而每个执行单元也都有不同的取指器，译指器，因此这些准备工作也是并行执行的</p>
+<p><img src="/vx_images/15434216240366.png" alt="2024-03-25_16-41"></p>
+<h3 id="总线"><a href="#总线" class="headerlink" title="总线"></a>总线</h3><p><img src="/vx_images/90255319258792.png" alt="2024-03-25_19-52"></p>
+<p><img src="/vx_images/367155319266825.png" alt="2024-03-25_19-53"></p>
+<p>计算机一般采用两种编址方式：统一编址和独立编址。对于arm架构来说采用的是统一编址模式，这意味着CPU访问外设的内部寄存器就像访问RAM一样。而x86采用了独立编址模式，这意味着内存RAM和外部设备的寄存器独立编址，分别占用不同的地址空间，所以CPU访问外设内部寄存器需要单独的指令</p>
+<h3 id="arm工作模式与寄存器"><a href="#arm工作模式与寄存器" class="headerlink" title="arm工作模式与寄存器"></a>arm工作模式与寄存器</h3><p><img src="/vx_images/491142321259494.png" alt="2024-03-25_21-23"></p>
+<p>对于arm而言，R0~R12属于通用寄存器，其他的属于特殊寄存器<br>R13(SP，Stack Pointer)：堆栈指针寄存器，保存了当前运行程序的栈顶<br>R14(LR，Link Register)：链接寄存器，保存了上一级函数的下一条指令，当子函数return时会将当前LR的值加载进PC<br>R15(PC，Program Counter)：程序计数器，保存了当前取指的地址。对于3级流水线，32位处理器来说，PC与当前执行指令的地址快2*32地址<br>(CPSR，Current Processor State Register)：当前状态寄存器<br>(SPSR，Saved Processor State Register)：当前状态保存寄存器，当CPU从异常状态返回时会从SPSR寄存器中恢复原先的处理器状态，即将SPSR加载进CPSR从而切换到原来的工作模式继续运行</p>
+<p>ARM处理器则使用R13寄存器(SP，栈顶指针)和R11寄存器(FP，栈底指针)来管理堆栈</p>
+<p><img src="/vx_images/391243121256049.png" alt="2024-03-25_21-31"></p>
+<p>在ARM所有的工作模式中，有一种工作模式比较特殊，即FIQ模式。为了快速响应中断，减少中断现场保护带来的时间开销，在FIQ工作模式下，ARM处理器有自己独享的R8~R12寄存器</p>
+<h3 id="超线程技术"><a href="#超线程技术" class="headerlink" title="超线程技术"></a>超线程技术</h3><p>超线程本质上是欺骗OS，让OS认为CPU有多个Core一般处理器上的两个线程上下文切换需要20 000个时钟周期，而超线程处理器上的两个线程切换只需要1个时钟周期就可以了，使用此技术可以通过增加5%左右的芯片面积换来CPU 15%~30%的性能提升</p>
+<p>在高并发的服务器场合下，使用超线程技术确实可以提升性能，但在一些对单核性能要求比较高的场合，如大型游戏，开启超线程反而会增加系统开销，影响性能</p>
+<h3 id="启动方式"><a href="#启动方式" class="headerlink" title="启动方式"></a>启动方式</h3><p>在一个嵌入式系统中，很多人可能认为U-boot是系统上电运行的第一行代码，然而事实并非如此，CPU上电后会首先运行固化在CPU芯片内部的一小段代码，这片代码通常被称为ROMCODE这部分代码的主要功能就是初始化存储器接口，建立存储映射。它 首 先 会 根 据 CPU 管 脚 或 eFuse 值 来 判 断 系 统 的 启 动 方 式 : 从 NORFlash、NAND Flash启动还是从SD卡启动<br><img src="/vx_images/545560515269767.png" alt="2024-04-09_15-05"></p>
+<p>如果我们将U-boot代码“烧写”在NOR Flash上，设置系统从NORFlash启动，这段ROMCODE代码就会将NOR Flash映射到零地址，然后系统复位，CPU默认从零地址取代码执行，即从NOR Flash上开始执行U-boot指令<br>如果系统从NAND Flash或SD卡启动，通过上面的学习我们已经知道，除了SRAM和NORFlash支持随机读写，可以直接运行代码，其他Flash设备是不支持代码直接运行的，因此我们只能将这些代码从NANDFlash或SD卡复制到内存执行。因为此时DDR SDRAM内存还没有被初始化，所以我们一般会先将NAND Flash或SD卡中的一部分代码(通常为前4KB)复制到芯片内部集成的SRAM中去执行，然后在这4KB代码中完成各种初始化、代码复制、重定位等工作，最后PC指针才会跳到DDRSDRAM内存中去运行</p>
+<h2 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h2><p>ISP：In System Programing(还有一种ISP指的是通信供应商) ，使用芯片厂商提供的bootloader以及专用接口(JTAG)进行程序烧录</p>
+<p>IAP：In applicating Programing(重要技术，常与OTA搭配) ，应用软件自身通过预留的接口(串口或网口等)进行falsh程序烧写。在IAP程序中一般有两个程序，第一个代码只执行更新操作，第二段代码才是固件包，第二段代码需要通过第一段代码来烧录进flash，因此当破坏IAP，也就是第一段代码时需要返厂进行IAP程序的烧录，否则第二段程序无法正常执行</p>
+<p>OTA：Over-the-Air Technology，通过无线网络进行固件包的下载，下载后的固件包交由IAP进行升级<br>OTG：通过U盘进行固件包的下载</p>
+<p>FPU：浮点运算单元</p>
+<p>.a (archive)文件，linux下的静态库，ar最初实际上是个压缩工具，他把.o文件压缩使得方便文件跨设备传输和管理<br>.so (shared object)文件，linux下的共享库</p>
+<p>API (application programming interface，应用程序接口)，API定义了源代码和库之间的接口，因此源代码可以在支持这个API的任何系统中<strong>编译</strong><br>ABI (application binary interface，应用二进制接口)，我们把符号修饰标准，变量内存布局，函数调用方式，等这些跟可执行代码二进制兼容性相关的内容称为ABI，支持ABI的系统和平台允许将在这个ABI系统上编译出来代码<strong>运行</strong>在另一台支持同样ABI标准的设备上，实现真正的跨平台运行。</p>
+<p>ub (undefined behavior，未定义行为)</p>
+<p>ISA：指令集架构</p>
+<p>CRT (C Running Time，C运行库)</p>
+<p>基类：父类的别称</p>
+<p>虚函数、纯虚函数、抽象类与接口：虚函数是指使用virtual关键字修饰的函数。纯虚函数是指基类中不实现而子类中实现的函数。含有纯虚函数的类称为抽象类，在抽象类中允许定义数据成员。而对于接口来说，类中只有方法的实现而不包括数据成员，使用接口可以有效避免菱形继承的问题，即当产生多重继承也就是菱形继承的问题时，我们可以将其改为单继承，另一个继承关系采用接口实现，接口同时也促进了“组合”思想的发展</p>
+<p>初始化与定义：初始化是指开辟内存的过程，定义是指赋值的过程</p>
+<p>saas(Software as a Service，软件即服务)，常用于云计算云存储等行业，服务提供商将软件统一打包售卖，负责产品的运维升级等工作，类似于实体行业的交钥匙项目</p>
+<p>haas(Hardware as a Service，硬件即服务)，常用于嵌入式等领域，服务提供商利用互联网将硬件资源打包售卖，负责硬件的维护工作，这样需求方无需一次性购买全部设备，采用这种按需购买的方式有助于提高设备利用率从而降低成本</p>
+<p>框架：在应用开发的过程中我们会经常遇到重复性工作，比如在开发音视频播放软件，即时通讯软件，输入法软件或者游戏时我们会有对输入事件响应的需求。这种需求如果让应用程序开发者来处理就太低效了，为了进一步提高代码复用我们就有了框架。例如专职负责输入事件响应的事件处理框架，专职负责显示的QT框架，专职负责音视频解编码的FFmpeg框架等</p>
+<p>模块化编程：随着物联网的兴起和边缘计算的发展，嵌入式系统越来越复杂，也越来越碎片化，为了方便用户自行取舍某些功能，我们引入了模块化编程。比如对于流媒体产品来说，我们只需要Wifi，音视频，事件处理框架即可，而对于低功耗，Lora，USB模块则可以裁剪掉</p>
 
     </div>
 

@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"wumingzi.top","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Linux内核基础本文阐述系统为x86体系架构，idt，gdt，tss，系统启动引导过程均以x86架构为蓝本，arm可能不适用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux内核">
+<meta property="og:url" content="https://wumingzi.top/2024/04/10/Linux%E5%86%85%E6%A0%B8/">
+<meta property="og:site_name" content="吾铭子">
+<meta property="og:description" content="Linux内核基础本文阐述系统为x86体系架构，idt，gdt，tss，系统启动引导过程均以x86架构为蓝本，arm可能不适用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wumingzi.top/vx_images/373000621257049.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/56405009258689.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/402763010246556.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/231530512266722.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/577701316251700.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/239811716269580.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/97113816267184.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/220153713259391.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/179150820264686.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/86192421250183.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/196132721240713.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/98102821243217.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/338033421252164.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/223495114240269.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/204512201251703.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/48782501269583.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/318163113258690.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/434772809258691.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/310545216240345.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/84782010246558.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/61462210266724.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/485035712251806.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/238122013240343.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/217335710259393.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/35364515255948.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/554253314258769.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/180953814246636.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/185623914266802.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/429192314240267.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/331743316246560.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/55283316258693.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/511861922246638.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/247874222266804.png">
+<meta property="og:image" content="https://wumingzi.top/vx_images/72572111240342.png">
+<meta property="article:published_time" content="2024-04-10T01:48:30.000Z">
+<meta property="article:modified_time" content="2024-04-10T02:07:39.229Z">
+<meta property="article:author" content="吾铭子">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wumingzi.top/vx_images/373000621257049.png">
+
+
+<link rel="canonical" href="https://wumingzi.top/2024/04/10/Linux%E5%86%85%E6%A0%B8/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://wumingzi.top/2024/04/10/Linux%E5%86%85%E6%A0%B8/","path":"2024/04/10/Linux内核/","title":"Linux内核"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Linux内核 | 吾铭子</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="吾铭子" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">吾铭子</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-schedule"><a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux%E5%86%85%E6%A0%B8%E5%9F%BA%E7%A1%80"><span class="nav-number">1.</span> <span class="nav-text">Linux内核基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux%E5%86%85%E6%A0%B8%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="nav-number">1.1.</span> <span class="nav-text">Linux内核体系结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#fork%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.1.1.</span> <span class="nav-text">fork的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6"><span class="nav-number">1.1.2.</span> <span class="nav-text">进程调度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E9%94%80%E6%AF%81"><span class="nav-number">1.1.3.</span> <span class="nav-text">进程销毁</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux%E5%86%85%E6%A0%B8%E5%90%AF%E5%8A%A8%E5%BC%95%E5%AF%BC"><span class="nav-number">1.2.</span> <span class="nav-text">Linux内核启动引导</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%90%AF%E5%8A%A8"><span class="nav-number">1.2.1.</span> <span class="nav-text">操作系统的启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux%E7%A7%BB%E6%A4%8D%E6%B5%85%E8%B0%88"><span class="nav-number">1.2.2.</span> <span class="nav-text">Linux移植浅谈</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux%E5%86%85%E6%A0%B8%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.3.</span> <span class="nav-text">Linux内核文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84"><span class="nav-number">1.3.1.</span> <span class="nav-text">文件系统结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AB%98%E9%80%9F%E7%BC%93%E5%86%B2%E5%8C%BA"><span class="nav-number">1.3.2.</span> <span class="nav-text">高速缓冲区</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%93%88%E5%B8%8C-hash-%E8%A1%A8"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">哈希(hash)表</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%93%E5%86%B2%E5%8C%BA%E5%A4%B4"><span class="nav-number">1.3.3.</span> <span class="nav-text">缓冲区头</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bio"><span class="nav-number">1.3.4.</span> <span class="nav-text">bio</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#inode"><span class="nav-number">1.3.5.</span> <span class="nav-text">inode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IO%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95"><span class="nav-number">1.3.6.</span> <span class="nav-text">IO调度算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%82%E7%94%A8%E4%BA%8E%E6%9C%BA%E6%A2%B0%E7%A1%AC%E7%9B%98%E7%9A%84%E7%AE%97%E6%B3%95"><span class="nav-number">1.3.6.1.</span> <span class="nav-text">适用于机械硬盘的算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9C%80%E7%BB%88%E6%9C%9F%E9%99%90IO%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95-deadline"><span class="nav-number">1.3.6.1.1.</span> <span class="nav-text">最终期限IO调度算法(deadline)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%A2%84%E6%B5%8BIO%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95-anticipatory"><span class="nav-number">1.3.6.1.2.</span> <span class="nav-text">预测IO调度算法(anticipatory)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%8C%E5%85%A8%E5%85%AC%E5%B9%B3%E9%98%9F%E5%88%97IO%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95-cfq"><span class="nav-number">1.3.6.1.3.</span> <span class="nav-text">完全公平队列IO调度算法(cfq)</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%82%E7%94%A8%E4%BA%8E%E5%9B%BA%E6%80%81%E7%A1%AC%E7%9B%98%E7%9A%84%E7%AE%97%E6%B3%95"><span class="nav-number">1.3.6.2.</span> <span class="nav-text">适用于固态硬盘的算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%A9%BA%E6%93%8D%E4%BD%9C%E7%9A%84IO%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95-noop"><span class="nav-number">1.3.6.2.1.</span> <span class="nav-text">空操作的IO调度算法(noop)</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux%E5%86%85%E6%A0%B8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-number">1.4.</span> <span class="nav-text">Linux内核内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E7%A2%8E%E7%89%87"><span class="nav-number">1.4.1.</span> <span class="nav-text">内存碎片</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%99%E4%BC%B4%E7%AE%97%E6%B3%95"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">伙伴算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#slab"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">slab</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RCU"><span class="nav-number">1.4.2.</span> <span class="nav-text">RCU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A0%86%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-number">1.4.3.</span> <span class="nav-text">堆内存管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8C%BF%E5%90%8D%E5%86%85%E5%AD%98"><span class="nav-number">1.4.4.</span> <span class="nav-text">匿名内存</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux%E5%86%85%E6%A0%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">1.5.</span> <span class="nav-text">Linux内核数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="nav-number">1.5.1.</span> <span class="nav-text">算法复杂度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%91"><span class="nav-number">1.5.2.</span> <span class="nav-text">树</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux%E5%86%85%E6%A0%B8%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6"><span class="nav-number">1.6.</span> <span class="nav-text">Linux内核进程调度</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%BB%E5%86%99%E9%94%81"><span class="nav-number">1.6.1.</span> <span class="nav-text">读写锁</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">吾铭子</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/31123236" title="Bilibili → https:&#x2F;&#x2F;space.bilibili.com&#x2F;31123236" rel="noopener me" target="_blank"><i class="fab fa-bilibili fa-fw"></i>Bilibili</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://bgm.tv/user/520931" title="Bangumi → https:&#x2F;&#x2F;bgm.tv&#x2F;user&#x2F;520931" rel="noopener me" target="_blank"><i class="fa fa-globe fa-fw"></i>Bangumi</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml" rel="noopener me"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wumingzi.top/2024/04/10/Linux%E5%86%85%E6%A0%B8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="吾铭子">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吾铭子">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Linux内核 | 吾铭子">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux内核
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2024-04-10 09:48:30 / 修改时间：10:07:39" itemprop="dateCreated datePublished" datetime="2024-04-10T09:48:30+08:00">2024-04-10</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Linux内核基础"><a href="#Linux内核基础" class="headerlink" title="Linux内核基础"></a>Linux内核基础</h1><p><strong>本文阐述系统为x86体系架构，idt，gdt，tss，系统启动引导过程均以x86架构为蓝本，arm可能不适用</strong></p>
+<span id="more"></span>
+
+<h2 id="Linux内核体系结构"><a href="#Linux内核体系结构" class="headerlink" title="Linux内核体系结构"></a>Linux内核体系结构</h2><p>nmi(not mask interrupt)不可屏蔽中断<br>系统启动时会读取RTC并赋值给jiffies<br>内核中定时器使用链表进行管理</p>
+<p>每个进程都有LDT(局部描述符)，即代码段和数据段。单处理器系统只有一个GDT，而在多处理器系统中每个CPU都有一个GDT，GDT(全局描述符)是各个寄存器地址</p>
+<p>IDT(中断描述符表)，其作用也类似于中断向量表，只是其中每个中断描述符项中除了含有中断服务程序地址以外，还包含有关<strong>特权级</strong>和<strong>描述符类别</strong>等信息<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/yxc135/article/details/8734452">中断向量表和中断描述符表IDT-CSDN</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/ybxuwei/article/details/80657461">linux分段-CSDN</a></p>
+<p><img src="/vx_images/373000621257049.png" alt="2024-02-22_21-06"></p>
+<p>TSS(任务状态段)就是特殊寄存器 + 通用寄存器的信息</p>
+<p><img src="/vx_images/56405009258689.png" alt="2024-02-22_09-49"></p>
+<h3 id="fork的实现"><a href="#fork的实现" class="headerlink" title="fork的实现"></a>fork的实现</h3><ul>
+<li>申请内存空间</li>
+<li>把父进程的task_struct拷贝到子进程的task_struct并重新设置</li>
+<li>设置进程状态为可运行，返回pid</li>
+</ul>
+<p>需要注意的是fork出的子进程的文件描述符比父进程大1，这也是Linux基础文章中现象的实现</p>
+<p><img src="/vx_images/402763010246556.png" alt="2024-02-22_10-28"></p>
+<h3 id="进程调度"><a href="#进程调度" class="headerlink" title="进程调度"></a>进程调度</h3><p>在0.11内核中，进程调度分为调度和切换两个步骤，调度负责将用完时间片的进程挂起，并将进程的状态位改为    ，切换时为了效率采用汇编，它的作用是将那些设置状态位的进程加载进CPU寄存器中，即执行上下文切换的功能</p>
+<h3 id="进程销毁"><a href="#进程销毁" class="headerlink" title="进程销毁"></a>进程销毁</h3><p>以syscall_和do_开头的基本上是系统调用，即中断服务函数</p>
+<ul>
+<li>内核的销毁流程<ul>
+<li>进入do_exit函数<ul>
+<li>首先释放数据段和代码段占用的内存</li>
+<li>关闭进程打开的所有文件，对当前的目录和i节点进行同步</li>
+<li>如果进程是个会话头进程，则会终止会话中的所有进程</li>
+<li>改变进程运行状态为TASK_ZOMBIE，并且向父进程发送SIGCHLD信号，do_exit函数执行完毕</li>
+</ul>
+</li>
+<li>在父进程中进行最后的处理工作，父进程运行子进程的时候一般都会运行wait或waitpid这两个函数(父进程等待某个子进程终止的函数)，当父进程收到SIGCHLD信号时会终止僵死状态的子进程<ul>
+<li>首先父进程会把子进程的运行时间(utime,stime)累加到自己的进程变量中，把要销毁的子进程的进程描述结构体进行释放，置空任务数组中的子进程任务槽</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/vx_images/231530512266722.png" alt="2024-02-22_12-05"></p>
+<h2 id="Linux内核启动引导"><a href="#Linux内核启动引导" class="headerlink" title="Linux内核启动引导"></a>Linux内核启动引导</h2><h3 id="操作系统的启动"><a href="#操作系统的启动" class="headerlink" title="操作系统的启动"></a>操作系统的启动</h3><p>Linux启动时的硬件信息是由bootloader传进来的</p>
+<ul>
+<li>Linux启动流程<ul>
+<li>首先由BIOS&#x2F;bootloader进行一系列的硬件初始化和参数设置，并把bootsect.s从硬盘中某个固定地址搬到内存中的某个固定地址，需要注意在内核初始化需要关中断来防止初始化被中断。</li>
+<li>bootsect.s将setup.s代码从磁盘中加载到紧接着bootsect.s的地方，最后跳转到setup.s中运行</li>
+<li>setup.s负责将bootloader传进来的信息进行解析，关中断并加载system模块，使system模块正好覆盖bootsect.s(关中断是为了防止覆盖bootsect.s的代码后系统不能处理中断而导致崩溃)。设置LDT，GDT，IDT，而后设置中断芯片，进入到保护模式(svc32)运行，在代码的最后会跳转到head.s(0x00000000)执行</li>
+<li>head.s加载内核运行时的各数据段寄存器，并重新设置IDT(防止被数据区覆盖)，设置内存对齐以及分页，最后跳转到main.c开始运行，系统启动完成</li>
+</ul>
+</li>
+<li>Linux在启动的时候是如何拿到硬件参数的<ul>
+<li>通过bootloader加载传入的参数(_atags_pointer)，这个参数是一块指向存有硬件信息内存的首地址的指针，通过这个指针就可以获得硬件参数</li>
+</ul>
+</li>
+<li>Linux在初始化运行中都做了什么<ul>
+<li>进行硬件的初始化(就是下文中各种段的设置)，fork出0号进程</li>
+</ul>
+</li>
+</ul>
+<p><img src="/vx_images/577701316251700.png" alt="2024-02-22_16-13"></p>
+<p><img src="/vx_images/239811716269580.png" alt="2024-02-22_16-17"></p>
+<p><img src="/vx_images/97113816267184.png" alt="2024-02-22_16-37"></p>
+<p>系统第一个APP是根文件系统(linuxrc)</p>
+<p>4.9.88内核main函数位于&#x2F;init文件夹，调用流程如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">asmlinkage __visible <span class="type">void</span> __init <span class="title function_">start_kernel</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">    <span class="type">static</span> noinline <span class="type">void</span> __ref <span class="title function_">rest_init</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">        <span class="type">pid_t</span> <span class="title function_">kernel_thread</span><span class="params">(<span class="type">int</span> (*fn)(<span class="type">void</span> *), <span class="type">void</span> *arg, <span class="type">unsigned</span> <span class="type">long</span> flags)</span></span><br><span class="line">        &#123;</span><br><span class="line">	        <span class="keyword">return</span> _do_fork(flags|CLONE_VM|CLONE_UNTRACED, (<span class="type">unsigned</span> <span class="type">long</span>)fn,</span><br><span class="line">		        (<span class="type">unsigned</span> <span class="type">long</span>)arg, <span class="literal">NULL</span>, <span class="literal">NULL</span>, <span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        kernel_thread(kernel_init, <span class="literal">NULL</span>, CLONE_FS);</span><br><span class="line">            <span class="type">static</span> <span class="type">int</span> __ref <span class="title function_">kernel_init</span><span class="params">(<span class="type">void</span> *unused)</span><span class="comment">//在内部启动系统第一个APP，根文件系统</span></span><br><span class="line">                /sbin/init</span><br><span class="line">                /etc/init</span><br><span class="line">                /bin/init</span><br><span class="line">                /bin/sh</span><br></pre></td></tr></table></figure>
+<p>内核main函数：</p>
+<ul>
+<li>在内核初始化的过程中会手动创建(fork出来)0号进程，它是所有进程的父进程</li>
+<li>之后在0号进程中分别打开标准输入，标准输出，标准错误的控制台句柄。并创建1号进程</li>
+<li>在1号进程中，首先打开&#x2F;etc&#x2F;rc(配置文件，类似启动项管理)，而后执行shell程序(实际上是被转移到了busybox里面，因为&#x2F;bin&#x2F;sh是busy&#x2F;box的软链接，而后在busybox内部初始化shell)</li>
+</ul>
+<p>0号进程不会关闭，如果其他进程没有被执行，那么就执行0号进程，内部是pause函数</p>
+<p><img src="/vx_images/220153713259391.png" alt="2024-02-22_13-35"></p>
+<p>init函数就是在不断地创建shell，并在子进程中执行，等子进程执行完毕后由父进程接收结果</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">init</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> pid,i;</span><br><span class="line"></span><br><span class="line">	setup((<span class="type">void</span> *) &amp;drive_info);</span><br><span class="line">	(<span class="type">void</span>) open(<span class="string">&quot;/dev/tty0&quot;</span>,O_RDWR,<span class="number">0</span>);</span><br><span class="line">	(<span class="type">void</span>) dup(<span class="number">0</span>);</span><br><span class="line">	(<span class="type">void</span>) dup(<span class="number">0</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d buffers = %d bytes buffer space\n\r&quot;</span>,NR_BUFFERS,</span><br><span class="line">		NR_BUFFERS*BLOCK_SIZE);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Free mem: %d bytes\n\r&quot;</span>,memory_end-main_memory_start);</span><br><span class="line">	<span class="keyword">if</span> (!(pid=fork())) &#123;<span class="comment">//1号进程</span></span><br><span class="line">		close(<span class="number">0</span>);</span><br><span class="line">		<span class="keyword">if</span> (open(<span class="string">&quot;/etc/rc&quot;</span>,O_RDONLY,<span class="number">0</span>))</span><br><span class="line">			_exit(<span class="number">1</span>);</span><br><span class="line">		execve(<span class="string">&quot;/bin/sh&quot;</span>,argv_rc,envp_rc);</span><br><span class="line">		_exit(<span class="number">2</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (pid&gt;<span class="number">0</span>)</span><br><span class="line">		<span class="keyword">while</span> (pid != wait(&amp;i))</span><br><span class="line">			<span class="comment">/* nothing */</span>;</span><br><span class="line">			</span><br><span class="line">    <span class="comment">//不断地创建进程</span></span><br><span class="line">	<span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span> ((pid=fork())&lt;<span class="number">0</span>) &#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;Fork failed in init\r\n&quot;</span>);</span><br><span class="line">			<span class="keyword">continue</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//如果在子进程中则打开tty并执行shell命令</span></span><br><span class="line">		<span class="keyword">if</span> (!pid) &#123;</span><br><span class="line">			close(<span class="number">0</span>);close(<span class="number">1</span>);close(<span class="number">2</span>);</span><br><span class="line">			setsid();</span><br><span class="line">			(<span class="type">void</span>) open(<span class="string">&quot;/dev/tty0&quot;</span>,O_RDWR,<span class="number">0</span>);</span><br><span class="line">			(<span class="type">void</span>) dup(<span class="number">0</span>);</span><br><span class="line">			(<span class="type">void</span>) dup(<span class="number">0</span>);</span><br><span class="line">			_exit(execve(<span class="string">&quot;/bin/sh&quot;</span>,argv,envp));</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//如果在父进程中则等待子进程处理的结果</span></span><br><span class="line">		<span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">			<span class="keyword">if</span> (pid == wait(&amp;i))</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;\n\rchild %d died with code %04x\n\r&quot;</span>,pid,i);</span><br><span class="line">		sync();</span><br><span class="line">	&#125;</span><br><span class="line">	_exit(<span class="number">0</span>);	<span class="comment">/* NOTE! _exit, not exit() */</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>Linux启动时会进行异常的初始化，这些初始化函数分为两种，一类是设置用户特权的异常，一类是设置内核特权的异常</p>
+<p><img src="/vx_images/179150820264686.png" alt="2024-02-22_20-07"></p>
+<p>内核通过分段将machine_desc结构体放于内存某一固定位置中，这些machine_desc用于linux识别设备</p>
+<p><img src="/vx_images/86192421250183.png" alt="2024-02-22_21-23"></p>
+<p>此代码位于head-common.s，在head.s被调用<br><img src="/vx_images/196132721240713.png" alt="2024-02-22_21-27"></p>
+<p><img src="/vx_images/98102821243217.png" alt="2024-02-22_21-27_1"></p>
+<p><img src="/vx_images/338033421252164.png" alt="2024-02-22_21-34"></p>
+<h3 id="Linux移植浅谈"><a href="#Linux移植浅谈" class="headerlink" title="Linux移植浅谈"></a>Linux移植浅谈</h3><p>Linux系统移植分为2步：</p>
+<ul>
+<li>进行初始化的适配，让板子能够运行到main函数</li>
+<li>进行驱动系统的移植</li>
+</ul>
+<p>Linux内核移植必须能够在庞大的源码中找到所需代码</p>
+<h2 id="Linux内核文件系统"><a href="#Linux内核文件系统" class="headerlink" title="Linux内核文件系统"></a>Linux内核文件系统</h2><p><img src="/vx_images/223495114240269.png" alt="2024-02-28_14-51"></p>
+<p><img src="/vx_images/204512201251703.png" alt="2024-02-25_01-21_1"></p>
+<p><img src="/vx_images/48782501269583.png" alt="2024-02-25_01-24"></p>
+<p>文件系统由内核启动：<br>由bootloader传进来的taglist放入内存中某个段，由<strong>内核</strong>进行解析后(也就是字符串处理)将原有的init&#x3D;linuxrc转换为comandline&#x3D;linuxrc，如果bootloader没有定义init&#x3D;linuxrc，那么内核会在下列文件夹中依次寻找，然后进入文件系统。默认情况下&#x2F;sbin&#x2F;init等文件是一个指向&#x2F;bin&#x2F;busybox的软链接，这个busybox只有在嵌入式系统中才有，对于Ubuntu而言对应的则是dash，而后由busybox启动文件文件系统</p>
+<p><img src="/vx_images/318163113258690.png" alt="2024-02-23_13-31"></p>
+<p>busybox是一个极简的工具箱，它提供了基础的命令，与文件系统关系紧密</p>
+<p>启动脚本位于&#x2F;etc&#x2F;rc.d</p>
+<p>文件系统工作流程(以下过程均在busybox&#x2F;init.c源码中的init_main函数中完成)</p>
+<ul>
+<li>传入参数与解析参数<ul>
+<li>用户自定义&#x2F;etc&#x2F;inittab配置文件(读取文件原理类似设备树)，内核将文件中的init_main进行读取，根据文件中的action参数形成一条action_list链表，链表内部包含的shell命令就是参数，如果用户没有指定参数，那么执行默认的参数</li>
+</ul>
+</li>
+<li>使用参数<ul>
+<li>逐个运行链表中的shell命令即可(实际上此时还没有启动，这时的命令只是命令行参数)</li>
+</ul>
+</li>
+</ul>
+<p>在init_main函数结尾，busybox会执行如下死循环，这个死循环会不停的做以下事情：</p>
+<ul>
+<li>执行run_action，然后等待其退出</li>
+<li>退出后再次执行run_action，不断的重复第一步</li>
+</ul>
+<p><img src="/vx_images/434772809258691.png" alt="2024-02-24_09-28"></p>
+<p>一个文件系统需要什么？</p>
+<ul>
+<li>&#x2F;dev&#x2F;console，没有了这个文件或者console初始化失败都会导致busybox无法启动</li>
+<li>需要init_main函数来初始化(执行启动脚本等)，这由busybox提供</li>
+<li>&#x2F;etc.init.d&#x2F;rcS脚本，如果不提供这个脚本会导致系统阻塞在文件系统启动之前，无法正常返回</li>
+<li>因为需要运行shell命令，因此需要busybox本身</li>
+<li>还需要busybox的运行环境glibc</li>
+</ul>
+<p>分页：<br>当CPU开始运行程序时会从硬盘中加载若干页的代码到内存中，当CPU发现这些页并不足以运行程序时就会发出缺页中断(软中断)，硬盘就会继续加载若干页代码到内存中</p>
+<p>VFS(虚拟文件系统)：将各种硬件抽象成为文件</p>
+<h3 id="文件系统结构"><a href="#文件系统结构" class="headerlink" title="文件系统结构"></a>文件系统结构</h3><p>引导块：用于引导设备<br>超级块：该文件子系统的描述符，当位数超过某个值时会按照类似内存映射的方式进行块的映射<br>逻辑块位图：每一位对应一个逻辑块的使用情况，如果逻辑块使用则对应逻辑块位图对应位置1<br>i节点位图：同理，描述inode节点的使用情况<br>逻辑块：用来存储数据的数据存储单元<br>i节点：目录与磁盘的桥接，文件的属性描述</p>
+<p><img src="/vx_images/310545216240345.png" alt="2024-03-04_16-44"></p>
+<p><img src="/vx_images/84782010246558.png" alt="2024-02-24_10-19"><br><img src="/vx_images/61462210266724.png" alt="2024-02-24_10-21"></p>
+<h3 id="高速缓冲区"><a href="#高速缓冲区" class="headerlink" title="高速缓冲区"></a>高速缓冲区</h3><p>高速缓冲区存储着块设备驱动程序的数据，并且当从块设备读取数据时，OS会首先在高速缓冲区中查找，找到了且是最新的数据，那么直接和高速缓冲区交互，如果没有找到或者不是最新的则需要在块设备或内存中查找</p>
+<p><img src="/vx_images/485035712251806.png" alt="2024-03-28_12-56"></p>
+<h4 id="哈希-hash-表"><a href="#哈希-hash-表" class="headerlink" title="哈希(hash)表"></a>哈希(hash)表</h4><p>哈希表又称为散列表，由哈希函数和数组(也称为散列数组)构成，哈希表是为了解决遍历数组时间复杂度O(logn，以2为底)的问题，首先由输入元素经过哈希函数生成一个整数n，然后再把该元素放到arr[n]的位置，下次如果需要找到此元素，则可以通过hash函数生成一个整数n，从而在数组中找到该元素，这样就把查询的时间复杂度降为O(1)了。因此对于hash函数有如下要求：</p>
+<ul>
+<li>每一个独立的元素都应该有<strong>唯一</strong>的hash值与之对应</li>
+<li>每一个hash值都只对应一个元素</li>
+</ul>
+<h3 id="缓冲区头"><a href="#缓冲区头" class="headerlink" title="缓冲区头"></a>缓冲区头</h3><p><img src="/vx_images/238122013240343.png" alt="2024-03-02_13-20"></p>
+<p>高速缓冲区结构中有个缓冲区头，类似于文件系统引导块</p>
+<p><img src="/vx_images/217335710259393.png" alt="2024-02-24_10-56"></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">buffer_head</span> &#123;</span></span><br><span class="line">	<span class="type">char</span> * b_data;			<span class="comment">/* pointer to data block (1024 bytes)，指向数据块 */</span></span><br><span class="line">	<span class="type">unsigned</span> <span class="type">long</span> b_blocknr;	<span class="comment">/* block number，数据逻辑块号 */</span></span><br><span class="line">	<span class="type">unsigned</span> <span class="type">short</span> b_dev;		<span class="comment">/* device (0 = free)，块设备号 */</span></span><br><span class="line">	<span class="type">unsigned</span> <span class="type">char</span> b_uptodate;    <span class="comment">/* 是否更新 */</span></span><br><span class="line">	<span class="type">unsigned</span> <span class="type">char</span> b_dirt;		<span class="comment">/* 0-clean,1-dirty，是否被占用 */</span></span><br><span class="line">	<span class="type">unsigned</span> <span class="type">char</span> b_count;		<span class="comment">/* users using this block */</span></span><br><span class="line">	<span class="type">unsigned</span> <span class="type">char</span> b_lock;		<span class="comment">/* 0 - ok, 1 -locked，是否锁定 */</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span> * <span class="title">b_wait</span>;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">buffer_head</span> * <span class="title">b_prev</span>;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">buffer_head</span> * <span class="title">b_next</span>;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">buffer_head</span> * <span class="title">b_prev_free</span>;</span> <span class="comment">/* 空闲缓冲区由循环双向链表构成 */</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">buffer_head</span> * <span class="title">b_next_free</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vx_images/35364515255948.png" alt="2024-02-24_15-44"></p>
+<p>因此，对于块设备而言我们想要获得块，所需要做的是：</p>
+<ul>
+<li>分配一个buffer_head</li>
+<li>设置该buffer指向空闲缓冲区的一个有效buffer<ul>
+<li>如果找到的话需要等待解锁</li>
+<li>解锁后还需要判断找到的块是否是要申请的块，因为有可能在等待解锁期间块的信息已经被改变了<ul>
+<li>块如果被改变了则返回到第一步</li>
+</ul>
+</li>
+<li>判断该块是否脏了，即是否有残余数据，有残余数据的话就回写</li>
+</ul>
+</li>
+<li>从空闲缓冲区链表中出链，设置对应的结构体信息如块设备号，逻辑块号等</li>
+<li>写入所需数据</li>
+<li>算出该buffer_head的hash值，填入散列数组对应的链表的尾部</li>
+</ul>
+<p>需要注意的是，在第二步等待系统内核分配数据块时，内核在申请前后加了锁，这是为了防止其他线程再次申请内存块</p>
+<p>无论读取什么资源，都是先getblk(获取资源对应设备和块号的高速缓冲区)，然后再bread(确认数据是否为最新的)，最后进行区域内存的拷贝，从bh的b_data区域拷贝到要用到数据的内存中</p>
+<h3 id="bio"><a href="#bio" class="headerlink" title="bio"></a>bio</h3><p>在2.6内核后，buffer_head的功能逐渐弱化为映射内存和磁盘关系的结构体，大部分的操作函数主要在bio结构体中实现</p>
+<p><img src="/vx_images/554253314258769.png" alt="2024-03-02_14-33"></p>
+<p>bio里重要的结构体：</p>
+<ul>
+<li>bi_io_vec<ul>
+<li>bi_io_vec指向bio_vec结构体链表表头，链表内包含了各页面的指针</li>
+</ul>
+</li>
+<li>bi_idx<ul>
+<li>bi_idx指向指向bio_vec结构体链表当前的节点，这可以找到当前io操作的位置</li>
+</ul>
+</li>
+<li>bi_vcnt<ul>
+<li>bi_vcnt记录了bio结构体的使用计数，当为0时就需要回收这个bio结构体</li>
+</ul>
+</li>
+</ul>
+<p><img src="/vx_images/180953814246636.png" alt="2024-03-02_14-38"></p>
+<p><img src="/vx_images/185623914266802.png" alt="2024-03-02_14-39"></p>
+<p>相比buffer_head，bio有如下优点：</p>
+<ul>
+<li>buffer_head处理的是page指针，但是bio处理的是page指针数组，因此bio有大块内存的处理能力，这在高端内存中很有用</li>
+<li>bio适用于先分散后集中的IO操作，操作的数据可以来自于多个不相邻的物理页面</li>
+<li>bio时更轻量级的结构体，因为它只需要存储IO操作的信息就行了</li>
+</ul>
+<h3 id="inode"><a href="#inode" class="headerlink" title="inode"></a>inode</h3><p>Linux 文件系统会为每个文件分配两个数据结构：索引节点（index node）和目录项（directory entry），它们主要用来记录文件的元信息和目录层次结构</p>
+<ul>
+<li>索引节点，也就是 inode，用来记录文件的元信息，比如 inode 编号、文件大小、访问权限、创建时间、修改时间、数据在磁盘的位置等等。索引节点是文件的唯一标识，它们之间一一对应，也同样都会被存储在硬盘中，所以索引节点同样占用磁盘空间</li>
+<li>目录项，也就是 dentry，用来记录文件的名字、索引节点指针以及与其他目录项的层级关联关系。多个目录项关联起来，就会形成目录结构，例如&#x2F;mnt&#x2F;cdrom&#x2F;music中，\，mnt，cdrom，music均为目录项。但它与索引节点不同的是，目录项是由内核维护的一个数据结构，不存放于磁盘，而是缓存在内存。VFS在执行目录操作时会现场创建目录项。<br>扇区：块设备上一个长度为512B的数据块，在不同文件系统中，扇区和盘块的对应关系是不同的，有的文件系统是4个扇区对应一个盘块，有的是8个</li>
+</ul>
+<p>mount：把文件系统的超级块读到高速缓冲区中，并且放到超级块数组中</p>
+<p>从磁盘中读写信息，数据，inode的流程</p>
+<ul>
+<li>找到指定dev，并根据dev找到超级块</li>
+<li>通过超级块中的信息计算要读的逻辑块号，并将这个块放入高速缓冲区<ul>
+<li>读：读取块中的b_data，读完之后释放高速缓冲区</li>
+<li>写：将要写入的数据写入b_data，写完之后设置dirty标志位，等待sys_sync系统调用统一写入块设备，最后释放高速缓冲区</li>
+</ul>
+</li>
+</ul>
+<p>硬链接：只要链接数不为0，即使删除源文件，内容也不会消失</p>
+<p>删除文件就是把inode的link数改为0，<br>inode中有dev和block，根据这两个信息就可以把硬盘载入高速缓冲区</p>
+<p>从上面代码中可以看出,内核从哈希表中搜索现成的缓冲块时,只看设备号和块号,其他的什么都不管。只要缓冲块与硬盘数据块的绑定关系还存在,就认定数据块中的数据仍然停留在缓冲块中,就可以直接用,不需要从硬盘上读取,节省了100倍的硬盘读取时间</p>
+<p><img src="/vx_images/429192314240267.png" alt="2024-02-26_14-23"></p>
+<p><img src="/vx_images/331743316246560.png" alt="2024-02-26_16-33"></p>
+<p><img src="/vx_images/55283316258693.png" alt="2024-02-26_16-32"></p>
+<h3 id="IO调度算法"><a href="#IO调度算法" class="headerlink" title="IO调度算法"></a>IO调度算法</h3><p>由于APP对读写要求的不同：对读操作时间敏感，对写操作则不然，并且主流存储设备为磁盘时还需要优化寻道时间，因此产生了如下算法</p>
+<h4 id="适用于机械硬盘的算法"><a href="#适用于机械硬盘的算法" class="headerlink" title="适用于机械硬盘的算法"></a>适用于机械硬盘的算法</h4><p>Linus电梯算法是最早的适用于机械硬盘的算法，这种算法在接受IO请求时会将此次的IO与尚未执行的请求合并，这样多次请求就可以转化为一次请求。如果合并失败，算法会尝试将此次请求按磁盘扇区的排列顺序插入到请求队列中，这也是Linus电梯算法适合机械硬盘设备的原因。这种算法与电梯调度类似，因此得名为Linus电梯算法，同时也是下面几种机械硬盘IO调度算法的基础</p>
+<h5 id="最终期限IO调度算法-deadline"><a href="#最终期限IO调度算法-deadline" class="headerlink" title="最终期限IO调度算法(deadline)"></a>最终期限IO调度算法(deadline)</h5><p>Linus电梯算法不能解决请求数太多时对其他请求的饥饿问题，deadline算法在Linus电梯的排序队列基础上又引入了读写双队列来保证新请求的响应性，对于读操作来说，当超过500ms未响应就会强制执行读操作，即从读队列中获取操作，写操作则为5s</p>
+<h5 id="预测IO调度算法-anticipatory"><a href="#预测IO调度算法-anticipatory" class="headerlink" title="预测IO调度算法(anticipatory)"></a>预测IO调度算法(anticipatory)</h5><p>deadline算法在解决了请求的饥饿问题时损失了系统吞吐量，因为当响应读操作磁头移动的过程中不能进行写操作。为了解决这一问题，预测算法在响应操作时会等待几ms，这样当有在新请求的扇区附近有请求时会一并执行(相当于在deadline里套了个Linus电梯)  </p>
+<h5 id="完全公平队列IO调度算法-cfq"><a href="#完全公平队列IO调度算法-cfq" class="headerlink" title="完全公平队列IO调度算法(cfq)"></a>完全公平队列IO调度算法(cfq)</h5><p>这种算法与上列算法截然不同，它是按照进程来对IO操作分类的，比如music进程下有4个IO操作，movie有8个IO操作，那么这种算法会使用时间片轮流对IO操作进行调度，保证进程的公平，这种算法主要用于桌面操作，但是如果没有特殊情况，在其他情况下工作的也很好  </p>
+<h4 id="适用于固态硬盘的算法"><a href="#适用于固态硬盘的算法" class="headerlink" title="适用于固态硬盘的算法"></a>适用于固态硬盘的算法</h4><h5 id="空操作的IO调度算法-noop"><a href="#空操作的IO调度算法-noop" class="headerlink" title="空操作的IO调度算法(noop)"></a>空操作的IO调度算法(noop)</h5><p>这种算法除了合并IO操作外什么也不做，因为固态硬盘不需要寻道操作</p>
+<h2 id="Linux内核内存管理"><a href="#Linux内核内存管理" class="headerlink" title="Linux内核内存管理"></a>Linux内核内存管理</h2><p>内核空间不分页</p>
+<p><a target="_blank" rel="noopener" href="https://docs.kernel.org/arch/arm64/memory.html">linux内存布局</a><br><a target="_blank" rel="noopener" href="https://docs.kernel.org/arch/arm64/ptdump.html">使用命令行生成内存布局</a></p>
+<p><img src="/vx_images/511861922246638.png" alt="2024-03-04_22-19"></p>
+<p><img src="/vx_images/247874222266804.png" alt="2024-03-04_22-42"></p>
+<p>vmalloc是在虚拟内存中申请一块连续地址，kmalloc则是在物理内存中申请一块连续地址。内核代码主要使用kmalloc，这是因为当物理地址不连续时需要为每个独立的物理地址项建立页表项，这会损失性能</p>
+<p>内核空间栈小且固定(现在应该支持可变大小了？)，用户空间栈大且可变</p>
+<p>中断程序的栈与内核栈分开，这样哪怕在编译时给定内核栈为1页也不会爆栈了，并且也不需要每次分给多页内存给内核栈，这样在机器长时间运行后的分配内存的压力也会变小</p>
+<h3 id="内存碎片"><a href="#内存碎片" class="headerlink" title="内存碎片"></a>内存碎片</h3><p>当需要1字节而需要一整块页表时，剩余的4095字节被称为内部碎片，当内存空间被各种进程分割为大大小小的区域时产生的碎片被称为内部碎片，可以通过内存紧缩等算法减少内部碎片</p>
+<h4 id="伙伴算法"><a href="#伙伴算法" class="headerlink" title="伙伴算法"></a>伙伴算法</h4><p>伙伴算法(buddy system)是为了管理大块的内存页从而减少外部碎片的一种算法，首先内核将内存分为11个链表，每个链表所管理的内存大小固定，大小均为4K*2^n倍，例如0号链表管理的内存为4K，1号链表为8K，当需要申请内存时需要从相应的链表中获得内存，比如需要12K的内存则需要从2号链表中获取，这样就可以统一管理大块内存</p>
+<h4 id="slab"><a href="#slab" class="headerlink" title="slab"></a>slab</h4><p>slab是为了管理小块的内存从而减少内部碎片的一种算法，首先内核将所有高速缓存分为大小不同的组，每一组有若干块高速缓存并存储相同的对象，每一块高速缓存下有若干slab块并有三条slab链表，分别是空闲的slab链表，被占用的slab链表，被占满的slab链表，每个slab块都有若干页并且管理相同的数据结构，比如某块slab专门用于管理inode，或者专门管理task_struct，因此需要这种类似结构的内存时，只需要获取对应slab就可以了，而不必需要新申请一个页</p>
+<p>因此使用slab会有很多好处：</p>
+<ul>
+<li>适应了小块内存的分配，解决了伙伴算法不能管理小块内存并产生大量内部碎片的缺点</li>
+<li>将频繁使用的对象缓存起来，减少分配回收时的开销</li>
+</ul>
+<p>对于小型嵌入式系统来说，存在一个slab模拟层，名字叫做slob，但会有碎片问题</p>
+<h3 id="RCU"><a href="#RCU" class="headerlink" title="RCU"></a>RCU</h3><p>RCU(Read-Copy Update)，读时任意读，写时先复制一份副本，然后在副本上更新，最后再一次性的替换旧数据</p>
+<p>RCU支持对于某一个数据读写同时操作，这是因为RCU本质上是某一个数据copy一个副本，写进程写副本，读进程读原来的数据。当写完数据时，写进程会检查原数据结构是否被读进程占用，如果被占用就等待读进程完成操作，然后互斥的将副本拷贝进原数据</p>
+<p>RCU通常被用于链表上的数据操作，伪代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">devmem</span>&#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> <span class="title">list</span>;</span></span><br><span class="line">    <span class="type">int</span> flag;</span><br><span class="line">    <span class="type">int</span> length;</span><br><span class="line">    <span class="type">int</span> data;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">LIST_HEAD(<span class="built_in">list</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* qlist给读进程，qlist给写进程 */</span></span><br><span class="line">plist = search(<span class="built_in">list</span>, data);</span><br><span class="line">qlist = kmalloc(<span class="keyword">sizeof</span>(devmem));</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 拷贝数据 */</span></span><br><span class="line">*qlist = *plist;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 写数据 */</span></span><br><span class="line">qlist-&gt;flag = <span class="number">1</span>;</span><br><span class="line">qlist-&gt;length = <span class="number">2</span>;</span><br><span class="line">qlist-&gt;data = <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 等待读进程完成操作 */</span></span><br><span class="line">synchronize_rcu();</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 拷贝到原数据 */</span></span><br><span class="line">list_replace_rcu(plist, qlist);</span><br><span class="line"></span><br><span class="line">kfree(qlist);</span><br></pre></td></tr></table></figure>
+
+<h3 id="堆内存管理"><a href="#堆内存管理" class="headerlink" title="堆内存管理"></a>堆内存管理</h3><p>mmap与malloc都会调用到brk系统调用(实际上malloc调用的堆空间大于128k时会自动调用mmap)，内核维护着start_brk与brk两个指针，分别指向堆空间起始和终止地址，申请内存本质上是通过改变brk的边界来扩展内存的</p>
+<p>为了保证内存管理的高效性，linux在glibc，标准IO(fread&#x2F;fwrite)分别设置了两层缓冲，glibc内部有个内存分配器，标准IO内部又有缓冲区，经过这两层后之后才会进入内核的缓冲区</p>
+<h3 id="匿名内存"><a href="#匿名内存" class="headerlink" title="匿名内存"></a>匿名内存</h3><p>映射在内存中的文件具有相应的路径和名称，这就是普通的文件映射。而对于堆栈，mmap这种内存来说并没有对应的文件而只有对应的进程，我们称后者这些内存为匿名内存。</p>
+<h2 id="Linux内核数据结构"><a href="#Linux内核数据结构" class="headerlink" title="Linux内核数据结构"></a>Linux内核数据结构</h2><h3 id="算法复杂度"><a href="#算法复杂度" class="headerlink" title="算法复杂度"></a>算法复杂度</h3><p>O(1)并不一定优于O(n)，例如当执行某些算法时，时间复杂度O(1)的程序无论输入如何总是需要3小时，但这个程序输入很小的情况下O(n)明显更合适</p>
+<h3 id="树"><a href="#树" class="headerlink" title="树"></a>树</h3><p>二叉树是一种输入结构</p>
+<p>二叉平衡树</p>
+<p>红黑树</p>
+<p>红黑树适用于对特定节点进行搜索，链表适合对节点进行遍历</p>
+<h2 id="Linux内核进程调度"><a href="#Linux内核进程调度" class="headerlink" title="Linux内核进程调度"></a>Linux内核进程调度</h2><p>内核抢占：在内核态也可以被中断调度出去执行更高优先级的代码的特性</p>
+<p>Linux对进程或线程不做结构上的区分，他们的结构体是完全一样的，只是线程可以进行资源的共享</p>
+<p>Linux采用了完全公平算法(CFS)<br>普通的调度算法会根据nice值(-20~+19，nice值越大，占用的时间片越少，默认nice值为0)来分配时间片，但只这会造成以下问题：<br>    * 随着任务数的增多，时间片会接近0，系统始终处于调度当中<br>    * 当进程优先级分配不合理时，进程切换会频繁。比如同样是两个进程，如果nice都是0的话会轮流调度，对于5ms的时间片来说它们每5ms就会调度一次，而对于nice值为20和0的进程来说，他们调度的总时长是(20+1)*5&#x3D;105ms，两者每105ms会调度一次<br>    *  nice值是相对的，则会导致进程调度的效果不同。比如nice为20和19的进程，这两个进程时间片分别是100ms和105ms，但是对于nice值为0和1的进程来说，时间片分别是10ms和5ms，两者占据时间片的百分比差距很大  </p>
+<p>CFS的解决办法：</p>
+<ul>
+<li>规定时间片的最小粒度为1ms</li>
+<li>时间片不与nice绝对值挂钩，而与相对值挂钩</li>
+</ul>
+<p>但是当任务数过大时(比如几千个)，CFS并不是公平的，随着任务数的增多，nice的影响会越来越小，使得每个任务运行时间都最终趋近于1ms</p>
+<p>CFS采用了计算vruntime的方法来保证公平调度，vruntime是一个加权后的时间，当需要调度时，CFS会找出vruntime最小的那个进程或线程进行调度</p>
+<p>为了管理众多进程，CFS采用红黑树的数据结构，这样可以使搜索时间显著下降</p>
+<p>内存屏障：由于CPU执行与编译器编译后的结果是乱序的，为了保证代码按正确的顺序的运行，厂家提供了内存屏障指令，在内存屏障的上下文代码按一定顺序执行，如下文，在线程2，先执行<code>c=b;</code>而后执行<code>d=a;</code>，如果没有内存屏障代码的话假如线程1与线程2被执行时同时颠倒顺序会导致出现预料外的结果</p>
+<p><img src="/vx_images/72572111240342.png" alt="2024-03-01_11-20"></p>
+<p>为了保证检索定时器的效率，Linux将定时器分为五组，当超过规定时间时定时器将随组一起下移，这保证了搜索效率</p>
+<p>不负责的程序员经常使用get_cpu()等函数来保证数据与CPU绑定(每个CPU都有一段专属的内存区域)，虽然这对防止竟态有重要作用(唯一需要注意的内核抢占问题也在get_cpu()中自动实现了)，但是这也会造成一核有难多核围观的后果</p>
+<p>:::alert-info<br>即使不了解Linux代码风格也可以使用官方的<code>indent</code>工具来格式化代码啦<br>:::</p>
+<h3 id="读写锁"><a href="#读写锁" class="headerlink" title="读写锁"></a>读写锁</h3><p>读写锁支持多个进程同时读数据，但只能有一个进程写数据。由于读读不互斥，读写互斥(读到写到一半的脏数据)，写写互斥，因此需要读锁来保证读写互斥，写锁保证写写互斥</p>
+<p>:::alert-danger<br>务必注意return的时候是否解锁，如果程序中有多处return那么可以考虑使用goto来统一跳转解决<br>:::</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/02/21/Linux%E6%B7%B1%E5%85%A5/" rel="prev" title="Linux深入">
+                  <i class="fa fa-chevron-left"></i> Linux深入
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2023 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">吾铭子</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
