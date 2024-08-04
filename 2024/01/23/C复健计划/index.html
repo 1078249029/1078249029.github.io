@@ -19,12 +19,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"wumingzi.top","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="C复健计划printf函数无法打印多行字符串，若要打印多行字符串则需要在每行后加换行符\n\n代表换行，\n\代表下一行是上一行的延续，如果改为\n则会报错变量名第一个字母不能是数字ANSI C C99 C11 关键字数量分别是32 32+5 37+7%11.2f代表输出11个占位符，其中浮点型输出到小数点后2位，如果%a.bf，其中b比a大，则直接输出到小数点后b位而忽略a的值%x: 十六进制">
+    <meta name="description" content="本文仅自用！本文介绍了C及其内存的基本知识，便于复习回顾">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C复健计划">
 <meta property="og:url" content="https://wumingzi.top/2024/01/23/C%E5%A4%8D%E5%81%A5%E8%AE%A1%E5%88%92/">
 <meta property="og:site_name" content="吾铭子">
-<meta property="og:description" content="C复健计划printf函数无法打印多行字符串，若要打印多行字符串则需要在每行后加换行符\n\n代表换行，\n\代表下一行是上一行的延续，如果改为\n则会报错变量名第一个字母不能是数字ANSI C C99 C11 关键字数量分别是32 32+5 37+7%11.2f代表输出11个占位符，其中浮点型输出到小数点后2位，如果%a.bf，其中b比a大，则直接输出到小数点后b位而忽略a的值%x: 十六进制">
+<meta property="og:description" content="本文仅自用！本文介绍了C及其内存的基本知识，便于复习回顾">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://wumingzi.top/vx_images/581673908249386.png">
 <meta property="og:image" content="https://wumingzi.top/vx_images/90294008237253.png">
@@ -60,7 +60,7 @@
 <meta property="og:image" content="https://wumingzi.top/vx_images/65104211231269.png">
 <meta property="og:image" content="https://wumingzi.top/vx_images/355601120263503">
 <meta property="article:published_time" content="2024-01-23T01:29:46.000Z">
-<meta property="article:modified_time" content="2024-02-22T12:11:39.238Z">
+<meta property="article:modified_time" content="2024-06-17T02:46:59.849Z">
 <meta property="article:author" content="吾铭子">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://wumingzi.top/vx_images/581673908249386.png">
@@ -186,7 +186,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -271,7 +271,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-02-22 20:11:39" itemprop="dateModified" datetime="2024-02-22T20:11:39+08:00">2024-02-22</time>
+      <time title="修改时间：2024-06-17 10:46:59" itemprop="dateModified" datetime="2024-06-17T10:46:59+08:00">2024-06-17</time>
     </span>
 
   
@@ -284,9 +284,10 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="C复健计划"><a href="#C复健计划" class="headerlink" title="C复健计划"></a>C复健计划</h1><p>printf函数无法打印多行字符串，若要打印多行字符串则需要在每行后加换行符\n<br>\n代表换行，\n\代表下一行是上一行的延续，如果改为\n则会报错<br>变量名第一个字母不能是数字<br>ANSI C C99 C11 关键字数量分别是32 32+5 37+7<br>%11.2f代表输出11个占位符，其中浮点型输出到小数点后2位，如果%a.bf，其中b比a大，则直接输出到小数点后b位而忽略a的值<br>%x: 十六进制 (hex) %o: 八进制(oct) %d: 十进制(dec)  </p>
+        <p>本文仅自用！本文介绍了C及其内存的基本知识，便于复习回顾</p>
 <span id="more"></span>
 
+<h1 id="C复健计划"><a href="#C复健计划" class="headerlink" title="C复健计划"></a>C复健计划</h1><p>printf函数无法打印多行字符串，若要打印多行字符串则需要在每行后加换行符\n<br>\n代表换行，\n\代表下一行是上一行的延续，如果改为\n则会报错<br>变量名第一个字母不能是数字<br>ANSI C C99 C11 关键字数量分别是32 32+5 37+7<br>%11.2f代表输出11个占位符，其中浮点型输出到小数点后2位，如果%a.bf，其中b比a大，则直接输出到小数点后b位而忽略a的值<br>%x: 十六进制 (hex) %o: 八进制(oct) %d: 十进制(dec)  </p>
 <p><img src="/vx_images/581673908249386.png" alt="2023-09-19_08-38"><br><img src="/vx_images/90294008237253.png" alt="2023-09-19_08-39"><br>&quot;   代表 “   \ 代表 \<br>&#x2F;*    *&#x2F;代表多行注释<br>&lt;&gt;表示导入系统文件  “”表示导入自定义文件&#96;<br>Tab &#x3D;&#x3D; 8个空格，或者4个空格</p>
 <p>编译分为四步</p>
 <ol>

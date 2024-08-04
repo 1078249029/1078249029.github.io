@@ -19,12 +19,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"wumingzi.top","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="工具链GitGit本地操作版本控制系统分为2种  集中式版本控制系统 如SVN 分布式版本控制系统 如Git">
+    <meta name="description" content="本文介绍了Git，GDB，Makefile，CMake四种C&#x2F;C++编程中常用的工具链，还涉及一点GCC制作库文件的内容">
 <meta property="og:type" content="article">
 <meta property="og:title" content="工具链">
 <meta property="og:url" content="https://wumingzi.top/2024/01/23/%E5%B7%A5%E5%85%B7%E9%93%BE/">
 <meta property="og:site_name" content="吾铭子">
-<meta property="og:description" content="工具链GitGit本地操作版本控制系统分为2种  集中式版本控制系统 如SVN 分布式版本控制系统 如Git">
+<meta property="og:description" content="本文介绍了Git，GDB，Makefile，CMake四种C&#x2F;C++编程中常用的工具链，还涉及一点GCC制作库文件的内容">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://wumingzi.top/vx_images/382591015251580.png">
 <meta property="og:image" content="https://wumingzi.top/vx_images/510961515269460.png">
@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://wumingzi.top/vx_images/140045521268247.png">
 <meta property="og:image" content="https://wumingzi.top/vx_images/371810311240144.png">
 <meta property="article:published_time" content="2024-01-23T01:35:09.000Z">
-<meta property="article:modified_time" content="2024-03-21T02:00:47.083Z">
+<meta property="article:modified_time" content="2024-06-17T02:54:09.084Z">
 <meta property="article:author" content="吾铭子">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://wumingzi.top/vx_images/382591015251580.png">
@@ -158,7 +158,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -243,7 +243,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-03-21 10:00:47" itemprop="dateModified" datetime="2024-03-21T10:00:47+08:00">2024-03-21</time>
+      <time title="修改时间：2024-06-17 10:54:09" itemprop="dateModified" datetime="2024-06-17T10:54:09+08:00">2024-06-17</time>
     </span>
 
   
@@ -256,13 +256,14 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="工具链"><a href="#工具链" class="headerlink" title="工具链"></a>工具链</h1><h2 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h2><h3 id="Git本地操作"><a href="#Git本地操作" class="headerlink" title="Git本地操作"></a>Git本地操作</h3><p>版本控制系统分为2种</p>
+        <p>本文介绍了Git，GDB，Makefile，CMake四种C&#x2F;C++编程中常用的工具链，还涉及一点GCC制作库文件的内容</p>
+<span id="more"></span>
+
+<h1 id="工具链"><a href="#工具链" class="headerlink" title="工具链"></a>工具链</h1><h2 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h2><h3 id="Git本地操作"><a href="#Git本地操作" class="headerlink" title="Git本地操作"></a>Git本地操作</h3><p>版本控制系统分为2种</p>
 <ul>
 <li>集中式版本控制系统 如SVN</li>
 <li>分布式版本控制系统 如Git</li>
 </ul>
-<span id="more"></span>
-
 <p>相比SVN，Git可靠性高但操作复杂</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">git init [dir]//在dir下创建新的本地仓库，缺省则在当前目录创建</span><br><span class="line"></span><br><span class="line">/* 全局配置git仓库的用户名，对所有仓库生效，省略则为本地仓库有效 */ </span><br><span class="line">git config --global user.name &quot;用户名&quot; </span><br><span class="line"></span><br><span class="line">/* 全局配置git仓库的邮箱，对所有仓库生效，省略则为本地仓库有效 */ </span><br><span class="line">git config --global user.email &quot;邮箱&quot; </span><br><span class="line"></span><br><span class="line">/* 保存用户名和密码 */</span><br><span class="line">git config --global credential.helper store</span><br><span class="line"></span><br><span class="line">/* 查看当前git配置 */</span><br><span class="line">git config --global --list</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 

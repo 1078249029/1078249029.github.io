@@ -19,12 +19,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"wumingzi.top","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="FreeRTOS使用静态创建任务函数的话，返回值就是句柄，因此，要想对静态函数创建出来的任务进行操作的话需要创建一个临时变量以记录其返回值使用vTaskDelet函数要注意不要在自己的进程内部自杀，这样会导致空闲任务无法清理内存">
+    <meta name="description" content="本文第一部分较为详细介绍了freertos的基本使用方法和api，同时也介绍了rtos的基本概念。在第二部分我们介绍了freertos的内部机制以及相应的实现">
 <meta property="og:type" content="article">
 <meta property="og:title" content="FreeRTOS">
 <meta property="og:url" content="https://wumingzi.top/2024/01/23/FreeRTOS/">
 <meta property="og:site_name" content="吾铭子">
-<meta property="og:description" content="FreeRTOS使用静态创建任务函数的话，返回值就是句柄，因此，要想对静态函数创建出来的任务进行操作的话需要创建一个临时变量以记录其返回值使用vTaskDelet函数要注意不要在自己的进程内部自杀，这样会导致空闲任务无法清理内存">
+<meta property="og:description" content="本文第一部分较为详细介绍了freertos的基本使用方法和api，同时也介绍了rtos的基本概念。在第二部分我们介绍了freertos的内部机制以及相应的实现">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://wumingzi.top/vx_images/520675109231265.png">
 <meta property="og:image" content="https://wumingzi.top/vx_images/261583815249686.png">
@@ -52,7 +52,7 @@
 <meta property="og:image" content="https://wumingzi.top/vx_images/544572912240142.png">
 <meta property="og:image" content="https://wumingzi.top/vx_images/568893712246435.png">
 <meta property="article:published_time" content="2024-01-23T01:33:25.000Z">
-<meta property="article:modified_time" content="2024-01-23T03:59:02.335Z">
+<meta property="article:modified_time" content="2024-06-17T02:27:57.755Z">
 <meta property="article:author" content="吾铭子">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://wumingzi.top/vx_images/520675109231265.png">
@@ -178,7 +178,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -255,9 +255,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2024-01-23 09:33:25 / 修改时间：11:59:02" itemprop="dateCreated datePublished" datetime="2024-01-23T09:33:25+08:00">2024-01-23</time>
+      <time title="创建时间：2024-01-23 09:33:25" itemprop="dateCreated datePublished" datetime="2024-01-23T09:33:25+08:00">2024-01-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-06-17 10:27:57" itemprop="dateModified" datetime="2024-06-17T10:27:57+08:00">2024-06-17</time>
     </span>
 
   
@@ -270,9 +276,10 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="FreeRTOS"><a href="#FreeRTOS" class="headerlink" title="FreeRTOS"></a>FreeRTOS</h1><p>使用静态创建任务函数的话，返回值就是句柄，因此，要想对静态函数创建出来的任务进行操作的话需要创建一个临时变量以记录其返回值<br>使用vTaskDelet函数要注意不要在自己的进程内部自杀，这样会导致空闲任务无法清理内存  </p>
+        <p>本文第一部分较为详细介绍了freertos的基本使用方法和api，同时也介绍了rtos的基本概念。在第二部分我们介绍了freertos的内部机制以及相应的实现</p>
 <span id="more"></span>
 
+<h1 id="FreeRTOS"><a href="#FreeRTOS" class="headerlink" title="FreeRTOS"></a>FreeRTOS</h1><p>使用静态创建任务函数的话，返回值就是句柄，因此，要想对静态函数创建出来的任务进行操作的话需要创建一个临时变量以记录其返回值<br>使用vTaskDelet函数要注意不要在自己的进程内部自杀，这样会导致空闲任务无法清理内存  </p>
 <p><img src="/vx_images/520675109231265.png" alt="2023-12-24_09-51"></p>
 <p><img src="/vx_images/261583815249686.png" alt="2023-12-19_15-36"><br>TCB结构体内部包含函数指针，SP位置，优先级，函数名字，函数参数等，但并不包括函数的指针(用来执行本函数)，也不包括函数参数，CPU通过保存所有寄存器的值来保存这两项，保存的位置在该函数栈的顶部，其中R0，R1…保存了函数的参数(约定俗成)，R15(PC)保存了函数的指针，来进行函数的跳转操作<br>优先级最大值只能取到最大值-1，高于这个值的会自动变为最大值-1<br>空闲任务(xIdleTask)是启动调度器时就自动创建的，空闲任务可以使用自带的钩子函数创建出来，也可以用来处理下列任务</p>
 <ol>
