@@ -942,7 +942,7 @@
 <p>使用运算符重载()时因为写法与函数很像，因此被称为仿函数。有时我们也会将匿名对象和运算符重载连用</p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">myadd</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">operator</span>()(<span class="type">int</span> a, <span class="type">int</span> b)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> a + b;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> ret;</span><br><span class="line">    ret = <span class="built_in">myadd</span>()(<span class="number">1</span>, <span class="number">2</span>);    <span class="comment">//此时执行myadd的默认构造函数，但因为构造函数是空函数所以不起作用。因此只剩下匿名对象的运算符重载起作用了，返回值是3且当这行代码执行完毕后myadd匿名函数就会被系统回收</span></span><br><span class="line">    std::cout &lt;&lt; ret &lt;&lt; std::endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h3 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h3><p>![2024-05-06_19-56](vx_images&#x2F;426915619240547.png &#x3D;600x)</p>
+<h3 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h3><p><img src="/vx_images/426915619240547.png" alt="2024-05-06_19-56"></p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">base</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">int</span> a;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    <span class="type">int</span> b;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">int</span> c;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">son</span>: <span class="keyword">protected</span> base</span><br><span class="line">&#123;</span><br><span class="line">    a = <span class="number">100</span>;</span><br><span class="line">    b = <span class="number">200</span>;</span><br><span class="line">    c = <span class="number">300</span>;    <span class="comment">//报错</span></span><br><span class="line">&#125;; </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    son.b = <span class="number">300</span>;    <span class="comment">//报错</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>子类可以继承父类中的所有非静态成员，这意味着权限为private的成员变量也可以被继承，但是在访问时编译器进行了权限设置，因此我们访问不到</p>
@@ -1009,9 +1009,9 @@
 <p>这是由于类模板中的成员函数只有在调用时才会实例化，因此在链接阶段时链接器无法从.o文件中找到在.h中声明的符号，这会导致未定义外部符号的错误。但当main文件包含了.cpp文件时，编译器就会自动将cpp文件中的代码实例化以保证链接通过，但这么写会导致重复包含.cpp文件的错误或者导致代码膨胀编译时间增加</p>
 <p>因此在编写类模板时我们需要将.h和.cpp文件写在一起，即将声明和实现写在一起并统一命后缀名为.hpp</p>
 <h2 id="STL"><a href="#STL" class="headerlink" title="STL"></a>STL</h2><p>STL(standard template library，标准模板库)，它的诞生是为了提高代码复用性的问题。主要包括算法，容器，迭代器，分配器，函数对象，适配器六大部分，stl几乎所有代码都采用了模板类或模板函数</p>
-<h3 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h3><p>![2024-05-12_17-10](vx_images&#x2F;32601117246846.png &#x3D;600x)</p>
+<h3 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h3><p><img src="/vx_images/32601117246846.png" alt="2024-05-12_17-10"></p>
 <h4 id="vector容器"><a href="#vector容器" class="headerlink" title="vector容器"></a>vector容器</h4><p>vector与数组很类似，但是支持动态扩展，实际上当向vector里插入数据时，vector会在内存中找一块更大的空间，然后将原数据和新数据一起拷贝进去</p>
-<p>![2024-05-09_19-41](vx_images&#x2F;548184119258976.png &#x3D;600x)</p>
+<p><img src="/vx_images/548184119258976.png" alt="2024-05-09_19-41"></p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">print</span><span class="params">(vector&lt;<span class="type">int</span>&gt; &amp;v)</span>    </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(vector&lt;<span class="type">int</span>&gt;::iterator it = v.<span class="built_in">begin</span>(); it != v.<span class="built_in">end</span>(); it++)    <span class="comment">//注意迭代器写法</span></span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; (*it) &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    std::cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">test</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> i;</span><br><span class="line">    vector&lt;<span class="type">int</span>&gt; v1;    <span class="comment">//无参构造赋值</span></span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        v1.<span class="built_in">push_back</span>(i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">print</span>(v1);</span><br><span class="line"></span><br><span class="line">    vector&lt;<span class="type">int</span>&gt; v2 = v1;    <span class="comment">//重载运算符赋值(调用到vector提供的重载函数)</span></span><br><span class="line">    <span class="built_in">print</span>(v2);</span><br><span class="line"></span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">v3</span><span class="params">(v1)</span></span>;    <span class="comment">//拷贝构造函数赋值</span></span><br><span class="line">    <span class="built_in">print</span>(v3);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">test</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>vector容器的方法：  </p>
@@ -2632,12 +2632,12 @@
 <h2 id="接入互联网"><a href="#接入互联网" class="headerlink" title="接入互联网"></a>接入互联网</h2><h3 id="无线方式接入"><a href="#无线方式接入" class="headerlink" title="无线方式接入"></a>无线方式接入</h3><p>wlans：常用于建筑物内，代表：wifi</p>
 <p>广域无线接入：任何有基站信号的范围，代表：4G</p>
 <h2 id="协议层次"><a href="#协议层次" class="headerlink" title="协议层次"></a>协议层次</h2><p>对于不同的TCP应用(如webnet，ftp，telnet)，他们是通过socket接口来下发报文至TCP的</p>
-<p>![](vx_images&#x2F;129152910256147.png &#x3D;600x)</p>
+<p><img src="/vx_images/129152910256147.png"></p>
 <p>对于链路层设备(交换机)，他是把源主机发来的数据解封装2次到链路层后获得链路层的信息来进行转发的。而对于网络层设备(路由器)，是把源主机发来的数据解封装3次到网络层后获得网络层的信息来进行转发的。对于目标主机，他是解封装5次从而获得数据</p>
-<p>![](vx_images&#x2F;415065510251901.png &#x3D;600x)</p>
+<p><img src="/vx_images/415065510251901.png"></p>
 <h2 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h2><h3 id="socket套接字"><a href="#socket套接字" class="headerlink" title="socket套接字"></a>socket套接字</h3><p>socket的优点在于它通过ip地址，端口号等信息统一向OS注册了一个整数，使得每次发报文时不需要重复指定ip地址，端口号等信息。这简化了传输信息的步骤，并且便于OS管理。更重要的是有了socket之后我们就可以进行多进程操作了，这在网络服务器中被称为<strong>多路复用</strong>，由于可能有多个客户端对服务器同时发起请求，因此有必要让一个端口支持多个客户端会话，那么怎么区分这些会话从而让信息发送到指定应用和客户端呢？那就是通过socket值的不同来判断，而socket是根据源ip和端口号不同而不同的</p>
 <p>对于使用TCP传输层协议的应用而言，我们需要指定本机ip及端口号，目的ip及端口号，而对于使用UDP传输层协议的应用而言，我们只需要指定目的ip及端口号就够了。但是现代的操作系统会将本地ip及端口号隐藏在socket操作中，所以无论是TCP还是UDP，仅需要指定目的ip及端口号就够了</p>
-<p>![](vx_images&#x2F;18374216269781.png &#x3D;600x)</p>
+<p><img src="/vx_images/18374216269781.png"></p>
 <p>TCP以及UDP都是明文传输的，为了改进TCP的安全性，SSL协议提供了加密的TCP连接。对于SSL，现阶段并没有明确究竟是属于应用层还是传输层，但是它的层次依然是高于TCP的，采用了SSL的http服务被称为https</p>
 <h3 id="http"><a href="#http" class="headerlink" title="http"></a>http</h3><p>http：超文本传输协议</p>
 <p>使用TCP协议不会区分报文的界限，这件事是由应用来做的，但是http则会区分</p>
@@ -2647,10 +2647,10 @@
 <h3 id="ftp"><a href="#ftp" class="headerlink" title="ftp"></a>ftp</h3><p>ftp适用于客户端服务器模式的文件传输</p>
 <p>ftp：根据TCP协议与服务器21号端口建立连接，采用明文传输，因此会暴露用户名和密码。在21号端口建立的是控制连接，用于发送命令。真正的数据传送是由ftp服务器向客户端发起的，服务器会向客户端20号端口建立连接从而传输文件</p>
 <h3 id="email"><a href="#email" class="headerlink" title="email"></a>email</h3><p>用户代理软件：email客户端软件(outlook)是email应用的用户代理，http客户端软件(firefox)是web应用的用户代理，ftp客户端软件(filezilla)是ftp应用的用户代理。我们是通过客户端软件(用户代理)来跟服务器打交道的，不是直接跟服务器打交道的</p>
-<p>![](vx_images&#x2F;397560120267385.png &#x3D;600x)</p>
+<p><img src="/vx_images/397560120267385.png"></p>
 <p>email使用SMTP协议通过25号端口上传邮件到服务器，之后邮件服务器会进行同步</p>
 <p>email使用POP或者IMAP协议进行邮件的下载，IMAP协议有更多的功能，例如它允许用户在服务器组织邮箱目录</p>
-<h3 id="dns"><a href="#dns" class="headerlink" title="dns"></a>dns</h3><p>![](vx_images&#x2F;475695509264888.png &#x3D;600x)</p>
+<h3 id="dns"><a href="#dns" class="headerlink" title="dns"></a>dns</h3><p><img src="/vx_images/475695509264888.png"></p>
 <p>TTL：缓存时间，当本地dns没有记录某个ip与域名的对应关系时，本地dns会向权威名字服务器进行查询，查询到结果后会缓存在本地并保留一段时间，当超过这个时间后没有再次查询的请求，本地dns就会把这条记录删除。这是为了保证一致性</p>
 <h3 id="p2p"><a href="#p2p" class="headerlink" title="p2p"></a>p2p</h3><p>非结构化的p2p：不指定p2p网络结构是什么样子的，例如环状，星状网络等</p>
 <p>一般而言，非结构化p2p网络网络分为集中化目录式，完全分布式以及混合式</p>
@@ -2663,8 +2663,8 @@
 <h3 id="cdn"><a href="#cdn" class="headerlink" title="cdn"></a>cdn</h3><p>cdn是将内容存储在离用户较近的服务器，这不仅降低延迟提高了用户舒适度而且还减轻了源服务器压力</p>
 <p>当用户请求音视频资源时，用户主机会向dns进行请求，而后dns会返回一个cdn的dns网址或ip，我们用户再解析这个cdn的dns网址就会得到具体的cdn的ip，这里面就有我们申请的资源。cdn的dns主要起一个重定向的作用，这也是为了负载均衡和优化考虑</p>
 <h2 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a>传输层</h2><p>ip(网络层)提供的服务是不可靠的，因此需要tcp&#x2F;udp(传输层)来提供可靠的传输</p>
-<h3 id="tcp"><a href="#tcp" class="headerlink" title="tcp"></a>tcp</h3><p>![](vx_images&#x2F;483952310246130.png &#x3D;600x)</p>
-<p>![](vx_images&#x2F;177303610268570.png &#x3D;600x)</p>
+<h3 id="tcp"><a href="#tcp" class="headerlink" title="tcp"></a>tcp</h3><p><img src="/vx_images/483952310246130.png"></p>
+<p><img src="/vx_images/177303610268570.png"></p>
 <h4 id="三次握手与四次挥手"><a href="#三次握手与四次挥手" class="headerlink" title="三次握手与四次挥手"></a>三次握手与四次挥手</h4><p>建立连接时仅仅两次握手(建立请求-应答回复)是不够的，因为握手时有可能由于延时过大导致客户端重发建立请求从而出现半连接。这样我们就需要双方均发出两次建立请求才可，即：客户端建立请求-&gt;服务器端应答回复-&gt;服务器端建立请求-&gt;客户端应答回复。在发出请求时发出的是随机的同步码，同步码的作用是告知对方哪个数据传输有误从而方便重传，例如92.8的同步码代表92号到99号的字节都已经接收到了，发送方需要从第100个字节处开始传。而在建立请求的第二步和第三步可以统一用一条报文发出，这样就演变成了现在的的三次挥手</p>
 <p>断开连接时也类似建立连接，那为什么断开连接就需要四次挥手呢？这是因为在接受来自客户端断开连接请求时的报文上面常常载有数据，服务器端需要对这些数据进行处理，这一过程是耗时的，假如服务器真的想合并第二步第三步使其变成三次挥手，这就可能导致客户端没有收到服务器的ack从而重发连接断开请求。因此断开连接常常需要四次挥手。而建立连接时没有数据解析的需求，我们就可以将服务器端的应答回复和建立请求统一成一步</p>
 <h4 id="流量控制"><a href="#流量控制" class="headerlink" title="流量控制"></a>流量控制</h4><p>通过协议内部报文标志位从而使网络核心层的路由和边缘层的主机进行通信，路由器进行标志位置位时意味着网络有些拥堵，此时会使边缘层的主机发送速率减半从而防止网络拥堵，这样就进行了流量控制。当网络拥堵时丢包率和延迟也会增加，上述操作不仅减少了网络拥堵同时也改善了丢包率和延迟，这也进行了延时控制</p>
@@ -2675,7 +2675,7 @@
 </ul>
 <h2 id="网络层"><a href="#网络层" class="headerlink" title="网络层"></a>网络层</h2><p>路由位于网络层，决定数据报怎么转发，即通过路由表计算来算出具体的路由<br>交换机位于数据链路层，只是进行单纯的数据转发，通过路由器算出的路由来进行转发</p>
 <p>网络层还可以对数据报进行许多动作：泛洪，block，转发路径，修改某些字段，这些特性仅在sdn(软件定义网络)转发方式中才支持，对于传统方式则不支持</p>
-<h3 id="ip"><a href="#ip" class="headerlink" title="ip"></a>ip</h3><p>![](vx_images&#x2F;478644610263707.png &#x3D;600x)</p>
+<h3 id="ip"><a href="#ip" class="headerlink" title="ip"></a>ip</h3><p><img src="/vx_images/478644610263707.png"></p>
 <p>在子网内部，只有纯交换机的连接而没有路由器的连接，互联网是以网络为单位而进行的路由表计算，到达对应网络后再进行那个网络下子网的路由表计算从而找到子网的子网，这样就可以遍历整个互联网了。由于计算路由表时是按ip地址进行匹配的，一般而言同一个区域的ip地址前若干位大致相同，我们可以通过这一特性将其他区域的ip地址划分到有相同前缀ip的路由表下，这样我们就会加快查找效率。这种技术我们称为路由聚集</p>
 <p>特殊约定：0.0.0.0的地址代指本主机地址，1.1.1.1的地址代表广播地址，127.x.x.x代表回路地址，代表本主机，192.168.x.x代表内网地址</p>
 <h4 id="子网掩码"><a href="#子网掩码" class="headerlink" title="子网掩码"></a>子网掩码</h4><p>为了方便路由器获得主机号和网络号从而做路由运算，ip地址按照一定格式被分为A类，B类，C类地址，A类指的类似255.x.x.x的地址，其子网可容纳6m个主机，B类地址指的是类似255.255.x.x的地址，其子网可容纳65534个设备，C类地址类似，但只能容纳254个设备。如果按子网主机数量来看，大部分厂商需要设备数量处于数百到数千的范围，这样按类划分网络就失去意义了。为了解决这个问题，我们采用了无类地址的方法：设计一个子网掩码，使得路由器再进行路由运算之前先做子网掩码的与运算，从而获得对应的网络号和主机号。这样就可以通过网络号做路由运算找到相应子网，通过主机号在子网中找到对应主机，在表示中有如下例子：200.235.21.15&#x2F;23，代表前23位是网络号，后9位是主机号</p>
