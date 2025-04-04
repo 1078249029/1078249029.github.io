@@ -52,6 +52,12 @@ namespace A
 {
     int a = 100;
 }
+//new和delete使用时需要加上数据类型
+
+new int(10) //从堆区获取1个整型的空间，并赋值为10
+int *p = new int[10] //从堆区获取10个整型的数组空间
+
+delete [10] p //从堆区释放10个整型的数组空间
 
 namespace B
 {
