@@ -1,8 +1,8 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>Tags - Tag - 吾铭子</title>
-        <link>http://localhost:1313/tags/</link>
+        <link>https://1078249029.github.io/tags/</link>
         <description>Tags - Tag - 吾铭子</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>1078249029@qq.com (吾铭子)</managingEditor>
-            <webMaster>1078249029@qq.com (吾铭子)</webMaster><atom:link href="http://localhost:1313/tags/" rel="self" type="application/rss+xml" /></channel>
+            <webMaster>1078249029@qq.com (吾铭子)</webMaster><atom:link href="https://1078249029.github.io/tags/" rel="self" type="application/rss+xml" /></channel>
 </rss>

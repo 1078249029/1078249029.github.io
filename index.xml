@@ -1,32 +1,18 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>吾铭子</title>
-        <link>http://localhost:1313/</link>
+        <link>https://1078249029.github.io/</link>
         <description>吾铭子</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>1078249029@qq.com (吾铭子)</managingEditor>
             <webMaster>1078249029@qq.com (吾铭子)</webMaster><lastBuildDate>Fri, 04 Apr 2025 12:13:01 &#43;0800</lastBuildDate>
-            <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+            <atom:link href="https://1078249029.github.io/index.xml" rel="self" type="application/rss+xml" />
         <item>
     <title>C&#43;&#43;</title>
-    <link>http://localhost:1313/first_post/</link>
+    <link>https://1078249029.github.io/first_post/</link>
     <pubDate>Fri, 04 Apr 2025 12:13:01 &#43;0800</pubDate>
     <author>Author</author>
-    <guid>http://localhost:1313/first_post/</guid>
+    <guid>https://1078249029.github.io/first_post/</guid>
     <description><![CDATA[<p>本文较为详细地介绍了C++的语法和使用中需要注意的点，还介绍了STL库和Modern C++，甚至涉及C++20的部分新特性。在最后，我们大致的介绍了C++常用的设计模式</p>]]></description>
-</item>
-<item>
-    <title>Content_name</title>
-    <link>http://localhost:1313/content_name/</link>
-    <pubDate>Fri, 04 Apr 2025 12:13:01 &#43;0800</pubDate>
-    <author>Author</author>
-    <guid>http://localhost:1313/content_name/</guid>
-    <description><![CDATA[<p>using func_t = void (int);</p>
-<p>//或者这样</p>
-<p>using func_t = void (*)(int);
-// 选择好一个目录作为hugo项目的位置
-hugo new site XXXXX</p>
-<p>template<class T></p>
-<p>using Vec = vector&lt;T, Alloc<T>&gt;; // 类型标识为 vector&lt;T, Alloc<T>&gt;</p>]]></description>
 </item>
 </channel>
 </rss>
