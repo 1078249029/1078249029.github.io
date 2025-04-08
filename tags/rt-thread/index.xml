@@ -1,0 +1,49 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>RT-Thread - 标签 - 吾铭子</title>
+        <link>https://1078249029.github.io/tags/rt-thread/</link>
+        <description>RT-Thread - 标签 - 吾铭子</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>1078249029@qq.com (吾铭子)</managingEditor>
+            <webMaster>1078249029@qq.com (吾铭子)</webMaster><lastBuildDate>Sat, 19 Oct 2024 10:50:25 &#43;0800</lastBuildDate><atom:link href="https://1078249029.github.io/tags/rt-thread/" rel="self" type="application/rss+xml" /><item>
+    <title>移植ESP32SPI驱动至rtthread教程</title>
+    <link>https://1078249029.github.io/posts/planting-esp32spi-to-rtthread/</link>
+    <pubDate>Sat, 19 Oct 2024 10:50:25 &#43;0800</pubDate><author>
+        <name>吾铭子</name>
+    </author><guid>https://1078249029.github.io/posts/planting-esp32spi-to-rtthread/</guid>
+    <description><![CDATA[<h1 id="移植esp32spi驱动至rt-thread" class="headerLink">
+    <a href="#%e7%a7%bb%e6%a4%8desp32spi%e9%a9%b1%e5%8a%a8%e8%87%b3rt-thread" class="header-mark"></a>移植ESP32SPI驱动至RT-Thread</h1><p>本文是博主移植驱动工作的总结，详细介绍了移植过程以及遇到的问题及其解决方案，希望对各位有帮助。同时，代码已进入<a href="https://github.com/RT-Thread/rt-thread/pull/9513" target="_blank" rel="noopener noreferrer">RT-Thread主线</a>。博文同时发表在个人博客<a href="wumingzi.top" rel="">wumingzi.top</a></p>
+<p>本文主要使用、查阅了以下资料：</p>
+<ul>
+<li>参考书籍 RT-Thread设备驱动开发指南，ESP32官方文档</li>
+<li>硬件 ESP32-C3-DevKitM-1，W25Q64</li>
+</ul>
+<h2 id="系统平台搭建" class="headerLink">
+    <a href="#%e7%b3%bb%e7%bb%9f%e5%b9%b3%e5%8f%b0%e6%90%ad%e5%bb%ba" class="header-mark"></a>系统平台搭建</h2><p>具体的硬件连线不必多说，参考<a href="https://docs.espressif.com/projects/esp-dev-kits/zh_CN/latest/esp32c3/esp32-c3-devkitm-1/user_guide.html#id9" target="_blank" rel="noopener noreferrer">ESP32C3官方开发板的原理图</a>即可，交叉编译环境可以参考博主的这篇文章<a href="https://club.rt-thread.org/ask/article/cf9ff0733112d936.html" target="_blank" rel="noopener noreferrer">ESP32C3环境搭建教程</a>，代码编辑器我使用了vscode+clang的搭配方式，不采用微软的C/C++插件的原因是在编写驱动时vscode发生过多次闪退的情况，并且代码提示和高亮补全残缺，相关配置可自行参考网上</p>
+<h2 id="代码参考" class="headerLink">
+    <a href="#%e4%bb%a3%e7%a0%81%e5%8f%82%e8%80%83" class="header-mark"></a>代码参考</h2><p>我们可以参考其他芯片的SPI驱动代码来编写，个人参考了GD32和STM32的代码，GD32的驱动代码会简单很多，STM32会更复杂一些</p>
+<h2 id="修改kconfig与sconscript文件" class="headerLink">
+    <a href="#%e4%bf%ae%e6%94%b9kconfig%e4%b8%8esconscript%e6%96%87%e4%bb%b6" class="header-mark"></a>修改Kconfig与SConscript文件</h2><p>Kconfig指定了系统资源，使得我们可以通过menuconfig来选择配置系统。Kconfig原理可以看<a href="https://www.rt-thread.org/document/site/#/development-tools/build-config-system/Kconfig?id=kconfig" target="_blank" rel="noopener noreferrer">官方文档</a>，简而言之，我们可以通过menuconfig的tui界面来配置Kconfig从而生成.config文件，而后再由系统解析.config文件最后生成rtconfig.h文件来指定系统宏的值从而配置系统。但当前Kconfg并不支持SPI驱动，因此我们需要新增Kconfig选项。</p>
+<p>Kconfig的风格与厂商，开发者个人相关。例如有的厂商会习惯将引脚配置项放在板上菜单中，并将功能配置项放在片上外设菜单中 ，而有的厂商会将两者都混放在片上外设菜单或BSP菜单中。前者代表是ESP32和GD32，后者代表是STM32</p>
+<p>新增的代码如下</p>
+<div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
+  <div class="
+    
+    tw-flex 
+    tw-flex-row
+    tw-flex-1 
+    tw-justify-between 
+    tw-w-full tw-bg-bgColor-secondary
+    ">      
+    <button 
+      class="
+        code-block-button
+        tw-mx-2 
+        tw-flex
+        tw-flex-row
+        tw-flex-1"
+      aria-hidden="true">
+          <div class="group-[.is-open]:tw-rotate-90 tw-transition-[transform] tw-duration-500 tw-ease-in-out print:!tw-hidden tw-w-min tw-h-min tw-my-1 tw-mx-1"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg></div>
+          <p class="tw-select-none !tw-my-1">Kconfig</p>]]></description>
+</item></channel>
+</rss>

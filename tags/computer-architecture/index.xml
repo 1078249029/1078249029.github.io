@@ -1,0 +1,89 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Computer Architecture - 标签 - 吾铭子</title>
+        <link>https://1078249029.github.io/tags/computer-architecture/</link>
+        <description>Computer Architecture - 标签 - 吾铭子</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>1078249029@qq.com (吾铭子)</managingEditor>
+            <webMaster>1078249029@qq.com (吾铭子)</webMaster><lastBuildDate>Wed, 01 Jan 2025 15:22:46 &#43;0800</lastBuildDate><atom:link href="https://1078249029.github.io/tags/computer-architecture/" rel="self" type="application/rss+xml" /><item>
+    <title>RISC-V</title>
+    <link>https://1078249029.github.io/posts/risc-v/</link>
+    <pubDate>Wed, 01 Jan 2025 15:22:46 &#43;0800</pubDate><author>
+        <name>吾铭子</name>
+    </author><guid>https://1078249029.github.io/posts/risc-v/</guid>
+    <description><![CDATA[<h1 id="riscv" class="headerLink">
+    <a href="#riscv" class="header-mark"></a>RISCV</h1><h2 id="前置知识" class="headerLink">
+    <a href="#%e5%89%8d%e7%bd%ae%e7%9f%a5%e8%af%86" class="header-mark"></a>前置知识</h2><p>ISA: 指令集架构，是底层硬件向上层软件提供的一层接口规范。ISA的出现使得软件开发者不必关心具体的硬件电路结构
+ISA定义了如下方面</p>
+<ul>
+<li>基本数据类型(byte,word,halfword)</li>
+<li>寄存器</li>
+<li>指令</li>
+<li>寻址模式</li>
+<li>异常和中断</li>
+<li>……</li>
+</ul>
+<p>微架构：硬件对指令集架构的实现，注意功耗，发热，速度，成本等制造的问题</p>
+<p>ISA的宽度与指令宽度无关，它指的是通用寄存器的宽度</p>
+<p>riscv灵感来自于mips，mips最初是斯坦福大学教授的产品，后来由于经营问题失败，该教授也是riscv之父</p>
+<h2 id="riscv的isa基本情况" class="headerLink">
+    <a href="#riscv%e7%9a%84isa%e5%9f%ba%e6%9c%ac%e6%83%85%e5%86%b5" class="header-mark"></a>RISCV的ISA基本情况</h2><p>riscv由一个基本指令集+若干个可选的扩展指令集组成，基本指令集永远不会变，</p>
+<p><strong>riscv每条指令宽度32位(虽然有16位的压缩指令集)，但是并没有64位宽的指令。这是由于无论是riscv32还是riscv64都只有32个通用寄存器，区别在于寄存器的位宽是32位还是64位，因此控制这32个寄存器只需要5个位宽的索引就够了，因此riscv只有32位宽的指令，尽管只有32位宽的指令，我们还可以通过LUI以及ADDI指令灵活访问超过4GB内存大小的地址</strong></p>
+<p>基本整数指令集(I)：唯一要求强制实现的指令集，其他指令集都是扩展模块
+扩展指令集：M(整数乘法指令集)，A(原子指令集)，F(浮点指令集)，D(双精度指令集)，C(压缩指令集)
+特定组合：IMAFD被称为通用组合，用G表示
+RV64I：64位的riscv整数指令集，兼容RV32I</p>
+<p>压缩指令集是为了提高指令密度出现的。有时arm的一条指令可以执行两个操作，例如LDP和STP内存存储指令，但是在riscv中需要两条指令才能完成: 一条负责执行加载/存储内存数据，另一条负责修改基地址。而这直接导致了编译同一份代码，riscv生成的机器码指令多于arm，这不仅需要更大的存储空间同时还会降低缓存命中率。因此riscv使用16位宽指令代替32位宽的指令产生了RVC指令集，RVC可用于RV32，RV64，RV128上</p>
+<p>riscv定义了一32个通用寄存器x0&hellip;x31，以及一个pc。pc与arm和x86的不同，它无法在编程中访问</p>
+<ul>
+<li>对RV32I/64I/128I都一样</li>
+<li>RV32E将32个寄存器缩减为16以满足嵌入式场景</li>
+<li>如果要支持FD模块则需要额外的32个浮点寄存器</li>
+</ul>
+<p>hart(hardware thread)：为了防止超线程概念被混淆，riscv标准规定了hart概念，一个hart对应的就是一个超线程</p>
+<p>riscv规定了三个特权级：machine supervisor user，三个特权级权限依次降低
+特权级别的区分在于他们分别有各自的csr(control and state)寄存器，高特权级别可以访问低级别的csr</p>
+<p>物理内存保护和虚拟内存：</p>
+<ul>
+<li>物理内存保护类似x86的实模式，在machine模式中可以指定user模式下可以访问的内存空间及其权限。这样就完成了分段的概念</li>
+<li>虚拟内存需要supervisor和mmu的支持</li>
+</ul>
+<p>异常与中断：尽管在之前已经多次学习了这两个概念，但是在riscv规范中还有不同之处</p>
+<ul>
+<li>当程序触发异常时，cpu会跳转到异常处理程序，这个处理程序由开发者自行编写，当处理程序执行完毕后<strong>跳回到发生异常的代码重新执行</strong></li>
+<li>当触发中断时，cpu会跳转到中断处理程序，这个处理程序由开发者自行编写，当处理程序执行完毕后<strong>跳回到发生中断的下一行代码执行</strong></li>
+</ul>
+<p>elf文件主要有四类：</p>
+<ul>
+<li>.o</li>
+<li>.out</li>
+<li>.so</li>
+<li>核心转储core文件</li>
+</ul>
+<p>elf文件大致内容如下
+
+<figure><a class="lightgallery" href="/vx_images/78955821256435.png" title="2025-01-01_21-57" data-thumbnail="/vx_images/78955821256435.png" data-sub-html="<h2> </h2><p>2025-01-01_21-57</p>"><img   src='/vx_images/78955821256435.png'   alt="2025-01-01_21-57" height="1599" width="2560"></a><figcaption class="image-caption">2025-01-01_21-57</figcaption>
+    </figure>
+elf header指定了该elf文件的基本内容，包括编译器，可运行的架构等内容，program header table指定了运行时该以何种方式加载进内存。section header table表示了该文件链接时是如何生成的。不将这些section直接加载进内存的原因是这些段需要内存对齐，一旦对齐会浪费很多空间。因此program header table将相似的section作为segment来将其加载进内存</p>
+<p>由于elf文件内有许多运行代码时不需要的调试信息，我们可以生成.bin文件来删除这些信息</p>
+<h2 id="riscv汇编" class="headerLink">
+    <a href="#riscv%e6%b1%87%e7%bc%96" class="header-mark"></a>RISCV汇编</h2><p><strong>下面的指令均以RV32I为例</strong></p>
+<p>汇编程序语法与编译器有很大关系，在gnu工具链上的汇编程序在llvm可能不会运行</p>
+<p>riscv汇编的结构：
+[label:][operation][comment]</p>
+<ul>
+<li>label：gnu汇编中，任何以冒号为结尾的标识符都被视作标号，label可以被视为地址</li>
+<li>operation：
+<ul>
+<li>instruction：直接对应机器指令的汇编指令</li>
+<li>pseudo-instruction：一条伪指令可以产生多条机器指令</li>
+<li>directive：以&quot;.&ldquo;用来控制汇编器处理代码的指令</li>
+<li>macro：采用.macro自定义的宏</li>
+</ul>
+</li>
+<li>comment：注释，常用# ; //</li>
+</ul>
+<p>指令长度ILEN：32bits(RV32I)
+指令对齐IALIGN：32bits(RV32I)
+指令在内存中按小端序排列</p>]]></description>
+</item></channel>
+</rss>

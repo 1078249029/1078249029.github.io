@@ -1,0 +1,54 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>STM32 - 标签 - 吾铭子</title>
+        <link>https://1078249029.github.io/tags/stm32/</link>
+        <description>STM32 - 标签 - 吾铭子</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>1078249029@qq.com (吾铭子)</managingEditor>
+            <webMaster>1078249029@qq.com (吾铭子)</webMaster><lastBuildDate>Wed, 18 Oct 2023 13:57:04 &#43;0800</lastBuildDate><atom:link href="https://1078249029.github.io/tags/stm32/" rel="self" type="application/rss+xml" /><item>
+    <title>STM32</title>
+    <link>https://1078249029.github.io/posts/stm32/</link>
+    <pubDate>Wed, 18 Oct 2023 13:57:04 &#43;0800</pubDate><author>
+        <name>吾铭子</name>
+    </author><guid>https://1078249029.github.io/posts/stm32/</guid>
+    <description><![CDATA[<h1 id="stm32" class="headerLink">
+    <a href="#stm32" class="header-mark"></a>STM32</h1><p>STM32 常用寄存器缩写: CR 控制寄存器 SR 状态寄存器 DR 数据寄存器
+ST公司出品的Microcontroller(微控制器) Cortex-M内核 学习的是M3内核
+供电电压 2.0V-3.6V(标准3.3V)，USB输出电压是5V
+AHB 先进高性能总线
+APB 外设总线
+内核的外设不需要开启时钟</p>
+<!-- more -->
+<p>![](vx_images/262091315231061_1.png =600x)
+复用输入指的是同一引脚默认有很多输入功能，需要对GPIO指定使用哪个功能(TIM4就无复用功能)，而重定义则是非默认功能，需要进行AFIO选择进而变为复用功能
+![2024-01-04_15-49](vx_images/384774915259273_1.png =600x)
+![2023-10-16_22-3845](vx_images/581333822257516_1.png =600x)
+![2023-10-13_16-2857](vx_images/198312916249480_1.png =600x)
+![2023-10-13_17-0326](vx_images/285460417237347_1.png =600x)
+最小系统电路: 单独的芯片不能工作，需要连接最基本的电路，由这些电路组成的就是最小系统电路</p>
+<h2 id="gpio" class="headerLink">
+    <a href="#gpio" class="header-mark"></a>GPIO</h2><p>RCC : 复位和时钟控制
+GPIO(General Purpose Input Output)通用输入输出口
+GPIO高低电平看外部输入输出,输入情况下,与外部电平极性相同.如果外部信号非常小,则为避免引入干扰源选择浮空输入,不清楚外部信号的情况下也选择浮空输入,输出情况下看外部负载电压要求
+AIN是模拟输入专用模式，此时GPIO不输入输出，防止对外界信号干扰
+AF_PP是复用推挽模式，片上外设使用这种模式
+![2023-10-14_16-5334](vx_images/231855213249483_1.png =600x)
+![2023-10-14_16-5138](vx_images/216535216249481_1.png =600x)
+![2023-10-15_09-3232](vx_images/447993209231056_1.png =600x)
+VDD 3.3V     VSS 0V
+GPIO 控制流程：1.激活 RCC 时钟    2.使用 GPIO_Init 初始化 GPIO 函数<br>
+施密特触发器的作用是对外界信号进行滤波，规定上下限，使得当超过上限输出为1，低于下限输出为0，上下限之间输出不变，这样可以维持信号的稳定性
+在输出模式下，输入也是有效的
+OLED函数showhexnum与shownum每逢10相差6，hexnum的数值比num高6</p>
+<h2 id="中断" class="headerLink">
+    <a href="#%e4%b8%ad%e6%96%ad" class="header-mark"></a>中断</h2><p>NVIC (Nested Vectored Interrupt Controller) 嵌套中断向量控制器: 统一分配中断优先级和管理中断
+响应优先级: 完成当前任务后进行响应优先级的任务    中断优先级: 立即结束当前任务并进行中断优先级任务(可以决定中断嵌套,抢占优先级高的可以进行中断嵌套)
+两个优先级相同的情况下按中断号排队,所以并不是先来后到
+NVIC 分组在整个项目中只需要执行一次
+![2023-10-17_08-4844](vx_images/543234908231058_1.png =600x)
+EXTI (external interrupt) 外部中断控制器
+EXTI 负责监控GPIO的电平变化,当产生跳变时,EXTI向NVIC发送中断申请,经NVIC裁决优先级后执行中断程序
+![2023-10-16_13-5138](vx_images/571455113231057_1.png =600x)
+![2023-10-16_15-0452](vx_images/49500515237350_1.png =600x)
+GPIO_EXTILineConfig(GPIO_PortSourceGPIOx,GPIO_PinSourcex) 是配置AFIO的函数，参数是GPIO的通道和引脚</p>]]></description>
+</item></channel>
+</rss>

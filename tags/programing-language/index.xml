@@ -1,0 +1,164 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Programing Language - 标签 - 吾铭子</title>
+        <link>https://1078249029.github.io/tags/programing-language/</link>
+        <description>Programing Language - 标签 - 吾铭子</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>1078249029@qq.com (吾铭子)</managingEditor>
+            <webMaster>1078249029@qq.com (吾铭子)</webMaster><lastBuildDate>Sun, 15 Dec 2024 11:43:24 &#43;0800</lastBuildDate><atom:link href="https://1078249029.github.io/tags/programing-language/" rel="self" type="application/rss+xml" /><item>
+    <title>Rust</title>
+    <link>https://1078249029.github.io/posts/rust/</link>
+    <pubDate>Sun, 15 Dec 2024 11:43:24 &#43;0800</pubDate><author>
+        <name>吾铭子</name>
+    </author><guid>https://1078249029.github.io/posts/rust/</guid>
+    <description><![CDATA[<h1 id="rust" class="headerLink">
+    <a href="#rust" class="header-mark"></a>Rust</h1><h2 id="前期准备" class="headerLink">
+    <a href="#%e5%89%8d%e6%9c%9f%e5%87%86%e5%a4%87" class="header-mark"></a>前期准备</h2><h3 id="环境搭建" class="headerLink">
+    <a href="#%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba" class="header-mark"></a>环境搭建</h3><p>可选ide/插件式编辑器:  rustrover(jet brains)/rust-analyzer(rust foundation)+vscode</p>
+<p>访问<a href="https://www.rust-lang.org/tools/install" target="_blank" rel="noopener noreferrer">rust官网</a>来获取下载链接，windows采用msvc编译链，在使用msvc之前需要先下载<code>Visual Studio C++ Build tools</code>。其它平台浏览器会自动识别并提供下载方式</p>
+<h3 id="创建项目" class="headerLink">
+    <a href="#%e5%88%9b%e5%bb%ba%e9%a1%b9%e7%9b%ae" class="header-mark"></a>创建项目</h3><div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
+  <div class="
+    
+    tw-flex 
+    tw-flex-row
+    tw-flex-1 
+    tw-justify-between 
+    tw-w-full tw-bg-bgColor-secondary
+    ">      
+    <button 
+      class="
+        code-block-button
+        tw-mx-2 
+        tw-flex
+        tw-flex-row
+        tw-flex-1"
+      aria-hidden="true">
+          <div class="group-[.is-open]:tw-rotate-90 tw-transition-[transform] tw-duration-500 tw-ease-in-out print:!tw-hidden tw-w-min tw-h-min tw-my-1 tw-mx-1"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg></div>
+          <p class="tw-select-none !tw-my-1">shell</p>]]></description>
+</item><item>
+    <title>C&#43;&#43;</title>
+    <link>https://1078249029.github.io/posts/cpp/</link>
+    <pubDate>Sun, 14 Jan 2024 09:37:21 &#43;0800</pubDate><author>
+        <name>吾铭子</name>
+    </author><guid>https://1078249029.github.io/posts/cpp/</guid>
+    <description><![CDATA[<p>本文较为详细地介绍了C++的语法和使用中需要注意的点，还介绍了STL库和Modern C++，甚至涉及C++20的部分新特性。在最后，我们大致的介绍了C++常用的设计模式</p>
+<!-- more -->
+<h1 id="c" class="headerLink">
+    <a href="#c" class="header-mark"></a>C++</h1><h2 id="从c到c" class="headerLink">
+    <a href="#%e4%bb%8ec%e5%88%b0c" class="header-mark"></a>从C到C++</h2><h3 id="new和delete" class="headerLink">
+    <a href="#new%e5%92%8cdelete" class="header-mark"></a>new和delete</h3><p>尽管C++11引入了智能指针，但是为了兼容老程序，new和delete的方法也应值得注意</p>
+<ul>
+<li>C原生的melloc与free使用起来较为复杂，需要根据返回值来判断下一步做什么</li>
+<li>C原生的melloc与free也只进行内存申请但不进行对象实例化，也就是说C仅仅返回内存地址的指针，而C++返回的是一块特定类型的指针</li>
+<li>更重要的是C++在调用new时会自动执行对象的构造函数，C原生的melloc与free则不支持</li>
+</ul>
+<p>在使用delete回收数组时需要告诉他数组的类型</p>
+<div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
+  <div class="
+    
+    tw-flex 
+    tw-flex-row
+    tw-flex-1 
+    tw-justify-between 
+    tw-w-full tw-bg-bgColor-secondary
+    ">      
+    <button 
+      class="
+        code-block-button
+        tw-mx-2 
+        tw-flex
+        tw-flex-row
+        tw-flex-1"
+      aria-hidden="true">
+          <div class="group-[.is-open]:tw-rotate-90 tw-transition-[transform] tw-duration-500 tw-ease-in-out print:!tw-hidden tw-w-min tw-h-min tw-my-1 tw-mx-1"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg></div>
+          <p class="tw-select-none !tw-my-1">cpp</p>]]></description>
+</item><item>
+    <title>Python</title>
+    <link>https://1078249029.github.io/posts/python/</link>
+    <pubDate>Sun, 14 Jan 2024 09:37:13 &#43;0800</pubDate><author>
+        <name>吾铭子</name>
+    </author><guid>https://1078249029.github.io/posts/python/</guid>
+    <description><![CDATA[<h1 id="python" class="headerLink">
+    <a href="#python" class="header-mark"></a>Python</h1><h2 id="python基础" class="headerLink">
+    <a href="#python%e5%9f%ba%e7%a1%80" class="header-mark"></a>Python基础</h2><h3 id="解释器与编译器" class="headerLink">
+    <a href="#%e8%a7%a3%e9%87%8a%e5%99%a8%e4%b8%8e%e7%bc%96%e8%af%91%e5%99%a8" class="header-mark"></a>解释器与编译器</h3><p>解释器输出运行的结果
+编译器输出编译的文件</p>
+<p>字面量：写在代码中的值，可以被分为整数，浮点数，字符串，元组，列表等
+python的单引号和双引号意义相同，但是使用单引号可以打出双引号，但不能打出单引号。使用双引号则反之，如果想使用单引号打出单引号，则需要加上反斜杠代表转义字符</p>
+<!-- more -->
+<h3 id="注释的写法" class="headerLink">
+    <a href="#%e6%b3%a8%e9%87%8a%e7%9a%84%e5%86%99%e6%b3%95" class="header-mark"></a>注释的写法</h3><div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
+  <div class="
+    
+    tw-flex 
+    tw-flex-row
+    tw-flex-1 
+    tw-justify-between 
+    tw-w-full tw-bg-bgColor-secondary
+    ">      
+    <button 
+      class="
+        code-block-button
+        tw-mx-2 
+        tw-flex
+        tw-flex-row
+        tw-flex-1"
+      aria-hidden="true">
+          <div class="group-[.is-open]:tw-rotate-90 tw-transition-[transform] tw-duration-500 tw-ease-in-out print:!tw-hidden tw-w-min tw-h-min tw-my-1 tw-mx-1"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg></div>
+          <p class="tw-select-none !tw-my-1">py</p>]]></description>
+</item><item>
+    <title>C复健计划</title>
+    <link>https://1078249029.github.io/posts/c-review/</link>
+    <pubDate>Wed, 18 Oct 2023 13:57:04 &#43;0800</pubDate><author>
+        <name>吾铭子</name>
+    </author><guid>https://1078249029.github.io/posts/c-review/</guid>
+    <description><![CDATA[<h1 id="c复健计划" class="headerLink">
+    <a href="#c%e5%a4%8d%e5%81%a5%e8%ae%a1%e5%88%92" class="header-mark"></a>C复健计划</h1><p>printf函数无法打印多行字符串，若要打印多行字符串则需要在每行后加换行符\n<br>
+\n代表换行，\n\代表下一行是上一行的延续，如果改为\n则会报错 <br>
+变量名第一个字母不能是数字
+ANSI C C99 C11 关键字数量分别是32 32+5 37+7
+%11.2f代表输出11个占位符，其中浮点型输出到小数点后2位，如果%a.bf，其中b比a大，则直接输出到小数点后b位而忽略a的值
+%x: 十六进制 (hex) %o: 八进制(oct) %d: 十进制(dec)</p>
+<!-- more -->
+<p>
+<figure><a class="lightgallery" href="/vx_images/581673908249386.png" title="2023-09-19_08-38" data-thumbnail="/vx_images/581673908249386.png" data-sub-html="<h2> </h2><p>2023-09-19_08-38</p>"><img   src='/vx_images/581673908249386.png'   alt="2023-09-19_08-38" height="313" width="685"></a><figcaption class="image-caption">2023-09-19_08-38</figcaption>
+    </figure>
+
+<figure><a class="lightgallery" href="/vx_images/90294008237253.png" title="2023-09-19_08-39" data-thumbnail="/vx_images/90294008237253.png" data-sub-html="<h2> </h2><p>2023-09-19_08-39</p>"><img   src='/vx_images/90294008237253.png'   alt="2023-09-19_08-39" height="279" width="1003"></a><figcaption class="image-caption">2023-09-19_08-39</figcaption>
+    </figure>
+&quot;   代表 &quot;   \ 代表 \ <br>
+/*    */代表多行注释
+&lt;&gt;表示导入系统文件  &ldquo;&ldquo;表示导入自定义文件`
+Tab == 8个空格，或者4个空格</p>
+<p>编译分为四步</p>
+<ol>
+<li>预编译：宏定义展开，头文件展开，条件编译等，并将注释删除（条件编译是指根据系统位数，编译库的选择确定编译环境）</li>
+<li>编译：将预编译后的文件生成汇编文件</li>
+<li>汇编：将汇编文件生成为目标文件（二进制代码）</li>
+<li>链接：把库链接到可执行程序中（预编译只是说明函数格式）</li>
+</ol>
+<p>
+<figure><a class="lightgallery" href="/vx_images/499670009249389.png" title="2023-09-22_08-5949" data-thumbnail="/vx_images/499670009249389.png" data-sub-html="<h2> </h2><p>2023-09-22_08-5949</p>"><img   src='/vx_images/499670009249389.png'   alt="2023-09-22_08-5949" height="424" width="1292"></a><figcaption class="image-caption">2023-09-22_08-5949</figcaption>
+    </figure>
+float 默认保留六位小数，%.2 表示保留小数点后两位（四舍五入）
+常量定义方法：（不能对值进行修改）
+const 数据类型 常量名 = 值 或 数据类型 const 常量名 = 值 ( 在函数中定义的常量不安全，而全局常量则安全 )
+# define 常量名 值
+第一种不安全，利用指针可以修改 const 定义的值
+十六进制用 0x 开头 八进制用 0 开头 C不支持定义二进制数
+有符号数最高位是符号位，0 代表正数，1 代表负数
+scanf(&quot;%d&rdquo;,&amp;a); 不要加\n
+%hd 短整型 %p 输出指针的地址
+char &lsquo;单个字母&rsquo; 此时 %c 打印字母 %d 打印ASC2码
+%c 对应的变量如果是整型，则输出ASC2码所对的字符
+0 的ASC2码是 48 A 65 a 97 小写字母 - 大写字母 == 32
+科学计数法赋值: float a = 3.2e3     //3.2*1000
+%e 以科学计数法表示数字
+WORD 双字节 16bit   DWORD (double word) 32bit
+
+<figure><a class="lightgallery" href="/vx_images/342723609249394.png" title="2023-09-27_09-3508" data-thumbnail="/vx_images/342723609249394.png" data-sub-html="<h2> </h2><p>2023-09-27_09-3508</p>]]></description>
+</item></channel>
+</rss>
