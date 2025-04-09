@@ -7,10 +7,7 @@
     <meta name="robots" content="noodp" /><title>工具链 - 吾铭子</title><meta name="Description" content="吾铭子"><meta property="og:url" content="https://1078249029.github.io/posts/toolchains/">
   <meta property="og:site_name" content="吾铭子">
   <meta property="og:title" content="工具链">
-  <meta property="og:description" content="本文介绍了Git，GDB，Makefile，CMake四种C/C&#43;&#43;编程中常用的工具链，还涉及一点GCC制作库文件的内容
-工具链 Git Git本地操作版本控制系统分为2种
-集中式版本控制系统 如SVN 分布式版本控制系统 如Git 相比SVN，Git可靠性高但操作复杂
-git">
+  <meta property="og:description" content="本文介绍了Git，GDB，Makefile，CMake四种C/C&#43;&#43;编程中常用的工具链，还涉及一点GCC制作库文件的内容">
   <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
@@ -23,10 +20,7 @@ git">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://1078249029.github.io/logo.png">
   <meta name="twitter:title" content="工具链">
-  <meta name="twitter:description" content="本文介绍了Git，GDB，Makefile，CMake四种C/C&#43;&#43;编程中常用的工具链，还涉及一点GCC制作库文件的内容
-工具链 Git Git本地操作版本控制系统分为2种
-集中式版本控制系统 如SVN 分布式版本控制系统 如Git 相比SVN，Git可靠性高但操作复杂
-git">
+  <meta name="twitter:description" content="本文介绍了Git，GDB，Makefile，CMake四种C/C&#43;&#43;编程中常用的工具链，还涉及一点GCC制作库文件的内容">
 <meta name="application-name" content="吾铭子">
 <meta name="apple-mobile-web-app-title" content="吾铭子">
 
@@ -41,7 +35,7 @@ git">
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https://1078249029.github.io/posts/toolchains/"
-        },"genre": "posts","keywords":["Tech","Tools"],"wordcount":  608 ,
+        },"genre": "posts","keywords":["Tech","Tools"],"wordcount":  4248 ,
         "url": "https://1078249029.github.io/posts/toolchains/","datePublished": "2024-01-02T14:37:10+08:00","dateModified": "2024-10-29T11:24:43+08:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -232,9 +226,9 @@ git">
             <div class="post-meta-line"><svg class="icon"
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>&nbsp;<time datetime="2024-01-02">2024-01-02</time>&nbsp;<svg class="icon"
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg>&nbsp;<time datetime="2024-10-29">2024-10-29</time>&nbsp;<svg class="icon"
-    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;约 608 字&nbsp;
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;约 4248 字&nbsp;
                     <svg class="icon"
-    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;预计阅读 3 分钟&nbsp;</div>
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;预计阅读 19 分钟&nbsp;</div>
         </div><div class="details toc print:!tw-block" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
                     <span>目录</span>
@@ -383,7 +377,7 @@ git">
 </span></span><span class="line"><span class="cl">git config --global --list</span></span></code></pre>
 </div>
 <p>
-<figure><a class="lightgallery" href="/vx_images/382591015251580.png" title="2024-01-02_15-10" data-thumbnail="/vx_images/382591015251580.png" data-sub-html="<h2> </h2><p>2024-01-02_15-10</p>"><img   src='/vx_images/382591015251580.png'   alt="2024-01-02_15-10" height="988" width="2305"></a><figcaption class="image-caption">2024-01-02_15-10</figcaption>
+<figure><a class="lightgallery" href="assets/382591015251580.png" title="2024-01-02_15-10" data-thumbnail="assets/382591015251580.png" data-sub-html="<h2> </h2><p>2024-01-02_15-10</p>"><img   src='assets/382591015251580.png'   alt="2024-01-02_15-10"  ></a><figcaption class="image-caption">2024-01-02_15-10</figcaption>
     </figure>
 git的数据管理分为三部分</p>
 <ul>
@@ -392,7 +386,7 @@ git的数据管理分为三部分</p>
 <li>本地仓库  .git/objectsgit所在目录 init生成的文件区域，是git存储代码和版本信息的主要位置<br>
 每次修改文件都需要提交很麻烦，因此产生了暂存区，当修改所有文件完毕后再统一提交至本地仓库
 
-<figure><a class="lightgallery" href="/vx_images/510961515269460.png" title="2024-01-02_15-15" data-thumbnail="/vx_images/510961515269460.png" data-sub-html="<h2> </h2><p>2024-01-02_15-15</p>"><img   src='/vx_images/510961515269460.png'   alt="2024-01-02_15-15" height="1158" width="2375"></a><figcaption class="image-caption">2024-01-02_15-15</figcaption>
+<figure><a class="lightgallery" href="assets/510961515269460.png" title="2024-01-02_15-15" data-thumbnail="assets/510961515269460.png" data-sub-html="<h2> </h2><p>2024-01-02_15-15</p>"><img   src='assets/510961515269460.png'   alt="2024-01-02_15-15"  ></a><figcaption class="image-caption">2024-01-02_15-15</figcaption>
     </figure></li>
 </ul>
 <div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
@@ -721,7 +715,7 @@ git的数据管理分为三部分</p>
 <p>diff后红色内容表示删除内容，绿色表示增加内容</p>
 <h3 id="git远程操作" class="headerLink">
     <a href="#git%e8%bf%9c%e7%a8%8b%e6%93%8d%e4%bd%9c" class="header-mark"></a>Git远程操作</h3><p>
-<figure><a class="lightgallery" href="/vx_images/171151918267064.png" title="2024-01-02_18-19" data-thumbnail="/vx_images/171151918267064.png" data-sub-html="<h2> </h2><p>2024-01-02_18-19</p>"><img   src='/vx_images/171151918267064.png'   alt="2024-01-02_18-19" height="1419" width="2137"></a><figcaption class="image-caption">2024-01-02_18-19</figcaption>
+<figure><a class="lightgallery" href="assets/171151918267064.png" title="2024-01-02_18-19" data-thumbnail="assets/171151918267064.png" data-sub-html="<h2> </h2><p>2024-01-02_18-19</p>"><img   src='assets/171151918267064.png'   alt="2024-01-02_18-19"  ></a><figcaption class="image-caption">2024-01-02_18-19</figcaption>
     </figure>
 可以配置.gitignore来不想被版本控制的文件，只需将文件或文件夹添加到.gitignore即可，语法支持如上</p>
 <div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
@@ -862,7 +856,7 @@ merge时需要切换到主分支
 merge后分支依然存在，除非手动删除分支
 :::</p>
 <p>
-<figure><a class="lightgallery" href="/vx_images/140045521268247.png" title="2024-01-02_21-52" data-thumbnail="/vx_images/140045521268247.png" data-sub-html="<h2> </h2><p>2024-01-02_21-52</p>"><img   src='/vx_images/140045521268247.png'   alt="2024-01-02_21-52" height="1249" width="2226"></a><figcaption class="image-caption">2024-01-02_21-52</figcaption>
+<figure><a class="lightgallery" href="assets/140045521268247.png" title="2024-01-02_21-52" data-thumbnail="assets/140045521268247.png" data-sub-html="<h2> </h2><p>2024-01-02_21-52</p>"><img   src='assets/140045521268247.png'   alt="2024-01-02_21-52"  ></a><figcaption class="image-caption">2024-01-02_21-52</figcaption>
     </figure></p>
 <h3 id="gitflow" class="headerLink">
     <a href="#gitflow" class="header-mark"></a>GitFlow</h3><p>适用于团队水平适中的情况</p>
@@ -875,7 +869,7 @@ release 均来源于develop，测试稳定后发布到main，发现bug发布到d
 <h3 id="github-flow" class="headerLink">
     <a href="#github-flow" class="header-mark"></a>GitHub Flow</h3><p>适用于团队水平较高的情况</p>
 <p>
-<figure><a class="lightgallery" href="/vx_images/371810311240144.png" title="2024-01-03_11-01" data-thumbnail="/vx_images/371810311240144.png" data-sub-html="<h2> </h2><p>2024-01-03_11-01</p>"><img   src='/vx_images/371810311240144.png'   alt="2024-01-03_11-01" height="1188" width="2541"></a><figcaption class="image-caption">2024-01-03_11-01</figcaption>
+<figure><a class="lightgallery" href="assets/371810311240144.png" title="2024-01-03_11-01" data-thumbnail="assets/371810311240144.png" data-sub-html="<h2> </h2><p>2024-01-03_11-01</p>"><img   src='assets/371810311240144.png'   alt="2024-01-03_11-01"  ></a><figcaption class="image-caption">2024-01-03_11-01</figcaption>
     </figure></p>
 <p>整个项目只有两个分支，开发者从Master中branch一个分支用于开发，需要进行merge时发起一个Pull Request请求，待团队审核后再merge到Master</p>
 <h3 id="github" class="headerLink">
@@ -992,7 +986,7 @@ release 均来源于develop，测试稳定后发布到main，发现bug发布到d
 </div>
 <p>随后会在我们本地生成一个项目文件夹，我们进入这个rt-thread文件夹内，执行branch命令会发现这里仅有master一个分支。而远端仓库只有我们fork出来的rtt项目
 
-<figure><a class="lightgallery" href="/vx_images/10811412240766.png" title="2024-07-25_12-13" data-thumbnail="/vx_images/10811412240766.png" data-sub-html="<h2> </h2><p>2024-07-25_12-13</p>"><img   src='/vx_images/10811412240766.png'   alt="2024-07-25_12-13" height="160" width="1065"></a><figcaption class="image-caption">2024-07-25_12-13</figcaption>
+<figure><a class="lightgallery" href="assets/10811412240766.png" title="2024-07-25_12-13" data-thumbnail="assets/10811412240766.png" data-sub-html="<h2> </h2><p>2024-07-25_12-13</p>"><img   src='assets/10811412240766.png'   alt="2024-07-25_12-13"  ></a><figcaption class="image-caption">2024-07-25_12-13</figcaption>
     </figure></p>
 <p>由于我们需要使用的是lts-v4.1.x分支，而这个分支与rtt项目的master分支是同步开发的，因此我们首先需要建立本地仓库与rtt官方仓库的联系，执行</p>
 <div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
@@ -1181,7 +1175,7 @@ release 均来源于develop，测试稳定后发布到main，发现bug发布到d
 <p>这样当我们执行<code>git fetch upstream</code>的时候就会保持与rtt官方仓库的一致了
 下面是建立联系后的样子
 
-<figure><a class="lightgallery" href="/vx_images/83291712259192.png" title="2024-07-25_12-16" data-thumbnail="/vx_images/83291712259192.png" data-sub-html="<h2> </h2><p>2024-07-25_12-16</p>"><img   src='/vx_images/83291712259192.png'   alt="2024-07-25_12-16" height="157" width="954"></a><figcaption class="image-caption">2024-07-25_12-16</figcaption>
+<figure><a class="lightgallery" href="assets/83291712259192.png" title="2024-07-25_12-16" data-thumbnail="assets/83291712259192.png" data-sub-html="<h2> </h2><p>2024-07-25_12-16</p>"><img   src='assets/83291712259192.png'   alt="2024-07-25_12-16"  ></a><figcaption class="image-caption">2024-07-25_12-16</figcaption>
     </figure></p>
 <p>我们最好还要同步一下分支状态</p>
 <div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
@@ -1276,7 +1270,7 @@ release 均来源于develop，测试稳定后发布到main，发现bug发布到d
       "><span class="line"><span class="cl">git fetch upstream</span></span></code></pre>
 </div>
 <p>
-<figure><a class="lightgallery" href="/vx_images/356092212247059.png" title="2024-07-25_12-22" data-thumbnail="/vx_images/356092212247059.png" data-sub-html="<h2> </h2><p>2024-07-25_12-22</p>"><img   src='/vx_images/356092212247059.png'   alt="2024-07-25_12-22" height="514" width="1708"></a><figcaption class="image-caption">2024-07-25_12-22</figcaption>
+<figure><a class="lightgallery" href="assets/356092212247059.png" title="2024-07-25_12-22" data-thumbnail="assets/356092212247059.png" data-sub-html="<h2> </h2><p>2024-07-25_12-22</p>"><img   src='assets/356092212247059.png'   alt="2024-07-25_12-22"  ></a><figcaption class="image-caption">2024-07-25_12-22</figcaption>
     </figure></p>
 <p>这里我们就可以正式建立分支了</p>
 <div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
@@ -2221,7 +2215,7 @@ $(patsubst pattern,replacement,$(var))    在var中取出符合pattern的值，�
 CFLAGS 这个变量可以后加gcc的编译选项</p>
 <h2 id="cmake" class="headerLink">
     <a href="#cmake" class="header-mark"></a>CMake</h2><p>
-<figure><a class="lightgallery" href="/vx_images/515224411240356.png" title="2024-03-15_11-43" data-thumbnail="/vx_images/515224411240356.png" data-sub-html="<h2> </h2><p>2024-03-15_11-43</p>"><img   src='/vx_images/515224411240356.png'   alt="2024-03-15_11-43" height="1124" width="2290"></a><figcaption class="image-caption">2024-03-15_11-43</figcaption>
+<figure><a class="lightgallery" href="assets/515224411240356.png" title="2024-03-15_11-43" data-thumbnail="assets/515224411240356.png" data-sub-html="<h2> </h2><p>2024-03-15_11-43</p>"><img   src='assets/515224411240356.png'   alt="2024-03-15_11-43"  ></a><figcaption class="image-caption">2024-03-15_11-43</figcaption>
     </figure></p>
 </div>
 

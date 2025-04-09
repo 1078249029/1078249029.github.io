@@ -7,11 +7,7 @@
     <meta name="robots" content="noodp" /><title>C复健计划 - 吾铭子</title><meta name="Description" content="吾铭子"><meta property="og:url" content="https://1078249029.github.io/posts/c-review/">
   <meta property="og:site_name" content="吾铭子">
   <meta property="og:title" content="C复健计划">
-  <meta property="og:description" content="C复健计划printf函数无法打印多行字符串，若要打印多行字符串则需要在每行后加换行符\n
-\n代表换行，\n\代表下一行是上一行的延续，如果改为\n则会报错 变量名第一个字母不能是数字 ANSI C C99 C11 关键字数量分别是32 32&#43;5 37&#43;7 %11.2f代表输出11个占位符，其中浮点型输出到小数点后2位，如果%a.bf，其中b比a大，则直接输出到小数点后b位而忽略a的值 %x: 十六进制 (hex) %o: 八进制(oct) %d: 十进制(dec)
-2023-09-19_08-38 2023-09-19_08-39 &#34; 代表 &#34; \ 代表 \ /* */代表多行注释 &lt;&gt;表示导入系统文件 ““表示导入自定义文件` Tab == 8个空格，或者4个空格
-编译分为四步
-预编译：宏定义展开，头文件展开，条件编译等，并将注释删除（条件编译是指根据系统位数，编译库的选择确定编译环境） 编译：将预编译后的文件生成汇编文件 汇编：将汇编文件生成为目标文件（二进制代码） 链接：把库链接到可执行程序中（预编译只是说明函数格式） 2023-09-22_08-5949 float 默认保留六位小数，%.2 表示保留小数点后两位（四舍五入） 常量定义方法：（不能对值进行修改） const 数据类型 常量名 = 值 或 数据类型 const 常量名 = 值 ( 在函数中定义的常量不安全，而全局常量则安全 ) # define 常量名 值 第一种不安全，利用指针可以修改 const 定义的值 十六进制用 0x 开头 八进制用 0 开头 C不支持定义二进制数 有符号数最高位是符号位，0 代表正数，1 代表负数 scanf(&#34;%d”,&amp;a); 不要加\n %hd 短整型 %p 输出指针的地址 char ‘单个字母’ 此时 %c 打印字母 %d 打印ASC2码 %c 对应的变量如果是整型，则输出ASC2码所对的字符 0 的ASC2码是 48 A 65 a 97 小写字母 - 大写字母 == 32 科学计数法赋值: float a = 3.2e3 //3.2*1000 %e 以科学计数法表示数字 WORD 双字节 16bit DWORD (double word) 32bit">
+  <meta property="og:description" content="本文是笔者研究生入学期间对C进行系统性复习总结而成的笔记，因此内部排版混乱，知识点散乱而不成系统，望读者谨慎参考">
   <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
@@ -24,11 +20,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://1078249029.github.io/logo.png">
   <meta name="twitter:title" content="C复健计划">
-  <meta name="twitter:description" content="C复健计划printf函数无法打印多行字符串，若要打印多行字符串则需要在每行后加换行符\n
-\n代表换行，\n\代表下一行是上一行的延续，如果改为\n则会报错 变量名第一个字母不能是数字 ANSI C C99 C11 关键字数量分别是32 32&#43;5 37&#43;7 %11.2f代表输出11个占位符，其中浮点型输出到小数点后2位，如果%a.bf，其中b比a大，则直接输出到小数点后b位而忽略a的值 %x: 十六进制 (hex) %o: 八进制(oct) %d: 十进制(dec)
-2023-09-19_08-38 2023-09-19_08-39 &#34; 代表 &#34; \ 代表 \ /* */代表多行注释 &lt;&gt;表示导入系统文件 ““表示导入自定义文件` Tab == 8个空格，或者4个空格
-编译分为四步
-预编译：宏定义展开，头文件展开，条件编译等，并将注释删除（条件编译是指根据系统位数，编译库的选择确定编译环境） 编译：将预编译后的文件生成汇编文件 汇编：将汇编文件生成为目标文件（二进制代码） 链接：把库链接到可执行程序中（预编译只是说明函数格式） 2023-09-22_08-5949 float 默认保留六位小数，%.2 表示保留小数点后两位（四舍五入） 常量定义方法：（不能对值进行修改） const 数据类型 常量名 = 值 或 数据类型 const 常量名 = 值 ( 在函数中定义的常量不安全，而全局常量则安全 ) # define 常量名 值 第一种不安全，利用指针可以修改 const 定义的值 十六进制用 0x 开头 八进制用 0 开头 C不支持定义二进制数 有符号数最高位是符号位，0 代表正数，1 代表负数 scanf(&#34;%d”,&amp;a); 不要加\n %hd 短整型 %p 输出指针的地址 char ‘单个字母’ 此时 %c 打印字母 %d 打印ASC2码 %c 对应的变量如果是整型，则输出ASC2码所对的字符 0 的ASC2码是 48 A 65 a 97 小写字母 - 大写字母 == 32 科学计数法赋值: float a = 3.2e3 //3.2*1000 %e 以科学计数法表示数字 WORD 双字节 16bit DWORD (double word) 32bit">
+  <meta name="twitter:description" content="本文是笔者研究生入学期间对C进行系统性复习总结而成的笔记，因此内部排版混乱，知识点散乱而不成系统，望读者谨慎参考">
 <meta name="application-name" content="吾铭子">
 <meta name="apple-mobile-web-app-title" content="吾铭子">
 
@@ -43,7 +35,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https://1078249029.github.io/posts/c-review/"
-        },"genre": "posts","keywords":["Programing Language","Tech"],"wordcount":  655 ,
+        },"genre": "posts","keywords":["Programing Language","Tech"],"wordcount":  3731 ,
         "url": "https://1078249029.github.io/posts/c-review/","datePublished": "2023-10-18T13:57:04+08:00","dateModified": "2025-03-06T21:43:35+08:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -190,9 +182,9 @@
             <div class="post-meta-line"><svg class="icon"
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>&nbsp;<time datetime="2023-10-18">2023-10-18</time>&nbsp;<svg class="icon"
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg>&nbsp;<time datetime="2025-03-06">2025-03-06</time>&nbsp;<svg class="icon"
-    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;约 655 字&nbsp;
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;约 3731 字&nbsp;
                     <svg class="icon"
-    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;预计阅读 3 分钟&nbsp;</div>
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;预计阅读 17 分钟&nbsp;</div>
         </div><div class="details toc print:!tw-block" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
                     <span>目录</span>
@@ -204,7 +196,9 @@
     <li><a href="#c复健计划">C复健计划</a></li>
   </ul>
 </nav></div>
-            </div><div class="content" id="content" data-pagefind-body><h1 id="c复健计划" class="headerLink">
+            </div><div class="content" id="content" data-pagefind-body><p>本文是笔者研究生入学期间对C进行系统性复习总结而成的笔记，因此内部排版混乱，知识点散乱而不成系统，望读者谨慎参考</p>
+<!-- more -->
+<h1 id="c复健计划" class="headerLink">
     <a href="#c%e5%a4%8d%e5%81%a5%e8%ae%a1%e5%88%92" class="header-mark"></a>C复健计划</h1><p>printf函数无法打印多行字符串，若要打印多行字符串则需要在每行后加换行符\n<br>
 \n代表换行，\n\代表下一行是上一行的延续，如果改为\n则会报错 <br>
 变量名第一个字母不能是数字
@@ -213,10 +207,10 @@ ANSI C C99 C11 关键字数量分别是32 32+5 37+7
 %x: 十六进制 (hex) %o: 八进制(oct) %d: 十进制(dec)</p>
 <!-- more -->
 <p>
-<figure><a class="lightgallery" href="/vx_images/581673908249386.png" title="2023-09-19_08-38" data-thumbnail="/vx_images/581673908249386.png" data-sub-html="<h2> </h2><p>2023-09-19_08-38</p>"><img   src='/vx_images/581673908249386.png'   alt="2023-09-19_08-38" height="313" width="685"></a><figcaption class="image-caption">2023-09-19_08-38</figcaption>
+<figure><a class="lightgallery" href="assets/581673908249386.png" title="2023-09-19_08-38" data-thumbnail="assets/581673908249386.png" data-sub-html="<h2> </h2><p>2023-09-19_08-38</p>"><img   src='assets/581673908249386.png'   alt="2023-09-19_08-38"  ></a><figcaption class="image-caption">2023-09-19_08-38</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="/vx_images/90294008237253.png" title="2023-09-19_08-39" data-thumbnail="/vx_images/90294008237253.png" data-sub-html="<h2> </h2><p>2023-09-19_08-39</p>"><img   src='/vx_images/90294008237253.png'   alt="2023-09-19_08-39" height="279" width="1003"></a><figcaption class="image-caption">2023-09-19_08-39</figcaption>
+<figure><a class="lightgallery" href="assets/90294008237253.png" title="2023-09-19_08-39" data-thumbnail="assets/90294008237253.png" data-sub-html="<h2> </h2><p>2023-09-19_08-39</p>"><img   src='assets/90294008237253.png'   alt="2023-09-19_08-39"  ></a><figcaption class="image-caption">2023-09-19_08-39</figcaption>
     </figure>
 &quot;   代表 &quot;   \ 代表 \ <br>
 /*    */代表多行注释
@@ -230,7 +224,7 @@ Tab == 8个空格，或者4个空格</p>
 <li>链接：把库链接到可执行程序中（预编译只是说明函数格式）</li>
 </ol>
 <p>
-<figure><a class="lightgallery" href="/vx_images/499670009249389.png" title="2023-09-22_08-5949" data-thumbnail="/vx_images/499670009249389.png" data-sub-html="<h2> </h2><p>2023-09-22_08-5949</p>"><img   src='/vx_images/499670009249389.png'   alt="2023-09-22_08-5949" height="424" width="1292"></a><figcaption class="image-caption">2023-09-22_08-5949</figcaption>
+<figure><a class="lightgallery" href="assets/499670009249389.png" title="2023-09-22_08-5949" data-thumbnail="assets/499670009249389.png" data-sub-html="<h2> </h2><p>2023-09-22_08-5949</p>"><img   src='assets/499670009249389.png'   alt="2023-09-22_08-5949"  ></a><figcaption class="image-caption">2023-09-22_08-5949</figcaption>
     </figure>
 float 默认保留六位小数，%.2 表示保留小数点后两位（四舍五入）
 常量定义方法：（不能对值进行修改）
@@ -248,7 +242,7 @@ char &lsquo;单个字母&rsquo; 此时 %c 打印字母 %d 打印ASC2码
 %e 以科学计数法表示数字
 WORD 双字节 16bit   DWORD (double word) 32bit
 
-<figure><a class="lightgallery" href="/vx_images/342723609249394.png" title="2023-09-27_09-3508" data-thumbnail="/vx_images/342723609249394.png" data-sub-html="<h2> </h2><p>2023-09-27_09-3508</p>"><img   src='/vx_images/342723609249394.png'   alt="2023-09-27_09-3508" height="248" width="1263"></a><figcaption class="image-caption">2023-09-27_09-3508</figcaption>
+<figure><a class="lightgallery" href="assets/342723609249394.png" title="2023-09-27_09-3508" data-thumbnail="assets/342723609249394.png" data-sub-html="<h2> </h2><p>2023-09-27_09-3508</p>"><img   src='assets/342723609249394.png'   alt="2023-09-27_09-3508"  ></a><figcaption class="image-caption">2023-09-27_09-3508</figcaption>
     </figure>
 正数: 原码 == 反码 == 补码
 负数: 反码 == 原码除符号位取反        补码 == 反码 + 1 (若最高位进位，则进位舍弃)
@@ -258,26 +252,26 @@ WORD 双字节 16bit   DWORD (double word) 32bit
 scanf(&quot;%d,%d&rdquo;,&amp;a,&amp;b);  键盘输入的时候应严格双引号中的格式输入，只能输入 整数，整数 不能输入 整数 整数 或其它格式。
 putchar getchar 只能对单个字符进行操作
 
-<figure><a class="lightgallery" href="/vx_images/54091209249391.png" title="2023-09-23_16-2638" data-thumbnail="/vx_images/54091209249391.png" data-sub-html="<h2> </h2><p>2023-09-23_16-2638</p>"><img   src='/vx_images/54091209249391.png'   alt="2023-09-23_16-2638" height="376" width="886"></a><figcaption class="image-caption">2023-09-23_16-2638</figcaption>
+<figure><a class="lightgallery" href="assets/54091209249391.png" title="2023-09-23_16-2638" data-thumbnail="assets/54091209249391.png" data-sub-html="<h2> </h2><p>2023-09-23_16-2638</p>"><img   src='assets/54091209249391.png'   alt="2023-09-23_16-2638"  ></a><figcaption class="image-caption">2023-09-23_16-2638</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="/vx_images/248901309257424.png" title="2023-09-23_16-2611" data-thumbnail="/vx_images/248901309257424.png" data-sub-html="<h2> </h2><p>2023-09-23_16-2611</p>"><img   src='/vx_images/248901309257424.png'   alt="2023-09-23_16-2611" height="219" width="534"></a><figcaption class="image-caption">2023-09-23_16-2611</figcaption>
+<figure><a class="lightgallery" href="assets/248901309257424.png" title="2023-09-23_16-2611" data-thumbnail="assets/248901309257424.png" data-sub-html="<h2> </h2><p>2023-09-23_16-2611</p>"><img   src='assets/248901309257424.png'   alt="2023-09-23_16-2611"  ></a><figcaption class="image-caption">2023-09-23_16-2611</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="/vx_images/227301209237258.png" title="2023-09-23_16-5554" data-thumbnail="/vx_images/227301209237258.png" data-sub-html="<h2> </h2><p>2023-09-23_16-5554</p>"><img   src='/vx_images/227301209237258.png'   alt="2023-09-23_16-5554" height="727" width="1001"></a><figcaption class="image-caption">2023-09-23_16-5554</figcaption>
+<figure><a class="lightgallery" href="assets/227301209237258.png" title="2023-09-23_16-5554" data-thumbnail="assets/227301209237258.png" data-sub-html="<h2> </h2><p>2023-09-23_16-5554</p>"><img   src='assets/227301209237258.png'   alt="2023-09-23_16-5554"  ></a><figcaption class="image-caption">2023-09-23_16-5554</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="/vx_images/543921309250093.png" title="2023-09-23_17-2827" data-thumbnail="/vx_images/543921309250093.png" data-sub-html="<h2> </h2><p>2023-09-23_17-2827</p>"><img   src='/vx_images/543921309250093.png'   alt="2023-09-23_17-2827" height="708" width="992"></a><figcaption class="image-caption">2023-09-23_17-2827</figcaption>
+<figure><a class="lightgallery" href="assets/543921309250093.png" title="2023-09-23_17-2827" data-thumbnail="assets/543921309250093.png" data-sub-html="<h2> </h2><p>2023-09-23_17-2827</p>"><img   src='assets/543921309250093.png'   alt="2023-09-23_17-2827"  ></a><figcaption class="image-caption">2023-09-23_17-2827</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="/vx_images/48801409246648.png" title="2023-09-23_17-3207" data-thumbnail="/vx_images/48801409246648.png" data-sub-html="<h2> </h2><p>2023-09-23_17-3207</p>"><img   src='/vx_images/48801409246648.png'   alt="2023-09-23_17-3207" height="609" width="891"></a><figcaption class="image-caption">2023-09-23_17-3207</figcaption>
+<figure><a class="lightgallery" href="assets/48801409246648.png" title="2023-09-23_17-3207" data-thumbnail="assets/48801409246648.png" data-sub-html="<h2> </h2><p>2023-09-23_17-3207</p>"><img   src='assets/48801409246648.png'   alt="2023-09-23_17-3207"  ></a><figcaption class="image-caption">2023-09-23_17-3207</figcaption>
     </figure>
 所有非 0 的值都是真值
 C语言浮点型数据不能取余
 单目运算符优先级高于双目运算符
 int a = 10; int b = 20;  则 a &amp;&amp; b == 1
 
-<figure><a class="lightgallery" href="/vx_images/259954510230966.png" title="2023-09-25_10-4453" data-thumbnail="/vx_images/259954510230966.png" data-sub-html="<h2> </h2><p>2023-09-25_10-4453</p>"><img   src='/vx_images/259954510230966.png'   alt="2023-09-25_10-4453" height="611" width="908"></a><figcaption class="image-caption">2023-09-25_10-4453</figcaption>
+<figure><a class="lightgallery" href="assets/259954510230966.png" title="2023-09-25_10-4453" data-thumbnail="assets/259954510230966.png" data-sub-html="<h2> </h2><p>2023-09-25_10-4453</p>"><img   src='assets/259954510230966.png'   alt="2023-09-25_10-4453"  ></a><figcaption class="image-caption">2023-09-25_10-4453</figcaption>
     </figure><br>
 强制类型转换不考虑四舍五入，后果是损失精度，系统自动类型转换时也会损失精度
 (int) a*b 是先将 a,b 损失精度，再计算结果  (int) (a*b)是先保留精度计算，再损失精度
@@ -314,27 +308,27 @@ int* arr[3]    指针数组
 arr[i] == *(arr+i)
 一级指针加偏移量相当于跳过元素，二级指针加偏移量相当于跳过一维数组
 
-<figure><a class="lightgallery" href="/vx_images/150863710249470.png" title="2023-09-27_18-0028" data-thumbnail="/vx_images/150863710249470.png" data-sub-html="<h2> </h2><p>2023-09-27_18-0028</p>"><img   src='/vx_images/150863710249470.png'   alt="2023-09-27_18-0028" height="556" width="1183"></a><figcaption class="image-caption">2023-09-27_18-0028</figcaption>
+<figure><a class="lightgallery" href="assets/150863710249470.png" title="2023-09-27_18-0028" data-thumbnail="assets/150863710249470.png" data-sub-html="<h2> </h2><p>2023-09-27_18-0028</p>"><img   src='assets/150863710249470.png'   alt="2023-09-27_18-0028"  ></a><figcaption class="image-caption">2023-09-27_18-0028</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="/vx_images/293363710237337.png" title="2023-09-27_18-0047" data-thumbnail="/vx_images/293363710237337.png" data-sub-html="<h2> </h2><p>2023-09-27_18-0047</p>"><img   src='/vx_images/293363710237337.png'   alt="2023-09-27_18-0047" height="538" width="884"></a><figcaption class="image-caption">2023-09-27_18-0047</figcaption>
+<figure><a class="lightgallery" href="assets/293363710237337.png" title="2023-09-27_18-0047" data-thumbnail="assets/293363710237337.png" data-sub-html="<h2> </h2><p>2023-09-27_18-0047</p>"><img   src='assets/293363710237337.png'   alt="2023-09-27_18-0047"  ></a><figcaption class="image-caption">2023-09-27_18-0047</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="/vx_images/58503810257503.png" title="2023-10-01_12-4448" data-thumbnail="/vx_images/58503810257503.png" data-sub-html="<h2> </h2><p>2023-10-01_12-4448</p>"><img   src='/vx_images/58503810257503.png'   alt="2023-10-01_12-4448" height="628" width="1335"></a><figcaption class="image-caption">2023-10-01_12-4448</figcaption>
+<figure><a class="lightgallery" href="assets/58503810257503.png" title="2023-10-01_12-4448" data-thumbnail="assets/58503810257503.png" data-sub-html="<h2> </h2><p>2023-10-01_12-4448</p>"><img   src='assets/58503810257503.png'   alt="2023-10-01_12-4448"  ></a><figcaption class="image-caption">2023-10-01_12-4448</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="/vx_images/196183810250172.png" title="2023-10-03_10-1645" data-thumbnail="/vx_images/196183810250172.png" data-sub-html="<h2> </h2><p>2023-10-03_10-1645</p>"><img   src='/vx_images/196183810250172.png'   alt="2023-10-03_10-1645" height="906" width="1482"></a><figcaption class="image-caption">2023-10-03_10-1645</figcaption>
+<figure><a class="lightgallery" href="assets/196183810250172.png" title="2023-10-03_10-1645" data-thumbnail="assets/196183810250172.png" data-sub-html="<h2> </h2><p>2023-10-03_10-1645</p>"><img   src='assets/196183810250172.png'   alt="2023-10-03_10-1645"  ></a><figcaption class="image-caption">2023-10-03_10-1645</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="/vx_images/292473810246727.png" title="2023-10-03_10-2054" data-thumbnail="/vx_images/292473810246727.png" data-sub-html="<h2> </h2><p>2023-10-03_10-2054</p>"><img   src='/vx_images/292473810246727.png'   alt="2023-10-03_10-2054" height="622" width="1235"></a><figcaption class="image-caption">2023-10-03_10-2054</figcaption>
+<figure><a class="lightgallery" href="assets/292473810246727.png" title="2023-10-03_10-2054" data-thumbnail="assets/292473810246727.png" data-sub-html="<h2> </h2><p>2023-10-03_10-2054</p>"><img   src='assets/292473810246727.png'   alt="2023-10-03_10-2054"  ></a><figcaption class="image-caption">2023-10-03_10-2054</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="/vx_images/488983810242481.png" title="2023-10-03_10-3451" data-thumbnail="/vx_images/488983810242481.png" data-sub-html="<h2> </h2><p>2023-10-03_10-3451</p>"><img   src='/vx_images/488983810242481.png'   alt="2023-10-03_10-3451" height="419" width="1093"></a><figcaption class="image-caption">2023-10-03_10-3451</figcaption>
+<figure><a class="lightgallery" href="assets/488983810242481.png" title="2023-10-03_10-3451" data-thumbnail="assets/488983810242481.png" data-sub-html="<h2> </h2><p>2023-10-03_10-3451</p>"><img   src='assets/488983810242481.png'   alt="2023-10-03_10-3451"  ></a><figcaption class="image-caption">2023-10-03_10-3451</figcaption>
     </figure>
 &rsquo; 字母 &rsquo; 代表字母的ASCII码值，并可以用 %c 输出其值
 while 是先判断后执行
 
-<figure><a class="lightgallery" href="/vx_images/194092820260361.png" title="2023-10-03_20-2457" data-thumbnail="/vx_images/194092820260361.png" data-sub-html="<h2> </h2><p>2023-10-03_20-2457</p>"><img   src='/vx_images/194092820260361.png'   alt="2023-10-03_20-2457" height="294" width="1082"></a><figcaption class="image-caption">2023-10-03_20-2457</figcaption>
+<figure><a class="lightgallery" href="assets/194092820260361.png" title="2023-10-03_20-2457" data-thumbnail="assets/194092820260361.png" data-sub-html="<h2> </h2><p>2023-10-03_20-2457</p>"><img   src='assets/194092820260361.png'   alt="2023-10-03_20-2457"  ></a><figcaption class="image-caption">2023-10-03_20-2457</figcaption>
     </figure>
 主函数是程序的入口，是程序首先执行的函数
 全局变量作用域 : <strong>单个文件(表格错了)</strong>，其他文件调用时需要使用extern关键字来将全局变量作用域扩展到其他文件内 extern int a; 生命周期是从程序创建到程序销毁
@@ -342,59 +336,59 @@ while 是先判断后执行
 静态局部变量在数据区存储，只会初始化一次并且发生在函数创建前，作用域 : 函数内部 生命周期 : 从程序创建到销毁 ( 作用域与局部变量一样，生命周期与全局变量一样 )
 静态全局变量作用域 : 只可在本文件中使用，但不能在其他文件中使用，生命周期 : 从程序创建到程序结束
 
-<figure><a class="lightgallery" href="/vx_images/78774614231048.png" title="2023-10-07_14-4543" data-thumbnail="/vx_images/78774614231048.png" data-sub-html="<h2> </h2><p>2023-10-07_14-4543</p>"><img   src='/vx_images/78774614231048.png'   alt="2023-10-07_14-4543" height="863" width="1760"></a><figcaption class="image-caption">2023-10-07_14-4543</figcaption>
+<figure><a class="lightgallery" href="assets/78774614231048.png" title="2023-10-07_14-4543" data-thumbnail="assets/78774614231048.png" data-sub-html="<h2> </h2><p>2023-10-07_14-4543</p>"><img   src='assets/78774614231048.png'   alt="2023-10-07_14-4543"  ></a><figcaption class="image-caption">2023-10-07_14-4543</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="/vx_images/117464714237341.png" title="2023-10-07_13-5845" data-thumbnail="/vx_images/117464714237341.png" data-sub-html="<h2> </h2><p>2023-10-07_13-5845</p>"><img   src='/vx_images/117464714237341.png'   alt="2023-10-07_13-5845" height="947" width="674"></a><figcaption class="image-caption">2023-10-07_13-5845</figcaption>
+<figure><a class="lightgallery" href="assets/117464714237341.png" title="2023-10-07_13-5845" data-thumbnail="assets/117464714237341.png" data-sub-html="<h2> </h2><p>2023-10-07_13-5845</p>"><img   src='assets/117464714237341.png'   alt="2023-10-07_13-5845"  ></a><figcaption class="image-caption">2023-10-07_13-5845</figcaption>
     </figure>
 定义函数默认是全局的，可以在其他文件中调用，静态函数只能在本文件中使用，即使在其他文件中声明也不能使用
 即使没有声明也可以调用函数，但是在 vstudio 转到定义功能不能使用
 静态函数可以和全局函数重名
 malloc 开辟的是连续的堆空间
 
-<figure><a class="lightgallery" href="/vx_images/194954608231049.png" title="2023-10-07_15-0913" data-thumbnail="/vx_images/194954608231049.png" data-sub-html="<h2> </h2><p>2023-10-07_15-0913</p>"><img   src='/vx_images/194954608231049.png'   alt="2023-10-07_15-0913" height="620" width="1317"></a><figcaption class="image-caption">2023-10-07_15-0913</figcaption>
+<figure><a class="lightgallery" href="assets/194954608231049.png" title="2023-10-07_15-0913" data-thumbnail="assets/194954608231049.png" data-sub-html="<h2> </h2><p>2023-10-07_15-0913</p>"><img   src='assets/194954608231049.png'   alt="2023-10-07_15-0913"  ></a><figcaption class="image-caption">2023-10-07_15-0913</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="/vx_images/383464808257508.png" title="2023-10-07_16-4537" data-thumbnail="/vx_images/383464808257508.png" data-sub-html="<h2> </h2><p>2023-10-07_16-4537</p>"><img   src='/vx_images/383464808257508.png'   alt="2023-10-07_16-4537" height="800" width="1004"></a><figcaption class="image-caption">2023-10-07_16-4537</figcaption>
+<figure><a class="lightgallery" href="assets/383464808257508.png" title="2023-10-07_16-4537" data-thumbnail="assets/383464808257508.png" data-sub-html="<h2> </h2><p>2023-10-07_16-4537</p>"><img   src='assets/383464808257508.png'   alt="2023-10-07_16-4537"  ></a><figcaption class="image-caption">2023-10-07_16-4537</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="/vx_images/3774908250177.png" title="2023-10-07_16-4817" data-thumbnail="/vx_images/3774908250177.png" data-sub-html="<h2> </h2><p>2023-10-07_16-4817</p>"><img   src='/vx_images/3774908250177.png'   alt="2023-10-07_16-4817" height="390" width="1338"></a><figcaption class="image-caption">2023-10-07_16-4817</figcaption>
+<figure><a class="lightgallery" href="assets/3774908250177.png" title="2023-10-07_16-4817" data-thumbnail="assets/3774908250177.png" data-sub-html="<h2> </h2><p>2023-10-07_16-4817</p>"><img   src='assets/3774908250177.png'   alt="2023-10-07_16-4817"  ></a><figcaption class="image-caption">2023-10-07_16-4817</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="/vx_images/252204908246732.png" title="2023-10-07_16-5929" data-thumbnail="/vx_images/252204908246732.png" data-sub-html="<h2> </h2><p>2023-10-07_16-5929</p>"><img   src='/vx_images/252204908246732.png'   alt="2023-10-07_16-5929" height="579" width="1343"></a><figcaption class="image-caption">2023-10-07_16-5929</figcaption>
+<figure><a class="lightgallery" href="assets/252204908246732.png" title="2023-10-07_16-5929" data-thumbnail="assets/252204908246732.png" data-sub-html="<h2> </h2><p>2023-10-07_16-5929</p>"><img   src='assets/252204908246732.png'   alt="2023-10-07_16-5929"  ></a><figcaption class="image-caption">2023-10-07_16-5929</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="/vx_images/380904908242486.png" title="2023-10-07_17-2152" data-thumbnail="/vx_images/380904908242486.png" data-sub-html="<h2> </h2><p>2023-10-07_17-2152</p>"><img   src='/vx_images/380904908242486.png'   alt="2023-10-07_17-2152" height="876" width="1441"></a><figcaption class="image-caption">2023-10-07_17-2152</figcaption>
+<figure><a class="lightgallery" href="assets/380904908242486.png" title="2023-10-07_17-2152" data-thumbnail="assets/380904908242486.png" data-sub-html="<h2> </h2><p>2023-10-07_17-2152</p>"><img   src='assets/380904908242486.png'   alt="2023-10-07_17-2152"  ></a><figcaption class="image-caption">2023-10-07_17-2152</figcaption>
     </figure>
 栈由高地址向低地址增长，栈底是第一个进栈的数据，栈顶就是最后一个进栈的数据。
 
-<figure><a class="lightgallery" href="/vx_images/238732719249475.png" title="2023-10-08_19-2651" data-thumbnail="/vx_images/238732719249475.png" data-sub-html="<h2> </h2><p>2023-10-08_19-2651</p>"><img   src='/vx_images/238732719249475.png'   alt="2023-10-08_19-2651" height="723" width="1220"></a><figcaption class="image-caption">2023-10-08_19-2651</figcaption>
+<figure><a class="lightgallery" href="assets/238732719249475.png" title="2023-10-08_19-2651" data-thumbnail="assets/238732719249475.png" data-sub-html="<h2> </h2><p>2023-10-08_19-2651</p>"><img   src='assets/238732719249475.png'   alt="2023-10-08_19-2651"  ></a><figcaption class="image-caption">2023-10-08_19-2651</figcaption>
     </figure>
 同理，申请0字节的空间也会报上述错误
 
-<figure><a class="lightgallery" href="/vx_images/94153019237342.png" title="2023-10-08_19-2937" data-thumbnail="/vx_images/94153019237342.png" data-sub-html="<h2> </h2><p>2023-10-08_19-2937</p>"><img   src='/vx_images/94153019237342.png'   alt="2023-10-08_19-2937" height="454" width="976"></a><figcaption class="image-caption">2023-10-08_19-2937</figcaption>
+<figure><a class="lightgallery" href="assets/94153019237342.png" title="2023-10-08_19-2937" data-thumbnail="assets/94153019237342.png" data-sub-html="<h2> </h2><p>2023-10-08_19-2937</p>"><img   src='assets/94153019237342.png'   alt="2023-10-08_19-2937"  ></a><figcaption class="image-caption">2023-10-08_19-2937</figcaption>
     </figure>
 下图报错原因是对 NULL 指针进行赋值操作。本质上由于68行函数开辟了一个堆空间同时创建形参p，在申请10个int大小的空间后fun08就被销毁了，同时销毁的还有形参p。相当于68行是废语句
 
-<figure><a class="lightgallery" href="/vx_images/563595319257508.png" title="2023-10-08_19-5338" data-thumbnail="/vx_images/563595319257508.png" data-sub-html="<h2> </h2><p>2023-10-08_19-5338</p>"><img   src='/vx_images/563595319257508.png'   alt="2023-10-08_19-5338" height="725" width="1098"></a><figcaption class="image-caption">2023-10-08_19-5338</figcaption>
+<figure><a class="lightgallery" href="assets/563595319257508.png" title="2023-10-08_19-5338" data-thumbnail="assets/563595319257508.png" data-sub-html="<h2> </h2><p>2023-10-08_19-5338</p>"><img   src='assets/563595319257508.png'   alt="2023-10-08_19-5338"  ></a><figcaption class="image-caption">2023-10-08_19-5338</figcaption>
     </figure>
 free 空指针不会报错
 结构体成员大小按最大结构体成员的倍数取，，下图中， char name 的大小为 21( sizeof(name) ==21 )，但是偏移对齐过后为24 ( int的整数倍 )
 
-<figure><a class="lightgallery" href="/vx_images/519123611231050.png" title="2023-10-09_11-3636" data-thumbnail="/vx_images/519123611231050.png" data-sub-html="<h2> </h2><p>2023-10-09_11-3636</p>"><img   src='/vx_images/519123611231050.png'   alt="2023-10-09_11-3636" height="355" width="854"></a><figcaption class="image-caption">2023-10-09_11-3636</figcaption>
+<figure><a class="lightgallery" href="assets/519123611231050.png" title="2023-10-09_11-3636" data-thumbnail="assets/519123611231050.png" data-sub-html="<h2> </h2><p>2023-10-09_11-3636</p>"><img   src='assets/519123611231050.png'   alt="2023-10-09_11-3636"  ></a><figcaption class="image-caption">2023-10-09_11-3636</figcaption>
     </figure>
 typedef 类型名 别名;
 struct 结构体类型名 {};    struct 结构体类型名 结构体名 = {}；//注意{}中的变量用 ; 隔开
 结构体指针 -&gt; 成员    结构体变量 . 成员
 联合体 union 所有数据共用一块内存空间，只能输出最后一次被赋值的成员
 
-<figure><a class="lightgallery" href="/vx_images/14900717249476.png" title="2023-10-09_16-5317" data-thumbnail="/vx_images/14900717249476.png" data-sub-html="<h2> </h2><p>2023-10-09_16-5317</p>"><img   src='/vx_images/14900717249476.png'   alt="2023-10-09_16-5317" height="485" width="1340"></a><figcaption class="image-caption">2023-10-09_16-5317</figcaption>
+<figure><a class="lightgallery" href="assets/14900717249476.png" title="2023-10-09_16-5317" data-thumbnail="assets/14900717249476.png" data-sub-html="<h2> </h2><p>2023-10-09_16-5317</p>"><img   src='assets/14900717249476.png'   alt="2023-10-09_16-5317"  ></a><figcaption class="image-caption">2023-10-09_16-5317</figcaption>
     </figure>
 文件操作中的分隔符推荐以 / 正斜杠表示，如果是反斜杠，则需要输入两次
 读取文件若干个字符时不能修改文件指针，文件在读取时指针会自动向下加 1
 文件默认结尾是 -1 和 EOF
 
-<figure><a class="lightgallery" href="/vx_images/7011213231052.png" title="2023-10-11_13-1126" data-thumbnail="/vx_images/7011213231052.png" data-sub-html="<h2> </h2><p>2023-10-11_13-1126</p>"><img   src='/vx_images/7011213231052.png'   alt="2023-10-11_13-1126" height="732" width="1416"></a><figcaption class="image-caption">2023-10-11_13-1126</figcaption>
+<figure><a class="lightgallery" href="assets/7011213231052.png" title="2023-10-11_13-1126" data-thumbnail="assets/7011213231052.png" data-sub-html="<h2> </h2><p>2023-10-11_13-1126</p>"><img   src='assets/7011213231052.png'   alt="2023-10-11_13-1126"  ></a><figcaption class="image-caption">2023-10-11_13-1126</figcaption>
     </figure>
 结构变量名不是地址
 for函数条件用 ; 隔开
@@ -406,7 +400,7 @@ define 在预处理阶段有效，仅作字符串替换，typedef 在编译阶�
 左移丢弃符号位，右移补偿符号位
 数字前面补零编译器会认为是八进制数字，因此数字为09时编译器会报错
 
-<figure><a class="lightgallery" href="/vx_images/61053117237537.png" title="2023-12-03_17-2714" data-thumbnail="/vx_images/61053117237537.png" data-sub-html="<h2> </h2><p>2023-12-03_17-2714</p>"><img   src='/vx_images/61053117237537.png'   alt="2023-12-03_17-2714" height="1344" width="834"></a><figcaption class="image-caption">2023-12-03_17-2714</figcaption>
+<figure><a class="lightgallery" href="assets/61053117237537.png" title="2023-12-03_17-2714" data-thumbnail="assets/61053117237537.png" data-sub-html="<h2> </h2><p>2023-12-03_17-2714</p>"><img   src='assets/61053117237537.png'   alt="2023-12-03_17-2714"  ></a><figcaption class="image-caption">2023-12-03_17-2714</figcaption>
     </figure>
 <a href="http://jeremybai.github.io/blog/2014/01/01/const-volatile" target="_blank" rel="noopener noreferrer">博客链接</a>
 volatile用法：如果开启了编译器优化，或者利用无意义加减变量进行其他工作，亦或者多线程编程，读写与硬件相关的存储器时，需要加volatile关键字，防止编译器优化并提示编译器注意一致性问题，使其每次使用变量时都要去内存中取值。</p>
@@ -546,7 +540,7 @@ volatile用法：如果开启了编译器优化，或者利用无意义加减变
 结果是10
 :::
 
-<figure><a class="lightgallery" href="/vx_images/65104211231269.png" title="2023-12-28_11-40" data-thumbnail="/vx_images/65104211231269.png" data-sub-html="<h2> </h2><p>2023-12-28_11-40</p>"><img   src='/vx_images/65104211231269.png'   alt="2023-12-28_11-40" height="662" width="1137"></a><figcaption class="image-caption">2023-12-28_11-40</figcaption>
+<figure><a class="lightgallery" href="assets/65104211231269.png" title="2023-12-28_11-40" data-thumbnail="assets/65104211231269.png" data-sub-html="<h2> </h2><p>2023-12-28_11-40</p>"><img   src='assets/65104211231269.png'   alt="2023-12-28_11-40"  ></a><figcaption class="image-caption">2023-12-28_11-40</figcaption>
     </figure></p>
 <p>define定义宏的时候不用括号括起来可能导致运算错误</p>
 <div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
@@ -882,7 +876,7 @@ volatile用法：如果开启了编译器优化，或者利用无意义加减变
 </div>
 <p>结果：
 
-<figure><a class="lightgallery" href="/vx_images/407281020245927.png" title="Center" data-thumbnail="/vx_images/407281020245927.png" data-sub-html="<h2> </h2><p>Center</p>"><img   src='/vx_images/407281020245927.png'   alt="Center"  ></a><figcaption class="image-caption">Center</figcaption>
+<figure><a class="lightgallery" href="assets/407281020245927.png" title="Center" data-thumbnail="assets/407281020245927.png" data-sub-html="<h2> </h2><p>Center</p>"><img   src='assets/407281020245927.png'   alt="Center"  ></a><figcaption class="image-caption">Center</figcaption>
     </figure></p>
 </div>
 

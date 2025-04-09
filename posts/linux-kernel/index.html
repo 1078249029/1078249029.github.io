@@ -7,18 +7,7 @@
     <meta name="robots" content="noodp" /><title>Linux内核 - 吾铭子</title><meta name="Description" content="吾铭子"><meta property="og:url" content="https://1078249029.github.io/posts/linux-kernel/">
   <meta property="og:site_name" content="吾铭子">
   <meta property="og:title" content="Linux内核">
-  <meta property="og:description" content="date: 2024-4-10 9:48:30
-Linux内核基础本文阐述系统为x86体系架构，idt，gdt，tss，系统启动引导过程均以x86架构为蓝本，arm可能不适用
-Linux内核体系结构nmi(not mask interrupt)不可屏蔽中断 系统启动时会读取RTC并赋值给jiffies 内核中定时器使用链表进行管理
-每个进程都有LDT(局部描述符)，即代码段和数据段。单处理器系统只有一个GDT，而在多处理器系统中每个CPU都有一个GDT，GDT(全局描述符)是各个寄存器地址
-IDT(中断描述符表)，其作用也类似于中断向量表，只是其中每个中断描述符项中除了含有中断服务程序地址以外，还包含有关特权级和描述符类别等信息 中断向量表和中断描述符表IDT-CSDN
-linux分段-CSDN
-2024-02-22_21-06 TSS(任务状态段)就是特殊寄存器 &#43; 通用寄存器的信息
-2024-02-22_09-49 fork的实现 申请内存空间 把父进程的task_struct拷贝到子进程的task_struct并重新设置 设置进程状态为可运行，返回pid 需要注意的是fork出的子进程的文件描述符比父进程大1，这也是Linux基础文章中现象的实现
-2024-02-22_10-28 进程调度在0.11内核中，进程调度分为调度和切换两个步骤，调度负责将用完时间片的进程挂起，并将进程的状态位改为暂停状态，切换时为了效率采用汇编，它的作用是将那些设置状态位的进程加载进CPU寄存器中，即执行上下文切换的功能
-进程销毁以syscall_和do_开头的基本上是系统调用，即中断服务函数
-内核的销毁流程 进入do_exit函数 首先释放数据段和代码段占用的内存 关闭进程打开的所有文件，对当前的目录和i节点进行同步 如果进程是个会话头进程，则会终止会话中的所有进程 改变进程运行状态为TASK_ZOMBIE，并且向父进程发送SIGCHLD信号，do_exit函数执行完毕 在父进程中进行最后的处理工作，父进程运行子进程的时候一般都会运行wait或waitpid这两个函数(父进程等待某个子进程终止的函数)，当父进程收到SIGCHLD信号时会终止僵死状态的子进程 首先父进程会把子进程的运行时间(utime,stime)累加到自己的进程变量中，把要销毁的子进程的进程描述结构体进行释放，置空任务数组中的子进程任务槽 2024-02-22_12-05 Linux内核启动引导 操作系统的启动Linux启动时的硬件信息是由bootloader传进来的
-Linux启动流程 首先由BIOS/bootloader进行一系列的硬件初始化和参数设置，并把bootsect.s从硬盘中某个固定地址搬到内存中的某个固定地址，需要注意在内核初始化需要关中断来防止初始化被中断。 bootsect.s将setup.s代码从磁盘中加载到紧接着bootsect.s的地方，最后跳转到setup.s中运行 setup.s负责将bootloader传进来的信息进行解析，关中断并加载system模块，使system模块正好覆盖bootsect.s(关中断是为了防止覆盖bootsect.s的代码后系统不能处理中断而导致崩溃)。设置LDT，GDT，IDT，而后设置中断芯片，进入到保护模式(svc32)运行，在代码的最后会跳转到head.s(0x00000000)执行 head.s加载内核运行时的各数据段寄存器，并重新设置IDT(防止被数据区覆盖)，设置内存对齐以及分页，最后跳转到main.c开始运行，系统启动完成 Linux在启动的时候是如何拿到硬件参数的 通过bootloader加载传入的参数(_atags_pointer)，这个参数是一块指向存有硬件信息内存的首地址的指针，通过这个指针就可以获得硬件参数 Linux在初始化运行中都做了什么 进行硬件的初始化(就是下文中各种段的设置)，fork出0号进程 2024-02-22_16-13">
+  <meta property="og:description" content="本文阐述系统为x86体系架构，idt，gdt，tss，系统启动引导过程均以x86架构为蓝本，arm不适用，并且由于参考资料过于过于久远，读者应谨慎参考">
   <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
@@ -31,18 +20,7 @@ Linux启动流程 首先由BIOS/bootloader进行一系列的硬件初始化和�
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://1078249029.github.io/logo.png">
   <meta name="twitter:title" content="Linux内核">
-  <meta name="twitter:description" content="date: 2024-4-10 9:48:30
-Linux内核基础本文阐述系统为x86体系架构，idt，gdt，tss，系统启动引导过程均以x86架构为蓝本，arm可能不适用
-Linux内核体系结构nmi(not mask interrupt)不可屏蔽中断 系统启动时会读取RTC并赋值给jiffies 内核中定时器使用链表进行管理
-每个进程都有LDT(局部描述符)，即代码段和数据段。单处理器系统只有一个GDT，而在多处理器系统中每个CPU都有一个GDT，GDT(全局描述符)是各个寄存器地址
-IDT(中断描述符表)，其作用也类似于中断向量表，只是其中每个中断描述符项中除了含有中断服务程序地址以外，还包含有关特权级和描述符类别等信息 中断向量表和中断描述符表IDT-CSDN
-linux分段-CSDN
-2024-02-22_21-06 TSS(任务状态段)就是特殊寄存器 &#43; 通用寄存器的信息
-2024-02-22_09-49 fork的实现 申请内存空间 把父进程的task_struct拷贝到子进程的task_struct并重新设置 设置进程状态为可运行，返回pid 需要注意的是fork出的子进程的文件描述符比父进程大1，这也是Linux基础文章中现象的实现
-2024-02-22_10-28 进程调度在0.11内核中，进程调度分为调度和切换两个步骤，调度负责将用完时间片的进程挂起，并将进程的状态位改为暂停状态，切换时为了效率采用汇编，它的作用是将那些设置状态位的进程加载进CPU寄存器中，即执行上下文切换的功能
-进程销毁以syscall_和do_开头的基本上是系统调用，即中断服务函数
-内核的销毁流程 进入do_exit函数 首先释放数据段和代码段占用的内存 关闭进程打开的所有文件，对当前的目录和i节点进行同步 如果进程是个会话头进程，则会终止会话中的所有进程 改变进程运行状态为TASK_ZOMBIE，并且向父进程发送SIGCHLD信号，do_exit函数执行完毕 在父进程中进行最后的处理工作，父进程运行子进程的时候一般都会运行wait或waitpid这两个函数(父进程等待某个子进程终止的函数)，当父进程收到SIGCHLD信号时会终止僵死状态的子进程 首先父进程会把子进程的运行时间(utime,stime)累加到自己的进程变量中，把要销毁的子进程的进程描述结构体进行释放，置空任务数组中的子进程任务槽 2024-02-22_12-05 Linux内核启动引导 操作系统的启动Linux启动时的硬件信息是由bootloader传进来的
-Linux启动流程 首先由BIOS/bootloader进行一系列的硬件初始化和参数设置，并把bootsect.s从硬盘中某个固定地址搬到内存中的某个固定地址，需要注意在内核初始化需要关中断来防止初始化被中断。 bootsect.s将setup.s代码从磁盘中加载到紧接着bootsect.s的地方，最后跳转到setup.s中运行 setup.s负责将bootloader传进来的信息进行解析，关中断并加载system模块，使system模块正好覆盖bootsect.s(关中断是为了防止覆盖bootsect.s的代码后系统不能处理中断而导致崩溃)。设置LDT，GDT，IDT，而后设置中断芯片，进入到保护模式(svc32)运行，在代码的最后会跳转到head.s(0x00000000)执行 head.s加载内核运行时的各数据段寄存器，并重新设置IDT(防止被数据区覆盖)，设置内存对齐以及分页，最后跳转到main.c开始运行，系统启动完成 Linux在启动的时候是如何拿到硬件参数的 通过bootloader加载传入的参数(_atags_pointer)，这个参数是一块指向存有硬件信息内存的首地址的指针，通过这个指针就可以获得硬件参数 Linux在初始化运行中都做了什么 进行硬件的初始化(就是下文中各种段的设置)，fork出0号进程 2024-02-22_16-13">
+  <meta name="twitter:description" content="本文阐述系统为x86体系架构，idt，gdt，tss，系统启动引导过程均以x86架构为蓝本，arm不适用，并且由于参考资料过于过于久远，读者应谨慎参考">
 <meta name="application-name" content="吾铭子">
 <meta name="apple-mobile-web-app-title" content="吾铭子">
 
@@ -57,7 +35,7 @@ Linux启动流程 首先由BIOS/bootloader进行一系列的硬件初始化和�
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https://1078249029.github.io/posts/linux-kernel/"
-        },"genre": "posts","keywords":["OS","Tech"],"wordcount":  508 ,
+        },"genre": "posts","keywords":["OS","Tech"],"wordcount":  9031 ,
         "url": "https://1078249029.github.io/posts/linux-kernel/","datePublished": "2024-02-21T16:55:40+08:00","dateModified": "2024-10-28T19:39:58+08:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -342,9 +320,9 @@ Linux启动流程 首先由BIOS/bootloader进行一系列的硬件初始化和�
             <div class="post-meta-line"><svg class="icon"
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>&nbsp;<time datetime="2024-02-21">2024-02-21</time>&nbsp;<svg class="icon"
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg>&nbsp;<time datetime="2024-10-28">2024-10-28</time>&nbsp;<svg class="icon"
-    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;约 508 字&nbsp;
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;约 9031 字&nbsp;
                     <svg class="icon"
-    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;预计阅读 3 分钟&nbsp;</div>
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;预计阅读 40 分钟&nbsp;</div>
         </div><div class="details toc print:!tw-block" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
                     <span>目录</span>
@@ -425,11 +403,10 @@ Linux启动流程 首先由BIOS/bootloader进行一系列的硬件初始化和�
     </li>
   </ul>
 </nav></div>
-            </div><div class="content" id="content" data-pagefind-body><p>date: 2024-4-10 9:48:30</p>
-<h1 id="linux内核基础" class="headerLink">
-    <a href="#linux%e5%86%85%e6%a0%b8%e5%9f%ba%e7%a1%80" class="header-mark"></a>Linux内核基础</h1><p><strong>本文阐述系统为x86体系架构，idt，gdt，tss，系统启动引导过程均以x86架构为蓝本，arm可能不适用</strong></p>
+            </div><div class="content" id="content" data-pagefind-body><p><strong>本文阐述系统为x86体系架构，idt，gdt，tss，系统启动引导过程均以x86架构为蓝本，arm不适用，并且由于参考资料过于过于久远，读者应谨慎参考</strong></p>
 <!-- more -->
-<h2 id="linux内核体系结构" class="headerLink">
+<h1 id="linux内核基础" class="headerLink">
+    <a href="#linux%e5%86%85%e6%a0%b8%e5%9f%ba%e7%a1%80" class="header-mark"></a>Linux内核基础</h1><h2 id="linux内核体系结构" class="headerLink">
     <a href="#linux%e5%86%85%e6%a0%b8%e4%bd%93%e7%b3%bb%e7%bb%93%e6%9e%84" class="header-mark"></a>Linux内核体系结构</h2><p>nmi(not mask interrupt)不可屏蔽中断
 系统启动时会读取RTC并赋值给jiffies
 内核中定时器使用链表进行管理</p>
@@ -438,11 +415,11 @@ Linux启动流程 首先由BIOS/bootloader进行一系列的硬件初始化和�
 <a href="https://blog.csdn.net/yxc135/article/details/8734452" target="_blank" rel="noopener noreferrer">中断向量表和中断描述符表IDT-CSDN</a></p>
 <p><a href="https://blog.csdn.net/ybxuwei/article/details/80657461" target="_blank" rel="noopener noreferrer">linux分段-CSDN</a></p>
 <p>
-<figure><a class="lightgallery" href="/vx_images/373000621257049.png" title="2024-02-22_21-06" data-thumbnail="/vx_images/373000621257049.png" data-sub-html="<h2> </h2><p>2024-02-22_21-06</p>"><img   src='/vx_images/373000621257049.png'   alt="2024-02-22_21-06" height="628" width="778"></a><figcaption class="image-caption">2024-02-22_21-06</figcaption>
+<figure><a class="lightgallery" href="assets/373000621257049.png" title="2024-02-22_21-06" data-thumbnail="assets/373000621257049.png" data-sub-html="<h2> </h2><p>2024-02-22_21-06</p>"><img   src='assets/373000621257049.png'   alt="2024-02-22_21-06"  ></a><figcaption class="image-caption">2024-02-22_21-06</figcaption>
     </figure></p>
 <p>TSS(任务状态段)就是特殊寄存器 + 通用寄存器的信息</p>
 <p>
-<figure><a class="lightgallery" href="/vx_images/56405009258689.png" title="2024-02-22_09-49" data-thumbnail="/vx_images/56405009258689.png" data-sub-html="<h2> </h2><p>2024-02-22_09-49</p>"><img   src='/vx_images/56405009258689.png'   alt="2024-02-22_09-49" height="1070" width="1903"></a><figcaption class="image-caption">2024-02-22_09-49</figcaption>
+<figure><a class="lightgallery" href="assets/56405009258689.png" title="2024-02-22_09-49" data-thumbnail="assets/56405009258689.png" data-sub-html="<h2> </h2><p>2024-02-22_09-49</p>"><img   src='assets/56405009258689.png'   alt="2024-02-22_09-49"  ></a><figcaption class="image-caption">2024-02-22_09-49</figcaption>
     </figure></p>
 <h3 id="fork的实现" class="headerLink">
     <a href="#fork%e7%9a%84%e5%ae%9e%e7%8e%b0" class="header-mark"></a>fork的实现</h3><ul>
@@ -452,7 +429,7 @@ Linux启动流程 首先由BIOS/bootloader进行一系列的硬件初始化和�
 </ul>
 <p>需要注意的是fork出的子进程的文件描述符比父进程大1，这也是Linux基础文章中现象的实现</p>
 <p>
-<figure><a class="lightgallery" href="/vx_images/402763010246556.png" title="2024-02-22_10-28" data-thumbnail="/vx_images/402763010246556.png" data-sub-html="<h2> </h2><p>2024-02-22_10-28</p>"><img   src='/vx_images/402763010246556.png'   alt="2024-02-22_10-28" height="1079" width="1144"></a><figcaption class="image-caption">2024-02-22_10-28</figcaption>
+<figure><a class="lightgallery" href="assets/402763010246556.png" title="2024-02-22_10-28" data-thumbnail="assets/402763010246556.png" data-sub-html="<h2> </h2><p>2024-02-22_10-28</p>"><img   src='assets/402763010246556.png'   alt="2024-02-22_10-28"  ></a><figcaption class="image-caption">2024-02-22_10-28</figcaption>
     </figure></p>
 <h3 id="进程调度" class="headerLink">
     <a href="#%e8%bf%9b%e7%a8%8b%e8%b0%83%e5%ba%a6" class="header-mark"></a>进程调度</h3><p>在0.11内核中，进程调度分为调度和切换两个步骤，调度负责将用完时间片的进程挂起，并将进程的状态位改为暂停状态，切换时为了效率采用汇编，它的作用是将那些设置状态位的进程加载进CPU寄存器中，即执行上下文切换的功能</p>
@@ -478,7 +455,7 @@ Linux启动流程 首先由BIOS/bootloader进行一系列的硬件初始化和�
 </li>
 </ul>
 <p>
-<figure><a class="lightgallery" href="/vx_images/231530512266722.png" title="2024-02-22_12-05" data-thumbnail="/vx_images/231530512266722.png" data-sub-html="<h2> </h2><p>2024-02-22_12-05</p>"><img   src='/vx_images/231530512266722.png'   alt="2024-02-22_12-05" height="609" width="2090"></a><figcaption class="image-caption">2024-02-22_12-05</figcaption>
+<figure><a class="lightgallery" href="assets/231530512266722.png" title="2024-02-22_12-05" data-thumbnail="assets/231530512266722.png" data-sub-html="<h2> </h2><p>2024-02-22_12-05</p>"><img   src='assets/231530512266722.png'   alt="2024-02-22_12-05"  ></a><figcaption class="image-caption">2024-02-22_12-05</figcaption>
     </figure></p>
 <h2 id="linux内核启动引导" class="headerLink">
     <a href="#linux%e5%86%85%e6%a0%b8%e5%90%af%e5%8a%a8%e5%bc%95%e5%af%bc" class="header-mark"></a>Linux内核启动引导</h2><h3 id="操作系统的启动" class="headerLink">
@@ -504,13 +481,13 @@ Linux启动流程 首先由BIOS/bootloader进行一系列的硬件初始化和�
 </li>
 </ul>
 <p>
-<figure><a class="lightgallery" href="/vx_images/577701316251700.png" title="2024-02-22_16-13" data-thumbnail="/vx_images/577701316251700.png" data-sub-html="<h2> </h2><p>2024-02-22_16-13</p>"><img   src='/vx_images/577701316251700.png'   alt="2024-02-22_16-13" height="943" width="2260"></a><figcaption class="image-caption">2024-02-22_16-13</figcaption>
+<figure><a class="lightgallery" href="assets/577701316251700.png" title="2024-02-22_16-13" data-thumbnail="assets/577701316251700.png" data-sub-html="<h2> </h2><p>2024-02-22_16-13</p>"><img   src='assets/577701316251700.png'   alt="2024-02-22_16-13"  ></a><figcaption class="image-caption">2024-02-22_16-13</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="/vx_images/239811716269580.png" title="2024-02-22_16-17" data-thumbnail="/vx_images/239811716269580.png" data-sub-html="<h2> </h2><p>2024-02-22_16-17</p>"><img   src='/vx_images/239811716269580.png'   alt="2024-02-22_16-17" height="807" width="2206"></a><figcaption class="image-caption">2024-02-22_16-17</figcaption>
+<figure><a class="lightgallery" href="assets/239811716269580.png" title="2024-02-22_16-17" data-thumbnail="assets/239811716269580.png" data-sub-html="<h2> </h2><p>2024-02-22_16-17</p>"><img   src='assets/239811716269580.png'   alt="2024-02-22_16-17"  ></a><figcaption class="image-caption">2024-02-22_16-17</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="/vx_images/97113816267184.png" title="2024-02-22_16-37" data-thumbnail="/vx_images/97113816267184.png" data-sub-html="<h2> </h2><p>2024-02-22_16-37</p>"><img   src='/vx_images/97113816267184.png'   alt="2024-02-22_16-37" height="1283" width="2522"></a><figcaption class="image-caption">2024-02-22_16-37</figcaption>
+<figure><a class="lightgallery" href="assets/97113816267184.png" title="2024-02-22_16-37" data-thumbnail="assets/97113816267184.png" data-sub-html="<h2> </h2><p>2024-02-22_16-37</p>"><img   src='assets/97113816267184.png'   alt="2024-02-22_16-37"  ></a><figcaption class="image-caption">2024-02-22_16-37</figcaption>
     </figure></p>
 <p>系统第一个APP是根文件系统(linuxrc)</p>
 <p>4.9.88内核main函数位于/init文件夹，调用流程如下</p>
@@ -625,7 +602,7 @@ Linux启动流程 首先由BIOS/bootloader进行一系列的硬件初始化和�
 </ul>
 <p>0号进程不会关闭，如果其他进程没有被执行，那么就执行0号进程，内部是pause函数</p>
 <p>
-<figure><a class="lightgallery" href="/vx_images/220153713259391.png" title="2024-02-22_13-35" data-thumbnail="/vx_images/220153713259391.png" data-sub-html="<h2> </h2><p>2024-02-22_13-35</p>"><img   src='/vx_images/220153713259391.png'   alt="2024-02-22_13-35" height="961" width="884"></a><figcaption class="image-caption">2024-02-22_13-35</figcaption>
+<figure><a class="lightgallery" href="assets/220153713259391.png" title="2024-02-22_13-35" data-thumbnail="assets/220153713259391.png" data-sub-html="<h2> </h2><p>2024-02-22_13-35</p>"><img   src='assets/220153713259391.png'   alt="2024-02-22_13-35"  ></a><figcaption class="image-caption">2024-02-22_13-35</figcaption>
     </figure></p>
 <p>init函数就是在不断地创建shell，并在子进程中执行，等子进程执行完毕后由父进程接收结果</p>
 <div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
@@ -767,21 +744,21 @@ Linux启动流程 首先由BIOS/bootloader进行一系列的硬件初始化和�
 </div>
 <p>Linux启动时会进行异常的初始化，这些初始化函数分为两种，一类是设置用户特权的异常，一类是设置内核特权的异常</p>
 <p>
-<figure><a class="lightgallery" href="/vx_images/179150820264686.png" title="2024-02-22_20-07" data-thumbnail="/vx_images/179150820264686.png" data-sub-html="<h2> </h2><p>2024-02-22_20-07</p>"><img   src='/vx_images/179150820264686.png'   alt="2024-02-22_20-07" height="217" width="2282"></a><figcaption class="image-caption">2024-02-22_20-07</figcaption>
+<figure><a class="lightgallery" href="assets/179150820264686.png" title="2024-02-22_20-07" data-thumbnail="assets/179150820264686.png" data-sub-html="<h2> </h2><p>2024-02-22_20-07</p>"><img   src='assets/179150820264686.png'   alt="2024-02-22_20-07"  ></a><figcaption class="image-caption">2024-02-22_20-07</figcaption>
     </figure></p>
 <p>内核通过分段将machine_desc结构体放于内存某一固定位置中，这些machine_desc用于linux识别设备</p>
 <p>
-<figure><a class="lightgallery" href="/vx_images/86192421250183.png" title="2024-02-22_21-23" data-thumbnail="/vx_images/86192421250183.png" data-sub-html="<h2> </h2><p>2024-02-22_21-23</p>"><img   src='/vx_images/86192421250183.png'   alt="2024-02-22_21-23" height="736" width="1376"></a><figcaption class="image-caption">2024-02-22_21-23</figcaption>
+<figure><a class="lightgallery" href="assets/86192421250183.png" title="2024-02-22_21-23" data-thumbnail="assets/86192421250183.png" data-sub-html="<h2> </h2><p>2024-02-22_21-23</p>"><img   src='assets/86192421250183.png'   alt="2024-02-22_21-23"  ></a><figcaption class="image-caption">2024-02-22_21-23</figcaption>
     </figure></p>
 <p>此代码位于head-common.s，在head.s被调用
 
-<figure><a class="lightgallery" href="/vx_images/196132721240713.png" title="2024-02-22_21-27" data-thumbnail="/vx_images/196132721240713.png" data-sub-html="<h2> </h2><p>2024-02-22_21-27</p>"><img   src='/vx_images/196132721240713.png'   alt="2024-02-22_21-27" height="333" width="1231"></a><figcaption class="image-caption">2024-02-22_21-27</figcaption>
+<figure><a class="lightgallery" href="assets/196132721240713.png" title="2024-02-22_21-27" data-thumbnail="assets/196132721240713.png" data-sub-html="<h2> </h2><p>2024-02-22_21-27</p>"><img   src='assets/196132721240713.png'   alt="2024-02-22_21-27"  ></a><figcaption class="image-caption">2024-02-22_21-27</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="/vx_images/98102821243217.png" title="2024-02-22_21-27_1" data-thumbnail="/vx_images/98102821243217.png" data-sub-html="<h2> </h2><p>2024-02-22_21-27_1</p>"><img   src='/vx_images/98102821243217.png'   alt="2024-02-22_21-27_1" height="408" width="1411"></a><figcaption class="image-caption">2024-02-22_21-27_1</figcaption>
+<figure><a class="lightgallery" href="assets/98102821243217.png" title="2024-02-22_21-27_1" data-thumbnail="assets/98102821243217.png" data-sub-html="<h2> </h2><p>2024-02-22_21-27_1</p>"><img   src='assets/98102821243217.png'   alt="2024-02-22_21-27_1"  ></a><figcaption class="image-caption">2024-02-22_21-27_1</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="/vx_images/338033421252164.png" title="2024-02-22_21-34" data-thumbnail="/vx_images/338033421252164.png" data-sub-html="<h2> </h2><p>2024-02-22_21-34</p>"><img   src='/vx_images/338033421252164.png'   alt="2024-02-22_21-34" height="901" width="1416"></a><figcaption class="image-caption">2024-02-22_21-34</figcaption>
+<figure><a class="lightgallery" href="assets/338033421252164.png" title="2024-02-22_21-34" data-thumbnail="assets/338033421252164.png" data-sub-html="<h2> </h2><p>2024-02-22_21-34</p>"><img   src='assets/338033421252164.png'   alt="2024-02-22_21-34"  ></a><figcaption class="image-caption">2024-02-22_21-34</figcaption>
     </figure></p>
 <h3 id="linux移植浅谈" class="headerLink">
     <a href="#linux%e7%a7%bb%e6%a4%8d%e6%b5%85%e8%b0%88" class="header-mark"></a>Linux移植浅谈</h3><p>Linux系统移植分为2步：</p>
@@ -792,18 +769,18 @@ Linux启动流程 首先由BIOS/bootloader进行一系列的硬件初始化和�
 <p>Linux内核移植必须能够在庞大的源码中找到所需代码</p>
 <h2 id="linux内核文件系统" class="headerLink">
     <a href="#linux%e5%86%85%e6%a0%b8%e6%96%87%e4%bb%b6%e7%b3%bb%e7%bb%9f" class="header-mark"></a>Linux内核文件系统</h2><p>
-<figure><a class="lightgallery" href="/vx_images/223495114240269.png" title="2024-02-28_14-51" data-thumbnail="/vx_images/223495114240269.png" data-sub-html="<h2> </h2><p>2024-02-28_14-51</p>"><img   src='/vx_images/223495114240269.png'   alt="2024-02-28_14-51" height="1363" width="1116"></a><figcaption class="image-caption">2024-02-28_14-51</figcaption>
+<figure><a class="lightgallery" href="assets/223495114240269.png" title="2024-02-28_14-51" data-thumbnail="assets/223495114240269.png" data-sub-html="<h2> </h2><p>2024-02-28_14-51</p>"><img   src='assets/223495114240269.png'   alt="2024-02-28_14-51"  ></a><figcaption class="image-caption">2024-02-28_14-51</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="/vx_images/204512201251703.png" title="2024-02-25_01-21_1" data-thumbnail="/vx_images/204512201251703.png" data-sub-html="<h2> </h2><p>2024-02-25_01-21_1</p>"><img   src='/vx_images/204512201251703.png'   alt="2024-02-25_01-21_1" height="738" width="1716"></a><figcaption class="image-caption">2024-02-25_01-21_1</figcaption>
+<figure><a class="lightgallery" href="assets/204512201251703.png" title="2024-02-25_01-21_1" data-thumbnail="assets/204512201251703.png" data-sub-html="<h2> </h2><p>2024-02-25_01-21_1</p>"><img   src='assets/204512201251703.png'   alt="2024-02-25_01-21_1"  ></a><figcaption class="image-caption">2024-02-25_01-21_1</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="/vx_images/48782501269583.png" title="2024-02-25_01-24" data-thumbnail="/vx_images/48782501269583.png" data-sub-html="<h2> </h2><p>2024-02-25_01-24</p>"><img   src='/vx_images/48782501269583.png'   alt="2024-02-25_01-24" height="371" width="1040"></a><figcaption class="image-caption">2024-02-25_01-24</figcaption>
+<figure><a class="lightgallery" href="assets/48782501269583.png" title="2024-02-25_01-24" data-thumbnail="assets/48782501269583.png" data-sub-html="<h2> </h2><p>2024-02-25_01-24</p>"><img   src='assets/48782501269583.png'   alt="2024-02-25_01-24"  ></a><figcaption class="image-caption">2024-02-25_01-24</figcaption>
     </figure></p>
 <p>文件系统由内核启动：
 由bootloader传进来的taglist放入内存中某个段，由<strong>内核</strong>进行解析后(也就是字符串处理)将原有的init=linuxrc转换为comandline=linuxrc，如果bootloader没有定义init=linuxrc，那么内核会在下列文件夹中依次寻找，然后进入文件系统。默认情况下/sbin/init等文件是一个指向/bin/busybox的软链接，这个busybox只有在嵌入式系统中才有，对于Ubuntu而言对应的则是dash，而后由busybox启动文件文件系统</p>
 <p>
-<figure><a class="lightgallery" href="/vx_images/318163113258690.png" title="2024-02-23_13-31" data-thumbnail="/vx_images/318163113258690.png" data-sub-html="<h2> </h2><p>2024-02-23_13-31</p>"><img   src='/vx_images/318163113258690.png'   alt="2024-02-23_13-31" height="1600" width="2559"></a><figcaption class="image-caption">2024-02-23_13-31</figcaption>
+<figure><a class="lightgallery" href="assets/318163113258690.png" title="2024-02-23_13-31" data-thumbnail="assets/318163113258690.png" data-sub-html="<h2> </h2><p>2024-02-23_13-31</p>"><img   src='assets/318163113258690.png'   alt="2024-02-23_13-31"  ></a><figcaption class="image-caption">2024-02-23_13-31</figcaption>
     </figure></p>
 <p>busybox是一个极简的工具箱，它提供了基础的命令，与文件系统关系紧密</p>
 <p>启动脚本位于/etc/rc.d</p>
@@ -826,7 +803,7 @@ Linux启动流程 首先由BIOS/bootloader进行一系列的硬件初始化和�
 <li>退出后再次执行run_action，不断的重复第一步</li>
 </ul>
 <p>
-<figure><a class="lightgallery" href="/vx_images/434772809258691.png" title="2024-02-24_09-28" data-thumbnail="/vx_images/434772809258691.png" data-sub-html="<h2> </h2><p>2024-02-24_09-28</p>"><img   src='/vx_images/434772809258691.png'   alt="2024-02-24_09-28" height="1020" width="1634"></a><figcaption class="image-caption">2024-02-24_09-28</figcaption>
+<figure><a class="lightgallery" href="assets/434772809258691.png" title="2024-02-24_09-28" data-thumbnail="assets/434772809258691.png" data-sub-html="<h2> </h2><p>2024-02-24_09-28</p>"><img   src='assets/434772809258691.png'   alt="2024-02-24_09-28"  ></a><figcaption class="image-caption">2024-02-24_09-28</figcaption>
     </figure></p>
 <p>一个文件系统需要什么？</p>
 <ul>
@@ -847,18 +824,18 @@ i节点位图：同理，描述inode节点的使用情况<br>
 逻辑块：用来存储数据的数据存储单元<br>
 i节点：目录与磁盘的桥接，文件的属性描述</p>
 <p>
-<figure><a class="lightgallery" href="/vx_images/310545216240345.png" title="2024-03-04_16-44" data-thumbnail="/vx_images/310545216240345.png" data-sub-html="<h2> </h2><p>2024-03-04_16-44</p>"><img   src='/vx_images/310545216240345.png'   alt="2024-03-04_16-44" height="908" width="1886"></a><figcaption class="image-caption">2024-03-04_16-44</figcaption>
+<figure><a class="lightgallery" href="assets/310545216240345.png" title="2024-03-04_16-44" data-thumbnail="assets/310545216240345.png" data-sub-html="<h2> </h2><p>2024-03-04_16-44</p>"><img   src='assets/310545216240345.png'   alt="2024-03-04_16-44"  ></a><figcaption class="image-caption">2024-03-04_16-44</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="/vx_images/84782010246558.png" title="2024-02-24_10-19" data-thumbnail="/vx_images/84782010246558.png" data-sub-html="<h2> </h2><p>2024-02-24_10-19</p>"><img   src='/vx_images/84782010246558.png'   alt="2024-02-24_10-19" height="974" width="1368"></a><figcaption class="image-caption">2024-02-24_10-19</figcaption>
+<figure><a class="lightgallery" href="assets/84782010246558.png" title="2024-02-24_10-19" data-thumbnail="assets/84782010246558.png" data-sub-html="<h2> </h2><p>2024-02-24_10-19</p>"><img   src='assets/84782010246558.png'   alt="2024-02-24_10-19"  ></a><figcaption class="image-caption">2024-02-24_10-19</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="/vx_images/61462210266724.png" title="2024-02-24_10-21" data-thumbnail="/vx_images/61462210266724.png" data-sub-html="<h2> </h2><p>2024-02-24_10-21</p>"><img   src='/vx_images/61462210266724.png'   alt="2024-02-24_10-21" height="239" width="2122"></a><figcaption class="image-caption">2024-02-24_10-21</figcaption>
+<figure><a class="lightgallery" href="assets/61462210266724.png" title="2024-02-24_10-21" data-thumbnail="assets/61462210266724.png" data-sub-html="<h2> </h2><p>2024-02-24_10-21</p>"><img   src='assets/61462210266724.png'   alt="2024-02-24_10-21"  ></a><figcaption class="image-caption">2024-02-24_10-21</figcaption>
     </figure></p>
 <h3 id="高速缓冲区" class="headerLink">
     <a href="#%e9%ab%98%e9%80%9f%e7%bc%93%e5%86%b2%e5%8c%ba" class="header-mark"></a>高速缓冲区</h3><p>高速缓冲区存储着块设备驱动程序的数据，并且当从块设备读取数据时，OS会首先在高速缓冲区中查找，找到了且是最新的数据，那么直接和高速缓冲区交互，如果没有找到或者不是最新的则需要在块设备或内存中查找</p>
 <p>
-<figure><a class="lightgallery" href="/vx_images/485035712251806.png" title="2024-03-28_12-56" data-thumbnail="/vx_images/485035712251806.png" data-sub-html="<h2> </h2><p>2024-03-28_12-56</p>"><img   src='/vx_images/485035712251806.png'   alt="2024-03-28_12-56" height="790" width="683"></a><figcaption class="image-caption">2024-03-28_12-56</figcaption>
+<figure><a class="lightgallery" href="assets/485035712251806.png" title="2024-03-28_12-56" data-thumbnail="assets/485035712251806.png" data-sub-html="<h2> </h2><p>2024-03-28_12-56</p>"><img   src='assets/485035712251806.png'   alt="2024-03-28_12-56"  ></a><figcaption class="image-caption">2024-03-28_12-56</figcaption>
     </figure></p>
 <h4 id="哈希hash表" class="headerLink">
     <a href="#%e5%93%88%e5%b8%8chash%e8%a1%a8" class="header-mark"></a>哈希(hash)表</h4><p>哈希表又称为散列表，由哈希函数和数组(也称为散列数组)构成，哈希表是为了解决遍历数组时间复杂度O(logn，以2为底)的问题，首先由输入元素经过哈希函数生成一个整数n，然后再把该元素放到arr[n]的位置，下次如果需要找到此元素，则可以通过hash函数生成一个整数n，从而在数组中找到该元素，这样就把查询的时间复杂度降为O(1)了。因此对于hash函数有如下要求：</p>
@@ -868,11 +845,11 @@ i节点：目录与磁盘的桥接，文件的属性描述</p>
 </ul>
 <h3 id="缓冲区头" class="headerLink">
     <a href="#%e7%bc%93%e5%86%b2%e5%8c%ba%e5%a4%b4" class="header-mark"></a>缓冲区头</h3><p>
-<figure><a class="lightgallery" href="/vx_images/238122013240343.png" title="2024-03-02_13-20" data-thumbnail="/vx_images/238122013240343.png" data-sub-html="<h2> </h2><p>2024-03-02_13-20</p>"><img   src='/vx_images/238122013240343.png'   alt="2024-03-02_13-20" height="806" width="1693"></a><figcaption class="image-caption">2024-03-02_13-20</figcaption>
+<figure><a class="lightgallery" href="assets/238122013240343.png" title="2024-03-02_13-20" data-thumbnail="assets/238122013240343.png" data-sub-html="<h2> </h2><p>2024-03-02_13-20</p>"><img   src='assets/238122013240343.png'   alt="2024-03-02_13-20"  ></a><figcaption class="image-caption">2024-03-02_13-20</figcaption>
     </figure></p>
 <p>高速缓冲区结构中有个缓冲区头，类似于文件系统引导块</p>
 <p>
-<figure><a class="lightgallery" href="/vx_images/217335710259393.png" title="2024-02-24_10-56" data-thumbnail="/vx_images/217335710259393.png" data-sub-html="<h2> </h2><p>2024-02-24_10-56</p>"><img   src='/vx_images/217335710259393.png'   alt="2024-02-24_10-56" height="481" width="1101"></a><figcaption class="image-caption">2024-02-24_10-56</figcaption>
+<figure><a class="lightgallery" href="assets/217335710259393.png" title="2024-02-24_10-56" data-thumbnail="assets/217335710259393.png" data-sub-html="<h2> </h2><p>2024-02-24_10-56</p>"><img   src='assets/217335710259393.png'   alt="2024-02-24_10-56"  ></a><figcaption class="image-caption">2024-02-24_10-56</figcaption>
     </figure></p>
 <div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
   <div class="
@@ -979,7 +956,7 @@ i节点：目录与磁盘的桥接，文件的属性描述</p>
 </span></span><span class="line"><span class="cl"><span class="p">};</span></span></span></code></pre>
 </div>
 <p>
-<figure><a class="lightgallery" href="/vx_images/35364515255948.png" title="2024-02-24_15-44" data-thumbnail="/vx_images/35364515255948.png" data-sub-html="<h2> </h2><p>2024-02-24_15-44</p>"><img   src='/vx_images/35364515255948.png'   alt="2024-02-24_15-44" height="770" width="1790"></a><figcaption class="image-caption">2024-02-24_15-44</figcaption>
+<figure><a class="lightgallery" href="assets/35364515255948.png" title="2024-02-24_15-44" data-thumbnail="assets/35364515255948.png" data-sub-html="<h2> </h2><p>2024-02-24_15-44</p>"><img   src='assets/35364515255948.png'   alt="2024-02-24_15-44"  ></a><figcaption class="image-caption">2024-02-24_15-44</figcaption>
     </figure></p>
 <p>因此，对于块设备而言我们想要获得块，所需要做的是：</p>
 <ul>
@@ -1004,7 +981,7 @@ i节点：目录与磁盘的桥接，文件的属性描述</p>
 <h3 id="bio" class="headerLink">
     <a href="#bio" class="header-mark"></a>bio</h3><p>在2.6内核后，buffer_head的功能逐渐弱化为映射内存和磁盘关系的结构体，大部分的操作函数主要在bio结构体中实现</p>
 <p>
-<figure><a class="lightgallery" href="/vx_images/554253314258769.png" title="2024-03-02_14-33" data-thumbnail="/vx_images/554253314258769.png" data-sub-html="<h2> </h2><p>2024-03-02_14-33</p>"><img   src='/vx_images/554253314258769.png'   alt="2024-03-02_14-33" height="833" width="1542"></a><figcaption class="image-caption">2024-03-02_14-33</figcaption>
+<figure><a class="lightgallery" href="assets/554253314258769.png" title="2024-03-02_14-33" data-thumbnail="assets/554253314258769.png" data-sub-html="<h2> </h2><p>2024-03-02_14-33</p>"><img   src='assets/554253314258769.png'   alt="2024-03-02_14-33"  ></a><figcaption class="image-caption">2024-03-02_14-33</figcaption>
     </figure></p>
 <p>bio里重要的结构体：</p>
 <ul>
@@ -1025,10 +1002,10 @@ i节点：目录与磁盘的桥接，文件的属性描述</p>
 </li>
 </ul>
 <p>
-<figure><a class="lightgallery" href="/vx_images/180953814246636.png" title="2024-03-02_14-38" data-thumbnail="/vx_images/180953814246636.png" data-sub-html="<h2> </h2><p>2024-03-02_14-38</p>"><img   src='/vx_images/180953814246636.png'   alt="2024-03-02_14-38" height="165" width="549"></a><figcaption class="image-caption">2024-03-02_14-38</figcaption>
+<figure><a class="lightgallery" href="assets/180953814246636.png" title="2024-03-02_14-38" data-thumbnail="assets/180953814246636.png" data-sub-html="<h2> </h2><p>2024-03-02_14-38</p>"><img   src='assets/180953814246636.png'   alt="2024-03-02_14-38"  ></a><figcaption class="image-caption">2024-03-02_14-38</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="/vx_images/185623914266802.png" title="2024-03-02_14-39" data-thumbnail="/vx_images/185623914266802.png" data-sub-html="<h2> </h2><p>2024-03-02_14-39</p>"><img   src='/vx_images/185623914266802.png'   alt="2024-03-02_14-39" height="812" width="1168"></a><figcaption class="image-caption">2024-03-02_14-39</figcaption>
+<figure><a class="lightgallery" href="assets/185623914266802.png" title="2024-03-02_14-39" data-thumbnail="assets/185623914266802.png" data-sub-html="<h2> </h2><p>2024-03-02_14-39</p>"><img   src='assets/185623914266802.png'   alt="2024-03-02_14-39"  ></a><figcaption class="image-caption">2024-03-02_14-39</figcaption>
     </figure></p>
 <p>相比buffer_head，bio有如下优点：</p>
 <ul>
@@ -1059,13 +1036,13 @@ i节点：目录与磁盘的桥接，文件的属性描述</p>
 inode中有dev和block，根据这两个信息就可以把硬盘载入高速缓冲区</p>
 <p>从上面代码中可以看出,内核从哈希表中搜索现成的缓冲块时,只看设备号和块号,其他的什么都不管。只要缓冲块与硬盘数据块的绑定关系还存在,就认定数据块中的数据仍然停留在缓冲块中,就可以直接用,不需要从硬盘上读取,节省了100倍的硬盘读取时间</p>
 <p>
-<figure><a class="lightgallery" href="/vx_images/429192314240267.png" title="2024-02-26_14-23" data-thumbnail="/vx_images/429192314240267.png" data-sub-html="<h2> </h2><p>2024-02-26_14-23</p>"><img   src='/vx_images/429192314240267.png'   alt="2024-02-26_14-23" height="693" width="1786"></a><figcaption class="image-caption">2024-02-26_14-23</figcaption>
+<figure><a class="lightgallery" href="assets/429192314240267.png" title="2024-02-26_14-23" data-thumbnail="assets/429192314240267.png" data-sub-html="<h2> </h2><p>2024-02-26_14-23</p>"><img   src='assets/429192314240267.png'   alt="2024-02-26_14-23"  ></a><figcaption class="image-caption">2024-02-26_14-23</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="/vx_images/331743316246560.png" title="2024-02-26_16-33" data-thumbnail="/vx_images/331743316246560.png" data-sub-html="<h2> </h2><p>2024-02-26_16-33</p>"><img   src='/vx_images/331743316246560.png'   alt="2024-02-26_16-33" height="894" width="2020"></a><figcaption class="image-caption">2024-02-26_16-33</figcaption>
+<figure><a class="lightgallery" href="assets/331743316246560.png" title="2024-02-26_16-33" data-thumbnail="assets/331743316246560.png" data-sub-html="<h2> </h2><p>2024-02-26_16-33</p>"><img   src='assets/331743316246560.png'   alt="2024-02-26_16-33"  ></a><figcaption class="image-caption">2024-02-26_16-33</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="/vx_images/55283316258693.png" title="2024-02-26_16-32" data-thumbnail="/vx_images/55283316258693.png" data-sub-html="<h2> </h2><p>2024-02-26_16-32</p>"><img   src='/vx_images/55283316258693.png'   alt="2024-02-26_16-32" height="476" width="1467"></a><figcaption class="image-caption">2024-02-26_16-32</figcaption>
+<figure><a class="lightgallery" href="assets/55283316258693.png" title="2024-02-26_16-32" data-thumbnail="assets/55283316258693.png" data-sub-html="<h2> </h2><p>2024-02-26_16-32</p>"><img   src='assets/55283316258693.png'   alt="2024-02-26_16-32"  ></a><figcaption class="image-caption">2024-02-26_16-32</figcaption>
     </figure></p>
 <h3 id="io调度算法" class="headerLink">
     <a href="#io%e8%b0%83%e5%ba%a6%e7%ae%97%e6%b3%95" class="header-mark"></a>IO调度算法</h3><p>由于APP对读写要求的不同：对读操作时间敏感，对写操作则不然，并且主流存储设备为磁盘时还需要优化寻道时间，因此产生了如下算法</p>
@@ -1085,10 +1062,10 @@ inode中有dev和block，根据这两个信息就可以把硬盘载入高速缓�
 <p><a href="https://docs.kernel.org/arch/arm64/memory.html" target="_blank" rel="noopener noreferrer">linux内存布局</a>
 <a href="https://docs.kernel.org/arch/arm64/ptdump.html" target="_blank" rel="noopener noreferrer">使用命令行生成内存布局</a></p>
 <p>
-<figure><a class="lightgallery" href="/vx_images/511861922246638.png" title="2024-03-04_22-19" data-thumbnail="/vx_images/511861922246638.png" data-sub-html="<h2> </h2><p>2024-03-04_22-19</p>"><img   src='/vx_images/511861922246638.png'   alt="2024-03-04_22-19" height="868" width="1102"></a><figcaption class="image-caption">2024-03-04_22-19</figcaption>
+<figure><a class="lightgallery" href="assets/511861922246638.png" title="2024-03-04_22-19" data-thumbnail="assets/511861922246638.png" data-sub-html="<h2> </h2><p>2024-03-04_22-19</p>"><img   src='assets/511861922246638.png'   alt="2024-03-04_22-19"  ></a><figcaption class="image-caption">2024-03-04_22-19</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="/vx_images/247874222266804.png" title="2024-03-04_22-42" data-thumbnail="/vx_images/247874222266804.png" data-sub-html="<h2> </h2><p>2024-03-04_22-42</p>"><img   src='/vx_images/247874222266804.png'   alt="2024-03-04_22-42" height="1153" width="904"></a><figcaption class="image-caption">2024-03-04_22-42</figcaption>
+<figure><a class="lightgallery" href="assets/247874222266804.png" title="2024-03-04_22-42" data-thumbnail="assets/247874222266804.png" data-sub-html="<h2> </h2><p>2024-03-04_22-42</p>"><img   src='assets/247874222266804.png'   alt="2024-03-04_22-42"  ></a><figcaption class="image-caption">2024-03-04_22-42</figcaption>
     </figure></p>
 <p>vmalloc是在虚拟内存中申请一块连续地址，kmalloc则是在物理内存中申请一块连续地址。内核代码主要使用kmalloc，这是因为当物理地址不连续时需要为每个独立的物理地址项建立页表项，这会损失性能</p>
 <p>内核空间栈小且固定(现在应该支持可变大小了？)，用户空间栈大且可变</p>
@@ -1258,7 +1235,7 @@ inode中有dev和block，根据这两个信息就可以把硬盘载入高速缓�
 <p>为了管理众多进程，CFS采用红黑树的数据结构，这样可以使搜索时间显著下降</p>
 <p>内存屏障：由于CPU执行与编译器编译后的结果是乱序的，为了保证代码按正确的顺序的运行，厂家提供了内存屏障指令，在内存屏障的上下文代码按一定顺序执行，如下文，在线程2，先执行<code>c=b;</code>而后执行<code>d=a;</code>，如果没有内存屏障代码的话假如线程1与线程2被执行时同时颠倒顺序会导致出现预料外的结果</p>
 <p>
-<figure><a class="lightgallery" href="/vx_images/72572111240342.png" title="2024-03-01_11-20" data-thumbnail="/vx_images/72572111240342.png" data-sub-html="<h2> </h2><p>2024-03-01_11-20</p>"><img   src='/vx_images/72572111240342.png'   alt="2024-03-01_11-20" height="566" width="1699"></a><figcaption class="image-caption">2024-03-01_11-20</figcaption>
+<figure><a class="lightgallery" href="assets/72572111240342.png" title="2024-03-01_11-20" data-thumbnail="assets/72572111240342.png" data-sub-html="<h2> </h2><p>2024-03-01_11-20</p>"><img   src='assets/72572111240342.png'   alt="2024-03-01_11-20"  ></a><figcaption class="image-caption">2024-03-01_11-20</figcaption>
     </figure></p>
 <p>为了保证检索定时器的效率，Linux将定时器分为五组，当超过规定时间时定时器将随组一起下移，这保证了搜索效率</p>
 <p>不负责的程序员经常使用get_cpu()等函数来保证数据与CPU绑定(每个CPU都有一段专属的内存区域)，虽然这对防止竟态有重要作用(唯一需要注意的内核抢占问题也在get_cpu()中自动实现了)，但是这也会造成一核有难多核围观的后果</p>

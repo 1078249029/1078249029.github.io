@@ -1,9 +1,11 @@
 # 移植ESP32SPI驱动至rtthread教程
 
 
-# 移植ESP32SPI驱动至RT-Thread
-
 本文是博主移植驱动工作的总结，详细介绍了移植过程以及遇到的问题及其解决方案，希望对各位有帮助。同时，代码已进入[RT-Thread主线](https://github.com/RT-Thread/rt-thread/pull/9513)。博文同时发表在个人博客[wumingzi.top](wumingzi.top)
+
+<!-- more -->
+
+# 移植ESP32SPI驱动至RT-Thread
 
 本文主要使用、查阅了以下资料：
 * 参考书籍 RT-Thread设备驱动开发指南，ESP32官方文档

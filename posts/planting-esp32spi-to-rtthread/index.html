@@ -7,14 +7,7 @@
     <meta name="robots" content="noodp" /><title>移植ESP32SPI驱动至rtthread教程 - 吾铭子</title><meta name="Description" content="吾铭子"><meta property="og:url" content="https://1078249029.github.io/posts/planting-esp32spi-to-rtthread/">
   <meta property="og:site_name" content="吾铭子">
   <meta property="og:title" content="移植ESP32SPI驱动至rtthread教程">
-  <meta property="og:description" content="移植ESP32SPI驱动至RT-Thread本文是博主移植驱动工作的总结，详细介绍了移植过程以及遇到的问题及其解决方案，希望对各位有帮助。同时，代码已进入RT-Thread主线。博文同时发表在个人博客wumingzi.top
-本文主要使用、查阅了以下资料：
-参考书籍 RT-Thread设备驱动开发指南，ESP32官方文档 硬件 ESP32-C3-DevKitM-1，W25Q64 系统平台搭建具体的硬件连线不必多说，参考ESP32C3官方开发板的原理图即可，交叉编译环境可以参考博主的这篇文章ESP32C3环境搭建教程，代码编辑器我使用了vscode&#43;clang的搭配方式，不采用微软的C/C&#43;&#43;插件的原因是在编写驱动时vscode发生过多次闪退的情况，并且代码提示和高亮补全残缺，相关配置可自行参考网上
-代码参考我们可以参考其他芯片的SPI驱动代码来编写，个人参考了GD32和STM32的代码，GD32的驱动代码会简单很多，STM32会更复杂一些
-修改Kconfig与SConscript文件Kconfig指定了系统资源，使得我们可以通过menuconfig来选择配置系统。Kconfig原理可以看官方文档，简而言之，我们可以通过menuconfig的tui界面来配置Kconfig从而生成.config文件，而后再由系统解析.config文件最后生成rtconfig.h文件来指定系统宏的值从而配置系统。但当前Kconfg并不支持SPI驱动，因此我们需要新增Kconfig选项。
-Kconfig的风格与厂商，开发者个人相关。例如有的厂商会习惯将引脚配置项放在板上菜单中，并将功能配置项放在片上外设菜单中 ，而有的厂商会将两者都混放在片上外设菜单或BSP菜单中。前者代表是ESP32和GD32，后者代表是STM32
-新增的代码如下
-Kconfig">
+  <meta property="og:description" content="本文是博主移植驱动工作的总结，详细介绍了移植过程以及遇到的问题及其解决方案，希望对各位有帮助。同时，代码已进入RT-Thread主线。博文同时发表在个人博客wumingzi.top">
   <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
@@ -29,14 +22,7 @@ Kconfig">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://1078249029.github.io/logo.png">
   <meta name="twitter:title" content="移植ESP32SPI驱动至rtthread教程">
-  <meta name="twitter:description" content="移植ESP32SPI驱动至RT-Thread本文是博主移植驱动工作的总结，详细介绍了移植过程以及遇到的问题及其解决方案，希望对各位有帮助。同时，代码已进入RT-Thread主线。博文同时发表在个人博客wumingzi.top
-本文主要使用、查阅了以下资料：
-参考书籍 RT-Thread设备驱动开发指南，ESP32官方文档 硬件 ESP32-C3-DevKitM-1，W25Q64 系统平台搭建具体的硬件连线不必多说，参考ESP32C3官方开发板的原理图即可，交叉编译环境可以参考博主的这篇文章ESP32C3环境搭建教程，代码编辑器我使用了vscode&#43;clang的搭配方式，不采用微软的C/C&#43;&#43;插件的原因是在编写驱动时vscode发生过多次闪退的情况，并且代码提示和高亮补全残缺，相关配置可自行参考网上
-代码参考我们可以参考其他芯片的SPI驱动代码来编写，个人参考了GD32和STM32的代码，GD32的驱动代码会简单很多，STM32会更复杂一些
-修改Kconfig与SConscript文件Kconfig指定了系统资源，使得我们可以通过menuconfig来选择配置系统。Kconfig原理可以看官方文档，简而言之，我们可以通过menuconfig的tui界面来配置Kconfig从而生成.config文件，而后再由系统解析.config文件最后生成rtconfig.h文件来指定系统宏的值从而配置系统。但当前Kconfg并不支持SPI驱动，因此我们需要新增Kconfig选项。
-Kconfig的风格与厂商，开发者个人相关。例如有的厂商会习惯将引脚配置项放在板上菜单中，并将功能配置项放在片上外设菜单中 ，而有的厂商会将两者都混放在片上外设菜单或BSP菜单中。前者代表是ESP32和GD32，后者代表是STM32
-新增的代码如下
-Kconfig">
+  <meta name="twitter:description" content="本文是博主移植驱动工作的总结，详细介绍了移植过程以及遇到的问题及其解决方案，希望对各位有帮助。同时，代码已进入RT-Thread主线。博文同时发表在个人博客wumingzi.top">
 <meta name="application-name" content="吾铭子">
 <meta name="apple-mobile-web-app-title" content="吾铭子">
 
@@ -51,7 +37,7 @@ Kconfig">
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https://1078249029.github.io/posts/planting-esp32spi-to-rtthread/"
-        },"genre": "posts","keywords":["Tech","OS","ESP32","RT-Thread"],"wordcount":  987 ,
+        },"genre": "posts","keywords":["Tech","OS","ESP32","RT-Thread"],"wordcount":  4511 ,
         "url": "https://1078249029.github.io/posts/planting-esp32spi-to-rtthread/","datePublished": "2024-10-19T10:50:25+08:00","dateModified": "2024-11-04T15:02:01+08:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -214,9 +200,9 @@ Kconfig">
             <div class="post-meta-line"><svg class="icon"
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>&nbsp;<time datetime="2024-10-19">2024-10-19</time>&nbsp;<svg class="icon"
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg>&nbsp;<time datetime="2024-11-04">2024-11-04</time>&nbsp;<svg class="icon"
-    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;约 987 字&nbsp;
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;约 4511 字&nbsp;
                     <svg class="icon"
-    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;预计阅读 5 分钟&nbsp;</div>
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;预计阅读 20 分钟&nbsp;</div>
         </div><div class="details toc print:!tw-block" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
                     <span>目录</span>
@@ -236,9 +222,10 @@ Kconfig">
     </li>
   </ul>
 </nav></div>
-            </div><div class="content" id="content" data-pagefind-body><h1 id="移植esp32spi驱动至rt-thread" class="headerLink">
-    <a href="#%e7%a7%bb%e6%a4%8desp32spi%e9%a9%b1%e5%8a%a8%e8%87%b3rt-thread" class="header-mark"></a>移植ESP32SPI驱动至RT-Thread</h1><p>本文是博主移植驱动工作的总结，详细介绍了移植过程以及遇到的问题及其解决方案，希望对各位有帮助。同时，代码已进入<a href="https://github.com/RT-Thread/rt-thread/pull/9513" target="_blank" rel="noopener noreferrer">RT-Thread主线</a>。博文同时发表在个人博客<a href="wumingzi.top" rel="">wumingzi.top</a></p>
-<p>本文主要使用、查阅了以下资料：</p>
+            </div><div class="content" id="content" data-pagefind-body><p>本文是博主移植驱动工作的总结，详细介绍了移植过程以及遇到的问题及其解决方案，希望对各位有帮助。同时，代码已进入<a href="https://github.com/RT-Thread/rt-thread/pull/9513" target="_blank" rel="noopener noreferrer">RT-Thread主线</a>。博文同时发表在个人博客<a href="wumingzi.top" rel="">wumingzi.top</a></p>
+<!-- more -->
+<h1 id="移植esp32spi驱动至rt-thread" class="headerLink">
+    <a href="#%e7%a7%bb%e6%a4%8desp32spi%e9%a9%b1%e5%8a%a8%e8%87%b3rt-thread" class="header-mark"></a>移植ESP32SPI驱动至RT-Thread</h1><p>本文主要使用、查阅了以下资料：</p>
 <ul>
 <li>参考书籍 RT-Thread设备驱动开发指南，ESP32官方文档</li>
 <li>硬件 ESP32-C3-DevKitM-1，W25Q64</li>
