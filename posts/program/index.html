@@ -460,31 +460,31 @@
 </span></span></span><span class="line"><span class="cl"><span class="cp">#define  SYSTEM_CLOCK    (5U * XTAL)</span></span></span></code></pre>
 </div>
 <p>
-<figure><a class="lightgallery" href="assets/419821610240143.png" title="2024-01-02_10-16" data-thumbnail="assets/419821610240143.png" data-sub-html="<h2> </h2><p>2024-01-02_10-16</p>"><img   src='assets/419821610240143.png'   alt="2024-01-02_10-16"  ></a><figcaption class="image-caption">2024-01-02_10-16</figcaption>
+<figure><a class="lightgallery" href="assets/419821610240143.webp" title="2024-01-02_10-16" data-thumbnail="assets/419821610240143.webp" data-sub-html="<h2> </h2><p>2024-01-02_10-16</p>"><img   src='assets/419821610240143.webp'   alt="2024-01-02_10-16"  ></a><figcaption class="image-caption">2024-01-02_10-16</figcaption>
     </figure></p>
 <p>对于这种多行宏定义，每行结尾要加 \ 表示该行未结束</p>
 <p>::: alert-danger
 若使用 \ 表示该行未完结务必注意 \ 后不能加任何字符，尤其是空格或者Tab。报错如下
-<figure><a class="lightgallery" href="assets/481670512259271.png" title="2024-01-02_12-05" data-thumbnail="assets/481670512259271.png" data-sub-html="<h2> </h2><p>2024-01-02_12-05</p>"><img   src='assets/481670512259271.png'   alt="2024-01-02_12-05"  ></a><figcaption class="image-caption">2024-01-02_12-05</figcaption>
+<figure><a class="lightgallery" href="assets/481670512259271.webp" title="2024-01-02_12-05" data-thumbnail="assets/481670512259271.webp" data-sub-html="<h2> </h2><p>2024-01-02_12-05</p>"><img   src='assets/481670512259271.webp'   alt="2024-01-02_12-05"  ></a><figcaption class="image-caption">2024-01-02_12-05</figcaption>
     </figure>
 :::</p>
 <p>
-<figure><a class="lightgallery" href="assets/400010311258569.png" title="2024-01-02_10-44" data-thumbnail="assets/400010311258569.png" data-sub-html="<h2> </h2><p>2024-01-02_10-44</p>"><img   src='assets/400010311258569.png'   alt="2024-01-02_10-44"  ></a><figcaption class="image-caption">2024-01-02_10-44</figcaption>
+<figure><a class="lightgallery" href="assets/400010311258569.webp" title="2024-01-02_10-44" data-thumbnail="assets/400010311258569.webp" data-sub-html="<h2> </h2><p>2024-01-02_10-44</p>"><img   src='assets/400010311258569.webp'   alt="2024-01-02_10-44"  ></a><figcaption class="image-caption">2024-01-02_10-44</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="assets/7600511266602.png" title="2024-01-02_11-04" data-thumbnail="assets/7600511266602.png" data-sub-html="<h2> </h2><p>2024-01-02_11-04</p>"><img   src='assets/7600511266602.png'   alt="2024-01-02_11-04"  ></a><figcaption class="image-caption">2024-01-02_11-04</figcaption>
+<figure><a class="lightgallery" href="assets/7600511266602.webp" title="2024-01-02_11-04" data-thumbnail="assets/7600511266602.webp" data-sub-html="<h2> </h2><p>2024-01-02_11-04</p>"><img   src='assets/7600511266602.webp'   alt="2024-01-02_11-04"  ></a><figcaption class="image-caption">2024-01-02_11-04</figcaption>
     </figure></p>
 <p>左值不能进行类型转换，类型转换本质上是在寄存器内对原值进行位操作，得到的结果不放入内存，而左值是需要放进内存的，因此类型转换与左值冲突，若要类型转换，则需要对右值进行操作</p>
 <p>:::alert-danger
 当一个a.c文件需要b.h，而b.h包含了c.h，且c.h也包含了b.h时，会发生编译冲突。表现为有未定义的类型或变量，详情参考<a href="https://www.cnblogs.com/skullboyer/p/8891579.html" target="_blank" rel="noopener noreferrer">博客园</a>，解决办法是理清编译关系，去除重复包含的头文件
 
-<figure><a class="lightgallery" href="assets/211612613258570.png" title="2024-01-03_13-26" data-thumbnail="assets/211612613258570.png" data-sub-html="<h2> </h2><p>2024-01-03_13-26</p>"><img   src='assets/211612613258570.png'   alt="2024-01-03_13-26"  ></a><figcaption class="image-caption">2024-01-03_13-26</figcaption>
+<figure><a class="lightgallery" href="assets/211612613258570.webp" title="2024-01-03_13-26" data-thumbnail="assets/211612613258570.webp" data-sub-html="<h2> </h2><p>2024-01-03_13-26</p>"><img   src='assets/211612613258570.webp'   alt="2024-01-03_13-26"  ></a><figcaption class="image-caption">2024-01-03_13-26</figcaption>
     </figure>
 :::</p>
 <p>栈由高地址向低地址增长，栈顶是第一个进栈的元素，栈底是最后一个进栈的元素
 因为32位机一般指令都是32位的，栈顶指针只需4字节对齐即可，但是考虑兼容浮点运算的64位操作则需要8字节。对齐完成后，栈顶指针即可确定位置，而后开辟空间</p>
 <p>
-<figure><a class="lightgallery" href="assets/151190216246437.png" title="2024-01-03_16-01" data-thumbnail="assets/151190216246437.png" data-sub-html="<h2> </h2><p>2024-01-03_16-01</p>"><img   src='assets/151190216246437.png'   alt="2024-01-03_16-01"  ></a><figcaption class="image-caption">2024-01-03_16-01</figcaption>
+<figure><a class="lightgallery" href="assets/151190216246437.webp" title="2024-01-03_16-01" data-thumbnail="assets/151190216246437.webp" data-sub-html="<h2> </h2><p>2024-01-03_16-01</p>"><img   src='assets/151190216246437.webp'   alt="2024-01-03_16-01"  ></a><figcaption class="image-caption">2024-01-03_16-01</figcaption>
     </figure>
 项目的.c 与 .h文件可以不重名，位置可以不同，例如port.c文件放在\freertos\Source\portable\RVDS\ARM_CM3，但是引用port.c内容的portable.h放在\freertos\Source\include</p>
 <div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
@@ -695,15 +695,15 @@
 :::</p>
 <h4 id="设置任务栈时栈顶指针的移动" class="headerLink">
     <a href="#%e8%ae%be%e7%bd%ae%e4%bb%bb%e5%8a%a1%e6%a0%88%e6%97%b6%e6%a0%88%e9%a1%b6%e6%8c%87%e9%92%88%e7%9a%84%e7%a7%bb%e5%8a%a8" class="header-mark"></a>设置任务栈时栈顶指针的移动</h4><p>
-<figure><a class="lightgallery" href="assets/434673613240154.png" title="2024-01-13_13-36" data-thumbnail="assets/434673613240154.png" data-sub-html="<h2> </h2><p>2024-01-13_13-36</p>"><img   src='assets/434673613240154.png'   alt="2024-01-13_13-36"  ></a><figcaption class="image-caption">2024-01-13_13-36</figcaption>
+<figure><a class="lightgallery" href="assets/434673613240154.webp" title="2024-01-13_13-36" data-thumbnail="assets/434673613240154.webp" data-sub-html="<h2> </h2><p>2024-01-13_13-36</p>"><img   src='assets/434673613240154.webp'   alt="2024-01-13_13-36"  ></a><figcaption class="image-caption">2024-01-13_13-36</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="assets/386434109258571.png" title="2024-01-04_09-41" data-thumbnail="assets/386434109258571.png" data-sub-html="<h2> </h2><p>2024-01-04_09-41</p>"><img   src='assets/386434109258571.png'   alt="2024-01-04_09-41"  ></a><figcaption class="image-caption">2024-01-04_09-41</figcaption>
+<figure><a class="lightgallery" href="assets/386434109258571.webp" title="2024-01-04_09-41" data-thumbnail="assets/386434109258571.webp" data-sub-html="<h2> </h2><p>2024-01-04_09-41</p>"><img   src='assets/386434109258571.webp'   alt="2024-01-04_09-41"  ></a><figcaption class="image-caption">2024-01-04_09-41</figcaption>
     </figure></p>
 <p>首先由外部函数prvInitialiseNewTask构造出的pxTopOfStack指针传入pxPortInitialiseStack函数，此时pxTopOfStack指针指向A位置，而后移动指针至B，C点从而将xPSR，PC，LR的值依次写入栈顶，方便之后寄存器读取。配置好自动加载到寄存器的内容后再将指针下移至D并返回，从而使任务得到空闲堆栈的指针</p>
 <h3 id="实现调度器" class="headerLink">
     <a href="#%e5%ae%9e%e7%8e%b0%e8%b0%83%e5%ba%a6%e5%99%a8" class="header-mark"></a>实现调度器</h3><p>
-<figure><a class="lightgallery" href="assets/5864314266604.png" title="2024-01-04_14-42" data-thumbnail="assets/5864314266604.png" data-sub-html="<h2> </h2><p>2024-01-04_14-42</p>"><img   src='assets/5864314266604.png'   alt="2024-01-04_14-42"  ></a><figcaption class="image-caption">2024-01-04_14-42</figcaption>
+<figure><a class="lightgallery" href="assets/5864314266604.webp" title="2024-01-04_14-42" data-thumbnail="assets/5864314266604.webp" data-sub-html="<h2> </h2><p>2024-01-04_14-42</p>"><img   src='assets/5864314266604.webp'   alt="2024-01-04_14-42"  ></a><figcaption class="image-caption">2024-01-04_14-42</figcaption>
     </figure>
 向量表最前面是MSP的地址</p>
 <p>配置寄存器：</p>
@@ -983,10 +983,10 @@
 </li>
 </ul>
 <p>
-<figure><a class="lightgallery" href="assets/241410816255828.png" title="内核的优先级翻转" data-thumbnail="assets/241410816255828.png" data-sub-html="<h2> </h2><p>内核的优先级翻转</p>"><img   src='assets/241410816255828.png'   alt="内核的优先级翻转"  ></a><figcaption class="image-caption">内核的优先级翻转</figcaption>
+<figure><a class="lightgallery" href="assets/241410816255828.webp" title="内核的优先级翻转" data-thumbnail="assets/241410816255828.webp" data-sub-html="<h2> </h2><p>内核的优先级翻转</p>"><img   src='assets/241410816255828.webp'   alt="内核的优先级翻转"  ></a><figcaption class="image-caption">内核的优先级翻转</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="assets/295570916251582.png" title="任务正常执行" data-thumbnail="assets/295570916251582.png" data-sub-html="<h2> </h2><p>任务正常执行</p>"><img   src='assets/295570916251582.png'   alt="任务正常执行"  ></a><figcaption class="image-caption">任务正常执行</figcaption>
+<figure><a class="lightgallery" href="assets/295570916251582.webp" title="任务正常执行" data-thumbnail="assets/295570916251582.webp" data-sub-html="<h2> </h2><p>任务正常执行</p>"><img   src='assets/295570916251582.webp'   alt="任务正常执行"  ></a><figcaption class="image-caption">任务正常执行</figcaption>
     </figure></p>
 <ul>
 <li>调用svc(请求管理调用)的原因
@@ -1001,17 +1001,17 @@
 </li>
 </ul>
 <p>
-<figure><a class="lightgallery" href="assets/555312310258572.png" title="2024-01-05_10-23" data-thumbnail="assets/555312310258572.png" data-sub-html="<h2> </h2><p>2024-01-05_10-23</p>"><img   src='assets/555312310258572.png'   alt="2024-01-05_10-23"  ></a><figcaption class="image-caption">2024-01-05_10-23</figcaption>
+<figure><a class="lightgallery" href="assets/555312310258572.webp" title="2024-01-05_10-23" data-thumbnail="assets/555312310258572.webp" data-sub-html="<h2> </h2><p>2024-01-05_10-23</p>"><img   src='assets/555312310258572.webp'   alt="2024-01-05_10-23"  ></a><figcaption class="image-caption">2024-01-05_10-23</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="assets/334622310240146.png" title="2024-01-05_10-23_1" data-thumbnail="assets/334622310240146.png" data-sub-html="<h2> </h2><p>2024-01-05_10-23_1</p>"><img   src='assets/334622310240146.png'   alt="2024-01-05_10-23_1"  ></a><figcaption class="image-caption">2024-01-05_10-23_1</figcaption>
+<figure><a class="lightgallery" href="assets/334622310240146.webp" title="2024-01-05_10-23_1" data-thumbnail="assets/334622310240146.webp" data-sub-html="<h2> </h2><p>2024-01-05_10-23_1</p>"><img   src='assets/334622310240146.webp'   alt="2024-01-05_10-23_1"  ></a><figcaption class="image-caption">2024-01-05_10-23_1</figcaption>
     </figure></p>
 <p>:::alert-danger
 for循环无循环体时末尾加分号
 :::</p>
 <h4 id="实现调度器总结" class="headerLink">
     <a href="#%e5%ae%9e%e7%8e%b0%e8%b0%83%e5%ba%a6%e5%99%a8%e6%80%bb%e7%bb%93" class="header-mark"></a>实现调度器总结</h4><p>
-<figure><a class="lightgallery" href="assets/363240921259275.png" title="调度器的实现" data-thumbnail="assets/363240921259275.png" data-sub-html="<h2> </h2><p>调度器的实现</p>"><img   src='assets/363240921259275.png'   alt="调度器的实现"  ></a><figcaption class="image-caption">调度器的实现</figcaption>
+<figure><a class="lightgallery" href="assets/363240921259275.webp" title="调度器的实现" data-thumbnail="assets/363240921259275.webp" data-sub-html="<h2> </h2><p>调度器的实现</p>"><img   src='assets/363240921259275.webp'   alt="调度器的实现"  ></a><figcaption class="image-caption">调度器的实现</figcaption>
     </figure></p>
 <ul>
 <li>
@@ -1444,7 +1444,7 @@ for循环无循环体时末尾加分号
 <h3 id="支持多优先级" class="headerLink">
     <a href="#%e6%94%af%e6%8c%81%e5%a4%9a%e4%bc%98%e5%85%88%e7%ba%a7" class="header-mark"></a>支持多优先级</h3><p>CM内核有个计算前导零的指令，以此可以优化寻找最高优先级任务的方法
 
-<figure><a class="lightgallery" href="assets/100532010240153.png" title="2024-01-12_10-19" data-thumbnail="assets/100532010240153.png" data-sub-html="<h2> </h2><p>2024-01-12_10-19</p>"><img   src='assets/100532010240153.png'   alt="2024-01-12_10-19"  ></a><figcaption class="image-caption">2024-01-12_10-19</figcaption>
+<figure><a class="lightgallery" href="assets/100532010240153.webp" title="2024-01-12_10-19" data-thumbnail="assets/100532010240153.webp" data-sub-html="<h2> </h2><p>2024-01-12_10-19</p>"><img   src='assets/100532010240153.webp'   alt="2024-01-12_10-19"  ></a><figcaption class="image-caption">2024-01-12_10-19</figcaption>
     </figure></p>
 <p>主要原理是：找到一个32位变量的最高非零位，此位就是最高的有任务的链表的优先级
 支持多优先级实现过程如下</p>
@@ -1882,16 +1882,16 @@ for循环无循环体时末尾加分号
 <ul>
 <li>一般出现编译器问题的条件是：当一个错误卡住了很长时间，并且确定这段代码没有错误，而且当按照编译器的提示将这段代码彻底的进行修改后会爆出更多error，这时就可以考虑是编译器的问题了</li>
 <li>
-<figure><a class="lightgallery" href="assets/548533722266605.png" title="2024-01-05_22-35" data-thumbnail="assets/548533722266605.png" data-sub-html="<h2> </h2><p>2024-01-05_22-35</p>"><img   src='assets/548533722266605.png'   alt="2024-01-05_22-35"  ></a><figcaption class="image-caption">2024-01-05_22-35</figcaption>
+<figure><a class="lightgallery" href="assets/548533722266605.webp" title="2024-01-05_22-35" data-thumbnail="assets/548533722266605.webp" data-sub-html="<h2> </h2><p>2024-01-05_22-35</p>"><img   src='assets/548533722266605.webp'   alt="2024-01-05_22-35"  ></a><figcaption class="image-caption">2024-01-05_22-35</figcaption>
     </figure></li>
 <li>
-<figure><a class="lightgallery" href="assets/278363822259274.png" title="2024-01-05_22-36" data-thumbnail="assets/278363822259274.png" data-sub-html="<h2> </h2><p>2024-01-05_22-36</p>"><img   src='assets/278363822259274.png'   alt="2024-01-05_22-36"  ></a><figcaption class="image-caption">2024-01-05_22-36</figcaption>
+<figure><a class="lightgallery" href="assets/278363822259274.webp" title="2024-01-05_22-36" data-thumbnail="assets/278363822259274.webp" data-sub-html="<h2> </h2><p>2024-01-05_22-36</p>"><img   src='assets/278363822259274.webp'   alt="2024-01-05_22-36"  ></a><figcaption class="image-caption">2024-01-05_22-36</figcaption>
     </figure></li>
 <li>
-<figure><a class="lightgallery" href="assets/341003822255829.png" title="2024-01-05_22-37" data-thumbnail="assets/341003822255829.png" data-sub-html="<h2> </h2><p>2024-01-05_22-37</p>"><img   src='assets/341003822255829.png'   alt="2024-01-05_22-37"  ></a><figcaption class="image-caption">2024-01-05_22-37</figcaption>
+<figure><a class="lightgallery" href="assets/341003822255829.webp" title="2024-01-05_22-37" data-thumbnail="assets/341003822255829.webp" data-sub-html="<h2> </h2><p>2024-01-05_22-37</p>"><img   src='assets/341003822255829.webp'   alt="2024-01-05_22-37"  ></a><figcaption class="image-caption">2024-01-05_22-37</figcaption>
     </figure></li>
 <li>
-<figure><a class="lightgallery" href="assets/129063322246439.png" title="2024-01-05_22-33" data-thumbnail="assets/129063322246439.png" data-sub-html="<h2> </h2><p>2024-01-05_22-33</p>"><img   src='assets/129063322246439.png'   alt="2024-01-05_22-33"  ></a><figcaption class="image-caption">2024-01-05_22-33</figcaption>
+<figure><a class="lightgallery" href="assets/129063322246439.webp" title="2024-01-05_22-33" data-thumbnail="assets/129063322246439.webp" data-sub-html="<h2> </h2><p>2024-01-05_22-33</p>"><img   src='assets/129063322246439.webp'   alt="2024-01-05_22-33"  ></a><figcaption class="image-caption">2024-01-05_22-33</figcaption>
     </figure></li>
 <li>所有可能的解决办法都失效了，可以考虑是Keil的问题</li>
 <li>待补充</li>
@@ -2127,7 +2127,7 @@ for循环无循环体时末尾加分号
 </div>
 <p>在时基函数调用时会用到
 
-<figure><a class="lightgallery" href="assets/350415319240152.png" title="2024-01-11_19-53" data-thumbnail="assets/350415319240152.png" data-sub-html="<h2> </h2><p>2024-01-11_19-53</p>"><img   src='assets/350415319240152.png'   alt="2024-01-11_19-53"  ></a><figcaption class="image-caption">2024-01-11_19-53</figcaption>
+<figure><a class="lightgallery" href="assets/350415319240152.webp" title="2024-01-11_19-53" data-thumbnail="assets/350415319240152.webp" data-sub-html="<h2> </h2><p>2024-01-11_19-53</p>"><img   src='assets/350415319240152.webp'   alt="2024-01-11_19-53"  ></a><figcaption class="image-caption">2024-01-11_19-53</figcaption>
     </figure></p>
 <div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
   <div class="
@@ -2264,7 +2264,7 @@ for循环无循环体时末尾加分号
 </span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre>
 </div>
 <p>
-<figure><a class="lightgallery" href="assets/175724820240152.png" title="2024-01-11_20-48" data-thumbnail="assets/175724820240152.png" data-sub-html="<h2> </h2><p>2024-01-11_20-48</p>"><img   src='assets/175724820240152.png'   alt="2024-01-11_20-48"  ></a><figcaption class="image-caption">2024-01-11_20-48</figcaption>
+<figure><a class="lightgallery" href="assets/175724820240152.webp" title="2024-01-11_20-48" data-thumbnail="assets/175724820240152.webp" data-sub-html="<h2> </h2><p>2024-01-11_20-48</p>"><img   src='assets/175724820240152.webp'   alt="2024-01-11_20-48"  ></a><figcaption class="image-caption">2024-01-11_20-48</figcaption>
     </figure></p>
 <p>:::alert-info
 堆栈太小可能会导致程序停止在HardFault
@@ -2480,7 +2480,7 @@ for循环无循环体时末尾加分号
 :::</p>
 <p>不要忽略编译器的警告，否则可能出现逻辑问题，在下图中，编译器的警告是“变量未初始化”，这是因为在错误的那行得到的是地址而不是值</p>
 <p>
-<figure><a class="lightgallery" href="assets/570080123240247.png" title="2024-02-06_22-58" data-thumbnail="assets/570080123240247.png" data-sub-html="<h2> </h2><p>2024-02-06_22-58</p>"><img   src='assets/570080123240247.png'   alt="2024-02-06_22-58"  ></a><figcaption class="image-caption">2024-02-06_22-58</figcaption>
+<figure><a class="lightgallery" href="assets/570080123240247.webp" title="2024-02-06_22-58" data-thumbnail="assets/570080123240247.webp" data-sub-html="<h2> </h2><p>2024-02-06_22-58</p>"><img   src='assets/570080123240247.webp'   alt="2024-02-06_22-58"  ></a><figcaption class="image-caption">2024-02-06_22-58</figcaption>
     </figure></p>
 <div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
   <div class="

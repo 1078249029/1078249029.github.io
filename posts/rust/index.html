@@ -1204,9 +1204,9 @@
 动态语言: 类型在运行时才确定，例如python
 静态语言: 类型在编译完成时即可确定，编译时进行类型检查，例如rust</p>
 <p>
-<img   src='assets/466771616259682.png'   alt="466771616259682.png"  ></p>
+<img   src='assets/466771616259682.webp'   alt="466771616259682.webp"  ></p>
 <p>
-<img   src='assets/146732216247549.png'   alt="146732216247549.png"  ></p>
+<img   src='assets/146732216247549.webp'   alt="146732216247549.webp"  ></p>
 <h2 id="基本语法" class="headerLink">
     <a href="#%e5%9f%ba%e6%9c%ac%e8%af%ad%e6%b3%95" class="header-mark"></a>基本语法</h2><h3 id="变量与常量" class="headerLink">
     <a href="#%e5%8f%98%e9%87%8f%e4%b8%8e%e5%b8%b8%e9%87%8f" class="header-mark"></a>变量与常量</h3><p>定义变量</p>
@@ -1683,26 +1683,26 @@
 <h4 id="标量类型" class="headerLink">
     <a href="#%e6%a0%87%e9%87%8f%e7%b1%bb%e5%9e%8b" class="header-mark"></a>标量类型</h4><p>包括整数类型，浮点类型，布尔类型和字符类型</p>
 <p>
-<img   src='assets/526090417267715.png'   alt="526090417267715.png"  ></p>
+<img   src='assets/526090417267715.webp'   alt="526090417267715.webp"  ></p>
 <p>
-<img   src='assets/104480717260384.png'   alt="104480717260384.png"  ></p>
+<img   src='assets/104480717260384.webp'   alt="104480717260384.webp"  ></p>
 <p>
-<img   src='assets/519200817256939.png'   alt="519200817256939.png"  ></p>
+<img   src='assets/519200817256939.webp'   alt="519200817256939.webp"  ></p>
 <p>
-<img   src='assets/73050917252693.png'   alt="73050917252693.png"  ></p>
+<img   src='assets/73050917252693.webp'   alt="73050917252693.webp"  ></p>
 <p>
-<img   src='assets/258120917270573.png'   alt="258120917270573.png"  ></p>
+<img   src='assets/258120917270573.webp'   alt="258120917270573.webp"  ></p>
 <p><strong>字符类型是32位的，用以表示unicode字符</strong></p>
 <h4 id="复合类型" class="headerLink">
     <a href="#%e5%a4%8d%e5%90%88%e7%b1%bb%e5%9e%8b" class="header-mark"></a>复合类型</h4><p>原始复合类型有两种: 元组(tuple)，数组(array)</p>
 <h5 id="元组" class="headerLink">
     <a href="#%e5%85%83%e7%bb%84" class="header-mark"></a>元组</h5><p>不同类型数据的集合
 
-<img   src='assets/106991917268177.png'   alt="106991917268177.png"  ></p>
+<img   src='assets/106991917268177.webp'   alt="106991917268177.webp"  ></p>
 <h5 id="数组" class="headerLink">
     <a href="#%e6%95%b0%e7%bb%84" class="header-mark"></a>数组</h5><p>相同数据的集合
 
-<img   src='assets/564851917265679.png'   alt="564851917265679.png"  ></p>
+<img   src='assets/564851917265679.webp'   alt="564851917265679.webp"  ></p>
 <h3 id="函数" class="headerLink">
     <a href="#%e5%87%bd%e6%95%b0" class="header-mark"></a>函数</h3><p>定义函数及参数时必须指明参数类型，并可以指定函数返回值类型(可以返回多个值)</p>
 <div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
@@ -2779,7 +2779,7 @@ rust的次要目标: 在编译时而不是运行时消除程序中所有的未�
 <p><code>println!</code>宏内部会自动实现解引用，因此即使我们传入的是指针或指针的指针，只要不明确打印的格式化为指针类型，我们在屏幕上看到的结果就是对应的值</p>
 <p>rust经常会自动进行隐式解引用，以至于我们不会经常看到*
 
-<img   src='assets/103851723269360.png'   alt="103851723269360.png"  ></p>
+<img   src='assets/103851723269360.webp'   alt="103851723269360.webp"  ></p>
 <p>len(&amp;s)写为s.len()是一种语法糖，因为s变量无需其它操作就可以获取自身地址</p>
 <p><strong>别名和可变性不可同时存在</strong>: C++为了解决这个问题产生了智能指针(通过智能指针的计数功能和独占功能(shared_ptr)来解决问题)
 别名: 通过不同变量访问同一块内存</p>
@@ -2795,7 +2795,7 @@ rust的次要目标: 在编译时而不是运行时消除程序中所有的未�
 <strong>引用可以临时移除这些权限</strong></li>
 </ul>
 <p>
-<img   src='assets/170455323264496.png'   alt="170455323264496.png"  ></p>
+<img   src='assets/170455323264496.webp'   alt="170455323264496.webp"  ></p>
 <p>为了类型安全，rust在引用方面也做了特殊设置:</p>
 <div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
   <div class="
@@ -2893,12 +2893,12 @@ rust的次要目标: 在编译时而不是运行时消除程序中所有的未�
 <p>通过上面的学习发现: 权限与变量强绑定，或者更确切地说，<strong>权限与左值强绑定</strong></p>
 <p>还需要值得注意的是，当一块内存区域被别名了，此时连最初的box或者变其它有写权限的变量也会失去写权限，但是我们可以通过<strong>可变引用</strong>来实现对原数据的修改，但此时最初的变量或box都<strong>失去了全部权限</strong>(包括R权限)
 
-<img   src='assets/417981200258043.png'   alt="417981200258043.png"  ></p>
+<img   src='assets/417981200258043.webp'   alt="417981200258043.webp"  ></p>
 <p><strong>引用会使数据失去WO权限，可变引用会使数据失去RWO权限</strong></p>
 <p>在函数输入输出时会产生另外一种权限: 流动权限(F)，这种权限只在函数参数接受以及返回值返回时才产生，并且在函数体内不会发生变化</p>
 <p>随着所有权的到来紧接着就会引入生命周期的问题，在比较复杂的情况中，所有权的并不是很容易被编译器推断出来，因此我们需要使用生命周期参数来指明左值的生命周期</p>
 <p>
-<img   src='assets/556285209241257.png'   alt="556285209241257.png"  ></p>
+<img   src='assets/556285209241257.webp'   alt="556285209241257.webp"  ></p>
 <p>尽管第八行的引用是<strong>不可变</strong>的，在执行完第八行后会发生两件事:</p>
 <ul>
 <li>将name的写权限去除</li>
@@ -2906,10 +2906,10 @@ rust的次要目标: 在编译时而不是运行时消除程序中所有的未�
 尽管或做上述两件事，但是name.1的写权限是保留的，也就是说我们无法对name整个数据进行写操作，但是我们可以对name.1进行写操作</li>
 </ul>
 <p>
-<img   src='assets/214615909259683.png'   alt="214615909259683.png"  ></p>
+<img   src='assets/214615909259683.webp'   alt="214615909259683.webp"  ></p>
 <p>但是上面的代码就不对了，因为在调用函数时，rust会检查函数签名，它发现，name.0和name.1都被作为参数调用了，那么在调用后它就会去除作为函数参数的name.0，name.1的写权限，直至first被使用，因此在first未被使用时再对name进行其它操作会出现权限问题。当然，这个问题的根本原因是rust编译器不够聪明，它只能通过函数签名来猜测函数中到底借用了谁，可这个例子中只有name.0被借用，因此在未来随着编译器的发展，这行代码可能不会报错</p>
 <p>
-<img   src='assets/492931910247550.png'   alt="492931910247550.png"  ></p>
+<img   src='assets/492931910247550.webp'   alt="492931910247550.webp"  ></p>
 <p>第5行代码发生了可变的引用，因此在第5行执行完毕后，a会失去全部权限，因此假如将第9，10行代码取消注释就会报错</p>
 <h3 id="深拷贝" class="headerLink">
     <a href="#%e6%b7%b1%e6%8b%b7%e8%b4%9d" class="header-mark"></a>深拷贝</h3><p>上述情况都是在浅拷贝的背景下产生的种种问题与对应的解决方案，而关于深拷贝，rust并没有实现这点(rust认为浅拷贝是非常符合效率的做法)，我们需要自行实现对应数据类型的clone方法来进行深拷贝(copy负责浅拷贝)</p>
@@ -3127,7 +3127,7 @@ rust的次要目标: 在编译时而不是运行时消除程序中所有的未�
 <p>字符串的字面值是切片，例如let s = &ldquo;hello world&rdquo;;
 但是此时s的类型是&amp;str，它指向二进制文件特定位置的切片，因此字符串字面量是不可变的</p>
 <p>
-<img   src='assets/275884010267716.png'   alt="275884010267716.png"  ></p>
+<img   src='assets/275884010267716.webp'   alt="275884010267716.webp"  ></p>
 <h2 id="self与self" class="headerLink">
     <a href="#self%e4%b8%8eself" class="header-mark"></a>self与Self</h2><div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
   <div class="
