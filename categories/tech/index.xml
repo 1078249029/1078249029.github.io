@@ -109,13 +109,6 @@
       <description>&lt;p&gt;本文为FreeRTOS的系统性学习的总结，内容包含简单API的使用和RTOS的原理介绍，参考视资料为b站的&lt;a href=&#34;https://www.bilibili.com/video/BV1844y1g7ud/?spm_id_from=..search-card.all.click&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;韦东山视频&lt;/a&gt;，内部并未优化排版。&lt;/p&gt;</description>
     </item>
     <item>
-      <title>C复健计划</title>
-      <link>https://1078249029.github.io/posts/c-review/</link>
-      <pubDate>Wed, 18 Oct 2023 13:57:04 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
-      <guid>https://1078249029.github.io/posts/c-review/</guid>
-      <description>&lt;p&gt;本文是笔者研究生入学期间对C进行系统性复习总结而成的笔记，因此内部排版混乱，知识点散乱而不成系统，望读者谨慎参考&lt;/p&gt;</description>
-    </item>
-    <item>
       <title>STM32</title>
       <link>https://1078249029.github.io/posts/stm32/</link>
       <pubDate>Wed, 18 Oct 2023 13:57:04 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
