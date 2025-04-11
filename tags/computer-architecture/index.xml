@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Computer Architecture on 吾铭子</title>
+    <link>https://1078249029.github.io/tags/computer-architecture/</link>
+    <description>Recent content in Computer Architecture on 吾铭子</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <managingEditor>1078249029@qq.com (吾铭子)</managingEditor>
+    <webMaster>1078249029@qq.com (吾铭子)</webMaster>
+    <lastBuildDate>Mon, 07 Apr 2025 19:32:31 +0800</lastBuildDate>
+    <atom:link href="https://1078249029.github.io/tags/computer-architecture/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>RISC-V</title>
+      <link>https://1078249029.github.io/posts/risc-v/</link>
+      <pubDate>Wed, 01 Jan 2025 15:22:46 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
+      <guid>https://1078249029.github.io/posts/risc-v/</guid>
+      <description>&lt;p&gt;本文是笔者学习RISC-V时系统总结而成的，包含上下两部分，第一部分对RISC-V进行系统性介绍，包含RISC-V项目的基本情况与规范，基本命令的介绍，与OS的关系等内容。其参考资料为b站的&lt;a href=&#34;https://www.bilibili.com/video/BV1Q5411w7z5/&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;rvos&lt;/a&gt;，视频由中科院软件所汪辰主讲，PLCT项目负责人吴伟发布。第二部分系统的介绍了RISCV体系结构部分，虽然与源码级别工程仍有差距，但作为嵌入式软件/系统工程师来说深度广度足够了，该部分参考书籍为《RISCV体系结构编程与实践    -笨叔》，笨叔也有arm相关的著作以及更为出名的Linux相关的书籍，因此笔者也推荐使用笨叔的两本不同体系结构的书籍对比学习。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

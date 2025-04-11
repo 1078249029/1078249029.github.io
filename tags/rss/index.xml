@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>RSS on 吾铭子</title>
+    <link>https://1078249029.github.io/tags/rss/</link>
+    <description>Recent content in RSS on 吾铭子</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <managingEditor>1078249029@qq.com (吾铭子)</managingEditor>
+    <webMaster>1078249029@qq.com (吾铭子)</webMaster>
+    <lastBuildDate>Sat, 19 Oct 2024 21:15:26 +0800</lastBuildDate>
+    <atom:link href="https://1078249029.github.io/tags/rss/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>nginx反向代理trojan与rsshub</title>
+      <link>https://1078249029.github.io/posts/using-nginx-for-trojan-and-rsshub/</link>
+      <pubDate>Sat, 19 Oct 2024 10:48:46 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
+      <guid>https://1078249029.github.io/posts/using-nginx-for-trojan-and-rsshub/</guid>
+      <description>&lt;p&gt;个人搭建动态博客的详细过程，由Halo框架+NexT主题构成&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

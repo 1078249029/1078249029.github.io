@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" /><title>Linux内核 - 吾铭子</title><meta name="Description" content="吾铭子"><meta property="og:url" content="https://1078249029.github.io/posts/linux-kernel/">
+  <meta property="og:site_name" content="吾铭子">
+  <meta property="og:title" content="Linux内核">
+  <meta property="og:description" content="本文阐述系统为x86体系架构，idt，gdt，tss，系统启动引导过程均以x86架构为蓝本，arm不适用，并且由于参考资料过于过于久远，读者应谨慎参考">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-02-21T16:55:40+08:00">
+    <meta property="article:modified_time" content="2024-10-28T19:39:58+08:00">
+    <meta property="article:tag" content="OS">
+    <meta property="article:tag" content="Tech">
+    <meta property="og:image" content="https://1078249029.github.io/logo.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://1078249029.github.io/logo.png">
+  <meta name="twitter:title" content="Linux内核">
+  <meta name="twitter:description" content="本文阐述系统为x86体系架构，idt，gdt，tss，系统启动引导过程均以x86架构为蓝本，arm不适用，并且由于参考资料过于过于久远，读者应谨慎参考">
+<meta name="application-name" content="吾铭子">
+<meta name="apple-mobile-web-app-title" content="吾铭子">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<link rel="canonical" href="https://1078249029.github.io/posts/linux-kernel/" /><link rel="prev" href="https://1078249029.github.io/posts/linux-basics/" /><link rel="next" href="https://1078249029.github.io/posts/linux-advanced/" />
+<link rel="stylesheet" href="/css/main.min.css"><link rel="stylesheet" href="/css/style.min.css"><script type="application/ld+json">{"@context": "https://schema.org","@type": "BlogPosting",
+        "headline": "Linux内核",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://1078249029.github.io/posts/linux-kernel/"
+        },"genre": "posts","keywords":["OS","Tech"],"wordcount":  9031 ,
+        "url": "https://1078249029.github.io/posts/linux-kernel/","datePublished": "2024-02-21T16:55:40+08:00","dateModified": "2024-10-28T19:39:58+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "吾铭子",
+                "url": "wumingzi.top"
+            },"description": ""
+    }</script></head>
+
+
+<body data-instant-intensity="viewport" class="tw-flex tw-min-h-screen tw-flex-col"><script type="text/javascript">
+    function setTheme(theme) {
+      document.body.setAttribute('theme', theme); 
+      document.documentElement.className = theme;
+      document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark');
+      if (theme === 'light') {
+        document.documentElement.classList.remove('tw-dark')
+      } else {
+        document.documentElement.classList.add('tw-dark')
+      }
+      window.theme = theme;   
+      window.isDark = window.theme !== 'light' 
+    }
+    function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+    function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+    if (window.localStorage && localStorage.getItem('theme')) {
+        let theme = localStorage.getItem('theme');
+        if (theme === 'light' || theme === 'dark') {
+        setTheme(theme);
+        } else {
+            if ((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                setTheme('dark');
+            } else {
+                setTheme('light');
+            }
+        }
+      } else { 
+        if ('auto' === 'light' || 'auto' === 'dark') 
+            setTheme('auto'), saveTheme('auto'); 
+        else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');
+    }
+    let metaColors = {'light': '#f8f8f8','dark': '#161b22'}
+    getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+    window.switchThemeEventSet = new Set()
+</script><div id="back-to-top"></div>
+    <div id="mask"></div><header class="desktop print:!tw-hidden" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="吾铭子">吾铭子</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item"
+                    href="/posts/" > 归档 </a><a class="menu-item"
+                    href="/tags/" > 标签 </a><a class="menu-item"
+                    href="/categories/" > 分类 </a><a class="menu-item"
+                    href="/about/" > 关于 </a><a class="menu-item"
+                    href="/essay/" > 日志 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                    <input type="text"
+                        placeholder="搜索文章标题或内容..."
+                        id="search-input-desktop">
+                    <button class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                        <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+                    </button>
+                    <button class="search-button search-clear" id="search-clear-desktop" title="清空">
+                        <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z"/></svg>
+                    </button>
+                    <span class="search-button search-loading tw-animate-spin" id="search-loading-desktop">
+                        <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M304 48c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48zm-48 368c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm208-208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zM96 256c0-26.51-21.49-48-48-48S0 229.49 0 256s21.49 48 48 48 48-21.49 48-48zm12.922 99.078c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.491-48-48-48zm294.156 0c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.49-48-48-48zM108.922 60.922c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.491-48-48-48z"/></svg>
+                    </span>
+                </span><button class="menu-item theme-switch" aria-label="切换主题">
+                    <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M8 256c0 136.966 111.033 248 248 248s248-111.034 248-248S392.966 8 256 8 8 119.033 8 256zm248 184V72c101.705 0 184 82.311 184 184 0 101.705-82.311 184-184 184z"/></svg>
+                </button></div>
+        </div>
+    </div>
+</header><header class="mobile print:!tw-hidden" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="吾铭子">吾铭子</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                <div class="search mobile" id="search-mobile">
+                    <input type="text"
+                        placeholder="搜索文章标题或内容..."
+                        id="search-input-mobile">
+                    <button class="search-button search-toggle tw-h-10" id="search-toggle-mobile" title="搜索">
+                        <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+                    </button>
+                    <button class="search-button search-clear tw-h-fit" id="search-clear-mobile" title="清空">
+                        <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z"/></svg>
+                    </button>
+                    <span class="search-button search-loading tw-animate-spin" id="search-loading-mobile">
+                        <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M304 48c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48zm-48 368c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm208-208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zM96 256c0-26.51-21.49-48-48-48S0 229.49 0 256s21.49 48 48 48 48-21.49 48-48zm12.922 99.078c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.491-48-48-48zm294.156 0c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.49-48-48-48zM108.922 60.922c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.491-48-48-48z"/></svg>
+                    </span>
+                </div>
+                <button class="search-cancel" id="search-cancel-mobile">
+                    取消
+                </button>
+            </div><a class="menu-item" href="/posts/" title="" >归档</a><a class="menu-item" href="/tags/" title="" >标签</a><a class="menu-item" href="/categories/" title="" >分类</a><a class="menu-item" href="/about/" title="" >关于</a><a class="menu-item" href="/essay/" title="" >日志</a><button class="menu-item theme-switch tw-w-full" aria-label="切换主题">
+                <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M8 256c0 136.966 111.033 248 248 248s248-111.034 248-248S392.966 8 256 8 8 119.033 8 256zm248 184V72c101.705 0 184 82.311 184 184 0 101.705-82.311 184-184 184z"/></svg>
+            </button></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div><main class="tw-mx-4 tw-flex-1"><div class="toc print:!tw-hidden" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#linux内核基础">Linux内核基础</a>
+      <ul>
+        <li><a href="#linux内核体系结构">Linux内核体系结构</a>
+          <ul>
+            <li><a href="#fork的实现">fork的实现</a></li>
+            <li><a href="#进程调度">进程调度</a></li>
+            <li><a href="#进程销毁">进程销毁</a></li>
+          </ul>
+        </li>
+        <li><a href="#linux内核启动引导">Linux内核启动引导</a>
+          <ul>
+            <li><a href="#操作系统的启动">操作系统的启动</a></li>
+            <li><a href="#linux移植浅谈">Linux移植浅谈</a></li>
+          </ul>
+        </li>
+        <li><a href="#linux内核文件系统">Linux内核文件系统</a>
+          <ul>
+            <li><a href="#文件系统结构">文件系统结构</a></li>
+            <li><a href="#高速缓冲区">高速缓冲区</a>
+              <ul>
+                <li><a href="#哈希hash表">哈希(hash)表</a></li>
+              </ul>
+            </li>
+            <li><a href="#缓冲区头">缓冲区头</a></li>
+            <li><a href="#bio">bio</a></li>
+            <li><a href="#inode">inode</a></li>
+            <li><a href="#io调度算法">IO调度算法</a>
+              <ul>
+                <li><a href="#适用于机械硬盘的算法">适用于机械硬盘的算法</a>
+                  <ul>
+                    <li><a href="#最终期限io调度算法deadline">最终期限IO调度算法(deadline)</a></li>
+                    <li><a href="#预测io调度算法anticipatory">预测IO调度算法(anticipatory)</a></li>
+                    <li><a href="#完全公平队列io调度算法cfq">完全公平队列IO调度算法(cfq)</a></li>
+                  </ul>
+                </li>
+                <li><a href="#适用于固态硬盘的算法">适用于固态硬盘的算法</a>
+                  <ul>
+                    <li><a href="#空操作的io调度算法noop">空操作的IO调度算法(noop)</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#linux内核内存管理">Linux内核内存管理</a>
+          <ul>
+            <li><a href="#内存碎片">内存碎片</a>
+              <ul>
+                <li><a href="#伙伴算法">伙伴算法</a></li>
+                <li><a href="#slab">slab</a></li>
+              </ul>
+            </li>
+            <li><a href="#rcu">RCU</a></li>
+            <li><a href="#堆内存管理">堆内存管理</a></li>
+            <li><a href="#匿名内存">匿名内存</a></li>
+          </ul>
+        </li>
+        <li><a href="#linux内核数据结构">Linux内核数据结构</a>
+          <ul>
+            <li><a href="#算法复杂度">算法复杂度</a></li>
+            <li><a href="#树">树</a></li>
+          </ul>
+        </li>
+        <li><a href="#linux内核进程调度">Linux内核进程调度</a>
+          <ul>
+            <li><a href="#读写锁">读写锁</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+    </div><dialog id="toc-dialog" class="tw-max-w-full tw-w-full tw-max-h-full tw-h-full tw-ml-16">
+        <div class="toc tw-mx-4 tw-max-w-full">
+            <h2 class="tw-mx-0 tw-my-6 tw-uppercase tw-text-2xl">目录</h2>
+            <div class="toc-content"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#linux内核基础">Linux内核基础</a>
+      <ul>
+        <li><a href="#linux内核体系结构">Linux内核体系结构</a>
+          <ul>
+            <li><a href="#fork的实现">fork的实现</a></li>
+            <li><a href="#进程调度">进程调度</a></li>
+            <li><a href="#进程销毁">进程销毁</a></li>
+          </ul>
+        </li>
+        <li><a href="#linux内核启动引导">Linux内核启动引导</a>
+          <ul>
+            <li><a href="#操作系统的启动">操作系统的启动</a></li>
+            <li><a href="#linux移植浅谈">Linux移植浅谈</a></li>
+          </ul>
+        </li>
+        <li><a href="#linux内核文件系统">Linux内核文件系统</a>
+          <ul>
+            <li><a href="#文件系统结构">文件系统结构</a></li>
+            <li><a href="#高速缓冲区">高速缓冲区</a>
+              <ul>
+                <li><a href="#哈希hash表">哈希(hash)表</a></li>
+              </ul>
+            </li>
+            <li><a href="#缓冲区头">缓冲区头</a></li>
+            <li><a href="#bio">bio</a></li>
+            <li><a href="#inode">inode</a></li>
+            <li><a href="#io调度算法">IO调度算法</a>
+              <ul>
+                <li><a href="#适用于机械硬盘的算法">适用于机械硬盘的算法</a>
+                  <ul>
+                    <li><a href="#最终期限io调度算法deadline">最终期限IO调度算法(deadline)</a></li>
+                    <li><a href="#预测io调度算法anticipatory">预测IO调度算法(anticipatory)</a></li>
+                    <li><a href="#完全公平队列io调度算法cfq">完全公平队列IO调度算法(cfq)</a></li>
+                  </ul>
+                </li>
+                <li><a href="#适用于固态硬盘的算法">适用于固态硬盘的算法</a>
+                  <ul>
+                    <li><a href="#空操作的io调度算法noop">空操作的IO调度算法(noop)</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#linux内核内存管理">Linux内核内存管理</a>
+          <ul>
+            <li><a href="#内存碎片">内存碎片</a>
+              <ul>
+                <li><a href="#伙伴算法">伙伴算法</a></li>
+                <li><a href="#slab">slab</a></li>
+              </ul>
+            </li>
+            <li><a href="#rcu">RCU</a></li>
+            <li><a href="#堆内存管理">堆内存管理</a></li>
+            <li><a href="#匿名内存">匿名内存</a></li>
+          </ul>
+        </li>
+        <li><a href="#linux内核数据结构">Linux内核数据结构</a>
+          <ul>
+            <li><a href="#算法复杂度">算法复杂度</a></li>
+            <li><a href="#树">树</a></li>
+          </ul>
+        </li>
+        <li><a href="#linux内核进程调度">Linux内核进程调度</a>
+          <ul>
+            <li><a href="#读写锁">读写锁</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+        </div>
+    </dialog><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single print:!tw-w-full print:!tw-max-w-none print:!tw-m-0 print:!tw-p-0"><h1 class="single-title" data-pagefind-meta="date:2024-02-21" data-pagefind-body>Linux内核</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 96c48.6 0 88 39.4 88 88s-39.4 88-88 88-88-39.4-88-88 39.4-88 88-88zm0 344c-58.7 0-111.3-26.6-146.5-68.2 18.8-35.4 55.6-59.8 98.5-59.8 2.4 0 4.8.4 7.1 1.1 13 4.2 26.6 6.9 40.9 6.9 14.3 0 28-2.7 40.9-6.9 2.3-.7 4.7-1.1 7.1-1.1 42.9 0 79.7 24.4 98.5 59.8C359.3 421.4 306.7 448 248 448z"/></svg><a href="wumingzi.top" title="Author" rel=" author" class="author">吾铭子</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category"><a href="/categories/tech/"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M464 128H272l-54.63-54.63c-6-6-14.14-9.37-22.63-9.37H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V176c0-26.51-21.49-48-48-48zm0 272H48V112h140.12l54.63 54.63c6 6 14.14 9.37 22.63 9.37H464v224z"/></svg>Tech</a></span></div>
+            <div class="post-meta-line"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>&nbsp;<time datetime="2024-02-21">2024-02-21</time>&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg>&nbsp;<time datetime="2024-10-28">2024-10-28</time>&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;约 9031 字&nbsp;
+                    <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;预计阅读 40 分钟&nbsp;</div>
+        </div><div class="details toc print:!tw-block" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span class="details-icon"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#linux内核基础">Linux内核基础</a>
+      <ul>
+        <li><a href="#linux内核体系结构">Linux内核体系结构</a>
+          <ul>
+            <li><a href="#fork的实现">fork的实现</a></li>
+            <li><a href="#进程调度">进程调度</a></li>
+            <li><a href="#进程销毁">进程销毁</a></li>
+          </ul>
+        </li>
+        <li><a href="#linux内核启动引导">Linux内核启动引导</a>
+          <ul>
+            <li><a href="#操作系统的启动">操作系统的启动</a></li>
+            <li><a href="#linux移植浅谈">Linux移植浅谈</a></li>
+          </ul>
+        </li>
+        <li><a href="#linux内核文件系统">Linux内核文件系统</a>
+          <ul>
+            <li><a href="#文件系统结构">文件系统结构</a></li>
+            <li><a href="#高速缓冲区">高速缓冲区</a>
+              <ul>
+                <li><a href="#哈希hash表">哈希(hash)表</a></li>
+              </ul>
+            </li>
+            <li><a href="#缓冲区头">缓冲区头</a></li>
+            <li><a href="#bio">bio</a></li>
+            <li><a href="#inode">inode</a></li>
+            <li><a href="#io调度算法">IO调度算法</a>
+              <ul>
+                <li><a href="#适用于机械硬盘的算法">适用于机械硬盘的算法</a>
+                  <ul>
+                    <li><a href="#最终期限io调度算法deadline">最终期限IO调度算法(deadline)</a></li>
+                    <li><a href="#预测io调度算法anticipatory">预测IO调度算法(anticipatory)</a></li>
+                    <li><a href="#完全公平队列io调度算法cfq">完全公平队列IO调度算法(cfq)</a></li>
+                  </ul>
+                </li>
+                <li><a href="#适用于固态硬盘的算法">适用于固态硬盘的算法</a>
+                  <ul>
+                    <li><a href="#空操作的io调度算法noop">空操作的IO调度算法(noop)</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#linux内核内存管理">Linux内核内存管理</a>
+          <ul>
+            <li><a href="#内存碎片">内存碎片</a>
+              <ul>
+                <li><a href="#伙伴算法">伙伴算法</a></li>
+                <li><a href="#slab">slab</a></li>
+              </ul>
+            </li>
+            <li><a href="#rcu">RCU</a></li>
+            <li><a href="#堆内存管理">堆内存管理</a></li>
+            <li><a href="#匿名内存">匿名内存</a></li>
+          </ul>
+        </li>
+        <li><a href="#linux内核数据结构">Linux内核数据结构</a>
+          <ul>
+            <li><a href="#算法复杂度">算法复杂度</a></li>
+            <li><a href="#树">树</a></li>
+          </ul>
+        </li>
+        <li><a href="#linux内核进程调度">Linux内核进程调度</a>
+          <ul>
+            <li><a href="#读写锁">读写锁</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content" data-pagefind-body><p><strong>本文阐述系统为x86体系架构，idt，gdt，tss，系统启动引导过程均以x86架构为蓝本，arm不适用，并且由于参考资料过于过于久远，读者应谨慎参考</strong></p>
+<!-- more -->
+<h1 id="linux内核基础" class="headerLink">
+    <a href="#linux%e5%86%85%e6%a0%b8%e5%9f%ba%e7%a1%80" class="header-mark"></a>Linux内核基础</h1><h2 id="linux内核体系结构" class="headerLink">
+    <a href="#linux%e5%86%85%e6%a0%b8%e4%bd%93%e7%b3%bb%e7%bb%93%e6%9e%84" class="header-mark"></a>Linux内核体系结构</h2><p>nmi(not mask interrupt)不可屏蔽中断
+系统启动时会读取RTC并赋值给jiffies
+内核中定时器使用链表进行管理</p>
+<p>每个进程都有LDT(局部描述符)，即代码段和数据段。单处理器系统只有一个GDT，而在多处理器系统中每个CPU都有一个GDT，GDT(全局描述符)是各个寄存器地址</p>
+<p>IDT(中断描述符表)，其作用也类似于中断向量表，只是其中每个中断描述符项中除了含有中断服务程序地址以外，还包含有关<strong>特权级</strong>和<strong>描述符类别</strong>等信息
+<a href="https://blog.csdn.net/yxc135/article/details/8734452" target="_blank" rel="noopener noreferrer">中断向量表和中断描述符表IDT-CSDN</a></p>
+<p><a href="https://blog.csdn.net/ybxuwei/article/details/80657461" target="_blank" rel="noopener noreferrer">linux分段-CSDN</a></p>
+<p>
+<figure><a class="lightgallery" href="assets/373000621257049.webp" title="2024-02-22_21-06" data-thumbnail="assets/373000621257049.webp" data-sub-html="<h2> </h2><p>2024-02-22_21-06</p>"><img   src='assets/373000621257049.webp'   alt="2024-02-22_21-06"  ></a><figcaption class="image-caption">2024-02-22_21-06</figcaption>
+    </figure></p>
+<p>TSS(任务状态段)就是特殊寄存器 + 通用寄存器的信息</p>
+<p>
+<figure><a class="lightgallery" href="assets/56405009258689.webp" title="2024-02-22_09-49" data-thumbnail="assets/56405009258689.webp" data-sub-html="<h2> </h2><p>2024-02-22_09-49</p>"><img   src='assets/56405009258689.webp'   alt="2024-02-22_09-49"  ></a><figcaption class="image-caption">2024-02-22_09-49</figcaption>
+    </figure></p>
+<h3 id="fork的实现" class="headerLink">
+    <a href="#fork%e7%9a%84%e5%ae%9e%e7%8e%b0" class="header-mark"></a>fork的实现</h3><ul>
+<li>申请内存空间</li>
+<li>把父进程的task_struct拷贝到子进程的task_struct并重新设置</li>
+<li>设置进程状态为可运行，返回pid</li>
+</ul>
+<p>需要注意的是fork出的子进程的文件描述符比父进程大1，这也是Linux基础文章中现象的实现</p>
+<p>
+<figure><a class="lightgallery" href="assets/402763010246556.webp" title="2024-02-22_10-28" data-thumbnail="assets/402763010246556.webp" data-sub-html="<h2> </h2><p>2024-02-22_10-28</p>"><img   src='assets/402763010246556.webp'   alt="2024-02-22_10-28"  ></a><figcaption class="image-caption">2024-02-22_10-28</figcaption>
+    </figure></p>
+<h3 id="进程调度" class="headerLink">
+    <a href="#%e8%bf%9b%e7%a8%8b%e8%b0%83%e5%ba%a6" class="header-mark"></a>进程调度</h3><p>在0.11内核中，进程调度分为调度和切换两个步骤，调度负责将用完时间片的进程挂起，并将进程的状态位改为暂停状态，切换时为了效率采用汇编，它的作用是将那些设置状态位的进程加载进CPU寄存器中，即执行上下文切换的功能</p>
+<h3 id="进程销毁" class="headerLink">
+    <a href="#%e8%bf%9b%e7%a8%8b%e9%94%80%e6%af%81" class="header-mark"></a>进程销毁</h3><p>以syscall_和do_开头的基本上是系统调用，即中断服务函数</p>
+<ul>
+<li>内核的销毁流程
+<ul>
+<li>进入do_exit函数
+<ul>
+<li>首先释放数据段和代码段占用的内存</li>
+<li>关闭进程打开的所有文件，对当前的目录和i节点进行同步</li>
+<li>如果进程是个会话头进程，则会终止会话中的所有进程</li>
+<li>改变进程运行状态为TASK_ZOMBIE，并且向父进程发送SIGCHLD信号，do_exit函数执行完毕</li>
+</ul>
+</li>
+<li>在父进程中进行最后的处理工作，父进程运行子进程的时候一般都会运行wait或waitpid这两个函数(父进程等待某个子进程终止的函数)，当父进程收到SIGCHLD信号时会终止僵死状态的子进程
+<ul>
+<li>首先父进程会把子进程的运行时间(utime,stime)累加到自己的进程变量中，把要销毁的子进程的进程描述结构体进行释放，置空任务数组中的子进程任务槽</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>
+<figure><a class="lightgallery" href="assets/231530512266722.webp" title="2024-02-22_12-05" data-thumbnail="assets/231530512266722.webp" data-sub-html="<h2> </h2><p>2024-02-22_12-05</p>"><img   src='assets/231530512266722.webp'   alt="2024-02-22_12-05"  ></a><figcaption class="image-caption">2024-02-22_12-05</figcaption>
+    </figure></p>
+<h2 id="linux内核启动引导" class="headerLink">
+    <a href="#linux%e5%86%85%e6%a0%b8%e5%90%af%e5%8a%a8%e5%bc%95%e5%af%bc" class="header-mark"></a>Linux内核启动引导</h2><h3 id="操作系统的启动" class="headerLink">
+    <a href="#%e6%93%8d%e4%bd%9c%e7%b3%bb%e7%bb%9f%e7%9a%84%e5%90%af%e5%8a%a8" class="header-mark"></a>操作系统的启动</h3><p>Linux启动时的硬件信息是由bootloader传进来的</p>
+<ul>
+<li>Linux启动流程
+<ul>
+<li>首先由BIOS/bootloader进行一系列的硬件初始化和参数设置，并把bootsect.s从硬盘中某个固定地址搬到内存中的某个固定地址，需要注意在内核初始化需要关中断来防止初始化被中断。</li>
+<li>bootsect.s将setup.s代码从磁盘中加载到紧接着bootsect.s的地方，最后跳转到setup.s中运行</li>
+<li>setup.s负责将bootloader传进来的信息进行解析，关中断并加载system模块，使system模块正好覆盖bootsect.s(关中断是为了防止覆盖bootsect.s的代码后系统不能处理中断而导致崩溃)。设置LDT，GDT，IDT，而后设置中断芯片，进入到保护模式(svc32)运行，在代码的最后会跳转到head.s(0x00000000)执行</li>
+<li>head.s加载内核运行时的各数据段寄存器，并重新设置IDT(防止被数据区覆盖)，设置内存对齐以及分页，最后跳转到main.c开始运行，系统启动完成</li>
+</ul>
+</li>
+<li>Linux在启动的时候是如何拿到硬件参数的
+<ul>
+<li>通过bootloader加载传入的参数(_atags_pointer)，这个参数是一块指向存有硬件信息内存的首地址的指针，通过这个指针就可以获得硬件参数</li>
+</ul>
+</li>
+<li>Linux在初始化运行中都做了什么
+<ul>
+<li>进行硬件的初始化(就是下文中各种段的设置)，fork出0号进程</li>
+</ul>
+</li>
+</ul>
+<p>
+<figure><a class="lightgallery" href="assets/577701316251700.webp" title="2024-02-22_16-13" data-thumbnail="assets/577701316251700.webp" data-sub-html="<h2> </h2><p>2024-02-22_16-13</p>"><img   src='assets/577701316251700.webp'   alt="2024-02-22_16-13"  ></a><figcaption class="image-caption">2024-02-22_16-13</figcaption>
+    </figure></p>
+<p>
+<figure><a class="lightgallery" href="assets/239811716269580.webp" title="2024-02-22_16-17" data-thumbnail="assets/239811716269580.webp" data-sub-html="<h2> </h2><p>2024-02-22_16-17</p>"><img   src='assets/239811716269580.webp'   alt="2024-02-22_16-17"  ></a><figcaption class="image-caption">2024-02-22_16-17</figcaption>
+    </figure></p>
+<p>
+<figure><a class="lightgallery" href="assets/97113816267184.webp" title="2024-02-22_16-37" data-thumbnail="assets/97113816267184.webp" data-sub-html="<h2> </h2><p>2024-02-22_16-37</p>"><img   src='assets/97113816267184.webp'   alt="2024-02-22_16-37"  ></a><figcaption class="image-caption">2024-02-22_16-37</figcaption>
+    </figure></p>
+<p>系统第一个APP是根文件系统(linuxrc)</p>
+<p>4.9.88内核main函数位于/init文件夹，调用流程如下</p>
+<div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
+  <div class="
+    
+    tw-flex 
+    tw-flex-row
+    tw-flex-1 
+    tw-justify-between 
+    tw-w-full tw-bg-bgColor-secondary
+    ">      
+    <button 
+      class="
+        code-block-button
+        tw-mx-2 
+        tw-flex
+        tw-flex-row
+        tw-flex-1"
+      aria-hidden="true">
+          <div class="group-[.is-open]:tw-rotate-90 tw-transition-[transform] tw-duration-500 tw-ease-in-out print:!tw-hidden tw-w-min tw-h-min tw-my-1 tw-mx-1"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg></div>
+          <p class="tw-select-none !tw-my-1">c</p>
+      </button>
+
+   <div class="tw-flex">
+      <button 
+        class="
+          line-number-button
+          tw-mx-2 
+          tw-hidden 
+          group-[.is-open]:tw-block 
+          group-[.show-line-numbers]:tw-text-fgColor-link 
+          print:!tw-hidden" 
+        title="Toggle line numbers"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M61.77 401l17.5-20.15a19.92 19.92 0 0 0 5.07-14.19v-3.31C84.34 356 80.5 352 73 352H16a8 8 0 0 0-8 8v16a8 8 0 0 0 8 8h22.83a157.41 157.41 0 0 0-11 12.31l-5.61 7c-4 5.07-5.25 10.13-2.8 14.88l1.05 1.93c3 5.76 6.29 7.88 12.25 7.88h4.73c10.33 0 15.94 2.44 15.94 9.09 0 4.72-4.2 8.22-14.36 8.22a41.54 41.54 0 0 1-15.47-3.12c-6.49-3.88-11.74-3.5-15.6 3.12l-5.59 9.31c-3.72 6.13-3.19 11.72 2.63 15.94 7.71 4.69 20.38 9.44 37 9.44 34.16 0 48.5-22.75 48.5-44.12-.03-14.38-9.12-29.76-28.73-34.88zM496 224H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-160H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 320H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zM16 160h64a8 8 0 0 0 8-8v-16a8 8 0 0 0-8-8H64V40a8 8 0 0 0-8-8H32a8 8 0 0 0-7.14 4.42l-8 16A8 8 0 0 0 24 64h8v64H16a8 8 0 0 0-8 8v16a8 8 0 0 0 8 8zm-3.91 160H80a8 8 0 0 0 8-8v-16a8 8 0 0 0-8-8H41.32c3.29-10.29 48.34-18.68 48.34-56.44 0-29.06-25-39.56-44.47-39.56-21.36 0-33.8 10-40.46 18.75-4.37 5.59-3 10.84 2.8 15.37l8.58 6.88c5.61 4.56 11 2.47 16.12-2.44a13.44 13.44 0 0 1 9.46-3.84c3.33 0 9.28 1.56 9.28 8.75C51 248.19 0 257.31 0 304.59v4C0 316 5.08 320 12.09 320z"/></svg></button>
+
+      <button 
+        class="
+          wrap-code-button
+          tw-select-none 
+          tw-mx-2 
+          tw-hidden 
+          group-[.is-open]:tw-block 
+          group-[.is-wrap]:tw-text-fgColor-link 
+          print:!tw-hidden" 
+        title="Toggle code wrap"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"/></svg></button>
+      
+      <button 
+        class="
+          copy-code-button
+          tw-select-none
+          tw-mx-2 
+          tw-hidden
+          group-[.is-open]:tw-block
+          hover:tw-text-fgColor-link 
+          print:!tw-hidden"
+        title="Copy code">
+          <span class="copy-icon tw-block"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z"/></svg></span>
+          <span class="check-icon tw-hidden"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"/></svg></span>
+      </button>
+        
+      <button 
+        class="
+          tw-select-none 
+          tw-mx-2 
+          tw-block 
+          group-[.is-open]:tw-hidden 
+          print:!tw-hidden" 
+        disabled
+        aria-hidden="true"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z"/></svg></button>
+    </div>
+  </div>
+  <pre style="counter-reset: codeblock;" class="tw-block tw-m-0 tw-p-0"><code 
+    id="codeblock-id-1" 
+    class="
+      chroma 
+      !tw-block 
+      tw-p-0
+      tw-m-0
+      tw-transition-[max-height] 
+      tw-duration-500 
+      tw-ease-in-out 
+      group-[.is-closed]:!tw-max-h-0 
+      group-[.is-wrap]:tw-text-wrap
+      tw-overflow-y-hidden
+      tw-overflow-x-auto
+      tw-scrollbar-thin
+      "><span class="line"><span class="cl"><span class="n">asmlinkage</span> <span class="n">__visible</span> <span class="kt">void</span> <span class="n">__init</span> <span class="nf">start_kernel</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">static</span> <span class="n">noinline</span> <span class="kt">void</span> <span class="n">__ref</span> <span class="nf">rest_init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">pid_t</span> <span class="nf">kernel_thread</span><span class="p">(</span><span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="n">fn</span><span class="p">)(</span><span class="kt">void</span> <span class="o">*</span><span class="p">),</span> <span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">flags</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	        <span class="k">return</span> <span class="nf">_do_fork</span><span class="p">(</span><span class="n">flags</span><span class="o">|</span><span class="n">CLONE_VM</span><span class="o">|</span><span class="n">CLONE_UNTRACED</span><span class="p">,</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)</span><span class="n">fn</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		        <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)</span><span class="n">arg</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">kernel_thread</span><span class="p">(</span><span class="n">kernel_init</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">CLONE_FS</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">static</span> <span class="kt">int</span> <span class="n">__ref</span> <span class="nf">kernel_init</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">unused</span><span class="p">)</span><span class="c1">//在内部启动系统第一个APP，根文件系统
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">init</span>
+</span></span><span class="line"><span class="cl">                <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span>
+</span></span><span class="line"><span class="cl">                <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">init</span>
+</span></span><span class="line"><span class="cl">                <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span></span></span></code></pre>
+</div>
+<p>内核main函数：</p>
+<ul>
+<li>在内核初始化的过程中会手动创建(fork出来)0号进程，它是所有进程的父进程</li>
+<li>之后在0号进程中分别打开标准输入，标准输出，标准错误的控制台句柄。并创建1号进程</li>
+<li>在1号进程中，首先打开/etc/rc(配置文件，类似启动项管理)，而后执行shell程序(实际上是被转移到了busybox里面，因为/bin/sh是busy/box的软链接，而后在busybox内部初始化shell)</li>
+</ul>
+<p>0号进程不会关闭，如果其他进程没有被执行，那么就执行0号进程，内部是pause函数</p>
+<p>
+<figure><a class="lightgallery" href="assets/220153713259391.webp" title="2024-02-22_13-35" data-thumbnail="assets/220153713259391.webp" data-sub-html="<h2> </h2><p>2024-02-22_13-35</p>"><img   src='assets/220153713259391.webp'   alt="2024-02-22_13-35"  ></a><figcaption class="image-caption">2024-02-22_13-35</figcaption>
+    </figure></p>
+<p>init函数就是在不断地创建shell，并在子进程中执行，等子进程执行完毕后由父进程接收结果</p>
+<div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
+  <div class="
+    
+    tw-flex 
+    tw-flex-row
+    tw-flex-1 
+    tw-justify-between 
+    tw-w-full tw-bg-bgColor-secondary
+    ">      
+    <button 
+      class="
+        code-block-button
+        tw-mx-2 
+        tw-flex
+        tw-flex-row
+        tw-flex-1"
+      aria-hidden="true">
+          <div class="group-[.is-open]:tw-rotate-90 tw-transition-[transform] tw-duration-500 tw-ease-in-out print:!tw-hidden tw-w-min tw-h-min tw-my-1 tw-mx-1"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg></div>
+          <p class="tw-select-none !tw-my-1">c</p>
+      </button>
+
+   <div class="tw-flex">
+      <button 
+        class="
+          line-number-button
+          tw-mx-2 
+          tw-hidden 
+          group-[.is-open]:tw-block 
+          group-[.show-line-numbers]:tw-text-fgColor-link 
+          print:!tw-hidden" 
+        title="Toggle line numbers"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M61.77 401l17.5-20.15a19.92 19.92 0 0 0 5.07-14.19v-3.31C84.34 356 80.5 352 73 352H16a8 8 0 0 0-8 8v16a8 8 0 0 0 8 8h22.83a157.41 157.41 0 0 0-11 12.31l-5.61 7c-4 5.07-5.25 10.13-2.8 14.88l1.05 1.93c3 5.76 6.29 7.88 12.25 7.88h4.73c10.33 0 15.94 2.44 15.94 9.09 0 4.72-4.2 8.22-14.36 8.22a41.54 41.54 0 0 1-15.47-3.12c-6.49-3.88-11.74-3.5-15.6 3.12l-5.59 9.31c-3.72 6.13-3.19 11.72 2.63 15.94 7.71 4.69 20.38 9.44 37 9.44 34.16 0 48.5-22.75 48.5-44.12-.03-14.38-9.12-29.76-28.73-34.88zM496 224H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-160H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 320H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zM16 160h64a8 8 0 0 0 8-8v-16a8 8 0 0 0-8-8H64V40a8 8 0 0 0-8-8H32a8 8 0 0 0-7.14 4.42l-8 16A8 8 0 0 0 24 64h8v64H16a8 8 0 0 0-8 8v16a8 8 0 0 0 8 8zm-3.91 160H80a8 8 0 0 0 8-8v-16a8 8 0 0 0-8-8H41.32c3.29-10.29 48.34-18.68 48.34-56.44 0-29.06-25-39.56-44.47-39.56-21.36 0-33.8 10-40.46 18.75-4.37 5.59-3 10.84 2.8 15.37l8.58 6.88c5.61 4.56 11 2.47 16.12-2.44a13.44 13.44 0 0 1 9.46-3.84c3.33 0 9.28 1.56 9.28 8.75C51 248.19 0 257.31 0 304.59v4C0 316 5.08 320 12.09 320z"/></svg></button>
+
+      <button 
+        class="
+          wrap-code-button
+          tw-select-none 
+          tw-mx-2 
+          tw-hidden 
+          group-[.is-open]:tw-block 
+          group-[.is-wrap]:tw-text-fgColor-link 
+          print:!tw-hidden" 
+        title="Toggle code wrap"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"/></svg></button>
+      
+      <button 
+        class="
+          copy-code-button
+          tw-select-none
+          tw-mx-2 
+          tw-hidden
+          group-[.is-open]:tw-block
+          hover:tw-text-fgColor-link 
+          print:!tw-hidden"
+        title="Copy code">
+          <span class="copy-icon tw-block"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z"/></svg></span>
+          <span class="check-icon tw-hidden"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"/></svg></span>
+      </button>
+        
+      <button 
+        class="
+          tw-select-none 
+          tw-mx-2 
+          tw-block 
+          group-[.is-open]:tw-hidden 
+          print:!tw-hidden" 
+        disabled
+        aria-hidden="true"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z"/></svg></button>
+    </div>
+  </div>
+  <pre style="counter-reset: codeblock;" class="tw-block tw-m-0 tw-p-0"><code 
+    id="codeblock-id-2" 
+    class="
+      chroma 
+      !tw-block 
+      tw-p-0
+      tw-m-0
+      tw-transition-[max-height] 
+      tw-duration-500 
+      tw-ease-in-out 
+      group-[.is-closed]:!tw-max-h-0 
+      group-[.is-wrap]:tw-text-wrap
+      tw-overflow-y-hidden
+      tw-overflow-x-auto
+      tw-scrollbar-thin
+      "><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">pid</span><span class="p">,</span><span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nf">setup</span><span class="p">((</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span> <span class="o">&amp;</span><span class="n">drive_info</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">open</span><span class="p">(</span><span class="s">&#34;/dev/tty0&#34;</span><span class="p">,</span><span class="n">O_RDWR</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">dup</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">dup</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">printf</span><span class="p">(</span><span class="s">&#34;%d buffers = %d bytes buffer space</span><span class="se">\n\r</span><span class="s">&#34;</span><span class="p">,</span><span class="n">NR_BUFFERS</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="n">NR_BUFFERS</span><span class="o">*</span><span class="n">BLOCK_SIZE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Free mem: %d bytes</span><span class="se">\n\r</span><span class="s">&#34;</span><span class="p">,</span><span class="n">memory_end</span><span class="o">-</span><span class="n">main_memory_start</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">pid</span><span class="o">=</span><span class="nf">fork</span><span class="p">()))</span> <span class="p">{</span><span class="c1">//1号进程
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="nf">close</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="nf">open</span><span class="p">(</span><span class="s">&#34;/etc/rc&#34;</span><span class="p">,</span><span class="n">O_RDONLY</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">			<span class="nf">_exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">execve</span><span class="p">(</span><span class="s">&#34;/bin/sh&#34;</span><span class="p">,</span><span class="n">argv_rc</span><span class="p">,</span><span class="n">envp_rc</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">_exit</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">pid</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">while</span> <span class="p">(</span><span class="n">pid</span> <span class="o">!=</span> <span class="nf">wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">			<span class="cm">/* nothing */</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			
+</span></span><span class="line"><span class="cl">    <span class="c1">//不断地创建进程
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">((</span><span class="n">pid</span><span class="o">=</span><span class="nf">fork</span><span class="p">())</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Fork failed in init</span><span class="se">\r\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">//如果在子进程中则打开tty并执行shell命令
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">pid</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nf">close</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="nf">close</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="nf">close</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="nf">setsid</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">			<span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">open</span><span class="p">(</span><span class="s">&#34;/dev/tty0&#34;</span><span class="p">,</span><span class="n">O_RDWR</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">dup</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">dup</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="nf">_exit</span><span class="p">(</span><span class="nf">execve</span><span class="p">(</span><span class="s">&#34;/bin/sh&#34;</span><span class="p">,</span><span class="n">argv</span><span class="p">,</span><span class="n">envp</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">//如果在父进程中则等待子进程处理的结果
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="nf">wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">				<span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">printf</span><span class="p">(</span><span class="s">&#34;</span><span class="se">\n\r</span><span class="s">child %d died with code %04x</span><span class="se">\n\r</span><span class="s">&#34;</span><span class="p">,</span><span class="n">pid</span><span class="p">,</span><span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">sync</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">_exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>	<span class="cm">/* NOTE! _exit, not exit() */</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre>
+</div>
+<p>Linux启动时会进行异常的初始化，这些初始化函数分为两种，一类是设置用户特权的异常，一类是设置内核特权的异常</p>
+<p>
+<figure><a class="lightgallery" href="assets/179150820264686.webp" title="2024-02-22_20-07" data-thumbnail="assets/179150820264686.webp" data-sub-html="<h2> </h2><p>2024-02-22_20-07</p>"><img   src='assets/179150820264686.webp'   alt="2024-02-22_20-07"  ></a><figcaption class="image-caption">2024-02-22_20-07</figcaption>
+    </figure></p>
+<p>内核通过分段将machine_desc结构体放于内存某一固定位置中，这些machine_desc用于linux识别设备</p>
+<p>
+<figure><a class="lightgallery" href="assets/86192421250183.webp" title="2024-02-22_21-23" data-thumbnail="assets/86192421250183.webp" data-sub-html="<h2> </h2><p>2024-02-22_21-23</p>"><img   src='assets/86192421250183.webp'   alt="2024-02-22_21-23"  ></a><figcaption class="image-caption">2024-02-22_21-23</figcaption>
+    </figure></p>
+<p>此代码位于head-common.s，在head.s被调用
+
+<figure><a class="lightgallery" href="assets/196132721240713.webp" title="2024-02-22_21-27" data-thumbnail="assets/196132721240713.webp" data-sub-html="<h2> </h2><p>2024-02-22_21-27</p>"><img   src='assets/196132721240713.webp'   alt="2024-02-22_21-27"  ></a><figcaption class="image-caption">2024-02-22_21-27</figcaption>
+    </figure></p>
+<p>
+<figure><a class="lightgallery" href="assets/98102821243217.webp" title="2024-02-22_21-27_1" data-thumbnail="assets/98102821243217.webp" data-sub-html="<h2> </h2><p>2024-02-22_21-27_1</p>"><img   src='assets/98102821243217.webp'   alt="2024-02-22_21-27_1"  ></a><figcaption class="image-caption">2024-02-22_21-27_1</figcaption>
+    </figure></p>
+<p>
+<figure><a class="lightgallery" href="assets/338033421252164.webp" title="2024-02-22_21-34" data-thumbnail="assets/338033421252164.webp" data-sub-html="<h2> </h2><p>2024-02-22_21-34</p>"><img   src='assets/338033421252164.webp'   alt="2024-02-22_21-34"  ></a><figcaption class="image-caption">2024-02-22_21-34</figcaption>
+    </figure></p>
+<h3 id="linux移植浅谈" class="headerLink">
+    <a href="#linux%e7%a7%bb%e6%a4%8d%e6%b5%85%e8%b0%88" class="header-mark"></a>Linux移植浅谈</h3><p>Linux系统移植分为2步：</p>
+<ul>
+<li>进行初始化的适配，让板子能够运行到main函数</li>
+<li>进行驱动系统的移植</li>
+</ul>
+<p>Linux内核移植必须能够在庞大的源码中找到所需代码</p>
+<h2 id="linux内核文件系统" class="headerLink">
+    <a href="#linux%e5%86%85%e6%a0%b8%e6%96%87%e4%bb%b6%e7%b3%bb%e7%bb%9f" class="header-mark"></a>Linux内核文件系统</h2><p>
+<figure><a class="lightgallery" href="assets/223495114240269.webp" title="2024-02-28_14-51" data-thumbnail="assets/223495114240269.webp" data-sub-html="<h2> </h2><p>2024-02-28_14-51</p>"><img   src='assets/223495114240269.webp'   alt="2024-02-28_14-51"  ></a><figcaption class="image-caption">2024-02-28_14-51</figcaption>
+    </figure></p>
+<p>
+<figure><a class="lightgallery" href="assets/204512201251703.webp" title="2024-02-25_01-21_1" data-thumbnail="assets/204512201251703.webp" data-sub-html="<h2> </h2><p>2024-02-25_01-21_1</p>"><img   src='assets/204512201251703.webp'   alt="2024-02-25_01-21_1"  ></a><figcaption class="image-caption">2024-02-25_01-21_1</figcaption>
+    </figure></p>
+<p>
+<figure><a class="lightgallery" href="assets/48782501269583.webp" title="2024-02-25_01-24" data-thumbnail="assets/48782501269583.webp" data-sub-html="<h2> </h2><p>2024-02-25_01-24</p>"><img   src='assets/48782501269583.webp'   alt="2024-02-25_01-24"  ></a><figcaption class="image-caption">2024-02-25_01-24</figcaption>
+    </figure></p>
+<p>文件系统由内核启动：
+由bootloader传进来的taglist放入内存中某个段，由<strong>内核</strong>进行解析后(也就是字符串处理)将原有的init=linuxrc转换为comandline=linuxrc，如果bootloader没有定义init=linuxrc，那么内核会在下列文件夹中依次寻找，然后进入文件系统。默认情况下/sbin/init等文件是一个指向/bin/busybox的软链接，这个busybox只有在嵌入式系统中才有，对于Ubuntu而言对应的则是dash，而后由busybox启动文件文件系统</p>
+<p>
+<figure><a class="lightgallery" href="assets/318163113258690.webp" title="2024-02-23_13-31" data-thumbnail="assets/318163113258690.webp" data-sub-html="<h2> </h2><p>2024-02-23_13-31</p>"><img   src='assets/318163113258690.webp'   alt="2024-02-23_13-31"  ></a><figcaption class="image-caption">2024-02-23_13-31</figcaption>
+    </figure></p>
+<p>busybox是一个极简的工具箱，它提供了基础的命令，与文件系统关系紧密</p>
+<p>启动脚本位于/etc/rc.d</p>
+<p>文件系统工作流程(以下过程均在busybox/init.c源码中的init_main函数中完成)</p>
+<ul>
+<li>传入参数与解析参数
+<ul>
+<li>用户自定义/etc/inittab配置文件(读取文件原理类似设备树)，内核将文件中的init_main进行读取，根据文件中的action参数形成一条action_list链表，链表内部包含的shell命令就是参数，如果用户没有指定参数，那么执行默认的参数</li>
+</ul>
+</li>
+<li>使用参数
+<ul>
+<li>逐个运行链表中的shell命令即可(实际上此时还没有启动，这时的命令只是命令行参数)</li>
+</ul>
+</li>
+</ul>
+<p>在init_main函数结尾，busybox会执行如下死循环，这个死循环会不停的做以下事情：</p>
+<ul>
+<li>执行run_action，然后等待其退出</li>
+<li>退出后再次执行run_action，不断的重复第一步</li>
+</ul>
+<p>
+<figure><a class="lightgallery" href="assets/434772809258691.webp" title="2024-02-24_09-28" data-thumbnail="assets/434772809258691.webp" data-sub-html="<h2> </h2><p>2024-02-24_09-28</p>"><img   src='assets/434772809258691.webp'   alt="2024-02-24_09-28"  ></a><figcaption class="image-caption">2024-02-24_09-28</figcaption>
+    </figure></p>
+<p>一个文件系统需要什么？</p>
+<ul>
+<li>/dev/console，没有了这个文件或者console初始化失败都会导致busybox无法启动</li>
+<li>需要init_main函数来初始化(执行启动脚本等)，这由busybox提供</li>
+<li>/etc.init.d/rcS脚本，如果不提供这个脚本会导致系统阻塞在文件系统启动之前，无法正常返回</li>
+<li>因为需要运行shell命令，因此需要busybox本身</li>
+<li>还需要busybox的运行环境glibc</li>
+</ul>
+<p>分页：
+当CPU开始运行程序时会从硬盘中加载若干页的代码到内存中，当CPU发现这些页并不足以运行程序时就会发出缺页中断(软中断)，硬盘就会继续加载若干页代码到内存中</p>
+<p>VFS(虚拟文件系统)：将各种硬件抽象成为文件</p>
+<h3 id="文件系统结构" class="headerLink">
+    <a href="#%e6%96%87%e4%bb%b6%e7%b3%bb%e7%bb%9f%e7%bb%93%e6%9e%84" class="header-mark"></a>文件系统结构</h3><p>引导块：用于引导设备<br>
+超级块：该文件子系统的描述符，当位数超过某个值时会按照类似内存映射的方式进行块的映射
+逻辑块位图：每一位对应一个逻辑块的使用情况，如果逻辑块使用则对应逻辑块位图对应位置1<br>
+i节点位图：同理，描述inode节点的使用情况<br>
+逻辑块：用来存储数据的数据存储单元<br>
+i节点：目录与磁盘的桥接，文件的属性描述</p>
+<p>
+<figure><a class="lightgallery" href="assets/310545216240345.webp" title="2024-03-04_16-44" data-thumbnail="assets/310545216240345.webp" data-sub-html="<h2> </h2><p>2024-03-04_16-44</p>"><img   src='assets/310545216240345.webp'   alt="2024-03-04_16-44"  ></a><figcaption class="image-caption">2024-03-04_16-44</figcaption>
+    </figure></p>
+<p>
+<figure><a class="lightgallery" href="assets/84782010246558.webp" title="2024-02-24_10-19" data-thumbnail="assets/84782010246558.webp" data-sub-html="<h2> </h2><p>2024-02-24_10-19</p>"><img   src='assets/84782010246558.webp'   alt="2024-02-24_10-19"  ></a><figcaption class="image-caption">2024-02-24_10-19</figcaption>
+    </figure>
+
+<figure><a class="lightgallery" href="assets/61462210266724.webp" title="2024-02-24_10-21" data-thumbnail="assets/61462210266724.webp" data-sub-html="<h2> </h2><p>2024-02-24_10-21</p>"><img   src='assets/61462210266724.webp'   alt="2024-02-24_10-21"  ></a><figcaption class="image-caption">2024-02-24_10-21</figcaption>
+    </figure></p>
+<h3 id="高速缓冲区" class="headerLink">
+    <a href="#%e9%ab%98%e9%80%9f%e7%bc%93%e5%86%b2%e5%8c%ba" class="header-mark"></a>高速缓冲区</h3><p>高速缓冲区存储着块设备驱动程序的数据，并且当从块设备读取数据时，OS会首先在高速缓冲区中查找，找到了且是最新的数据，那么直接和高速缓冲区交互，如果没有找到或者不是最新的则需要在块设备或内存中查找</p>
+<p>
+<figure><a class="lightgallery" href="assets/485035712251806.webp" title="2024-03-28_12-56" data-thumbnail="assets/485035712251806.webp" data-sub-html="<h2> </h2><p>2024-03-28_12-56</p>"><img   src='assets/485035712251806.webp'   alt="2024-03-28_12-56"  ></a><figcaption class="image-caption">2024-03-28_12-56</figcaption>
+    </figure></p>
+<h4 id="哈希hash表" class="headerLink">
+    <a href="#%e5%93%88%e5%b8%8chash%e8%a1%a8" class="header-mark"></a>哈希(hash)表</h4><p>哈希表又称为散列表，由哈希函数和数组(也称为散列数组)构成，哈希表是为了解决遍历数组时间复杂度O(logn，以2为底)的问题，首先由输入元素经过哈希函数生成一个整数n，然后再把该元素放到arr[n]的位置，下次如果需要找到此元素，则可以通过hash函数生成一个整数n，从而在数组中找到该元素，这样就把查询的时间复杂度降为O(1)了。因此对于hash函数有如下要求：</p>
+<ul>
+<li>每一个独立的元素都应该有<strong>唯一</strong>的hash值与之对应</li>
+<li>每一个hash值都只对应一个元素</li>
+</ul>
+<h3 id="缓冲区头" class="headerLink">
+    <a href="#%e7%bc%93%e5%86%b2%e5%8c%ba%e5%a4%b4" class="header-mark"></a>缓冲区头</h3><p>
+<figure><a class="lightgallery" href="assets/238122013240343.webp" title="2024-03-02_13-20" data-thumbnail="assets/238122013240343.webp" data-sub-html="<h2> </h2><p>2024-03-02_13-20</p>"><img   src='assets/238122013240343.webp'   alt="2024-03-02_13-20"  ></a><figcaption class="image-caption">2024-03-02_13-20</figcaption>
+    </figure></p>
+<p>高速缓冲区结构中有个缓冲区头，类似于文件系统引导块</p>
+<p>
+<figure><a class="lightgallery" href="assets/217335710259393.webp" title="2024-02-24_10-56" data-thumbnail="assets/217335710259393.webp" data-sub-html="<h2> </h2><p>2024-02-24_10-56</p>"><img   src='assets/217335710259393.webp'   alt="2024-02-24_10-56"  ></a><figcaption class="image-caption">2024-02-24_10-56</figcaption>
+    </figure></p>
+<div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
+  <div class="
+    
+    tw-flex 
+    tw-flex-row
+    tw-flex-1 
+    tw-justify-between 
+    tw-w-full tw-bg-bgColor-secondary
+    ">      
+    <button 
+      class="
+        code-block-button
+        tw-mx-2 
+        tw-flex
+        tw-flex-row
+        tw-flex-1"
+      aria-hidden="true">
+          <div class="group-[.is-open]:tw-rotate-90 tw-transition-[transform] tw-duration-500 tw-ease-in-out print:!tw-hidden tw-w-min tw-h-min tw-my-1 tw-mx-1"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg></div>
+          <p class="tw-select-none !tw-my-1">c</p>
+      </button>
+
+   <div class="tw-flex">
+      <button 
+        class="
+          line-number-button
+          tw-mx-2 
+          tw-hidden 
+          group-[.is-open]:tw-block 
+          group-[.show-line-numbers]:tw-text-fgColor-link 
+          print:!tw-hidden" 
+        title="Toggle line numbers"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M61.77 401l17.5-20.15a19.92 19.92 0 0 0 5.07-14.19v-3.31C84.34 356 80.5 352 73 352H16a8 8 0 0 0-8 8v16a8 8 0 0 0 8 8h22.83a157.41 157.41 0 0 0-11 12.31l-5.61 7c-4 5.07-5.25 10.13-2.8 14.88l1.05 1.93c3 5.76 6.29 7.88 12.25 7.88h4.73c10.33 0 15.94 2.44 15.94 9.09 0 4.72-4.2 8.22-14.36 8.22a41.54 41.54 0 0 1-15.47-3.12c-6.49-3.88-11.74-3.5-15.6 3.12l-5.59 9.31c-3.72 6.13-3.19 11.72 2.63 15.94 7.71 4.69 20.38 9.44 37 9.44 34.16 0 48.5-22.75 48.5-44.12-.03-14.38-9.12-29.76-28.73-34.88zM496 224H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-160H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 320H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zM16 160h64a8 8 0 0 0 8-8v-16a8 8 0 0 0-8-8H64V40a8 8 0 0 0-8-8H32a8 8 0 0 0-7.14 4.42l-8 16A8 8 0 0 0 24 64h8v64H16a8 8 0 0 0-8 8v16a8 8 0 0 0 8 8zm-3.91 160H80a8 8 0 0 0 8-8v-16a8 8 0 0 0-8-8H41.32c3.29-10.29 48.34-18.68 48.34-56.44 0-29.06-25-39.56-44.47-39.56-21.36 0-33.8 10-40.46 18.75-4.37 5.59-3 10.84 2.8 15.37l8.58 6.88c5.61 4.56 11 2.47 16.12-2.44a13.44 13.44 0 0 1 9.46-3.84c3.33 0 9.28 1.56 9.28 8.75C51 248.19 0 257.31 0 304.59v4C0 316 5.08 320 12.09 320z"/></svg></button>
+
+      <button 
+        class="
+          wrap-code-button
+          tw-select-none 
+          tw-mx-2 
+          tw-hidden 
+          group-[.is-open]:tw-block 
+          group-[.is-wrap]:tw-text-fgColor-link 
+          print:!tw-hidden" 
+        title="Toggle code wrap"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"/></svg></button>
+      
+      <button 
+        class="
+          copy-code-button
+          tw-select-none
+          tw-mx-2 
+          tw-hidden
+          group-[.is-open]:tw-block
+          hover:tw-text-fgColor-link 
+          print:!tw-hidden"
+        title="Copy code">
+          <span class="copy-icon tw-block"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z"/></svg></span>
+          <span class="check-icon tw-hidden"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"/></svg></span>
+      </button>
+        
+      <button 
+        class="
+          tw-select-none 
+          tw-mx-2 
+          tw-block 
+          group-[.is-open]:tw-hidden 
+          print:!tw-hidden" 
+        disabled
+        aria-hidden="true"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z"/></svg></button>
+    </div>
+  </div>
+  <pre style="counter-reset: codeblock;" class="tw-block tw-m-0 tw-p-0"><code 
+    id="codeblock-id-3" 
+    class="
+      chroma 
+      !tw-block 
+      tw-p-0
+      tw-m-0
+      tw-transition-[max-height] 
+      tw-duration-500 
+      tw-ease-in-out 
+      group-[.is-closed]:!tw-max-h-0 
+      group-[.is-wrap]:tw-text-wrap
+      tw-overflow-y-hidden
+      tw-overflow-x-auto
+      tw-scrollbar-thin
+      "><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">buffer_head</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">char</span> <span class="o">*</span> <span class="n">b_data</span><span class="p">;</span>			<span class="cm">/* pointer to data block (1024 bytes)，指向数据块 */</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">b_blocknr</span><span class="p">;</span>	<span class="cm">/* block number，数据逻辑块号 */</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">unsigned</span> <span class="kt">short</span> <span class="n">b_dev</span><span class="p">;</span>		<span class="cm">/* device (0 = free)，块设备号 */</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">b_uptodate</span><span class="p">;</span>    <span class="cm">/* 是否更新 */</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">b_dirt</span><span class="p">;</span>		<span class="cm">/* 0-clean,1-dirty，是否被占用 */</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">b_count</span><span class="p">;</span>		<span class="cm">/* users using this block */</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">b_lock</span><span class="p">;</span>		<span class="cm">/* 0 - ok, 1 -locked，是否锁定 */</span>
+</span></span><span class="line"><span class="cl">	<span class="k">struct</span> <span class="n">task_struct</span> <span class="o">*</span> <span class="n">b_wait</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">struct</span> <span class="n">buffer_head</span> <span class="o">*</span> <span class="n">b_prev</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">struct</span> <span class="n">buffer_head</span> <span class="o">*</span> <span class="n">b_next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">struct</span> <span class="n">buffer_head</span> <span class="o">*</span> <span class="n">b_prev_free</span><span class="p">;</span> <span class="cm">/* 空闲缓冲区由循环双向链表构成 */</span>
+</span></span><span class="line"><span class="cl">	<span class="k">struct</span> <span class="n">buffer_head</span> <span class="o">*</span> <span class="n">b_next_free</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span></span></span></code></pre>
+</div>
+<p>
+<figure><a class="lightgallery" href="assets/35364515255948.webp" title="2024-02-24_15-44" data-thumbnail="assets/35364515255948.webp" data-sub-html="<h2> </h2><p>2024-02-24_15-44</p>"><img   src='assets/35364515255948.webp'   alt="2024-02-24_15-44"  ></a><figcaption class="image-caption">2024-02-24_15-44</figcaption>
+    </figure></p>
+<p>因此，对于块设备而言我们想要获得块，所需要做的是：</p>
+<ul>
+<li>分配一个buffer_head</li>
+<li>设置该buffer指向空闲缓冲区的一个有效buffer
+<ul>
+<li>如果找到的话需要等待解锁</li>
+<li>解锁后还需要判断找到的块是否是要申请的块，因为有可能在等待解锁期间块的信息已经被改变了
+<ul>
+<li>块如果被改变了则返回到第一步</li>
+</ul>
+</li>
+<li>判断该块是否脏了，即是否有残余数据，有残余数据的话就回写</li>
+</ul>
+</li>
+<li>从空闲缓冲区链表中出链，设置对应的结构体信息如块设备号，逻辑块号等</li>
+<li>写入所需数据</li>
+<li>算出该buffer_head的hash值，填入散列数组对应的链表的尾部</li>
+</ul>
+<p>需要注意的是，在第二步等待系统内核分配数据块时，内核在申请前后加了锁，这是为了防止其他线程再次申请内存块</p>
+<p>无论读取什么资源，都是先getblk(获取资源对应设备和块号的高速缓冲区)，然后再bread(确认数据是否为最新的)，最后进行区域内存的拷贝，从bh的b_data区域拷贝到要用到数据的内存中</p>
+<h3 id="bio" class="headerLink">
+    <a href="#bio" class="header-mark"></a>bio</h3><p>在2.6内核后，buffer_head的功能逐渐弱化为映射内存和磁盘关系的结构体，大部分的操作函数主要在bio结构体中实现</p>
+<p>
+<figure><a class="lightgallery" href="assets/554253314258769.webp" title="2024-03-02_14-33" data-thumbnail="assets/554253314258769.webp" data-sub-html="<h2> </h2><p>2024-03-02_14-33</p>"><img   src='assets/554253314258769.webp'   alt="2024-03-02_14-33"  ></a><figcaption class="image-caption">2024-03-02_14-33</figcaption>
+    </figure></p>
+<p>bio里重要的结构体：</p>
+<ul>
+<li>bi_io_vec
+<ul>
+<li>bi_io_vec指向bio_vec结构体链表表头，链表内包含了各页面的指针</li>
+</ul>
+</li>
+<li>bi_idx
+<ul>
+<li>bi_idx指向指向bio_vec结构体链表当前的节点，这可以找到当前io操作的位置</li>
+</ul>
+</li>
+<li>bi_vcnt
+<ul>
+<li>bi_vcnt记录了bio结构体的使用计数，当为0时就需要回收这个bio结构体</li>
+</ul>
+</li>
+</ul>
+<p>
+<figure><a class="lightgallery" href="assets/180953814246636.webp" title="2024-03-02_14-38" data-thumbnail="assets/180953814246636.webp" data-sub-html="<h2> </h2><p>2024-03-02_14-38</p>"><img   src='assets/180953814246636.webp'   alt="2024-03-02_14-38"  ></a><figcaption class="image-caption">2024-03-02_14-38</figcaption>
+    </figure></p>
+<p>
+<figure><a class="lightgallery" href="assets/185623914266802.webp" title="2024-03-02_14-39" data-thumbnail="assets/185623914266802.webp" data-sub-html="<h2> </h2><p>2024-03-02_14-39</p>"><img   src='assets/185623914266802.webp'   alt="2024-03-02_14-39"  ></a><figcaption class="image-caption">2024-03-02_14-39</figcaption>
+    </figure></p>
+<p>相比buffer_head，bio有如下优点：</p>
+<ul>
+<li>buffer_head处理的是page指针，但是bio处理的是page指针数组，因此bio有大块内存的处理能力，这在高端内存中很有用</li>
+<li>bio适用于先分散后集中的IO操作，操作的数据可以来自于多个不相邻的物理页面</li>
+<li>bio时更轻量级的结构体，因为它只需要存储IO操作的信息就行了</li>
+</ul>
+<h3 id="inode" class="headerLink">
+    <a href="#inode" class="header-mark"></a>inode</h3><p>Linux 文件系统会为每个文件分配两个数据结构：索引节点（index node）和目录项（directory entry），它们主要用来记录文件的元信息和目录层次结构</p>
+<ul>
+<li>索引节点，也就是 inode，用来记录文件的元信息，比如 inode 编号、文件大小、访问权限、创建时间、修改时间、数据在磁盘的位置等等。索引节点是文件的唯一标识，它们之间一一对应，也同样都会被存储在硬盘中，所以索引节点同样占用磁盘空间</li>
+<li>目录项，也就是 dentry，用来记录文件的名字、索引节点指针以及与其他目录项的层级关联关系。多个目录项关联起来，就会形成目录结构，例如/mnt/cdrom/music中，\，mnt，cdrom，music均为目录项。但它与索引节点不同的是，目录项是由内核维护的一个数据结构，不存放于磁盘，而是缓存在内存。VFS在执行目录操作时会现场创建目录项。
+扇区：块设备上一个长度为512B的数据块，在不同文件系统中，扇区和盘块的对应关系是不同的，有的文件系统是4个扇区对应一个盘块，有的是8个</li>
+</ul>
+<p>mount：把文件系统的超级块读到高速缓冲区中，并且放到超级块数组中</p>
+<p>从磁盘中读写信息，数据，inode的流程</p>
+<ul>
+<li>找到指定dev，并根据dev找到超级块</li>
+<li>通过超级块中的信息计算要读的逻辑块号，并将这个块放入高速缓冲区
+<ul>
+<li>读：读取块中的b_data，读完之后释放高速缓冲区</li>
+<li>写：将要写入的数据写入b_data，写完之后设置dirty标志位，等待sys_sync系统调用统一写入块设备，最后释放高速缓冲区</li>
+</ul>
+</li>
+</ul>
+<p>硬链接：只要链接数不为0，即使删除源文件，内容也不会消失</p>
+<p>删除文件就是把inode的link数改为0，
+inode中有dev和block，根据这两个信息就可以把硬盘载入高速缓冲区</p>
+<p>从上面代码中可以看出,内核从哈希表中搜索现成的缓冲块时,只看设备号和块号,其他的什么都不管。只要缓冲块与硬盘数据块的绑定关系还存在,就认定数据块中的数据仍然停留在缓冲块中,就可以直接用,不需要从硬盘上读取,节省了100倍的硬盘读取时间</p>
+<p>
+<figure><a class="lightgallery" href="assets/429192314240267.webp" title="2024-02-26_14-23" data-thumbnail="assets/429192314240267.webp" data-sub-html="<h2> </h2><p>2024-02-26_14-23</p>"><img   src='assets/429192314240267.webp'   alt="2024-02-26_14-23"  ></a><figcaption class="image-caption">2024-02-26_14-23</figcaption>
+    </figure></p>
+<p>
+<figure><a class="lightgallery" href="assets/331743316246560.webp" title="2024-02-26_16-33" data-thumbnail="assets/331743316246560.webp" data-sub-html="<h2> </h2><p>2024-02-26_16-33</p>"><img   src='assets/331743316246560.webp'   alt="2024-02-26_16-33"  ></a><figcaption class="image-caption">2024-02-26_16-33</figcaption>
+    </figure></p>
+<p>
+<figure><a class="lightgallery" href="assets/55283316258693.webp" title="2024-02-26_16-32" data-thumbnail="assets/55283316258693.webp" data-sub-html="<h2> </h2><p>2024-02-26_16-32</p>"><img   src='assets/55283316258693.webp'   alt="2024-02-26_16-32"  ></a><figcaption class="image-caption">2024-02-26_16-32</figcaption>
+    </figure></p>
+<h3 id="io调度算法" class="headerLink">
+    <a href="#io%e8%b0%83%e5%ba%a6%e7%ae%97%e6%b3%95" class="header-mark"></a>IO调度算法</h3><p>由于APP对读写要求的不同：对读操作时间敏感，对写操作则不然，并且主流存储设备为磁盘时还需要优化寻道时间，因此产生了如下算法</p>
+<h4 id="适用于机械硬盘的算法" class="headerLink">
+    <a href="#%e9%80%82%e7%94%a8%e4%ba%8e%e6%9c%ba%e6%a2%b0%e7%a1%ac%e7%9b%98%e7%9a%84%e7%ae%97%e6%b3%95" class="header-mark"></a>适用于机械硬盘的算法</h4><p>Linus电梯算法是最早的适用于机械硬盘的算法，这种算法在接受IO请求时会将此次的IO与尚未执行的请求合并，这样多次请求就可以转化为一次请求。如果合并失败，算法会尝试将此次请求按磁盘扇区的排列顺序插入到请求队列中，这也是Linus电梯算法适合机械硬盘设备的原因。这种算法与电梯调度类似，因此得名为Linus电梯算法，同时也是下面几种机械硬盘IO调度算法的基础</p>
+<h5 id="最终期限io调度算法deadline" class="headerLink">
+    <a href="#%e6%9c%80%e7%bb%88%e6%9c%9f%e9%99%90io%e8%b0%83%e5%ba%a6%e7%ae%97%e6%b3%95deadline" class="header-mark"></a>最终期限IO调度算法(deadline)</h5><p>Linus电梯算法不能解决请求数太多时对其他请求的饥饿问题，deadline算法在Linus电梯的排序队列基础上又引入了读写双队列来保证新请求的响应性，对于读操作来说，当超过500ms未响应就会强制执行读操作，即从读队列中获取操作，写操作则为5s</p>
+<h5 id="预测io调度算法anticipatory" class="headerLink">
+    <a href="#%e9%a2%84%e6%b5%8bio%e8%b0%83%e5%ba%a6%e7%ae%97%e6%b3%95anticipatory" class="header-mark"></a>预测IO调度算法(anticipatory)</h5><p>deadline算法在解决了请求的饥饿问题时损失了系统吞吐量，因为当响应读操作磁头移动的过程中不能进行写操作。为了解决这一问题，预测算法在响应操作时会等待几ms，这样当有在新请求的扇区附近有请求时会一并执行(相当于在deadline里套了个Linus电梯)</p>
+<h5 id="完全公平队列io调度算法cfq" class="headerLink">
+    <a href="#%e5%ae%8c%e5%85%a8%e5%85%ac%e5%b9%b3%e9%98%9f%e5%88%97io%e8%b0%83%e5%ba%a6%e7%ae%97%e6%b3%95cfq" class="header-mark"></a>完全公平队列IO调度算法(cfq)</h5><p>这种算法与上列算法截然不同，它是按照进程来对IO操作分类的，比如music进程下有4个IO操作，movie有8个IO操作，那么这种算法会使用时间片轮流对IO操作进行调度，保证进程的公平，这种算法主要用于桌面操作，但是如果没有特殊情况，在其他情况下工作的也很好</p>
+<h4 id="适用于固态硬盘的算法" class="headerLink">
+    <a href="#%e9%80%82%e7%94%a8%e4%ba%8e%e5%9b%ba%e6%80%81%e7%a1%ac%e7%9b%98%e7%9a%84%e7%ae%97%e6%b3%95" class="header-mark"></a>适用于固态硬盘的算法</h4><h5 id="空操作的io调度算法noop" class="headerLink">
+    <a href="#%e7%a9%ba%e6%93%8d%e4%bd%9c%e7%9a%84io%e8%b0%83%e5%ba%a6%e7%ae%97%e6%b3%95noop" class="header-mark"></a>空操作的IO调度算法(noop)</h5><p>这种算法除了合并IO操作外什么也不做，因为固态硬盘不需要寻道操作</p>
+<h2 id="linux内核内存管理" class="headerLink">
+    <a href="#linux%e5%86%85%e6%a0%b8%e5%86%85%e5%ad%98%e7%ae%a1%e7%90%86" class="header-mark"></a>Linux内核内存管理</h2><p>内核空间不分页</p>
+<p><a href="https://docs.kernel.org/arch/arm64/memory.html" target="_blank" rel="noopener noreferrer">linux内存布局</a>
+<a href="https://docs.kernel.org/arch/arm64/ptdump.html" target="_blank" rel="noopener noreferrer">使用命令行生成内存布局</a></p>
+<p>
+<figure><a class="lightgallery" href="assets/511861922246638.webp" title="2024-03-04_22-19" data-thumbnail="assets/511861922246638.webp" data-sub-html="<h2> </h2><p>2024-03-04_22-19</p>"><img   src='assets/511861922246638.webp'   alt="2024-03-04_22-19"  ></a><figcaption class="image-caption">2024-03-04_22-19</figcaption>
+    </figure></p>
+<p>
+<figure><a class="lightgallery" href="assets/247874222266804.webp" title="2024-03-04_22-42" data-thumbnail="assets/247874222266804.webp" data-sub-html="<h2> </h2><p>2024-03-04_22-42</p>"><img   src='assets/247874222266804.webp'   alt="2024-03-04_22-42"  ></a><figcaption class="image-caption">2024-03-04_22-42</figcaption>
+    </figure></p>
+<p>vmalloc是在虚拟内存中申请一块连续地址，kmalloc则是在物理内存中申请一块连续地址。内核代码主要使用kmalloc，这是因为当物理地址不连续时需要为每个独立的物理地址项建立页表项，这会损失性能</p>
+<p>内核空间栈小且固定(现在应该支持可变大小了？)，用户空间栈大且可变</p>
+<p>中断程序的栈与内核栈分开，这样哪怕在编译时给定内核栈为1页也不会爆栈了，并且也不需要每次分给多页内存给内核栈，这样在机器长时间运行后的分配内存的压力也会变小</p>
+<h3 id="内存碎片" class="headerLink">
+    <a href="#%e5%86%85%e5%ad%98%e7%a2%8e%e7%89%87" class="header-mark"></a>内存碎片</h3><p>当需要1字节却创建一整块页表时，剩余的4095字节被称为内部碎片，当内存空间被各种进程分割为大大小小的区域时产生的碎片被称为内部碎片，可以通过内存紧缩等算法减少内部碎片</p>
+<h4 id="伙伴算法" class="headerLink">
+    <a href="#%e4%bc%99%e4%bc%b4%e7%ae%97%e6%b3%95" class="header-mark"></a>伙伴算法</h4><p>伙伴算法(buddy system)是为了管理大块的内存页从而减少外部碎片的一种算法，首先内核将内存分为11个链表，每个链表所管理的内存大小固定，大小均为4K*2^n倍，例如0号链表管理的内存为4K，1号链表为8K，当需要申请内存时需要从相应的链表中获得内存，比如需要12K的内存则需要从2号链表中获取，这样就可以统一管理大块内存</p>
+<h4 id="slab" class="headerLink">
+    <a href="#slab" class="header-mark"></a>slab</h4><p>slab是为了管理小块的内存从而减少内部碎片的一种算法，首先内核将所有高速缓存分为大小不同的组，每一组有若干块高速缓存并存储相同的对象，每一块高速缓存下有若干slab块并有三条slab链表，分别是空闲的slab链表，被占用的slab链表，被占满的slab链表，每个slab块都有若干页并且管理相同的数据结构，比如某块slab专门用于管理inode，或者专门管理task_struct，因此需要这种类似结构的内存时，只需要获取对应slab就可以了，而不必需要新申请一个页</p>
+<p>因此使用slab会有很多好处：</p>
+<ul>
+<li>适应了小块内存的分配，解决了伙伴算法不能管理小块内存并产生大量内部碎片的缺点</li>
+<li>将频繁使用的对象缓存起来，减少分配回收时的开销</li>
+</ul>
+<p>对于小型嵌入式系统来说，存在一个slab模拟层，名字叫做slob，但会有碎片问题</p>
+<h3 id="rcu" class="headerLink">
+    <a href="#rcu" class="header-mark"></a>RCU</h3><p>RCU(Read-Copy Update)，读时任意读，写时先复制一份副本，然后在副本上更新，最后再一次性的替换旧数据</p>
+<p>RCU支持对于某一个数据读写同时操作，这是因为RCU本质上是某一个数据copy一个副本，写进程写副本，读进程读原来的数据。当写完数据时，写进程会检查原数据结构是否被读进程占用，如果被占用就等待读进程完成操作，然后互斥的将副本拷贝进原数据</p>
+<p>RCU通常被用于链表上的数据操作，伪代码：</p>
+<div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
+  <div class="
+    
+    tw-flex 
+    tw-flex-row
+    tw-flex-1 
+    tw-justify-between 
+    tw-w-full tw-bg-bgColor-secondary
+    ">      
+    <button 
+      class="
+        code-block-button
+        tw-mx-2 
+        tw-flex
+        tw-flex-row
+        tw-flex-1"
+      aria-hidden="true">
+          <div class="group-[.is-open]:tw-rotate-90 tw-transition-[transform] tw-duration-500 tw-ease-in-out print:!tw-hidden tw-w-min tw-h-min tw-my-1 tw-mx-1"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg></div>
+          <p class="tw-select-none !tw-my-1">c</p>
+      </button>
+
+   <div class="tw-flex">
+      <button 
+        class="
+          line-number-button
+          tw-mx-2 
+          tw-hidden 
+          group-[.is-open]:tw-block 
+          group-[.show-line-numbers]:tw-text-fgColor-link 
+          print:!tw-hidden" 
+        title="Toggle line numbers"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M61.77 401l17.5-20.15a19.92 19.92 0 0 0 5.07-14.19v-3.31C84.34 356 80.5 352 73 352H16a8 8 0 0 0-8 8v16a8 8 0 0 0 8 8h22.83a157.41 157.41 0 0 0-11 12.31l-5.61 7c-4 5.07-5.25 10.13-2.8 14.88l1.05 1.93c3 5.76 6.29 7.88 12.25 7.88h4.73c10.33 0 15.94 2.44 15.94 9.09 0 4.72-4.2 8.22-14.36 8.22a41.54 41.54 0 0 1-15.47-3.12c-6.49-3.88-11.74-3.5-15.6 3.12l-5.59 9.31c-3.72 6.13-3.19 11.72 2.63 15.94 7.71 4.69 20.38 9.44 37 9.44 34.16 0 48.5-22.75 48.5-44.12-.03-14.38-9.12-29.76-28.73-34.88zM496 224H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-160H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 320H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zM16 160h64a8 8 0 0 0 8-8v-16a8 8 0 0 0-8-8H64V40a8 8 0 0 0-8-8H32a8 8 0 0 0-7.14 4.42l-8 16A8 8 0 0 0 24 64h8v64H16a8 8 0 0 0-8 8v16a8 8 0 0 0 8 8zm-3.91 160H80a8 8 0 0 0 8-8v-16a8 8 0 0 0-8-8H41.32c3.29-10.29 48.34-18.68 48.34-56.44 0-29.06-25-39.56-44.47-39.56-21.36 0-33.8 10-40.46 18.75-4.37 5.59-3 10.84 2.8 15.37l8.58 6.88c5.61 4.56 11 2.47 16.12-2.44a13.44 13.44 0 0 1 9.46-3.84c3.33 0 9.28 1.56 9.28 8.75C51 248.19 0 257.31 0 304.59v4C0 316 5.08 320 12.09 320z"/></svg></button>
+
+      <button 
+        class="
+          wrap-code-button
+          tw-select-none 
+          tw-mx-2 
+          tw-hidden 
+          group-[.is-open]:tw-block 
+          group-[.is-wrap]:tw-text-fgColor-link 
+          print:!tw-hidden" 
+        title="Toggle code wrap"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"/></svg></button>
+      
+      <button 
+        class="
+          copy-code-button
+          tw-select-none
+          tw-mx-2 
+          tw-hidden
+          group-[.is-open]:tw-block
+          hover:tw-text-fgColor-link 
+          print:!tw-hidden"
+        title="Copy code">
+          <span class="copy-icon tw-block"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z"/></svg></span>
+          <span class="check-icon tw-hidden"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"/></svg></span>
+      </button>
+        
+      <button 
+        class="
+          tw-select-none 
+          tw-mx-2 
+          tw-block 
+          group-[.is-open]:tw-hidden 
+          print:!tw-hidden" 
+        disabled
+        aria-hidden="true"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z"/></svg></button>
+    </div>
+  </div>
+  <pre style="counter-reset: codeblock;" class="tw-block tw-m-0 tw-p-0"><code 
+    id="codeblock-id-4" 
+    class="
+      chroma 
+      !tw-block 
+      tw-p-0
+      tw-m-0
+      tw-transition-[max-height] 
+      tw-duration-500 
+      tw-ease-in-out 
+      group-[.is-closed]:!tw-max-h-0 
+      group-[.is-wrap]:tw-text-wrap
+      tw-overflow-y-hidden
+      tw-overflow-x-auto
+      tw-scrollbar-thin
+      "><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">devmem</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">list_head</span> <span class="n">list</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">flag</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">length</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">data</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nf">LIST_HEAD</span><span class="p">(</span><span class="n">list</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* qlist给读进程，qlist给写进程 */</span>
+</span></span><span class="line"><span class="cl"><span class="n">plist</span> <span class="o">=</span> <span class="nf">search</span><span class="p">(</span><span class="n">list</span><span class="p">,</span> <span class="n">data</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">qlist</span> <span class="o">=</span> <span class="nf">kmalloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">devmem</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* 拷贝数据 */</span>
+</span></span><span class="line"><span class="cl"><span class="o">*</span><span class="n">qlist</span> <span class="o">=</span> <span class="o">*</span><span class="n">plist</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* 写数据 */</span>
+</span></span><span class="line"><span class="cl"><span class="n">qlist</span><span class="o">-&gt;</span><span class="n">flag</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">qlist</span><span class="o">-&gt;</span><span class="n">length</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">qlist</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* 等待读进程完成操作 */</span>
+</span></span><span class="line"><span class="cl"><span class="nf">synchronize_rcu</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* 拷贝到原数据 */</span>
+</span></span><span class="line"><span class="cl"><span class="nf">list_replace_rcu</span><span class="p">(</span><span class="n">plist</span><span class="p">,</span> <span class="n">qlist</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nf">kfree</span><span class="p">(</span><span class="n">qlist</span><span class="p">);</span></span></span></code></pre>
+</div>
+<h3 id="堆内存管理" class="headerLink">
+    <a href="#%e5%a0%86%e5%86%85%e5%ad%98%e7%ae%a1%e7%90%86" class="header-mark"></a>堆内存管理</h3><p>mmap与malloc都会调用到brk系统调用(实际上malloc调用的堆空间大于128k时会自动调用mmap)，内核维护着start_brk与brk两个指针，分别指向堆空间起始和终止地址，申请内存本质上是通过改变brk的边界来扩展内存的</p>
+<p>为了保证内存管理的高效性，linux在glibc，标准IO(fread/fwrite)分别设置了两层缓冲，glibc内部有个内存分配器，标准IO内部又有缓冲区，经过这两层后之后才会进入内核的缓冲区</p>
+<h3 id="匿名内存" class="headerLink">
+    <a href="#%e5%8c%bf%e5%90%8d%e5%86%85%e5%ad%98" class="header-mark"></a>匿名内存</h3><p>映射在内存中的文件具有相应的路径和名称，这就是普通的文件映射。而对于堆栈，mmap这种内存来说并没有对应的文件而只有对应的进程，我们称后者这些内存为匿名内存。</p>
+<h2 id="linux内核数据结构" class="headerLink">
+    <a href="#linux%e5%86%85%e6%a0%b8%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84" class="header-mark"></a>Linux内核数据结构</h2><h3 id="算法复杂度" class="headerLink">
+    <a href="#%e7%ae%97%e6%b3%95%e5%a4%8d%e6%9d%82%e5%ba%a6" class="header-mark"></a>算法复杂度</h3><p>O(1)并不一定优于O(n)，例如当执行某些算法时，时间复杂度O(1)的程序无论输入如何总是需要3小时，但这个程序输入很小的情况下O(n)明显更合适</p>
+<h3 id="树" class="headerLink">
+    <a href="#%e6%a0%91" class="header-mark"></a>树</h3><p>二叉树是一种输入结构</p>
+<p>二叉平衡树</p>
+<p>红黑树</p>
+<p>红黑树适用于对特定节点进行搜索，链表适合对节点进行遍历</p>
+<h2 id="linux内核进程调度" class="headerLink">
+    <a href="#linux%e5%86%85%e6%a0%b8%e8%bf%9b%e7%a8%8b%e8%b0%83%e5%ba%a6" class="header-mark"></a>Linux内核进程调度</h2><p>内核抢占：在内核态也可以被中断调度出去执行更高优先级的代码的特性</p>
+<p>Linux对进程或线程不做结构上的区分，他们的结构体是完全一样的，只是线程可以进行资源的共享</p>
+<p>Linux采用了完全公平算法(CFS)
+普通的调度算法会根据nice值(-20~+19，nice值越大，占用的时间片越少，默认nice值为0)来分配时间片，但只这会造成以下问题：
+* 随着任务数的增多，时间片会接近0，系统始终处于调度当中
+* 当进程优先级分配不合理时，进程切换会频繁。比如同样是两个进程，如果nice都是0的话会轮流调度，对于5ms的时间片来说它们每5ms就会调度一次，而对于nice值为20和0的进程来说，他们调度的总时长是(20+1)*5=105ms，两者每105ms会调度一次
+*  nice值是相对的，则会导致进程调度的效果不同。比如nice为20和19的进程，这两个进程时间片分别是100ms和105ms，但是对于nice值为0和1的进程来说，时间片分别是10ms和5ms，两者占据时间片的百分比差距很大</p>
+<p>CFS的解决办法：</p>
+<ul>
+<li>规定时间片的最小粒度为1ms</li>
+<li>时间片不与nice绝对值挂钩，而与相对值挂钩</li>
+</ul>
+<p>但是当任务数过大时(比如几千个)，CFS并不是公平的，随着任务数的增多，nice的影响会越来越小，使得每个任务运行时间都最终趋近于1ms</p>
+<p>CFS采用了计算vruntime的方法来保证公平调度，vruntime是一个加权后的时间，当需要调度时，CFS会找出vruntime最小的那个进程或线程进行调度</p>
+<p>为了管理众多进程，CFS采用红黑树的数据结构，这样可以使搜索时间显著下降</p>
+<p>内存屏障：由于CPU执行与编译器编译后的结果是乱序的，为了保证代码按正确的顺序的运行，厂家提供了内存屏障指令，在内存屏障的上下文代码按一定顺序执行，如下文，在线程2，先执行<code>c=b;</code>而后执行<code>d=a;</code>，如果没有内存屏障代码的话假如线程1与线程2被执行时同时颠倒顺序会导致出现预料外的结果</p>
+<p>
+<figure><a class="lightgallery" href="assets/72572111240342.webp" title="2024-03-01_11-20" data-thumbnail="assets/72572111240342.webp" data-sub-html="<h2> </h2><p>2024-03-01_11-20</p>"><img   src='assets/72572111240342.webp'   alt="2024-03-01_11-20"  ></a><figcaption class="image-caption">2024-03-01_11-20</figcaption>
+    </figure></p>
+<p>为了保证检索定时器的效率，Linux将定时器分为五组，当超过规定时间时定时器将随组一起下移，这保证了搜索效率</p>
+<p>不负责的程序员经常使用get_cpu()等函数来保证数据与CPU绑定(每个CPU都有一段专属的内存区域)，虽然这对防止竟态有重要作用(唯一需要注意的内核抢占问题也在get_cpu()中自动实现了)，但是这也会造成一核有难多核围观的后果</p>
+<p>:::alert-info
+即使不了解Linux代码风格也可以使用官方的<code>indent</code>工具来格式化代码啦
+:::</p>
+<h3 id="读写锁" class="headerLink">
+    <a href="#%e8%af%bb%e5%86%99%e9%94%81" class="header-mark"></a>读写锁</h3><p>读写锁支持多个进程同时读数据，但只能有一个进程写数据。由于读读不互斥，读写互斥(读到写到一半的脏数据)，写写互斥，因此需要读锁来保证读写互斥，写锁保证写写互斥</p>
+<p>:::alert-danger
+务必注意return的时候是否解锁，如果程序中有多处return那么可以考虑使用goto来统一跳转解决
+:::</p>
+</div>
+
+        <div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2024-10-28</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line print:!tw-hidden">
+            <div class="post-info-md"><span><a class="link-to-mardown" href=/posts/linux-kernel/index.md target="_blank" rel="noopener noreferrer">阅读原始文档</a>
+                    </span></div>
+            <div class="post-info-share"></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.941 225.941L286.059 14.059A48 48 0 0 0 252.118 0H48C21.49 0 0 21.49 0 48v204.118a48 48 0 0 0 14.059 33.941l211.882 211.882c18.744 18.745 49.136 18.746 67.882 0l204.118-204.118c18.745-18.745 18.745-49.137 0-67.882zM112 160c-26.51 0-48-21.49-48-48s21.49-48 48-48 48 21.49 48 48-21.49 48-48 48zm513.941 133.823L421.823 497.941c-18.745 18.745-49.137 18.745-67.882 0l-.36-.36L527.64 323.522c16.999-16.999 26.36-39.6 26.36-63.64s-9.362-46.641-26.36-63.64L331.397 0h48.721a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882z"/></svg>&nbsp;<a href="/tags/os/">OS</a>,&nbsp;<a href="/tags/tech/">Tech</a></section>
+        <section class="print:!tw-hidden">
+            <span><button class="tw-text-fgColor-link-muted hover:tw-text-fgColor-link-muted-hover" onclick="window.history.back();">返回</button></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav print:tw-hidden"><a href="/posts/linux-basics/" class="prev" rel="prev" title="Linux基础"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z"/></svg>Linux基础</a>
+            <a href="/posts/linux-advanced/" class="next" rel="next" title="Linux深入">Linux深入<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></a></div>
+</div>
+</article></main><footer class="footer">
+        <div class="footer-container">
+            <div class="footer-line">
+                <span id="run-time"></span>
+            </div><div class="footer-line">
+                    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.146.1">Hugo</a>&nbsp;|&nbsp;Theme - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.4.1"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg> DoIt</a>
+                </div><div class="footer-line"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 448c-110.532 0-200-89.451-200-200 0-110.531 89.451-200 200-200 110.532 0 200 89.451 200 200 0 110.532-89.451 200-200 200zm107.351-101.064c-9.614 9.712-45.53 41.396-104.065 41.396-82.43 0-140.484-61.425-140.484-141.567 0-79.152 60.275-139.401 139.762-139.401 55.531 0 88.738 26.62 97.593 34.779a11.965 11.965 0 0 1 1.936 15.322l-18.155 28.113c-3.841 5.95-11.966 7.282-17.499 2.921-8.595-6.776-31.814-22.538-61.708-22.538-48.303 0-77.916 35.33-77.916 80.082 0 41.589 26.888 83.692 78.277 83.692 32.657 0 56.843-19.039 65.726-27.225 5.27-4.857 13.596-4.039 17.82 1.738l19.865 27.17a11.947 11.947 0 0 1-1.152 15.518z"/></svg>2023 - 2025<span class="author">&nbsp;<a href="wumingzi.top" target="_blank" rel="noopener noreferrer">吾铭子</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer><div class="print:!tw-hidden tw-flex tw-flex-col tw-fixed tw-right-4 tw-bottom-4 tw-gap-2"><a href="#back-to-top" id="back-to-top-button" class="tw-transition-opacity tw-opacity-0 tw-block tw-bg-bgColor-secondary tw-rounded-full" style="padding: 0.6rem; line-height: 1.3rem; font-size: 1rem;" title="回到顶部">
+      <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg>
+  </a>
+
+  <button id="toc-drawer-button" class="tw-block tw-bg-bgColor-secondary tw-rounded-full md:tw-hidden" style="padding: 0.6rem; line-height: 1.3rem; font-size: 1rem;">
+      <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"/></svg>
+  </button></div>
+<link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/lightgallery/lightgallery.min.css">
+        <noscript><link rel="stylesheet" href="/lib/lightgallery/lightgallery.min.css"></noscript><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/katex/copy-tex.min.css">
+        <noscript><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"></noscript>
+<script>window.config={"autocomplete.min.js":"/lib/autocomplete/autocomplete.min.js","comment":{},"lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"pagefind.js":"/pagefind/pagefind.js","search":{"highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","pageLength":null,"snippetLength":50,"termFrequency":null,"termSaturation":null,"termSimilarity":null,"type":"pagefind"}};</script><script
+    src="/lib/lightgallery/lightgallery.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/lightgallery/lg-thumbnail.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/lightgallery/lg-zoom.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/katex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/auto-render.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/copy-tex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/mhchem.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/js/katex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/js/theme.min.js"
+    
+      defer
+    
+  ></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@2.1.3/dist/jquery.min.js"></script><script type="text/javascript" src="/js/custom.js"></script>
+
+<script type="speculationrules">
+  {
+    "prerender": [
+      {
+        "where": { "href_matches": "/*" },
+        "eagerness": "moderate"
+      }
+    ]
+  }
+</script>
+</body>
+
+</html>

@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" /><title>Linux深入 - 吾铭子</title><meta name="Description" content="吾铭子"><meta property="og:url" content="https://1078249029.github.io/posts/linux-advanced/">
+  <meta property="og:site_name" content="吾铭子">
+  <meta property="og:title" content="Linux深入">
+  <meta property="og:description" content="Linux驱动深入，包含PCIE，USB以及常用子系统的粗浅介绍">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-02-23T11:44:04+08:00">
+    <meta property="article:modified_time" content="2025-03-31T16:51:18+08:00">
+    <meta property="article:tag" content="OS">
+    <meta property="article:tag" content="Tech">
+    <meta property="og:image" content="https://1078249029.github.io/logo.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://1078249029.github.io/logo.png">
+  <meta name="twitter:title" content="Linux深入">
+  <meta name="twitter:description" content="Linux驱动深入，包含PCIE，USB以及常用子系统的粗浅介绍">
+<meta name="application-name" content="吾铭子">
+<meta name="apple-mobile-web-app-title" content="吾铭子">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<link rel="canonical" href="https://1078249029.github.io/posts/linux-advanced/" /><link rel="prev" href="https://1078249029.github.io/posts/linux-kernel/" /><link rel="next" href="https://1078249029.github.io/posts/computer-network/" />
+<link rel="stylesheet" href="/css/main.min.css"><link rel="stylesheet" href="/css/style.min.css"><script type="application/ld+json">{"@context": "https://schema.org","@type": "BlogPosting",
+        "headline": "Linux深入",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://1078249029.github.io/posts/linux-advanced/"
+        },"genre": "posts","keywords":["OS","Tech"],"wordcount":  8204 ,
+        "url": "https://1078249029.github.io/posts/linux-advanced/","datePublished": "2024-02-23T11:44:04+08:00","dateModified": "2025-03-31T16:51:18+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "吾铭子",
+                "url": "wumingzi.top"
+            },"description": ""
+    }</script></head>
+
+
+<body data-instant-intensity="viewport" class="tw-flex tw-min-h-screen tw-flex-col"><script type="text/javascript">
+    function setTheme(theme) {
+      document.body.setAttribute('theme', theme); 
+      document.documentElement.className = theme;
+      document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark');
+      if (theme === 'light') {
+        document.documentElement.classList.remove('tw-dark')
+      } else {
+        document.documentElement.classList.add('tw-dark')
+      }
+      window.theme = theme;   
+      window.isDark = window.theme !== 'light' 
+    }
+    function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+    function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+    if (window.localStorage && localStorage.getItem('theme')) {
+        let theme = localStorage.getItem('theme');
+        if (theme === 'light' || theme === 'dark') {
+        setTheme(theme);
+        } else {
+            if ((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                setTheme('dark');
+            } else {
+                setTheme('light');
+            }
+        }
+      } else { 
+        if ('auto' === 'light' || 'auto' === 'dark') 
+            setTheme('auto'), saveTheme('auto'); 
+        else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');
+    }
+    let metaColors = {'light': '#f8f8f8','dark': '#161b22'}
+    getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+    window.switchThemeEventSet = new Set()
+</script><div id="back-to-top"></div>
+    <div id="mask"></div><header class="desktop print:!tw-hidden" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="吾铭子">吾铭子</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item"
+                    href="/posts/" > 归档 </a><a class="menu-item"
+                    href="/tags/" > 标签 </a><a class="menu-item"
+                    href="/categories/" > 分类 </a><a class="menu-item"
+                    href="/about/" > 关于 </a><a class="menu-item"
+                    href="/essay/" > 日志 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                    <input type="text"
+                        placeholder="搜索文章标题或内容..."
+                        id="search-input-desktop">
+                    <button class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                        <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+                    </button>
+                    <button class="search-button search-clear" id="search-clear-desktop" title="清空">
+                        <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z"/></svg>
+                    </button>
+                    <span class="search-button search-loading tw-animate-spin" id="search-loading-desktop">
+                        <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M304 48c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48zm-48 368c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm208-208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zM96 256c0-26.51-21.49-48-48-48S0 229.49 0 256s21.49 48 48 48 48-21.49 48-48zm12.922 99.078c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.491-48-48-48zm294.156 0c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.49-48-48-48zM108.922 60.922c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.491-48-48-48z"/></svg>
+                    </span>
+                </span><button class="menu-item theme-switch" aria-label="切换主题">
+                    <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M8 256c0 136.966 111.033 248 248 248s248-111.034 248-248S392.966 8 256 8 8 119.033 8 256zm248 184V72c101.705 0 184 82.311 184 184 0 101.705-82.311 184-184 184z"/></svg>
+                </button></div>
+        </div>
+    </div>
+</header><header class="mobile print:!tw-hidden" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="吾铭子">吾铭子</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                <div class="search mobile" id="search-mobile">
+                    <input type="text"
+                        placeholder="搜索文章标题或内容..."
+                        id="search-input-mobile">
+                    <button class="search-button search-toggle tw-h-10" id="search-toggle-mobile" title="搜索">
+                        <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+                    </button>
+                    <button class="search-button search-clear tw-h-fit" id="search-clear-mobile" title="清空">
+                        <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z"/></svg>
+                    </button>
+                    <span class="search-button search-loading tw-animate-spin" id="search-loading-mobile">
+                        <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M304 48c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48zm-48 368c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm208-208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zM96 256c0-26.51-21.49-48-48-48S0 229.49 0 256s21.49 48 48 48 48-21.49 48-48zm12.922 99.078c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.491-48-48-48zm294.156 0c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.49-48-48-48zM108.922 60.922c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.491-48-48-48z"/></svg>
+                    </span>
+                </div>
+                <button class="search-cancel" id="search-cancel-mobile">
+                    取消
+                </button>
+            </div><a class="menu-item" href="/posts/" title="" >归档</a><a class="menu-item" href="/tags/" title="" >标签</a><a class="menu-item" href="/categories/" title="" >分类</a><a class="menu-item" href="/about/" title="" >关于</a><a class="menu-item" href="/essay/" title="" >日志</a><button class="menu-item theme-switch tw-w-full" aria-label="切换主题">
+                <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M8 256c0 136.966 111.033 248 248 248s248-111.034 248-248S392.966 8 256 8 8 119.033 8 256zm248 184V72c101.705 0 184 82.311 184 184 0 101.705-82.311 184-184 184z"/></svg>
+            </button></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div><main class="tw-mx-4 tw-flex-1"><div class="toc print:!tw-hidden" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#linux深入">Linux深入</a>
+      <ul>
+        <li><a href="#内联汇编">内联汇编</a></li>
+        <li><a href="#同步互斥的深入">同步互斥的深入</a>
+          <ul>
+            <li><a href="#原子操作">原子操作</a></li>
+          </ul>
+        </li>
+        <li><a href="#锁">锁</a>
+          <ul>
+            <li><a href="#自旋锁">自旋锁</a></li>
+            <li><a href="#睡眠锁">睡眠锁</a></li>
+          </ul>
+        </li>
+        <li><a href="#usart">USART</a>
+          <ul>
+            <li><a href="#printk">printk</a></li>
+          </ul>
+        </li>
+        <li><a href="#pci与pcie">PCI与PCIe</a>
+          <ul>
+            <li><a href="#pci总线原理">PCI总线原理</a></li>
+            <li><a href="#pcie总线原理">PCIe总线原理</a>
+              <ul>
+                <li><a href="#pcie三种路由方式">PCIe三种路由方式</a></li>
+              </ul>
+            </li>
+            <li><a href="#pcie驱动设备模型">PCIe驱动设备模型</a></li>
+          </ul>
+        </li>
+        <li><a href="#usb20">USB2.0</a>
+          <ul>
+            <li><a href="#低速全速与高速信号的识别">低速，全速与高速信号的识别</a></li>
+            <li><a href="#数据传输特点">数据传输特点</a></li>
+            <li><a href="#协议内容">协议内容</a></li>
+            <li><a href="#设备配置过程">设备配置过程</a></li>
+            <li><a href="#otg">OTG</a></li>
+          </ul>
+        </li>
+        <li><a href="#i2c深入">I2C深入</a></li>
+        <li><a href="#spi深入">SPI深入</a></li>
+        <li><a href="#gpio深入">GPIO深入</a></li>
+        <li><a href="#pinctl深入">Pinctl深入</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+    </div><dialog id="toc-dialog" class="tw-max-w-full tw-w-full tw-max-h-full tw-h-full tw-ml-16">
+        <div class="toc tw-mx-4 tw-max-w-full">
+            <h2 class="tw-mx-0 tw-my-6 tw-uppercase tw-text-2xl">目录</h2>
+            <div class="toc-content"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#linux深入">Linux深入</a>
+      <ul>
+        <li><a href="#内联汇编">内联汇编</a></li>
+        <li><a href="#同步互斥的深入">同步互斥的深入</a>
+          <ul>
+            <li><a href="#原子操作">原子操作</a></li>
+          </ul>
+        </li>
+        <li><a href="#锁">锁</a>
+          <ul>
+            <li><a href="#自旋锁">自旋锁</a></li>
+            <li><a href="#睡眠锁">睡眠锁</a></li>
+          </ul>
+        </li>
+        <li><a href="#usart">USART</a>
+          <ul>
+            <li><a href="#printk">printk</a></li>
+          </ul>
+        </li>
+        <li><a href="#pci与pcie">PCI与PCIe</a>
+          <ul>
+            <li><a href="#pci总线原理">PCI总线原理</a></li>
+            <li><a href="#pcie总线原理">PCIe总线原理</a>
+              <ul>
+                <li><a href="#pcie三种路由方式">PCIe三种路由方式</a></li>
+              </ul>
+            </li>
+            <li><a href="#pcie驱动设备模型">PCIe驱动设备模型</a></li>
+          </ul>
+        </li>
+        <li><a href="#usb20">USB2.0</a>
+          <ul>
+            <li><a href="#低速全速与高速信号的识别">低速，全速与高速信号的识别</a></li>
+            <li><a href="#数据传输特点">数据传输特点</a></li>
+            <li><a href="#协议内容">协议内容</a></li>
+            <li><a href="#设备配置过程">设备配置过程</a></li>
+            <li><a href="#otg">OTG</a></li>
+          </ul>
+        </li>
+        <li><a href="#i2c深入">I2C深入</a></li>
+        <li><a href="#spi深入">SPI深入</a></li>
+        <li><a href="#gpio深入">GPIO深入</a></li>
+        <li><a href="#pinctl深入">Pinctl深入</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+        </div>
+    </dialog><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single print:!tw-w-full print:!tw-max-w-none print:!tw-m-0 print:!tw-p-0"><h1 class="single-title" data-pagefind-meta="date:2024-02-23" data-pagefind-body>Linux深入</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 96c48.6 0 88 39.4 88 88s-39.4 88-88 88-88-39.4-88-88 39.4-88 88-88zm0 344c-58.7 0-111.3-26.6-146.5-68.2 18.8-35.4 55.6-59.8 98.5-59.8 2.4 0 4.8.4 7.1 1.1 13 4.2 26.6 6.9 40.9 6.9 14.3 0 28-2.7 40.9-6.9 2.3-.7 4.7-1.1 7.1-1.1 42.9 0 79.7 24.4 98.5 59.8C359.3 421.4 306.7 448 248 448z"/></svg><a href="wumingzi.top" title="Author" rel=" author" class="author">吾铭子</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category"><a href="/categories/tech/"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M464 128H272l-54.63-54.63c-6-6-14.14-9.37-22.63-9.37H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V176c0-26.51-21.49-48-48-48zm0 272H48V112h140.12l54.63 54.63c6 6 14.14 9.37 22.63 9.37H464v224z"/></svg>Tech</a></span></div>
+            <div class="post-meta-line"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>&nbsp;<time datetime="2024-02-23">2024-02-23</time>&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg>&nbsp;<time datetime="2025-03-31">2025-03-31</time>&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;约 8204 字&nbsp;
+                    <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;预计阅读 36 分钟&nbsp;</div>
+        </div><div class="details toc print:!tw-block" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span class="details-icon"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#linux深入">Linux深入</a>
+      <ul>
+        <li><a href="#内联汇编">内联汇编</a></li>
+        <li><a href="#同步互斥的深入">同步互斥的深入</a>
+          <ul>
+            <li><a href="#原子操作">原子操作</a></li>
+          </ul>
+        </li>
+        <li><a href="#锁">锁</a>
+          <ul>
+            <li><a href="#自旋锁">自旋锁</a></li>
+            <li><a href="#睡眠锁">睡眠锁</a></li>
+          </ul>
+        </li>
+        <li><a href="#usart">USART</a>
+          <ul>
+            <li><a href="#printk">printk</a></li>
+          </ul>
+        </li>
+        <li><a href="#pci与pcie">PCI与PCIe</a>
+          <ul>
+            <li><a href="#pci总线原理">PCI总线原理</a></li>
+            <li><a href="#pcie总线原理">PCIe总线原理</a>
+              <ul>
+                <li><a href="#pcie三种路由方式">PCIe三种路由方式</a></li>
+              </ul>
+            </li>
+            <li><a href="#pcie驱动设备模型">PCIe驱动设备模型</a></li>
+          </ul>
+        </li>
+        <li><a href="#usb20">USB2.0</a>
+          <ul>
+            <li><a href="#低速全速与高速信号的识别">低速，全速与高速信号的识别</a></li>
+            <li><a href="#数据传输特点">数据传输特点</a></li>
+            <li><a href="#协议内容">协议内容</a></li>
+            <li><a href="#设备配置过程">设备配置过程</a></li>
+            <li><a href="#otg">OTG</a></li>
+          </ul>
+        </li>
+        <li><a href="#i2c深入">I2C深入</a></li>
+        <li><a href="#spi深入">SPI深入</a></li>
+        <li><a href="#gpio深入">GPIO深入</a></li>
+        <li><a href="#pinctl深入">Pinctl深入</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content" data-pagefind-body><p>Linux驱动深入，包含PCIE，USB以及常用子系统的<strong>粗浅介绍</strong></p>
+<!-- more -->
+<h1 id="linux深入" class="headerLink">
+    <a href="#linux%e6%b7%b1%e5%85%a5" class="header-mark"></a>Linux深入</h1><h2 id="内联汇编" class="headerLink">
+    <a href="#%e5%86%85%e8%81%94%e6%b1%87%e7%bc%96" class="header-mark"></a>内联汇编</h2><p>为了保证效率或者使用特殊指令(如原子操作)时需要使用汇编，使用方法是：单独将汇编代码放在.S文件中，在C函数中使用extern声明之后就可以使用汇编文件里的函数了</p>
+<p>对于内联汇编需要使用__asm___关键字修饰函数
+
+<figure><a class="lightgallery" href="assets/30092012266713.webp" title="2024-02-13_12-19" data-thumbnail="assets/30092012266713.webp" data-sub-html="<h2> </h2><p>2024-02-13_12-19</p>"><img   src='assets/30092012266713.webp'   alt="2024-02-13_12-19"  ></a><figcaption class="image-caption">2024-02-13_12-19</figcaption>
+    </figure></p>
+<h2 id="同步互斥的深入" class="headerLink">
+    <a href="#%e5%90%8c%e6%ad%a5%e4%ba%92%e6%96%a5%e7%9a%84%e6%b7%b1%e5%85%a5" class="header-mark"></a>同步互斥的深入</h2><p>在单核CPU上关中断开中断是可以实现同步互斥的，但是在多核CPU上开关中断不能保证其他CPU不会修改临界变量</p>
+<h3 id="原子操作" class="headerLink">
+    <a href="#%e5%8e%9f%e5%ad%90%e6%93%8d%e4%bd%9c" class="header-mark"></a>原子操作</h3><p>对于ARMv6之前的内核，通过关中断恢复中断来实现原子操作，但是在v6之后(包括v6)，由于arm支持SMP(多核CPU)，因此不能简单的使用开关中断来实现原子操作，而是使用ldrex，strex汇编语句来实现，其根本原理是在要ldr数据上打上标记，在要str的数据上消除标记，根据能否消除标记而返回不同的值，根据值来判断是否申请资源成功，不成功的话则再次重复，直到能申请资源为止</p>
+<p>
+<figure><a class="lightgallery" href="assets/333854115259382.webp" title="2024-02-13_15-41" data-thumbnail="assets/333854115259382.webp" data-sub-html="<h2> </h2><p>2024-02-13_15-41</p>"><img   src='assets/333854115259382.webp'   alt="2024-02-13_15-41"  ></a><figcaption class="image-caption">2024-02-13_15-41</figcaption>
+    </figure></p>
+<h2 id="锁" class="headerLink">
+    <a href="#%e9%94%81" class="header-mark"></a>锁</h2><h3 id="自旋锁" class="headerLink">
+    <a href="#%e8%87%aa%e6%97%8b%e9%94%81" class="header-mark"></a>自旋锁</h3><p>自旋锁无法休眠，当一段临界区被加上自旋锁时，如果CPU0与CPU1都竞争临界区只有CPU0获得资源的话，那么CPU1不会休眠而是会反复请求资源(当写程序时，在进中断时也要加自旋锁来防止其他CPU打断当前CPU执行irq)，因此，使用自旋锁时临界区代码要尽量精简(5行左右)，且不能休眠</p>
+<p>自旋锁在 <strong>单核系统(UP)</strong> 还可以用来禁止调度防止抢占，对于不同的自旋锁他有不同的防止抢占方式，比如对于最普通的spin_lock()而言，他只能关闭调度，而对于spin_lock_irq()而言，它可以关闭中断</p>
+<p>自旋锁的实现：每个自旋锁上都有当前任务编号，和当前任务编号+1的下一个任务编号，内核会检查想要申请资源的自旋锁任务编号与当前自旋锁下一个任务编号是否相同，相同的话则获得锁，否则wfe休眠一段时间</p>
+<h3 id="睡眠锁" class="headerLink">
+    <a href="#%e7%9d%a1%e7%9c%a0%e9%94%81" class="header-mark"></a>睡眠锁</h3><p>睡眠锁有mutex和semaphore两种</p>
+<p>对于信号量来说，它可以休眠，因此对于临界区代码可以比自旋锁复杂很多，信号量用于多进程间访问同步和互斥，而互斥锁用于保护某个临界资源</p>
+<p>在信号量结构体中，需要用到自旋锁</p>
+<p>semaphore的实现：semaphore结构体中有spinlock，还有个count和wait_list，当使用spinlock_up获取semaphore时，首先需要获得spinlock，如果成功获得则需要让count++，否则把自己挂载到wait_list上</p>
+<p>mutex的实现：与semaphore类似，但是由于追求效率会更为复杂，里面配置了宏开关来优化效率，通过宏可以选择等待mutex的线程是否休眠(休眠开销太大)。当进入临界区获取资源时也可以自动判断使用fastpath还是slowpath</p>
+<p>fastpath与slowpath：
+当一段临界区代码很短且需要mutex时，这时大概率会出现线程不需要等待而直接获取资源，并且解锁时也不需要唤醒其他线程，这种情况称为fastpath，而需要等待获取资源且需要唤醒其他线程称为slowpath，两个的选择取决于mutex结构体中的count(是个原子变量)，count值为1时表示unlocked，此时其他线程可以获得锁，count值为0时代表locked，需要解锁，但是当前执行任务的线程解锁后不需要唤醒其他任务此时为fastpath，当count值为-1时，代表当前任务解锁后还需要唤醒其他线程，这时是slowpath</p>
+<p>mutex的实现比semaphore更复杂，这是因为mutex追求更高的效率，在写驱动程序的时候尽量使用mutex</p>
+<h2 id="usart" class="headerLink">
+    <a href="#usart" class="header-mark"></a>USART</h2><p>访问虚拟终端中的<strong>前台</strong>终端：/dev/tty0
+访问当前程序运行的终端(考虑真实的USART等终端)：/dev/tty (不会输出信息到其他tty)</p>
+<p>在驱动模块崩溃时可以查看LR来找到崩溃的函数
+当驱动程序错误时，可以使用<strong>strace  -o  log.txt ./exe</strong>可以在log.txt里获得系统调用</p>
+<h3 id="printk" class="headerLink">
+    <a href="#printk" class="header-mark"></a>printk</h3><p>printk后面可以加上打印级别，如果不指定打印级别则会默认打印级别，当console设置的打印级别低于内核级别时则不会打印printk。如果想在多个控制台打印时，可以在设备树或者uboot指定console=tty0，console=tty1，但是只有最后指定的console会收到串口信息。实际上，uboot也是通过修改设备树来实现更改打印终端的</p>
+<div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
+  <div class="
+    
+    tw-flex 
+    tw-flex-row
+    tw-flex-1 
+    tw-justify-between 
+    tw-w-full tw-bg-bgColor-secondary
+    ">      
+    <button 
+      class="
+        code-block-button
+        tw-mx-2 
+        tw-flex
+        tw-flex-row
+        tw-flex-1"
+      aria-hidden="true">
+          <div class="group-[.is-open]:tw-rotate-90 tw-transition-[transform] tw-duration-500 tw-ease-in-out print:!tw-hidden tw-w-min tw-h-min tw-my-1 tw-mx-1"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg></div>
+          <p class="tw-select-none !tw-my-1">shell</p>
+      </button>
+
+   <div class="tw-flex">
+      <button 
+        class="
+          line-number-button
+          tw-mx-2 
+          tw-hidden 
+          group-[.is-open]:tw-block 
+          group-[.show-line-numbers]:tw-text-fgColor-link 
+          print:!tw-hidden" 
+        title="Toggle line numbers"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M61.77 401l17.5-20.15a19.92 19.92 0 0 0 5.07-14.19v-3.31C84.34 356 80.5 352 73 352H16a8 8 0 0 0-8 8v16a8 8 0 0 0 8 8h22.83a157.41 157.41 0 0 0-11 12.31l-5.61 7c-4 5.07-5.25 10.13-2.8 14.88l1.05 1.93c3 5.76 6.29 7.88 12.25 7.88h4.73c10.33 0 15.94 2.44 15.94 9.09 0 4.72-4.2 8.22-14.36 8.22a41.54 41.54 0 0 1-15.47-3.12c-6.49-3.88-11.74-3.5-15.6 3.12l-5.59 9.31c-3.72 6.13-3.19 11.72 2.63 15.94 7.71 4.69 20.38 9.44 37 9.44 34.16 0 48.5-22.75 48.5-44.12-.03-14.38-9.12-29.76-28.73-34.88zM496 224H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-160H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 320H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zM16 160h64a8 8 0 0 0 8-8v-16a8 8 0 0 0-8-8H64V40a8 8 0 0 0-8-8H32a8 8 0 0 0-7.14 4.42l-8 16A8 8 0 0 0 24 64h8v64H16a8 8 0 0 0-8 8v16a8 8 0 0 0 8 8zm-3.91 160H80a8 8 0 0 0 8-8v-16a8 8 0 0 0-8-8H41.32c3.29-10.29 48.34-18.68 48.34-56.44 0-29.06-25-39.56-44.47-39.56-21.36 0-33.8 10-40.46 18.75-4.37 5.59-3 10.84 2.8 15.37l8.58 6.88c5.61 4.56 11 2.47 16.12-2.44a13.44 13.44 0 0 1 9.46-3.84c3.33 0 9.28 1.56 9.28 8.75C51 248.19 0 257.31 0 304.59v4C0 316 5.08 320 12.09 320z"/></svg></button>
+
+      <button 
+        class="
+          wrap-code-button
+          tw-select-none 
+          tw-mx-2 
+          tw-hidden 
+          group-[.is-open]:tw-block 
+          group-[.is-wrap]:tw-text-fgColor-link 
+          print:!tw-hidden" 
+        title="Toggle code wrap"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"/></svg></button>
+      
+      <button 
+        class="
+          copy-code-button
+          tw-select-none
+          tw-mx-2 
+          tw-hidden
+          group-[.is-open]:tw-block
+          hover:tw-text-fgColor-link 
+          print:!tw-hidden"
+        title="Copy code">
+          <span class="copy-icon tw-block"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z"/></svg></span>
+          <span class="check-icon tw-hidden"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"/></svg></span>
+      </button>
+        
+      <button 
+        class="
+          tw-select-none 
+          tw-mx-2 
+          tw-block 
+          group-[.is-open]:tw-hidden 
+          print:!tw-hidden" 
+        disabled
+        aria-hidden="true"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z"/></svg></button>
+    </div>
+  </div>
+  <pre style="counter-reset: codeblock;" class="tw-block tw-m-0 tw-p-0"><code 
+    id="codeblock-id-1" 
+    class="
+      chroma 
+      !tw-block 
+      tw-p-0
+      tw-m-0
+      tw-transition-[max-height] 
+      tw-duration-500 
+      tw-ease-in-out 
+      group-[.is-closed]:!tw-max-h-0 
+      group-[.is-wrap]:tw-text-wrap
+      tw-overflow-y-hidden
+      tw-overflow-x-auto
+      tw-scrollbar-thin
+      "><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;1    4    1    7&#34;</span> &gt; /proc/sys/kernel/prink
+</span></span><span class="line"><span class="cl">//可以修改打印级别，第一个1为console消息级别，4为默认级别</span></span></code></pre>
+</div>
+<p>
+<figure><a class="lightgallery" href="assets/348042421240255.webp" title="2024-02-14_21-24" data-thumbnail="assets/348042421240255.webp" data-sub-html="<h2> </h2><p>2024-02-14_21-24</p>"><img   src='assets/348042421240255.webp'   alt="2024-02-14_21-24"  ></a><figcaption class="image-caption">2024-02-14_21-24</figcaption>
+    </figure></p>
+<h2 id="pci与pcie" class="headerLink">
+    <a href="#pci%e4%b8%8epcie" class="header-mark"></a>PCI与PCIe</h2><p>为了简化CPU与外部设备通信及硬件连线使得访问外设像访问内存一样，PCI总线应运而生。有了PCI后，CPU不必关注具体的操作细节，比如不使用PCI，CPU与GPIO，I2C等设备直接相连时，程序员需要关注GPIO，I2C等设备的具体实现，而使用PCI总线时，直接访问PCI设备控制器即可，具体访问操作会由PCI硬件实现，同时也会简化硬件的连线复杂度
+但是引入PCI总线也会导致设备地址空间分配问题，为了解决这个问题，PCI采用地址偏移量的思想：首先由CPU分配设备内存地址空间，并由PCI设备控制器维护并计算所需要的地址偏移量，待到CPU需要访问具体地址时，由PCI所记录的地址偏移量即可算出真实的物理地址，PCI地址数据线是复用的
+为了保证传输速率，PCI一开始被设计为并行总线，但由于速率提高之后并行总线会导致信号干扰，因此新的PCIe总线也诞生了，它采用了串行总线差分信号的结构，这会支持更高的速率</p>
+<p>在PCIe中，一对发送接收差分线称为lane，对于低速PCIe，例如PCIe转串口而言只有一条lane，对于视频音频卡而言有多条lane，两PCIe设备之间称为一条link</p>
+<h3 id="pci总线原理" class="headerLink">
+    <a href="#pci%e6%80%bb%e7%ba%bf%e5%8e%9f%e7%90%86" class="header-mark"></a>PCI总线原理</h3><p>由于PCI总线为并行传输，数据地址统一不做区分的发送到AD引脚上</p>
+<p>
+<figure><a class="lightgallery" href="assets/289363023240259.webp" title="2024-02-18_23-30" data-thumbnail="assets/289363023240259.webp" data-sub-html="<h2> </h2><p>2024-02-18_23-30</p>"><img   src='assets/289363023240259.webp'   alt="2024-02-18_23-30"  ></a><figcaption class="image-caption">2024-02-18_23-30</figcaption>
+    </figure></p>
+<p>对于非桥设备而言会PCI会发出type0信号以表示访问非桥设备</p>
+<p>
+<figure><a class="lightgallery" href="assets/552403423246552.webp" title="2024-02-18_23-34" data-thumbnail="assets/552403423246552.webp" data-sub-html="<h2> </h2><p>2024-02-18_23-34</p>"><img   src='assets/552403423246552.webp'   alt="2024-02-18_23-34"  ></a><figcaption class="image-caption">2024-02-18_23-34</figcaption>
+    </figure></p>
+<p>如果想设置PCI设备的地址，首先要在IDSET引脚置高电平，然后由CPU发出cpuaddr，经PCI控制器转换后得到PCIaddr，再发送type1命令并根据type0的function number设置具体的功能，最后按照register number设置寄存器的值，具体的配置项如下图，此配置项写在PCI设备的寄存器内。包含了设备ID，厂家ID，创建设备时申请多大的PCI空间
+如果想读写PCI设备的地址，需要按照手册在C/BE引脚设置值，然后设置frame引脚，再发送type0命令，当frame引脚为低电平时遇到的第一个时钟发出的AD信号是addr，第二个发出的则是data</p>
+<p>
+<figure><a class="lightgallery" href="assets/73993423258685.webp" title="2024-02-18_23-33" data-thumbnail="assets/73993423258685.webp" data-sub-html="<h2> </h2><p>2024-02-18_23-33</p>"><img   src='assets/73993423258685.webp'   alt="2024-02-18_23-33"  ></a><figcaption class="image-caption">2024-02-18_23-33</figcaption>
+    </figure></p>
+<p>
+<figure><a class="lightgallery" href="assets/23054423266718.webp" title="2024-02-18_23-43" data-thumbnail="assets/23054423266718.webp" data-sub-html="<h2> </h2><p>2024-02-18_23-43</p>"><img   src='assets/23054423266718.webp'   alt="2024-02-18_23-43"  ></a><figcaption class="image-caption">2024-02-18_23-43</figcaption>
+    </figure></p>
+<p>对于桥设备而言
+如果需要配置PCI设备需要发送type1命令，若header type的值为01h则为桥设备，此时需要收到PCI设备根据收到的信息检测bus number，如果在子节点找到bus number那么就转发到下一层PCI设备，如果下一层设备还是桥设备的话就继续转发，直到遇到非桥设备且是目标设备为止，然后根据发送的信息判断是配置还是读写寄存器</p>
+<p>
+<figure><a class="lightgallery" href="assets/308534923259387.webp" title="2024-02-18_23-48" data-thumbnail="assets/308534923259387.webp" data-sub-html="<h2> </h2><p>2024-02-18_23-48</p>"><img   src='assets/308534923259387.webp'   alt="2024-02-18_23-48"  ></a><figcaption class="image-caption">2024-02-18_23-48</figcaption>
+    </figure></p>
+<p>
+<figure><a class="lightgallery" href="assets/454445523255942.webp" title="2024-02-18_23-55" data-thumbnail="assets/454445523255942.webp" data-sub-html="<h2> </h2><p>2024-02-18_23-55</p>"><img   src='assets/454445523255942.webp'   alt="2024-02-18_23-55"  ></a><figcaption class="image-caption">2024-02-18_23-55</figcaption>
+    </figure></p>
+<h3 id="pcie总线原理" class="headerLink">
+    <a href="#pcie%e6%80%bb%e7%ba%bf%e5%8e%9f%e7%90%86" class="header-mark"></a>PCIe总线原理</h3><p>PCIe的配置过程(基于ID的路由方式)：
+PCIe采用深度优先的配置模式，首先由Host将配置信号发送至子设备，首先由 A设备先进行配置，A设备的上层总线号是Bus0，下层总线号是Bus1，于是A设备在其配置寄存器内记录，由于子设备数sub并不确定，A设备先令其值为255。而后再配置A的子设备C，同理将其配置为1，2，255，之后再配置D，当配置到Bus3的下层的具体设备时，会将bus，dev，fuction的值3，0，1、3，0，0记录在设备中，由于遇到了end point，所以返回至D端口，修改sub将其从255修改至3(bus的最大值)，但由于只配置了D，因此还需要配置同层的E设备，配置方式同D下面的end point。之后返回至上层C，将sub值修改为4(C设备下总线号的最大值)</p>
+<p>
+<figure><a class="lightgallery" href="assets/183812710258774.webp" title="2024-03-07_10-25" data-thumbnail="assets/183812710258774.webp" data-sub-html="<h2> </h2><p>2024-03-07_10-25</p>"><img   src='assets/183812710258774.webp'   alt="2024-03-07_10-25"  ></a><figcaption class="image-caption">2024-03-07_10-25</figcaption>
+    </figure>
+
+<figure><a class="lightgallery" href="assets/330711215258686.webp" title="2024-02-19_15-12" data-thumbnail="assets/330711215258686.webp" data-sub-html="<h2> </h2><p>2024-02-19_15-12</p>"><img   src='assets/330711215258686.webp'   alt="2024-02-19_15-12"  ></a><figcaption class="image-caption">2024-02-19_15-12</figcaption>
+    </figure></p>
+<p>PCIe将发送数据分为三层，分别为：事务层，数据链路层，物理层，每层将上下层数据处理后传递给下一层或者上一层，具体收发数据原理如下：</p>
+<p>发送数据时：</p>
+<ul>
+<li>首先由CPU发送原始数据至root complex，由rc处理数据后在事务层得到TLP</li>
+<li>事务层将原始数据前加入header，数据后加入CRC校验，header内包含数据是读写数据还是配置寄存器，包装后的数据被称为TLP，处理后将数据发至数据链路层</li>
+<li>数据链路层规定了数据的重传方式，为此在数据头部添加了seg段，在数据尾部添加了LCRC校验，数据处理完成后将数据发至物理层</li>
+<li>物理层负责将信号拆分并发送出去</li>
+</ul>
+<p>
+<figure><a class="lightgallery" href="assets/331411115240260.webp" title="2024-02-19_15-11" data-thumbnail="assets/331411115240260.webp" data-sub-html="<h2> </h2><p>2024-02-19_15-11</p>"><img   src='assets/331411115240260.webp'   alt="2024-02-19_15-11"  ></a><figcaption class="image-caption">2024-02-19_15-11</figcaption>
+    </figure></p>
+<p>发送数据时：</p>
+<h4 id="pcie三种路由方式" class="headerLink">
+    <a href="#pcie%e4%b8%89%e7%a7%8d%e8%b7%af%e7%94%b1%e6%96%b9%e5%bc%8f" class="header-mark"></a>PCIe三种路由方式</h4><p>上述的配置使用基于ID的路由方式，所谓路由，就是如何找到通讯另一方，而隐式路由指的是地址和ID不单独声明，而是根据type确定通讯地址</p>
+<ul>
+<li>
+<p>物理层负责将信号接收并组合，而后发给数据链路层</p>
+</li>
+<li>
+<p>接收方的数据链路层所做的与发送方相反，即去掉seg和LCRC，处理完毕后发送给事务层</p>
+</li>
+<li>
+<p>同理，事务层将接收的数据，去掉CRC校验和header，从而获得原始的data</p>
+</li>
+<li>
+<p>配置读、配置写：使用基于ID的路由，就是使用&lt;Bus, Device, Function&gt;来寻找对方。配置成功后，每个PCIe设备都有自己的PCIe地址空间了。</p>
+</li>
+<li>
+<p>内存读、内存写或者IO读、IO写：</p>
+<ul>
+<li>发出报文给对方：使用基于地址的路由</li>
+<li>对方返回数据或者返回状态时：使用基于ID的路由</li>
+</ul>
+</li>
+<li>
+<p>各类消息，比如中断、广播等：使用隐式路由</p>
+</li>
+</ul>
+<h3 id="pcie驱动设备模型" class="headerLink">
+    <a href="#pcie%e9%a9%b1%e5%8a%a8%e8%ae%be%e5%a4%87%e6%a8%a1%e5%9e%8b" class="header-mark"></a>PCIe驱动设备模型</h3><h2 id="usb20" class="headerLink">
+    <a href="#usb20" class="header-mark"></a>USB2.0</h2><ul>
+<li>USB设备插到电脑上去，接触到的设备是什么？
+<ul>
+<li>是USB Host hub，一个usb controller，管理所有的USB设备</li>
+</ul>
+</li>
+<li>既然还没有&quot;驱动程序&quot;，为何能知道是&quot;android phone&quot;
+<ul>
+<li>在电脑中USB总线协议驱动程序已经写好了，USB总线根据协议知道是&quot;android phone&quot;</li>
+</ul>
+</li>
+<li>为什么一接入USB设备，PC机就能发现它？
+<ul>
+<li>PC的USB控制器内有下拉电阻，USB设备通过引流5v电源在Data+/Data-引脚处产生上拉电阻，使得当USB插入主机时PC的USB控制器D+引脚有电压跳变，PC通过检测引脚的电压跳变来知道是否有设备连接</li>
+</ul>
+</li>
+<li>USB设备种类非常多，为什么一接入电脑，就能识别出来它的种类？
+<ul>
+<li>USB协议指定设备种类对应的描述符，通过描述符来知道设备的种类</li>
+</ul>
+</li>
+<li>PC机上接有非常多的USB设备，怎么分辨它们？
+<ul>
+<li>根据分配的编号来分辨他们</li>
+</ul>
+</li>
+<li>USB设备刚接入PC时，还没有编号；那么PC怎么把&quot;分配的编号&quot;告诉它
+<ul>
+<li>刚接入的设备默认编号为0，通过此编号就可以与设备通信并分配新的编号</li>
+</ul>
+</li>
+</ul>
+<p>
+<figure><a class="lightgallery" href="assets/426695921246553.webp" title="2024-02-19_21-59" data-thumbnail="assets/426695921246553.webp" data-sub-html="<h2> </h2><p>2024-02-19_21-59</p>"><img   src='assets/426695921246553.webp'   alt="2024-02-19_21-59"  ></a><figcaption class="image-caption">2024-02-19_21-59</figcaption>
+    </figure></p>
+<h3 id="低速全速与高速信号的识别" class="headerLink">
+    <a href="#%e4%bd%8e%e9%80%9f%e5%85%a8%e9%80%9f%e4%b8%8e%e9%ab%98%e9%80%9f%e4%bf%a1%e5%8f%b7%e7%9a%84%e8%af%86%e5%88%ab" class="header-mark"></a>低速，全速与高速信号的识别</h3><p>对于USB2.0而言，支持了高速信号就不能支持低速信号，其设备速率识别方法如下</p>
+<ul>
+<li>对于全速或低速设备而言，由于在Data+/Data-引脚处有个上拉电阻，因此PC可以通过检测Data+/Data-引脚的电平高低来检测支持的速率，如果Data+为高电平，那么支持全速速率，Data-为低电平，那么支持低速速率</li>
+<li>对于高速设备而言，如果检测到设备支持全速速率，那么就断开上拉电阻并给设备发送一个SE0信号，如果设备支持高速模式，那么就会回应一个特殊信号，主机就知道了设备支持高速模式</li>
+</ul>
+<p>工作在高速模式下的设备会断开Data的上拉电阻，这是为了保证高速传输数据时发生干扰，并且还需要在通信双方的D+/D-引脚串联一个45Ohm的电阻，如果不串联电阻，那么发送端的信号到达接收端就会反射，当下次发射信号时，上一次反射的信号会和这一次的信号叠加使信号失真，这种加电阻的方法就叫做<strong>阻抗匹配</strong>，我们检测高速设备是否断开连接时就是检测反射信号的强弱，当设备断开连接时，接收方相当于阻抗无穷大，会造成反射信号的增强。在开发中，如果发现设备总是断开连接也有可能是阻抗匹配没有做好</p>
+<p>
+<figure><a class="lightgallery" href="assets/99161123259388.webp" title="2024-02-19_23-11" data-thumbnail="assets/99161123259388.webp" data-sub-html="<h2> </h2><p>2024-02-19_23-11</p>"><img   src='assets/99161123259388.webp'   alt="2024-02-19_23-11"  ></a><figcaption class="image-caption">2024-02-19_23-11</figcaption>
+    </figure></p>
+<p>
+<img   src='assets/471142623251697.webp'   alt="471142623251697.webp"  ></p>
+<p>USB协议通信数据如下
+
+<img   src='assets/96661723255943.webp'   alt="96661723255943.webp"  ></p>
+<p>sop(start of package)，具体信号参见手册
+enp(end of package)，具体信号参见手册
+sync，同步信号，由于USB没有时钟线只有两条数据线，因此sync是为了确定通信速率的</p>
+<h3 id="数据传输特点" class="headerLink">
+    <a href="#%e6%95%b0%e6%8d%ae%e4%bc%a0%e8%be%93%e7%89%b9%e7%82%b9" class="header-mark"></a>数据传输特点</h3><p>在数据传输方面，USB采用了NRZI(Non Return Zero Inverted Code，反向不归零编码)，NRZI的编码方式为：对于数据0，波形翻转；对于数据1，波形不变。例如对01011110为例，传输的结果是11000001，使用NRZI可以发送一串0来把时钟频率告诉对方
+位填充：由于USB没有时钟线，因此还需要考虑通信双方晶振的误差对信号的影响，例如当传输100个0时，由于晶振的误差会产生接收端接收了99个或101个0的现象，因此协议规定数据包每隔6个1后插入1个0</p>
+<h3 id="协议内容" class="headerLink">
+    <a href="#%e5%8d%8f%e8%ae%ae%e5%86%85%e5%ae%b9" class="header-mark"></a>协议内容</h3><p>一次传输由一个或多个事务实现，事务下层根据目的不同被划分成了三种包，令牌包指明传输的对象和地址，数据包只传输数据，握手包由接收方设备发出，内容为各种应答信号。每个包内部又分为各种域(field)，sop field代表传输的开始，sync field代表传输的速率，PID filed代表传输的包的ID，根据取值不同PID被分为四类，令牌类，数据类，握手类，特殊类，令牌类用于令牌包，表明发送的是令牌类数据。在PID field后的filed就是传输的数据，为了保证数据正确还需要CRC field，在传输的末尾还要加上eop field来表明传输完成</p>
+<p>对于握手包而言没有Data field与CRC field</p>
+<p>
+<figure><a class="lightgallery" href="assets/294182210240261.webp" title="2024-02-20_10-22" data-thumbnail="assets/294182210240261.webp" data-sub-html="<h2> </h2><p>2024-02-20_10-22</p>"><img   src='assets/294182210240261.webp'   alt="2024-02-20_10-22"  ></a><figcaption class="image-caption">2024-02-20_10-22</figcaption>
+    </figure></p>
+<p>USB设备种类繁多有不同要求，这些要求可以分为下列几种</p>
+<ul>
+<li>批量传输：对实时性要求不高，但要求传输可靠，且传输的数据量很大，例如U盘</li>
+<li>实时传输：对数据量要求不大，可靠性要求也不高，但实时性要求很高，例如摄像头</li>
+<li>中断传输：对可靠性和实时性要求都很高：如鼠标</li>
+<li>控制传输：对设备进行控制</li>
+</ul>
+<p>对于批量传输而言，每次传输有三个阶段
+对于中断传输而言，每次传输有三个阶段，但需要Host定期访问设备请求数据以保证实时性
+对于实时传输而言，每次传输有两个阶段，去掉了握手包，类似UDP</p>
+<h3 id="设备配置过程" class="headerLink">
+    <a href="#%e8%ae%be%e5%a4%87%e9%85%8d%e7%bd%ae%e8%bf%87%e7%a8%8b" class="header-mark"></a>设备配置过程</h3><ul>
+<li>得到设备描述符</li>
+<li>设置非零的新地址</li>
+<li>再次获得设备描述符</li>
+<li>获得配置描述符，并同时获得接口描述符和端点描述符</li>
+<li>设置配置</li>
+</ul>
+<h3 id="otg" class="headerLink">
+    <a href="#otg" class="header-mark"></a>OTG</h3><p>OTG(On To Go)，插上即用的缩写。OTG是USB2.0协议的补充，当设备使用OTG连接时，两方设备可以在不经过PC的情况下可以直接通信。</p>
+<p>OTG通过内部硬件的上拉电阻来识别Host/Device，Host通过ID引脚的取值决定是否向Device供电，供电引脚为VBUS。</p>
+
+<div class="table-wrapper">
+  <table>
+    <thead>
+        <tr>
+            <th style="text-align: ">引脚名</th>
+            <th style="text-align: ">作用</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="text-align: ">VBUS</td>
+            <td style="text-align: ">作为Host时，对外供电<br />作为Device时，接收外部输入的电源</td>
+        </tr>
+        <tr>
+            <td style="text-align: ">DM</td>
+            <td style="text-align: ">数据信号</td>
+        </tr>
+        <tr>
+            <td style="text-align: ">DP</td>
+            <td style="text-align: ">数据信号</td>
+        </tr>
+        <tr>
+            <td style="text-align: ">ID</td>
+            <td style="text-align: ">分辨自己角色的引脚：<br />1：作为Device<br />0：作为Host</td>
+        </tr>
+        <tr>
+            <td style="text-align: ">GND</td>
+            <td style="text-align: ">地线</td>
+        </tr>
+    </tbody>
+  </table>
+</div>
+<p>当插入OTG接口时，id引脚(typec模式时为cc引脚)被连接，id引脚的取值被Host设备的主控芯片(arm)所决定，当arm板以Device模式通信时，由于arm芯片内部有100k的上拉电阻因此三极管是导通的，EN引脚为低电平，5v的电源不能输出，此时为Device模式。而当转换器接入板子时，转换器内部的下拉电阻会将arm的上拉电阻拉低，导致5v电源能够输出，此时arm板可以给外界设备供电，工作在Host模式</p>
+<p>
+<figure><a class="lightgallery" href="assets/445734316258687.webp" title="2024-02-20_16-43" data-thumbnail="assets/445734316258687.webp" data-sub-html="<h2> </h2><p>2024-02-20_16-43</p>"><img   src='assets/445734316258687.webp'   alt="2024-02-20_16-43"  ></a><figcaption class="image-caption">2024-02-20_16-43</figcaption>
+    </figure></p>
+<h2 id="i2c深入" class="headerLink">
+    <a href="#i2c%e6%b7%b1%e5%85%a5" class="header-mark"></a>I2C深入</h2><p>对于通用的platform_device在i2c驱动模型中被称为i2c_client</p>
+<p>
+<figure><a class="lightgallery" href="assets/368701710269666.webp" title="2024-03-08_10-16" data-thumbnail="assets/368701710269666.webp" data-sub-html="<h2> </h2><p>2024-03-08_10-16</p>"><img   src='assets/368701710269666.webp'   alt="2024-03-08_10-16"  ></a><figcaption class="image-caption">2024-03-08_10-16</figcaption>
+    </figure></p>
+<p>I2C驱动框架如图所示，在基础的设备总线驱动模型的基础上加入了adapter适配器，这可以使每一个I2C硬件设备支持不同的adapter使其产生不同的功能。具体的驱动编写框架如下：</p>
+<ul>
+<li>修改设备树或者对应.c文件</li>
+<li>调用i2c专用的register函数使其调用probe函数注册adapter</li>
+<li>实现adapter结构体，实现master_xfer函数以作为adapter成员，master_xfer是最为关键的传输函数</li>
+</ul>
+<p>
+<figure><a class="lightgallery" href="assets/239433619246554.webp" title="2024-02-20_19-30" data-thumbnail="assets/239433619246554.webp" data-sub-html="<h2> </h2><p>2024-02-20_19-30</p>"><img   src='assets/239433619246554.webp'   alt="2024-02-20_19-30"  ></a><figcaption class="image-caption">2024-02-20_19-30</figcaption>
+    </figure></p>
+<p>
+<img   src='assets/311334919266720.webp'   alt="311334919266720.webp"  ></p>
+<p>总结：</p>
+<ul>
+<li>i2c驱动注册时：
+<ul>
+<li>由底层向高层注册，首先根据设备树的配置项注册adapter(i2c的Controller)，配置相关的时序，模式，频率等基本参数，使得芯片可以驱动i2c设备，在注册adapter的同时顺便把client注册了(cilent注册的时机是在adapter靠后的位置)，client负责具体的i2c外设，这由外设厂家编写，配置i2c的初始信号来访问某个固定的寄存器，确定信息传输完成后延时时间，以及对应外设芯片的寄存器配置，使得芯片可以与外设通信。</li>
+<li>在adapter注册时需要的模型是platform-bus模型，内核会根据设备树中的adapter的数量来确定有几个adapter即几条总线，并根据驱动程序和设备树来两两匹配。在每次注册adapter的过程中还需要顺便注册client，它是device-bus模型。内核在注册client时会发送探测信号来扫描总线上是否存在设备，并根据设备树和驱动来两两匹配并注册进内核</li>
+</ul>
+</li>
+<li>i2c驱动使用时：
+<ul>
+<li>由高层向底层调用，当app需要访问某个设备时，首先会找到对应外设的client，根据内部client经过内核的i2c_core找到对应adapter，再找到对应的xfer发送函数来控制adapter发送到对应外设</li>
+</ul>
+</li>
+</ul>
+<p><a href="https://www.eet-china.com/mp/a228520.html" target="_blank" rel="noopener noreferrer">inux驱动：I2C驱动学习看这一篇就够了</a></p>
+<h2 id="spi深入" class="headerLink">
+    <a href="#spi%e6%b7%b1%e5%85%a5" class="header-mark"></a>SPI深入</h2><p>SPI驱动程序设备树框架：</p>
+<ul>
+<li>对于SPI控制器而言，如果使用platform_bus的match函数匹配到了platform_device与platform_driver的话就会调用SPI控制器的probe函数注册生成一个spi_master，除此之外还会生成一个spi_device</li>
+<li>内核从上面得到的spi_device解析，并调用match函数来检测spi设备驱动spi_driver是否匹配，如果匹配就调用SPI设备的probe函数注册生成一个字符设备以及file_operation结构体</li>
+</ul>
+<p>对于SPI控制器而言可以扩展多个设备，具体可以看设备树文件
+由于SPI控制器与SPI设备分别由内核解析，并且采用了分离的思想，因此在写SPI设备的驱动程序时需要调用Linux提供的函数接口来引入SPI控制器的资源，尤其是spi_master.transfer函数</p>
+<p>
+<figure><a class="lightgallery" href="assets/298425915256031.webp" title="2024-03-07_15-58" data-thumbnail="assets/298425915256031.webp" data-sub-html="<h2> </h2><p>2024-03-07_15-58</p>"><img   src='assets/298425915256031.webp'   alt="2024-03-07_15-58"  ></a><figcaption class="image-caption">2024-03-07_15-58</figcaption>
+    </figure></p>
+<p>
+<figure><a class="lightgallery" href="assets/237874415266807.webp" title="2024-03-07_15-43" data-thumbnail="assets/237874415266807.webp" data-sub-html="<h2> </h2><p>2024-03-07_15-43</p>"><img   src='assets/237874415266807.webp'   alt="2024-03-07_15-43"  ></a><figcaption class="image-caption">2024-03-07_15-43</figcaption>
+    </figure></p>
+<p>在SPI子系统一个transfer对应一个传输，为了管理多个传输采用了链表结构，SPI控制器的驱动程序spi_master内部有一个queue，每一个具体设备spi_device都会生成一个message并挂载到queue，每一个message会有多种transfer，这些transfer会挂载到message上</p>
+<p>
+<figure><a class="lightgallery" href="assets/595081621255944.webp" title="2024-02-20_21-16" data-thumbnail="assets/595081621255944.webp" data-sub-html="<h2> </h2><p>2024-02-20_21-16</p>"><img   src='assets/595081621255944.webp'   alt="2024-02-20_21-16"  ></a><figcaption class="image-caption">2024-02-20_21-16</figcaption>
+    </figure></p>
+<p>
+<figure><a class="lightgallery" href="assets/19941422251698.webp" title="2024-02-20_22-13" data-thumbnail="assets/19941422251698.webp" data-sub-html="<h2> </h2><p>2024-02-20_22-13</p>"><img   src='assets/19941422251698.webp'   alt="2024-02-20_22-13"  ></a><figcaption class="image-caption">2024-02-20_22-13</figcaption>
+    </figure></p>
+<p>新方法的spi_master的驱动程序，使用方便但规矩多，支持同步异步传输</p>
+<p>
+<figure><a class="lightgallery" href="assets/506282422269578.webp" title="2024-02-20_22-22" data-thumbnail="assets/506282422269578.webp" data-sub-html="<h2> </h2><p>2024-02-20_22-22</p>"><img   src='assets/506282422269578.webp'   alt="2024-02-20_22-22"  ></a><figcaption class="image-caption">2024-02-20_22-22</figcaption>
+    </figure></p>
+<p>老方法的spi_master的驱动程序，使用繁琐规矩少，支持同步异步传输</p>
+<p>
+<figure><a class="lightgallery" href="assets/197332522267182.webp" title="2024-02-20_22-22_1" data-thumbnail="assets/197332522267182.webp" data-sub-html="<h2> </h2><p>2024-02-20_22-22_1</p>"><img   src='assets/197332522267182.webp'   alt="2024-02-20_22-22_1"  ></a><figcaption class="image-caption">2024-02-20_22-22_1</figcaption>
+    </figure></p>
+<h2 id="gpio深入" class="headerLink">
+    <a href="#gpio%e6%b7%b1%e5%85%a5" class="header-mark"></a>GPIO深入</h2><p>GPIO Controller驱动是编程的核心，其他LED，Button驱动程序只是调用GPIO Controller驱动的函数，对于LED，Button驱动程序只需要调用内核的GPIO lib库即可，我们编写控制器驱动程序的时候也只需要将驱动注册进GPIO lib库</p>
+<p>
+<img   src='assets/509103522264684.webp'   alt="509103522264684.webp"  ></p>
+<p>一个GPIO Controller对应一个GPIO device结构体，其内部有chips(相当于fop)，desc(描述单个引脚的数组指针，内部描述了引脚的高低电平，输入输出模式等)，base(引脚基地址等)</p>
+<p>
+<figure><a class="lightgallery" href="assets/236145522245925.webp" title="2024-02-20_22-55" data-thumbnail="assets/236145522245925.webp" data-sub-html="<h2> </h2><p>2024-02-20_22-55</p>"><img   src='assets/236145522245925.webp'   alt="2024-02-20_22-55"  ></a><figcaption class="image-caption">2024-02-20_22-55</figcaption>
+    </figure></p>
+<p>Pinctl子系统会统一管理引脚，GPIO引脚与Pinctl引脚的映射统一在设备树中管理</p>
+<p>
+<figure><a class="lightgallery" href="assets/306550423268365.webp" title="2024-02-20_23-04" data-thumbnail="assets/306550423268365.webp" data-sub-html="<h2> </h2><p>2024-02-20_23-04</p>"><img   src='assets/306550423268365.webp'   alt="2024-02-20_23-04"  ></a><figcaption class="image-caption">2024-02-20_23-04</figcaption>
+    </figure></p>
+<h2 id="pinctl深入" class="headerLink">
+    <a href="#pinctl%e6%b7%b1%e5%85%a5" class="header-mark"></a>Pinctl深入</h2><p>使用设备树时分为Pinctl Controller与Client</p>
+<p>
+<img   src='assets/177683023263501.webp'   alt="177683023263501.webp"  ></p>
+<p>每一个Pinctl Controller都会使用Pinctl device来描述，Pinctl Controller有三大功能：引脚配置，复用及命名，三者统一在pinctrl_dev.pinctrl_decs结构体中实现
+如果写Pinctl Controller驱动，则需要实现pinctrl_decs，并使用pinctrl_register注册</p>
+<p>
+<figure><a class="lightgallery" href="assets/573293123257047.webp" title="2024-02-20_23-31" data-thumbnail="assets/573293123257047.webp" data-sub-html="<h2> </h2><p>2024-02-20_23-31</p>"><img   src='assets/573293123257047.webp'   alt="2024-02-20_23-31"  ></a><figcaption class="image-caption">2024-02-20_23-31</figcaption>
+    </figure></p>
+<p>platform_device从设备树中解析得到，里面会构造一个dev.dev_pin_info结构体，内部的pinctrl与pinctrl_state结构体储存了设备树中节点的信息</p>
+<p>
+<figure><a class="lightgallery" href="assets/361124423250181.webp" title="2024-02-20_23-44" data-thumbnail="assets/361124423250181.webp" data-sub-html="<h2> </h2><p>2024-02-20_23-44</p>"><img   src='assets/361124423250181.webp'   alt="2024-02-20_23-44"  ></a><figcaption class="image-caption">2024-02-20_23-44</figcaption>
+    </figure></p>
+<p>Pinctl Controller下的子节点会被内核解析成一个个pinctrl_map，然后被转换为成一个个pinctrl_setting挂载到pinctrl_state，client就可以从pinctrl_state结构体中获得设备树信息</p>
+<p>
+<figure><a class="lightgallery" href="assets/165440100243216.webp" title="2024-02-21_00-00" data-thumbnail="assets/165440100243216.webp" data-sub-html="<h2> </h2><p>2024-02-21_00-00</p>"><img   src='assets/165440100243216.webp'   alt="2024-02-21_00-00"  ></a><figcaption class="image-caption">2024-02-21_00-00</figcaption>
+    </figure></p>
+<p>
+<figure><a class="lightgallery" href="assets/204334523240711.webp" title="2024-02-20_23-45" data-thumbnail="assets/204334523240711.webp" data-sub-html="<h2> </h2><p>2024-02-20_23-45</p>"><img   src='assets/204334523240711.webp'   alt="2024-02-20_23-45"  ></a><figcaption class="image-caption">2024-02-20_23-45</figcaption>
+    </figure></p>
+</div>
+
+        <div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2025-03-31</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line print:!tw-hidden">
+            <div class="post-info-md"><span><a class="link-to-mardown" href=/posts/linux-advanced/index.md target="_blank" rel="noopener noreferrer">阅读原始文档</a>
+                    </span></div>
+            <div class="post-info-share"></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.941 225.941L286.059 14.059A48 48 0 0 0 252.118 0H48C21.49 0 0 21.49 0 48v204.118a48 48 0 0 0 14.059 33.941l211.882 211.882c18.744 18.745 49.136 18.746 67.882 0l204.118-204.118c18.745-18.745 18.745-49.137 0-67.882zM112 160c-26.51 0-48-21.49-48-48s21.49-48 48-48 48 21.49 48 48-21.49 48-48 48zm513.941 133.823L421.823 497.941c-18.745 18.745-49.137 18.745-67.882 0l-.36-.36L527.64 323.522c16.999-16.999 26.36-39.6 26.36-63.64s-9.362-46.641-26.36-63.64L331.397 0h48.721a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882z"/></svg>&nbsp;<a href="/tags/os/">OS</a>,&nbsp;<a href="/tags/tech/">Tech</a></section>
+        <section class="print:!tw-hidden">
+            <span><button class="tw-text-fgColor-link-muted hover:tw-text-fgColor-link-muted-hover" onclick="window.history.back();">返回</button></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav print:tw-hidden"><a href="/posts/linux-kernel/" class="prev" rel="prev" title="Linux内核"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z"/></svg>Linux内核</a>
+            <a href="/posts/computer-network/" class="next" rel="next" title="计算机网络">计算机网络<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></a></div>
+</div>
+</article></main><footer class="footer">
+        <div class="footer-container">
+            <div class="footer-line">
+                <span id="run-time"></span>
+            </div><div class="footer-line">
+                    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.146.1">Hugo</a>&nbsp;|&nbsp;Theme - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.4.1"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg> DoIt</a>
+                </div><div class="footer-line"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 448c-110.532 0-200-89.451-200-200 0-110.531 89.451-200 200-200 110.532 0 200 89.451 200 200 0 110.532-89.451 200-200 200zm107.351-101.064c-9.614 9.712-45.53 41.396-104.065 41.396-82.43 0-140.484-61.425-140.484-141.567 0-79.152 60.275-139.401 139.762-139.401 55.531 0 88.738 26.62 97.593 34.779a11.965 11.965 0 0 1 1.936 15.322l-18.155 28.113c-3.841 5.95-11.966 7.282-17.499 2.921-8.595-6.776-31.814-22.538-61.708-22.538-48.303 0-77.916 35.33-77.916 80.082 0 41.589 26.888 83.692 78.277 83.692 32.657 0 56.843-19.039 65.726-27.225 5.27-4.857 13.596-4.039 17.82 1.738l19.865 27.17a11.947 11.947 0 0 1-1.152 15.518z"/></svg>2023 - 2025<span class="author">&nbsp;<a href="wumingzi.top" target="_blank" rel="noopener noreferrer">吾铭子</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer><div class="print:!tw-hidden tw-flex tw-flex-col tw-fixed tw-right-4 tw-bottom-4 tw-gap-2"><a href="#back-to-top" id="back-to-top-button" class="tw-transition-opacity tw-opacity-0 tw-block tw-bg-bgColor-secondary tw-rounded-full" style="padding: 0.6rem; line-height: 1.3rem; font-size: 1rem;" title="回到顶部">
+      <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg>
+  </a>
+
+  <button id="toc-drawer-button" class="tw-block tw-bg-bgColor-secondary tw-rounded-full md:tw-hidden" style="padding: 0.6rem; line-height: 1.3rem; font-size: 1rem;">
+      <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"/></svg>
+  </button></div>
+<link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/lightgallery/lightgallery.min.css">
+        <noscript><link rel="stylesheet" href="/lib/lightgallery/lightgallery.min.css"></noscript><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/katex/copy-tex.min.css">
+        <noscript><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"></noscript>
+<script>window.config={"autocomplete.min.js":"/lib/autocomplete/autocomplete.min.js","comment":{},"lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"pagefind.js":"/pagefind/pagefind.js","search":{"highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","pageLength":null,"snippetLength":50,"termFrequency":null,"termSaturation":null,"termSimilarity":null,"type":"pagefind"}};</script><script
+    src="/lib/lightgallery/lightgallery.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/lightgallery/lg-thumbnail.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/lightgallery/lg-zoom.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/katex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/auto-render.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/copy-tex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/mhchem.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/js/katex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/js/theme.min.js"
+    
+      defer
+    
+  ></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@2.1.3/dist/jquery.min.js"></script><script type="text/javascript" src="/js/custom.js"></script>
+
+<script type="speculationrules">
+  {
+    "prerender": [
+      {
+        "where": { "href_matches": "/*" },
+        "eagerness": "moderate"
+      }
+    ]
+  }
+</script>
+</body>
+
+</html>

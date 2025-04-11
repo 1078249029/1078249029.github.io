@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" /><title>FreeRTOS - 吾铭子</title><meta name="Description" content="吾铭子"><meta property="og:url" content="https://1078249029.github.io/posts/freertos/">
+  <meta property="og:site_name" content="吾铭子">
+  <meta property="og:title" content="FreeRTOS">
+  <meta property="og:description" content="本文为FreeRTOS的系统性学习的总结，内容包含简单API的使用和RTOS的原理介绍，参考视资料为b站的韦东山视频，内部并未优化排版。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2023-12-24T10:06:40+08:00">
+    <meta property="article:modified_time" content="2024-09-14T16:54:43+08:00">
+    <meta property="article:tag" content="OS">
+    <meta property="article:tag" content="Tech">
+    <meta property="og:image" content="https://1078249029.github.io/logo.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://1078249029.github.io/logo.png">
+  <meta name="twitter:title" content="FreeRTOS">
+  <meta name="twitter:description" content="本文为FreeRTOS的系统性学习的总结，内容包含简单API的使用和RTOS的原理介绍，参考视资料为b站的韦东山视频，内部并未优化排版。">
+<meta name="application-name" content="吾铭子">
+<meta name="apple-mobile-web-app-title" content="吾铭子">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<link rel="canonical" href="https://1078249029.github.io/posts/freertos/" /><link rel="prev" href="https://1078249029.github.io/posts/c-review/" /><link rel="next" href="https://1078249029.github.io/posts/miscs/" />
+<link rel="stylesheet" href="/css/main.min.css"><link rel="stylesheet" href="/css/style.min.css"><script type="application/ld+json">{"@context": "https://schema.org","@type": "BlogPosting",
+        "headline": "FreeRTOS",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://1078249029.github.io/posts/freertos/"
+        },"genre": "posts","keywords":["OS","Tech"],"wordcount":  7925 ,
+        "url": "https://1078249029.github.io/posts/freertos/","datePublished": "2023-12-24T10:06:40+08:00","dateModified": "2024-09-14T16:54:43+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "吾铭子",
+                "url": "wumingzi.top"
+            },"description": ""
+    }</script></head>
+
+
+<body data-instant-intensity="viewport" class="tw-flex tw-min-h-screen tw-flex-col"><script type="text/javascript">
+    function setTheme(theme) {
+      document.body.setAttribute('theme', theme); 
+      document.documentElement.className = theme;
+      document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark');
+      if (theme === 'light') {
+        document.documentElement.classList.remove('tw-dark')
+      } else {
+        document.documentElement.classList.add('tw-dark')
+      }
+      window.theme = theme;   
+      window.isDark = window.theme !== 'light' 
+    }
+    function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+    function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+    if (window.localStorage && localStorage.getItem('theme')) {
+        let theme = localStorage.getItem('theme');
+        if (theme === 'light' || theme === 'dark') {
+        setTheme(theme);
+        } else {
+            if ((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                setTheme('dark');
+            } else {
+                setTheme('light');
+            }
+        }
+      } else { 
+        if ('auto' === 'light' || 'auto' === 'dark') 
+            setTheme('auto'), saveTheme('auto'); 
+        else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');
+    }
+    let metaColors = {'light': '#f8f8f8','dark': '#161b22'}
+    getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+    window.switchThemeEventSet = new Set()
+</script><div id="back-to-top"></div>
+    <div id="mask"></div><header class="desktop print:!tw-hidden" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="吾铭子">吾铭子</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item"
+                    href="/posts/" > 归档 </a><a class="menu-item"
+                    href="/tags/" > 标签 </a><a class="menu-item"
+                    href="/categories/" > 分类 </a><a class="menu-item"
+                    href="/about/" > 关于 </a><a class="menu-item"
+                    href="/essay/" > 日志 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                    <input type="text"
+                        placeholder="搜索文章标题或内容..."
+                        id="search-input-desktop">
+                    <button class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                        <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+                    </button>
+                    <button class="search-button search-clear" id="search-clear-desktop" title="清空">
+                        <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z"/></svg>
+                    </button>
+                    <span class="search-button search-loading tw-animate-spin" id="search-loading-desktop">
+                        <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M304 48c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48zm-48 368c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm208-208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zM96 256c0-26.51-21.49-48-48-48S0 229.49 0 256s21.49 48 48 48 48-21.49 48-48zm12.922 99.078c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.491-48-48-48zm294.156 0c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.49-48-48-48zM108.922 60.922c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.491-48-48-48z"/></svg>
+                    </span>
+                </span><button class="menu-item theme-switch" aria-label="切换主题">
+                    <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M8 256c0 136.966 111.033 248 248 248s248-111.034 248-248S392.966 8 256 8 8 119.033 8 256zm248 184V72c101.705 0 184 82.311 184 184 0 101.705-82.311 184-184 184z"/></svg>
+                </button></div>
+        </div>
+    </div>
+</header><header class="mobile print:!tw-hidden" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="吾铭子">吾铭子</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                <div class="search mobile" id="search-mobile">
+                    <input type="text"
+                        placeholder="搜索文章标题或内容..."
+                        id="search-input-mobile">
+                    <button class="search-button search-toggle tw-h-10" id="search-toggle-mobile" title="搜索">
+                        <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+                    </button>
+                    <button class="search-button search-clear tw-h-fit" id="search-clear-mobile" title="清空">
+                        <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z"/></svg>
+                    </button>
+                    <span class="search-button search-loading tw-animate-spin" id="search-loading-mobile">
+                        <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M304 48c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48zm-48 368c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm208-208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zM96 256c0-26.51-21.49-48-48-48S0 229.49 0 256s21.49 48 48 48 48-21.49 48-48zm12.922 99.078c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.491-48-48-48zm294.156 0c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.49-48-48-48zM108.922 60.922c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.491-48-48-48z"/></svg>
+                    </span>
+                </div>
+                <button class="search-cancel" id="search-cancel-mobile">
+                    取消
+                </button>
+            </div><a class="menu-item" href="/posts/" title="" >归档</a><a class="menu-item" href="/tags/" title="" >标签</a><a class="menu-item" href="/categories/" title="" >分类</a><a class="menu-item" href="/about/" title="" >关于</a><a class="menu-item" href="/essay/" title="" >日志</a><button class="menu-item theme-switch tw-w-full" aria-label="切换主题">
+                <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M8 256c0 136.966 111.033 248 248 248s248-111.034 248-248S392.966 8 256 8 8 119.033 8 256zm248 184V72c101.705 0 184 82.311 184 184 0 101.705-82.311 184-184 184z"/></svg>
+            </button></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div><main class="tw-mx-4 tw-flex-1"><div class="toc print:!tw-hidden" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#freertos">FreeRTOS</a></li>
+    <li><a href="#freertos的内部机制">FreeRTOS的内部机制</a></li>
+  </ul>
+</nav></div>
+    </div><dialog id="toc-dialog" class="tw-max-w-full tw-w-full tw-max-h-full tw-h-full tw-ml-16">
+        <div class="toc tw-mx-4 tw-max-w-full">
+            <h2 class="tw-mx-0 tw-my-6 tw-uppercase tw-text-2xl">目录</h2>
+            <div class="toc-content"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#freertos">FreeRTOS</a></li>
+    <li><a href="#freertos的内部机制">FreeRTOS的内部机制</a></li>
+  </ul>
+</nav></div>
+        </div>
+    </dialog><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "true")</script><article class="page single print:!tw-w-full print:!tw-max-w-none print:!tw-m-0 print:!tw-p-0"><h1 class="single-title" data-pagefind-meta="date:2023-12-24" data-pagefind-body>FreeRTOS</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 96c48.6 0 88 39.4 88 88s-39.4 88-88 88-88-39.4-88-88 39.4-88 88-88zm0 344c-58.7 0-111.3-26.6-146.5-68.2 18.8-35.4 55.6-59.8 98.5-59.8 2.4 0 4.8.4 7.1 1.1 13 4.2 26.6 6.9 40.9 6.9 14.3 0 28-2.7 40.9-6.9 2.3-.7 4.7-1.1 7.1-1.1 42.9 0 79.7 24.4 98.5 59.8C359.3 421.4 306.7 448 248 448z"/></svg><a href="wumingzi.top" title="Author" rel=" author" class="author">吾铭子</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category"><a href="/categories/tech/"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M464 128H272l-54.63-54.63c-6-6-14.14-9.37-22.63-9.37H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V176c0-26.51-21.49-48-48-48zm0 272H48V112h140.12l54.63 54.63c6 6 14.14 9.37 22.63 9.37H464v224z"/></svg>Tech</a></span></div>
+            <div class="post-meta-line"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>&nbsp;<time datetime="2023-12-24">2023-12-24</time>&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg>&nbsp;<time datetime="2024-09-14">2024-09-14</time>&nbsp;<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;约 7925 字&nbsp;
+                    <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;预计阅读 35 分钟&nbsp;</div>
+        </div><div class="details toc print:!tw-block" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span class="details-icon"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#freertos">FreeRTOS</a></li>
+    <li><a href="#freertos的内部机制">FreeRTOS的内部机制</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content" data-pagefind-body><p>本文为FreeRTOS的系统性学习的总结，内容包含简单API的使用和RTOS的原理介绍，参考视资料为b站的<a href="https://www.bilibili.com/video/BV1844y1g7ud/?spm_id_from=..search-card.all.click" target="_blank" rel="noopener noreferrer">韦东山视频</a>，内部并未优化排版。</p>
+<!-- more -->
+<h1 id="freertos" class="headerLink">
+    <a href="#freertos" class="header-mark"></a>FreeRTOS</h1><p>使用静态创建任务函数的话，返回值就是句柄，因此，要想对静态函数创建出来的任务进行操作的话需要创建一个临时变量以记录其返回值
+使用vTaskDelet函数要注意不要在自己的进程内部自杀，这样会导致空闲任务无法清理内存</p>
+<!-- more -->
+<p>
+<figure><a class="lightgallery" href="assets/520675109231265.webp" title="2023-12-24_09-51" data-thumbnail="assets/520675109231265.webp" data-sub-html="<h2> </h2><p>2023-12-24_09-51</p>"><img   src='assets/520675109231265.webp'   alt="2023-12-24_09-51"  ></a><figcaption class="image-caption">2023-12-24_09-51</figcaption>
+    </figure></p>
+<p>
+<figure><a class="lightgallery" href="assets/261583815249686.webp" title="2023-12-19_15-36" data-thumbnail="assets/261583815249686.webp" data-sub-html="<h2> </h2><p>2023-12-19_15-36</p>"><img   src='assets/261583815249686.webp'   alt="2023-12-19_15-36"  ></a><figcaption class="image-caption">2023-12-19_15-36</figcaption>
+    </figure>
+TCB结构体内部包含函数指针，SP位置，优先级，函数名字，函数参数等，但并不包括函数的指针(用来执行本函数)，也不包括函数参数，CPU通过保存所有寄存器的值来保存这两项，保存的位置在该函数栈的顶部，其中R0，R1&hellip;保存了函数的参数(约定俗成)，R15(PC)保存了函数的指针，来进行函数的跳转操作
+优先级最大值只能取到最大值-1，高于这个值的会自动变为最大值-1
+空闲任务(xIdleTask)是启动调度器时就自动创建的，空闲任务可以使用自带的钩子函数创建出来，也可以用来处理下列任务</p>
+<ol>
+<li>执行一些低优先级的，后台的，需要连续执行的函数</li>
+<li>进入省电模式</li>
+<li>测量系统空闲时间</li>
+</ol>
+<p>空闲任务的限制： 不能让空闲任务进入阻塞状态或者暂停状态
+取消支持时间片流转会使优先级相同的其中一个任务在未被高优先级打断前始终霸占CPU
+调度策略配置项</p>
+<ol>
+<li>是否抢占(高优先级任务是否可以立即打断低优先级的执行)</li>
+<li>允许抢占时，是否允许时间片流转(同一优先级任务执行时，是否允许相互打断执行)</li>
+<li>允许抢占并且允许时间片流转时，是否允许空闲任务让步(空闲任务和用户任务在同一优先级时，空闲任务是否让出时间片) <br>
+<a href="https://www.cnblogs.com/weidongshan/p/15624113.html" target="_blank" rel="noopener noreferrer">博客园</a></li>
+</ol>
+<p>
+<figure><a class="lightgallery" href="assets/24251810231257.webp" title="2023-12-16_10-16" data-thumbnail="assets/24251810231257.webp" data-sub-html="<h2> </h2><p>2023-12-16_10-16</p>"><img   src='assets/24251810231257.webp'   alt="2023-12-16_10-16"  ></a><figcaption class="image-caption">2023-12-16_10-16</figcaption>
+    </figure>
+采用这种方式运行并发程序会导致Task3 Task4在将锁置为1之前就都已经进入if语句内部了，这就会导致概率性并发Bug
+写队列函数xQueueSend与xQueueSendToBack是一样的，都是默认在队列尾部写入数据，而xQueueSendToFront则是在头部写入数据(头部就是pcReadFrom指针所指的地址，并不是队列的最右侧)，此时还需要将pcReadFrom指针减去一个ItemSize的地址
+使用队列集并在队列里面写入数据时会把任务的数据写在队列里，并把任务的Handle写在队列集(Queue Set)里，读一次Queue Set后返回的Queue只能读一次，不能读多次，普通的Queue也一样因为读队列后系统自动删除数据
+二值信号量的Give函数会检测信号量是否为1，若为1则会返回失败，而Take函数则会检查信号量是否为0，并且可以设置阻塞时间
+信号量不能是负值
+创建二值型信号量时默认初始值是0，需要Give一下，互斥量则不需要
+信号量：Semaphore    互斥量：Mutex
+只有申请方和接收方有锁的情况下才会产生优先级反转，如果其中一方无锁则正常调度就不会产生优先级反转，解决优先级反转的办法是优先级继承
+为了解决优先级反转的问题，互斥量引入了优先级继承，而信号量则没有，同时由于优先级继承是指任务中的优先级，因此对于中断来说无意义。因此中断中不可以使用互斥量<a href="https://www.cnblogs.com/hanyli/p/17272577.html" target="_blank" rel="noopener noreferrer">互斥量不能在中断例程中使用的原因-博客园</a></p>
+<p>死锁的原因有两种</p>
+<ol>
+<li>A函数内部二次上锁，A将自己阻塞了但其他任务并不能解锁造成死锁: A获得了锁，A调用一个库函数，这个库函数需要获得上面那个锁，死锁发生</li>
+<li>A依赖B的锁，B又依赖A的锁，此时会死锁
+解决的办法是使用递归锁(Recursive Mutex)，采用了谁持有谁释放的方法<br>
+也就是说递归锁允许同一个线程多次获得锁，这样就可以防止第2种死锁</li>
+</ol>
+<p>事件组要么等待事件中的某一个发生，要么等待事件中的所有都发生，不能等待事件中的指定某几个发生
+
+<figure><a class="lightgallery" href="assets/28523719231258.webp" title="2023-12-17_19-34" data-thumbnail="assets/28523719231258.webp" data-sub-html="<h2> </h2><p>2023-12-17_19-34</p>"><img   src='assets/28523719231258.webp'   alt="2023-12-17_19-34"  ></a><figcaption class="image-caption">2023-12-17_19-34</figcaption>
+    </figure>
+
+<figure><a class="lightgallery" href="assets/2063919250386.webp" title="2023-12-17_19-38" data-thumbnail="assets/2063919250386.webp" data-sub-html="<h2> </h2><p>2023-12-17_19-38</p>"><img   src='assets/2063919250386.webp'   alt="2023-12-17_19-38"  ></a><figcaption class="image-caption">2023-12-17_19-38</figcaption>
+    </figure>
+
+<figure><a class="lightgallery" href="assets/280143719249684.webp" title="2023-12-17_19-34_1" data-thumbnail="assets/280143719249684.webp" data-sub-html="<h2> </h2><p>2023-12-17_19-34_1</p>"><img   src='assets/280143719249684.webp'   alt="2023-12-17_19-34_1"  ></a><figcaption class="image-caption">2023-12-17_19-34_1</figcaption>
+    </figure>
+
+<figure><a class="lightgallery" href="assets/371893719237551.webp" title="2023-12-17_19-35" data-thumbnail="assets/371893719237551.webp" data-sub-html="<h2> </h2><p>2023-12-17_19-35</p>"><img   src='assets/371893719237551.webp'   alt="2023-12-17_19-35"  ></a><figcaption class="image-caption">2023-12-17_19-35</figcaption>
+    </figure>
+
+<figure><a class="lightgallery" href="assets/462943719257717.webp" title="2023-12-17_19-35_1" data-thumbnail="assets/462943719257717.webp" data-sub-html="<h2> </h2><p>2023-12-17_19-35_1</p>"><img   src='assets/462943719257717.webp'   alt="2023-12-17_19-35_1"  ></a><figcaption class="image-caption">2023-12-17_19-35_1</figcaption>
+    </figure>
+切换任务后是直接执行在任务中断处执行，一般为while(1)循环内继续执行，因此对于在循环外部的初始化变量一定小心，例如在while(1)外部定义了i，while(1)循环内部定义了for循环，使用的变量是前面的i，这样，当第一次while(1)循环结束后i的是值为跳出循环的值，从本次循环开始，就不会再进入for内部了
+任务通知是多对一的关系
+对于任务通知来说，发送方发送的结果只有两种，要么成功要么失败，并不会等待，而对于接收方则有三种情况
+
+<figure><a class="lightgallery" href="assets/221873617231259.webp" title="2023-12-18_17-35" data-thumbnail="assets/221873617231259.webp" data-sub-html="<h2> </h2><p>2023-12-18_17-35</p>"><img   src='assets/221873617231259.webp'   alt="2023-12-18_17-35"  ></a><figcaption class="image-caption">2023-12-18_17-35</figcaption>
+    </figure>
+xQueueReceive()与xEventGroupWaitBits()中的WaitForAllBits数量有关，如果WaitForAllBits是pdFalse时，则需要一个xQueueReceive()就够了，否则会造成从未赋值的中间变量中取数据的Bug，造成的现象是同时多个数据被写入队列时会产生数据被读取多次，次数取决于并发的程序数量，不同时写入数据则会只覆盖队列中第一个数据，第二个数据始终被保留。而WaitForAllBits是pdTure时，则需要多个xQueueReceive()，这样才会有足够多的中间变量存储数据，而后被一次读走(具体实验可以看24_freertos_example_tasknotify_event_group)
+使用任务通知构造轻量化事件组无法等待指定的某个任务，但是可以通过判断xTaskNotifyWait()中的pulNotificationValue值来进行等待某个指定任务
+定时器函数在守护任务中被执行，每当产生Tick时定时器函数会比较当前Tick与预设Tick，并根据结果来执行回调函数(CallBackFun)，想要设置其定时器函数的具体参数需要经过队列通信来完成 <br>
+
+<figure><a class="lightgallery" href="assets/335880917237553.webp" title="2023-12-19_17-09" data-thumbnail="assets/335880917237553.webp" data-sub-html="<h2> </h2><p>2023-12-19_17-09</p>"><img   src='assets/335880917237553.webp'   alt="2023-12-19_17-09"  ></a><figcaption class="image-caption">2023-12-19_17-09</figcaption>
+    </figure>
+调用如上函数时，如果不加static关键字会导致每次调用函数都会产生新的栈和新的cnt，这样cnt的值就不是理想的，如果初始化cnt为0，则每次都会打印0，也不符合逻辑，解决办法是使用static关键字来存储每次产生的cnt
+FreeRTOS对于中断会使用不同的ISR(Interrupt Service Routines)函数，这是为了保证ISR执行的时候不能处于阻塞状态，这样才能保证实时性
+临界资源是指能够被多个进程共享，但是同一时间只能由一个进程访问的资源，因此是互斥的
+用到syscall的中断可以通过调用系统函数被屏蔽掉，这样即使是优先级比较低的中断也可以安心访问临界资源，CotexM3/M4调用syscall的中断位于中断向量表的191~255位，0~255位是可编程异常，-3~0位分别是复位、NMI、硬件错误，屏蔽中断本质上是调用191号中断，从而将191~255中断屏蔽
+在中断中调用中断恢复函数会将中断恢复至原来的状态，可能是中断开启也可能是中断屏蔽，而在任务中调用中断恢复宏则会将中断打开，因此，中断恢复函数有返回值
+任务切换一定要给延时！尽量不要在定时器回调函数内部进行延时操作，因为硬件定时器回调函数是在中断中被执行的，软件定时器优先级很高，因此不要做耗时，延时操作
+定时器守护任务优先级及其栈深度在Config文件内被定义，默认为4，要想抢占定时器回调函数注意修改配置
+任务自杀后就永远不会被执行，除非被再次创建
+编程时，一般的逻辑错误都容易解决。难以处理的是内存越界、栈溢出等。
+并没有很好的方法检测内存越界，但是可以提供一些回调函数：</p>
+<ul>
+<li>使用pvPortMalloc失败时，如果在FreeRTOSConfig.h里配置<code>configUSE_MALLOC_FAILED_HOOK</code>为1，会调用：</li>
+</ul>
+<div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
+  <div class="
+    
+    tw-flex 
+    tw-flex-row
+    tw-flex-1 
+    tw-justify-between 
+    tw-w-full tw-bg-bgColor-secondary
+    ">      
+    <button 
+      class="
+        code-block-button
+        tw-mx-2 
+        tw-flex
+        tw-flex-row
+        tw-flex-1"
+      aria-hidden="true">
+          <div class="group-[.is-open]:tw-rotate-90 tw-transition-[transform] tw-duration-500 tw-ease-in-out print:!tw-hidden tw-w-min tw-h-min tw-my-1 tw-mx-1"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg></div>
+          <p class="tw-select-none !tw-my-1">c</p>
+      </button>
+
+   <div class="tw-flex">
+      <button 
+        class="
+          line-number-button
+          tw-mx-2 
+          tw-hidden 
+          group-[.is-open]:tw-block 
+          group-[.show-line-numbers]:tw-text-fgColor-link 
+          print:!tw-hidden" 
+        title="Toggle line numbers"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M61.77 401l17.5-20.15a19.92 19.92 0 0 0 5.07-14.19v-3.31C84.34 356 80.5 352 73 352H16a8 8 0 0 0-8 8v16a8 8 0 0 0 8 8h22.83a157.41 157.41 0 0 0-11 12.31l-5.61 7c-4 5.07-5.25 10.13-2.8 14.88l1.05 1.93c3 5.76 6.29 7.88 12.25 7.88h4.73c10.33 0 15.94 2.44 15.94 9.09 0 4.72-4.2 8.22-14.36 8.22a41.54 41.54 0 0 1-15.47-3.12c-6.49-3.88-11.74-3.5-15.6 3.12l-5.59 9.31c-3.72 6.13-3.19 11.72 2.63 15.94 7.71 4.69 20.38 9.44 37 9.44 34.16 0 48.5-22.75 48.5-44.12-.03-14.38-9.12-29.76-28.73-34.88zM496 224H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-160H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 320H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zM16 160h64a8 8 0 0 0 8-8v-16a8 8 0 0 0-8-8H64V40a8 8 0 0 0-8-8H32a8 8 0 0 0-7.14 4.42l-8 16A8 8 0 0 0 24 64h8v64H16a8 8 0 0 0-8 8v16a8 8 0 0 0 8 8zm-3.91 160H80a8 8 0 0 0 8-8v-16a8 8 0 0 0-8-8H41.32c3.29-10.29 48.34-18.68 48.34-56.44 0-29.06-25-39.56-44.47-39.56-21.36 0-33.8 10-40.46 18.75-4.37 5.59-3 10.84 2.8 15.37l8.58 6.88c5.61 4.56 11 2.47 16.12-2.44a13.44 13.44 0 0 1 9.46-3.84c3.33 0 9.28 1.56 9.28 8.75C51 248.19 0 257.31 0 304.59v4C0 316 5.08 320 12.09 320z"/></svg></button>
+
+      <button 
+        class="
+          wrap-code-button
+          tw-select-none 
+          tw-mx-2 
+          tw-hidden 
+          group-[.is-open]:tw-block 
+          group-[.is-wrap]:tw-text-fgColor-link 
+          print:!tw-hidden" 
+        title="Toggle code wrap"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"/></svg></button>
+      
+      <button 
+        class="
+          copy-code-button
+          tw-select-none
+          tw-mx-2 
+          tw-hidden
+          group-[.is-open]:tw-block
+          hover:tw-text-fgColor-link 
+          print:!tw-hidden"
+        title="Copy code">
+          <span class="copy-icon tw-block"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z"/></svg></span>
+          <span class="check-icon tw-hidden"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"/></svg></span>
+      </button>
+        
+      <button 
+        class="
+          tw-select-none 
+          tw-mx-2 
+          tw-block 
+          group-[.is-open]:tw-hidden 
+          print:!tw-hidden" 
+        disabled
+        aria-hidden="true"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z"/></svg></button>
+    </div>
+  </div>
+  <pre style="counter-reset: codeblock;" class="tw-block tw-m-0 tw-p-0"><code 
+    id="codeblock-id-1" 
+    class="
+      chroma 
+      !tw-block 
+      tw-p-0
+      tw-m-0
+      tw-transition-[max-height] 
+      tw-duration-500 
+      tw-ease-in-out 
+      group-[.is-closed]:!tw-max-h-0 
+      group-[.is-wrap]:tw-text-wrap
+      tw-overflow-y-hidden
+      tw-overflow-x-auto
+      tw-scrollbar-thin
+      "><span class="line"><span class="cl">  <span class="kt">void</span> <span class="nf">vApplicationMallocFailedHook</span><span class="p">(</span> <span class="kt">void</span> <span class="p">);</span></span></span></code></pre>
+</div>
+<p>在切换任务(vTaskSwitchContext)时调用taskCHECK_FOR_STACK_OVERFLOW来检测栈是否溢出，如果溢出会调用：</p>
+<div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
+  <div class="
+    
+    tw-flex 
+    tw-flex-row
+    tw-flex-1 
+    tw-justify-between 
+    tw-w-full tw-bg-bgColor-secondary
+    ">      
+    <button 
+      class="
+        code-block-button
+        tw-mx-2 
+        tw-flex
+        tw-flex-row
+        tw-flex-1"
+      aria-hidden="true">
+          <div class="group-[.is-open]:tw-rotate-90 tw-transition-[transform] tw-duration-500 tw-ease-in-out print:!tw-hidden tw-w-min tw-h-min tw-my-1 tw-mx-1"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg></div>
+          <p class="tw-select-none !tw-my-1">c</p>
+      </button>
+
+   <div class="tw-flex">
+      <button 
+        class="
+          line-number-button
+          tw-mx-2 
+          tw-hidden 
+          group-[.is-open]:tw-block 
+          group-[.show-line-numbers]:tw-text-fgColor-link 
+          print:!tw-hidden" 
+        title="Toggle line numbers"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M61.77 401l17.5-20.15a19.92 19.92 0 0 0 5.07-14.19v-3.31C84.34 356 80.5 352 73 352H16a8 8 0 0 0-8 8v16a8 8 0 0 0 8 8h22.83a157.41 157.41 0 0 0-11 12.31l-5.61 7c-4 5.07-5.25 10.13-2.8 14.88l1.05 1.93c3 5.76 6.29 7.88 12.25 7.88h4.73c10.33 0 15.94 2.44 15.94 9.09 0 4.72-4.2 8.22-14.36 8.22a41.54 41.54 0 0 1-15.47-3.12c-6.49-3.88-11.74-3.5-15.6 3.12l-5.59 9.31c-3.72 6.13-3.19 11.72 2.63 15.94 7.71 4.69 20.38 9.44 37 9.44 34.16 0 48.5-22.75 48.5-44.12-.03-14.38-9.12-29.76-28.73-34.88zM496 224H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-160H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 320H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zM16 160h64a8 8 0 0 0 8-8v-16a8 8 0 0 0-8-8H64V40a8 8 0 0 0-8-8H32a8 8 0 0 0-7.14 4.42l-8 16A8 8 0 0 0 24 64h8v64H16a8 8 0 0 0-8 8v16a8 8 0 0 0 8 8zm-3.91 160H80a8 8 0 0 0 8-8v-16a8 8 0 0 0-8-8H41.32c3.29-10.29 48.34-18.68 48.34-56.44 0-29.06-25-39.56-44.47-39.56-21.36 0-33.8 10-40.46 18.75-4.37 5.59-3 10.84 2.8 15.37l8.58 6.88c5.61 4.56 11 2.47 16.12-2.44a13.44 13.44 0 0 1 9.46-3.84c3.33 0 9.28 1.56 9.28 8.75C51 248.19 0 257.31 0 304.59v4C0 316 5.08 320 12.09 320z"/></svg></button>
+
+      <button 
+        class="
+          wrap-code-button
+          tw-select-none 
+          tw-mx-2 
+          tw-hidden 
+          group-[.is-open]:tw-block 
+          group-[.is-wrap]:tw-text-fgColor-link 
+          print:!tw-hidden" 
+        title="Toggle code wrap"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"/></svg></button>
+      
+      <button 
+        class="
+          copy-code-button
+          tw-select-none
+          tw-mx-2 
+          tw-hidden
+          group-[.is-open]:tw-block
+          hover:tw-text-fgColor-link 
+          print:!tw-hidden"
+        title="Copy code">
+          <span class="copy-icon tw-block"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z"/></svg></span>
+          <span class="check-icon tw-hidden"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"/></svg></span>
+      </button>
+        
+      <button 
+        class="
+          tw-select-none 
+          tw-mx-2 
+          tw-block 
+          group-[.is-open]:tw-hidden 
+          print:!tw-hidden" 
+        disabled
+        aria-hidden="true"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z"/></svg></button>
+    </div>
+  </div>
+  <pre style="counter-reset: codeblock;" class="tw-block tw-m-0 tw-p-0"><code 
+    id="codeblock-id-2" 
+    class="
+      chroma 
+      !tw-block 
+      tw-p-0
+      tw-m-0
+      tw-transition-[max-height] 
+      tw-duration-500 
+      tw-ease-in-out 
+      group-[.is-closed]:!tw-max-h-0 
+      group-[.is-wrap]:tw-text-wrap
+      tw-overflow-y-hidden
+      tw-overflow-x-auto
+      tw-scrollbar-thin
+      "><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">vApplicationStackOverflowHook</span><span class="p">(</span> <span class="n">TaskHandle_t</span> <span class="n">xTask</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">pcTaskName</span> <span class="p">);</span></span></span></code></pre>
+</div>
+<p>怎么判断栈溢出？有两种方法：</p>
+<ul>
+<li>方法1：
+<ul>
+<li>当前任务被切换出去之前，它的整个运行现场都被保存在栈里，这时<strong>很可能</strong>就是它对栈的使用到达了峰值。</li>
+<li>这方法很高效，但是并不精确</li>
+<li>比如：任务在运行过程中调用的函数A大量地使用了栈，调用完函数A后还有其它操作，最后才被切换出去。</li>
+</ul>
+</li>
+<li>方法2：
+<ul>
+<li>创建任务时，它的栈被填入固定的值，比如：0xa5</li>
+<li>检测栈里最后16字节的数据，如果不是0xa5的话表示栈即将、或者已经被用完了</li>
+<li>没有方法1快速，但是也足够快</li>
+<li>能捕获<strong>几乎所有</strong>的栈溢出</li>
+<li>为什么是几乎所有？可能有些函数使用栈时，非常凑巧地把栈里最后16字节设置为0xa5：几乎不可能</li>
+</ul>
+</li>
+</ul>
+<p>简而言之，使用上面两个Hook函数需要配置Config.h，并要求自己实现Hook函数的功能(内存回收以防止malloc失败等)</p>
+<h1 id="freertos的内部机制" class="headerLink">
+    <a href="#freertos%e7%9a%84%e5%86%85%e9%83%a8%e6%9c%ba%e5%88%b6" class="header-mark"></a>FreeRTOS的内部机制</h1><p>Arm架构汇编指令:
+读指令 LDR (Load Register)    LDR R0, [addr]
+写指令 STR (Store Register)    STR R0, [addr]
+加指令 ADD     ADD R0,R1,R2    //R0=R1+R2
+PUSH指令本质是写指令， Push {R3,LR}把LR，R3 Push到内存中的栈，把LR放在高地址，R3放在低地址
+CPU中重要的寄存器: SP(R13) 栈顶指针寄存器 LR(R14) 返回地址寄存器 PC(R15) 当前指令寄存器 CPSR(A64架构) 状态寄存器，LR是一种特殊的PC
+POP指令本质是读指令 POP {R3,LR}
+栈可以用来保存现场，任务可以理解为函数+函数的栈
+保存现场的三种情况</p>
+<ul>
+<li>切换任务时，保存所有的寄存器</li>
+<li>调用其他函数时，但由于前几个寄存器(R0,R1,R2&hellip;)被用来传参，因此不需要保存</li>
+<li>硬件中断时，硬件会自动保存一部分寄存器，但是还需要软件保存一部分</li>
+</ul>
+<p>栈的大小取决于局部变量的大小以及函数调用的深度，函数调用需要Push LR
+TCB结构体内部包含函数指针，SP位置，优先级，函数名字，函数参数等，但并不包括函数的指针(用来执行本函数)，也不包括函数参数，CPU通过保存所有寄存器的值来保存这两项，保存的位置在该函数栈的顶部，其中R0，R1&hellip;保存了函数的参数(约定俗成)，R15(PC)保存了函数的指针，来进行函数的跳转操作
+
+<figure><a class="lightgallery" href="assets/450634810237564.webp" title="2023-12-30_10-48" data-thumbnail="assets/450634810237564.webp" data-sub-html="<h2> </h2><p>2023-12-30_10-48</p>"><img   src='assets/450634810237564.webp'   alt="2023-12-30_10-48"  ></a><figcaption class="image-caption">2023-12-30_10-48</figcaption>
+    </figure>
+申请堆栈的指令名为SPACE，这是在初始化文件里就执行的
+
+<figure><a class="lightgallery" href="assets/240683821237558.webp" title="2023-12-24_21-33_1" data-thumbnail="assets/240683821237558.webp" data-sub-html="<h2> </h2><p>2023-12-24_21-33_1</p>"><img   src='assets/240683821237558.webp'   alt="2023-12-24_21-33_1"  ></a><figcaption class="image-caption">2023-12-24_21-33_1</figcaption>
+    </figure>
+main函数的栈是在STM32汇编文件文件中设置的，与芯片厂商相关，步骤如下</p>
+<ol>
+<li>在内存中申请一段空间(首地址为__initial_sp，也是msp(Main_Stack_Pointer,也是sp)，同时会给中断函数的栈使用</li>
+<li>然后转入向量表，找到__initial_sp</li>
+<li>执行Reset_Handle，在Reset_Handle内部跳转到了main函数</li>
+</ol>
+<p>一般情况下，没有必要使用PSP，除非是有os存在时，MSP用于os内核的sp，而PSP用于thread级app的sp，这两个sp需严格分开
+任务调度原理: 任务存在三个大类链表中，分别是ReadyList链表数组，DelayList，PendingList。当程序被阻塞时会被放入delaylist内，这时产生阻塞的一般是信号量take，延时函数，互斥锁等操作。当程序被挂起时会被放入pendinglist内，这时产生挂起行为的唯一的方法是调用vTaskSuspend函数，而想要解除挂起状态只能让其他程序调用vTaskResume函数。其中ReadyList链表数组按照优先级排列(0-4)共有五个链表，FreeRTOS会先从ReadyList中最高优先级的一个开始寻找任务并执行，当高优先级任务发生阻塞时会将其从ReadyList移到DelayList，这时就不会执行了，而是去找低优先级的任务去执行。当创建任务时，会有指针指向当前创建的<strong>优先级最高的任务</strong>，因此，最后创建的任务总会先执行，然后再按前文所说按优先级高低依次执行其他任务。
+选要注意的是，当所有任务优先级为0时，最后创建的是IdleTask。因此指针指向的是空闲任务。最终程序首先执行的IdleTask并没有现象，程序“看起来”好像是从最初的Task开始运行的
+
+<figure><a class="lightgallery" href="assets/585701409231266.webp" title="2023-12-25_09-14" data-thumbnail="assets/585701409231266.webp" data-sub-html="<h2> </h2><p>2023-12-25_09-14</p>"><img   src='assets/585701409231266.webp'   alt="2023-12-25_09-14"  ></a><figcaption class="image-caption">2023-12-25_09-14</figcaption>
+    </figure>
+在整个任务调度的过程中利用的是任务的TCB结构体
+为防止写队列过程中发生调度导致失败，所以在写队列中需要互斥，这是通过关闭中断来实现的(任务调度本质上是定时器产生中断)
+一函数写队列时，会唤醒其他等待队列的函数，当其他等待队列的函数条件符合时会准备进行切换任务，条件不符合时会将写队列的函数进行休眠以节省CPU资源。当使用队列且函数休眠时不仅把自己从ReadyList移到DelayList，还会在等待队列中写入自身，等待其他任务写队列时来唤醒它<br>
+在使用队列读写数据时，首先关中断，之后读写数据，在读写之后还需要进行链表操作来调度和通知任务，最后再开中断
+因此使用队列有两点好处</p>
+<ul>
+<li>实现互斥</li>
+<li>节省CPU资源，提高程序运行效率</li>
+</ul>
+<p>队列要点</p>
+<ul>
+<li>关中断实现互斥</li>
+<li>环形缓冲区保存数据</li>
+<li>链表实现休眠唤醒</li>
+</ul>
+<p>内存中队列的构成: Queue_t(队列头)+Buffer(数据缓冲区)，队列头由队列结构体构成，内部包含xTaskWaitingToSend链表以及xTaskWaitingToReceive链表及其对应的指针，数据缓冲区大小 = ItemSize * Length
+xTaskWaitingToSend以及xTaskWaitingToReceive仅仅是为了记录哪个任务需要读写数据，真正的调度还需要去执行ReadyList与DelayList之间的操作，这样是为了防止在中断内部阻塞
+critical: 临界区
+读队列内核操作
+
+<figure><a class="lightgallery" href="assets/35974111249692.webp" title="2023-12-25_11-40" data-thumbnail="assets/35974111249692.webp" data-sub-html="<h2> </h2><p>2023-12-25_11-40</p>"><img   src='assets/35974111249692.webp'   alt="2023-12-25_11-40"  ></a><figcaption class="image-caption">2023-12-25_11-40</figcaption>
+    </figure>
+信号量是一种特殊的队列，它不传递数据，因此它只有Queue_t(队列头)，在Queue_t内部还有个链表用来记录Take失败的任务，以便之后唤醒
+互斥量优先级继承是通过高优先级任务的优先级赋值给低优先级任务完成的，在这之前还需要记录低优先级任务的优先级，这样才能保证Give互斥量之后回到原优先级
+事件组某些位被设置后会唤醒事件组里所有DelayList的任务将其移到ReadyList，然后每个任务依次检查是否符合执行条件，符合的执行，不符合的再次进入DelayList
+使用队列和信号量时为了防止其他任务干扰需要关调度器，同时为了防止其他中断任干扰也要关中断，但是关中断后再关调度器也就没有意义了，因此在其内部源码中只是关闭中断而已。而事件组只是关闭调度器即可，这是因为FreeRTOS不会在中断中使用事件组，本质原因是事件组的FromISR函数并没有实际切换任务，而是写一个链表，等待事件组的FromISR函数执行完毕后才会进行实际的任务切换，这样一旦对事件组的某些位设置就不会在中断中唤醒所有任务了，否则会在中断内消耗大量时间。
+任务通知能且只能点对点的唤醒任务，具体过程和前几种方法类似，都是先关中断，然后发通知的一方设置eaction的值，等通知的一方需要接受值，判断执行什么指令。之后由系统进行链表操作及状态转移，最后开中断
+对于定时器任务， FreeRTOS的处理与其他操作系统不同。其他操作系统由硬件定时器(systick)出发形成软件定时器，在软件定时器内部直接调用待处理任务。而FreeRTOS认为，软件定时器也是中断，为了防止在中断内部直接处理任务会导致阻塞，因此采用了队列的方式处理任务，这与xTaskWaitingToSend以及xTaskWaitingToReceive在关中断内记录要更改的链表操作类似
+定时器队列中，写队列一侧是systick，读队列一侧是守护任务。有趣的是创建Timer任务和启动Timer也是写队列，所以在函数xTimerStart(xTimer，xTicksToWait)中有两个参数，第二个参数给的就是当定时器队列满时是否接受等待
+中断的优先级: systick服务于任务调度，pendsv服务于任务切换，其他的类似GPIO的中断用于业务，为了能够让业务正常执行，GPIO中断优先级最高，systick和pendsv优先级最低
+
+<figure><a class="lightgallery" href="assets/575191910231268.webp" title="2023-12-27_10-19" data-thumbnail="assets/575191910231268.webp" data-sub-html="<h2> </h2><p>2023-12-27_10-19</p>"><img   src='assets/575191910231268.webp'   alt="2023-12-27_10-19"  ></a><figcaption class="image-caption">2023-12-27_10-19</figcaption>
+    </figure>
+pendsv本质上是保存现场和任务切换的汇编代码</p>
+<div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
+  <div class="
+    
+    tw-flex 
+    tw-flex-row
+    tw-flex-1 
+    tw-justify-between 
+    tw-w-full tw-bg-bgColor-secondary
+    ">      
+    <button 
+      class="
+        code-block-button
+        tw-mx-2 
+        tw-flex
+        tw-flex-row
+        tw-flex-1"
+      aria-hidden="true">
+          <div class="group-[.is-open]:tw-rotate-90 tw-transition-[transform] tw-duration-500 tw-ease-in-out print:!tw-hidden tw-w-min tw-h-min tw-my-1 tw-mx-1"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg></div>
+          <p class="tw-select-none !tw-my-1">c</p>
+      </button>
+
+   <div class="tw-flex">
+      <button 
+        class="
+          line-number-button
+          tw-mx-2 
+          tw-hidden 
+          group-[.is-open]:tw-block 
+          group-[.show-line-numbers]:tw-text-fgColor-link 
+          print:!tw-hidden" 
+        title="Toggle line numbers"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M61.77 401l17.5-20.15a19.92 19.92 0 0 0 5.07-14.19v-3.31C84.34 356 80.5 352 73 352H16a8 8 0 0 0-8 8v16a8 8 0 0 0 8 8h22.83a157.41 157.41 0 0 0-11 12.31l-5.61 7c-4 5.07-5.25 10.13-2.8 14.88l1.05 1.93c3 5.76 6.29 7.88 12.25 7.88h4.73c10.33 0 15.94 2.44 15.94 9.09 0 4.72-4.2 8.22-14.36 8.22a41.54 41.54 0 0 1-15.47-3.12c-6.49-3.88-11.74-3.5-15.6 3.12l-5.59 9.31c-3.72 6.13-3.19 11.72 2.63 15.94 7.71 4.69 20.38 9.44 37 9.44 34.16 0 48.5-22.75 48.5-44.12-.03-14.38-9.12-29.76-28.73-34.88zM496 224H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-160H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 320H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zM16 160h64a8 8 0 0 0 8-8v-16a8 8 0 0 0-8-8H64V40a8 8 0 0 0-8-8H32a8 8 0 0 0-7.14 4.42l-8 16A8 8 0 0 0 24 64h8v64H16a8 8 0 0 0-8 8v16a8 8 0 0 0 8 8zm-3.91 160H80a8 8 0 0 0 8-8v-16a8 8 0 0 0-8-8H41.32c3.29-10.29 48.34-18.68 48.34-56.44 0-29.06-25-39.56-44.47-39.56-21.36 0-33.8 10-40.46 18.75-4.37 5.59-3 10.84 2.8 15.37l8.58 6.88c5.61 4.56 11 2.47 16.12-2.44a13.44 13.44 0 0 1 9.46-3.84c3.33 0 9.28 1.56 9.28 8.75C51 248.19 0 257.31 0 304.59v4C0 316 5.08 320 12.09 320z"/></svg></button>
+
+      <button 
+        class="
+          wrap-code-button
+          tw-select-none 
+          tw-mx-2 
+          tw-hidden 
+          group-[.is-open]:tw-block 
+          group-[.is-wrap]:tw-text-fgColor-link 
+          print:!tw-hidden" 
+        title="Toggle code wrap"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"/></svg></button>
+      
+      <button 
+        class="
+          copy-code-button
+          tw-select-none
+          tw-mx-2 
+          tw-hidden
+          group-[.is-open]:tw-block
+          hover:tw-text-fgColor-link 
+          print:!tw-hidden"
+        title="Copy code">
+          <span class="copy-icon tw-block"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z"/></svg></span>
+          <span class="check-icon tw-hidden"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"/></svg></span>
+      </button>
+        
+      <button 
+        class="
+          tw-select-none 
+          tw-mx-2 
+          tw-block 
+          group-[.is-open]:tw-hidden 
+          print:!tw-hidden" 
+        disabled
+        aria-hidden="true"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z"/></svg></button>
+    </div>
+  </div>
+  <pre style="counter-reset: codeblock;" class="tw-block tw-m-0 tw-p-0"><code 
+    id="codeblock-id-3" 
+    class="
+      chroma 
+      !tw-block 
+      tw-p-0
+      tw-m-0
+      tw-transition-[max-height] 
+      tw-duration-500 
+      tw-ease-in-out 
+      group-[.is-closed]:!tw-max-h-0 
+      group-[.is-wrap]:tw-text-wrap
+      tw-overflow-y-hidden
+      tw-overflow-x-auto
+      tw-scrollbar-thin
+      "><span class="line"><span class="cl"><span class="nf">taskENTER_CRITICAL</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*访问临界资源，防止其他任务，ISR破坏*/</span>
+</span></span><span class="line"><span class="cl"><span class="nf">taskEXIT_CRITICAL</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="o">----------------------------</span>
+</span></span><span class="line"><span class="cl"><span class="nf">vTaskSuspendAll</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*关闭调度器，防止其他任务破坏性访问*/</span>
+</span></span><span class="line"><span class="cl"><span class="nf">xTaskResumeAll</span><span class="p">();</span></span></span></code></pre>
+</div>
+<p>
+<figure><a class="lightgallery" href="assets/333245509231271.webp" title="2023-12-30_09-55" data-thumbnail="assets/333245509231271.webp" data-sub-html="<h2> </h2><p>2023-12-30_09-55</p>"><img   src='assets/333245509231271.webp'   alt="2023-12-30_09-55"  ></a><figcaption class="image-caption">2023-12-30_09-55</figcaption>
+    </figure>
+可以通过116行将宏消除(因为宏未定义，编译器会消除宏)
+
+<figure><a class="lightgallery" href="assets/243322210249697.webp" title="2023-12-30_10-22" data-thumbnail="assets/243322210249697.webp" data-sub-html="<h2> </h2><p>2023-12-30_10-22</p>"><img   src='assets/243322210249697.webp'   alt="2023-12-30_10-22"  ></a><figcaption class="image-caption">2023-12-30_10-22</figcaption>
+    </figure>
+FreeRTOS的链表构成如上图，xList负责产生头xMINI_List_Item，并记录链表中信息(如元素个数，当前指针的位置)，xMINI_List_Item本身作为链表头，xList_Item产生节点。要注意xList_Item的pvOwner才是学习链表时的&quot;container&quot;(容器)，container内部有下一个Node，Node里面也有下一个的container，而对应Node节点的就是FreeRTOS的Item。此时的pxContainer是指向新加入元素的那个List的指针
+内存管理:
+有些芯片支持对指针取指赋值，有些芯片则根本不支持，考虑的原因是防止内存不对齐而引发错误，在使用malloc函数中需要注意
+生成堆的本质就是申请一块全局数组
+heap1到heap5内存回收机制逐渐增强，一般常用heap4
+heap_1.c里，只实现了pvPortMalloc函数，vPortFree函数并未实现。并在malloc函数内实现了互斥，以防止其他任务再次进行malloc
+
+<img   src='assets/305274714257730.webp'   alt="305274714257730.webp"  >
+使用heap1进行内存申请时，首先heap1内部会定义两个指针，pucAlignedHeap与xWantedSize，pucAlignedHeap主要负责内存对齐，每次pucAlignedHeap移动到下一个内存对齐的地址(最大移动8个地址)。xWantedSize负责给出申请空间的尾地址，这样将xWantedSize赋值给pucAlignedHeap就可以知道下一次该在何处对齐内存。例如，想在0x4000 0001处申请99字节的空间，首先pucAlignedHeap会指向0x4000 0004处(32位机内存块大小为4*8字节，所以pucAlignedHeap最大偏移量为4)，而后计算xWantedSize大小，考虑99不能被4整除，因此向上取整为100，所以新申请的内存地址为0x4000 0004至0x4000 0104，而0x4000 0001到0x4000 0003处内存被丢弃
+heap2实现了内存回收，但没有解决内存碎片问题
+
+<img   src='assets/528693015258192.webp'   alt="528693015258192.webp"  >
+
+<img   src='assets/177122815242708.webp'   alt="177122815242708.webp"  >
+
+<img   src='assets/249192815260588.webp'   alt="249192815260588.webp"  >
+heap2实现的内存分配的方法是，首先生成一个链表，让链表头指向一个未分配的很大的heap(大小17k)，每当申请空间时首先会在已经空闲的block中找出是否能拆分出需求大小的block，如果不能，则从未划分block的堆中划分出一个新block，划分出的block内部包含申请空间的大小以及下一个空闲内存的指针。如果找到大于申请内存大小的block时，首先将该block裁剪为申请内存的大小，并在新申请的block记录该block大小，之后会将链表内的指针指向下一个未被占用的block。
+heap2实现的内存回收的方法是，当需要free时，链表头就会free指定的地址，并将当前指针向前移动(pxNextFreeBlock+xBlockSize)个地址，从而找到block起始位置，但是这种方法并没有实现将这些已经free的内存重新归还到整个未被使用的内存中，因此这种free的空间在整个内存上来看是被各种pxNextFreeBlock+xBlockSize结构体分割出来的，这就是 <strong>内存的碎片化</strong>
+需要注意的是，使用heap2进行malloc操作的时候，链表申请是从小到大排序的，这样方便查找需要的block
+heap3直接使用的是c库的管理算法，只是对c库封装了一层接口，用的较少
+heap4能在free时检测前后方是否有空闲内存，有的话就合并，这很大程度上减少了内存碎片的问题
+heap4能够进行内存碎片回收，链表按地址排序
+
+<figure><a class="lightgallery" href="assets/505642615231272.webp" title="2023-12-31_15-26" data-thumbnail="assets/505642615231272.webp" data-sub-html="<h2> </h2><p>2023-12-31_15-26</p>"><img   src='assets/505642615231272.webp'   alt="2023-12-31_15-26"  ></a><figcaption class="image-caption">2023-12-31_15-26</figcaption>
+    </figure>
+为了增加程序的健壮性，heap4加入了block使用的标志位(1&laquo;31)
+
+<figure><a class="lightgallery" href="assets/598883612258568.webp" title="2024-01-01_12-36" data-thumbnail="assets/598883612258568.webp" data-sub-html="<h2> </h2><p>2024-01-01_12-36</p>"><img   src='assets/598883612258568.webp'   alt="2024-01-01_12-36"  ></a><figcaption class="image-caption">2024-01-01_12-36</figcaption>
+    </figure>
+
+<figure><a class="lightgallery" href="assets/544572912240142.webp" title="2024-01-01_12-29" data-thumbnail="assets/544572912240142.webp" data-sub-html="<h2> </h2><p>2024-01-01_12-29</p>"><img   src='assets/544572912240142.webp'   alt="2024-01-01_12-29"  ></a><figcaption class="image-caption">2024-01-01_12-29</figcaption>
+    </figure>
+heap5与heap4的不同点在于heap5支持多块内存，在使用heap5时需要手动调用vPortDefineHeapRegions()函数，并以数组方式传入想要划分为堆的地址，这个数组以NULL结尾来确定数组结束的标志
+
+<img   src='assets/568893712246435.webp'   alt="568893712246435.webp"  ></p>
+</div>
+
+        <div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2024-09-14</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line print:!tw-hidden">
+            <div class="post-info-md"><span><a class="link-to-mardown" href=/posts/freertos/index.md target="_blank" rel="noopener noreferrer">阅读原始文档</a>
+                    </span></div>
+            <div class="post-info-share"></div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.941 225.941L286.059 14.059A48 48 0 0 0 252.118 0H48C21.49 0 0 21.49 0 48v204.118a48 48 0 0 0 14.059 33.941l211.882 211.882c18.744 18.745 49.136 18.746 67.882 0l204.118-204.118c18.745-18.745 18.745-49.137 0-67.882zM112 160c-26.51 0-48-21.49-48-48s21.49-48 48-48 48 21.49 48 48-21.49 48-48 48zm513.941 133.823L421.823 497.941c-18.745 18.745-49.137 18.745-67.882 0l-.36-.36L527.64 323.522c16.999-16.999 26.36-39.6 26.36-63.64s-9.362-46.641-26.36-63.64L331.397 0h48.721a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882z"/></svg>&nbsp;<a href="/tags/os/">OS</a>,&nbsp;<a href="/tags/tech/">Tech</a></section>
+        <section class="print:!tw-hidden">
+            <span><button class="tw-text-fgColor-link-muted hover:tw-text-fgColor-link-muted-hover" onclick="window.history.back();">返回</button></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav print:tw-hidden"><a href="/posts/c-review/" class="prev" rel="prev" title="C复健计划"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z"/></svg>C复健计划</a>
+            <a href="/posts/miscs/" class="next" rel="next" title="杂项">杂项<svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></a></div>
+</div>
+</article></main><footer class="footer">
+        <div class="footer-container">
+            <div class="footer-line">
+                <span id="run-time"></span>
+            </div><div class="footer-line">
+                    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.146.1">Hugo</a>&nbsp;|&nbsp;Theme - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.4.1"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg> DoIt</a>
+                </div><div class="footer-line"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 448c-110.532 0-200-89.451-200-200 0-110.531 89.451-200 200-200 110.532 0 200 89.451 200 200 0 110.532-89.451 200-200 200zm107.351-101.064c-9.614 9.712-45.53 41.396-104.065 41.396-82.43 0-140.484-61.425-140.484-141.567 0-79.152 60.275-139.401 139.762-139.401 55.531 0 88.738 26.62 97.593 34.779a11.965 11.965 0 0 1 1.936 15.322l-18.155 28.113c-3.841 5.95-11.966 7.282-17.499 2.921-8.595-6.776-31.814-22.538-61.708-22.538-48.303 0-77.916 35.33-77.916 80.082 0 41.589 26.888 83.692 78.277 83.692 32.657 0 56.843-19.039 65.726-27.225 5.27-4.857 13.596-4.039 17.82 1.738l19.865 27.17a11.947 11.947 0 0 1-1.152 15.518z"/></svg>2023 - 2025<span class="author">&nbsp;<a href="wumingzi.top" target="_blank" rel="noopener noreferrer">吾铭子</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer><div class="print:!tw-hidden tw-flex tw-flex-col tw-fixed tw-right-4 tw-bottom-4 tw-gap-2"><a href="#back-to-top" id="back-to-top-button" class="tw-transition-opacity tw-opacity-0 tw-block tw-bg-bgColor-secondary tw-rounded-full" style="padding: 0.6rem; line-height: 1.3rem; font-size: 1rem;" title="回到顶部">
+      <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg>
+  </a>
+
+  <button id="toc-drawer-button" class="tw-block tw-bg-bgColor-secondary tw-rounded-full md:tw-hidden" style="padding: 0.6rem; line-height: 1.3rem; font-size: 1rem;">
+      <svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"/></svg>
+  </button></div>
+<link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/lightgallery/lightgallery.min.css">
+        <noscript><link rel="stylesheet" href="/lib/lightgallery/lightgallery.min.css"></noscript><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/katex/copy-tex.min.css">
+        <noscript><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"></noscript>
+<script>window.config={"autocomplete.min.js":"/lib/autocomplete/autocomplete.min.js","comment":{},"lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"pagefind.js":"/pagefind/pagefind.js","search":{"highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","pageLength":null,"snippetLength":50,"termFrequency":null,"termSaturation":null,"termSimilarity":null,"type":"pagefind"}};</script><script
+    src="/lib/lightgallery/lightgallery.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/lightgallery/lg-thumbnail.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/lightgallery/lg-zoom.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/katex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/auto-render.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/copy-tex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/lib/katex/mhchem.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/js/katex.min.js"
+    
+      defer
+    
+  ></script><script
+    src="/js/theme.min.js"
+    
+      defer
+    
+  ></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@2.1.3/dist/jquery.min.js"></script><script type="text/javascript" src="/js/custom.js"></script>
+
+<script type="speculationrules">
+  {
+    "prerender": [
+      {
+        "where": { "href_matches": "/*" },
+        "eagerness": "moderate"
+      }
+    ]
+  }
+</script>
+</body>
+
+</html>

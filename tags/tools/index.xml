@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tools on 吾铭子</title>
+    <link>https://1078249029.github.io/tags/tools/</link>
+    <description>Recent content in Tools on 吾铭子</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <managingEditor>1078249029@qq.com (吾铭子)</managingEditor>
+    <webMaster>1078249029@qq.com (吾铭子)</webMaster>
+    <lastBuildDate>Tue, 29 Oct 2024 11:24:43 +0800</lastBuildDate>
+    <atom:link href="https://1078249029.github.io/tags/tools/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>工具链</title>
+      <link>https://1078249029.github.io/posts/toolchains/</link>
+      <pubDate>Tue, 02 Jan 2024 14:37:10 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
+      <guid>https://1078249029.github.io/posts/toolchains/</guid>
+      <description>&lt;p&gt;本文介绍了Git，GDB，Makefile，CMake四种C/C++编程中常用的工具链，还涉及一点GCC制作库文件的内容&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>OS on 吾铭子</title>
+    <link>https://1078249029.github.io/tags/os/</link>
+    <description>Recent content in OS on 吾铭子</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <managingEditor>1078249029@qq.com (吾铭子)</managingEditor>
+    <webMaster>1078249029@qq.com (吾铭子)</webMaster>
+    <lastBuildDate>Mon, 31 Mar 2025 16:51:18 +0800</lastBuildDate>
+    <atom:link href="https://1078249029.github.io/tags/os/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>移植ESP32SPI驱动至rtthread教程</title>
+      <link>https://1078249029.github.io/posts/planting-esp32spi-to-rtthread/</link>
+      <pubDate>Sat, 19 Oct 2024 10:50:25 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
+      <guid>https://1078249029.github.io/posts/planting-esp32spi-to-rtthread/</guid>
+      <description>&lt;p&gt;本文是博主移植驱动工作的总结，详细介绍了移植过程以及遇到的问题及其解决方案，希望对各位有帮助。同时，代码已进入&lt;a href=&#34;https://github.com/RT-Thread/rt-thread/pull/9513&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;RT-Thread主线&lt;/a&gt;。博文同时发表在个人博客&lt;a href=&#34;wumingzi.top&#34; rel=&#34;&#34;&gt;wumingzi.top&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Linux深入</title>
+      <link>https://1078249029.github.io/posts/linux-advanced/</link>
+      <pubDate>Fri, 23 Feb 2024 11:44:04 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
+      <guid>https://1078249029.github.io/posts/linux-advanced/</guid>
+      <description>&lt;p&gt;Linux驱动深入，包含PCIE，USB以及常用子系统的&lt;strong&gt;粗浅介绍&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Linux内核</title>
+      <link>https://1078249029.github.io/posts/linux-kernel/</link>
+      <pubDate>Wed, 21 Feb 2024 16:55:40 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
+      <guid>https://1078249029.github.io/posts/linux-kernel/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;本文阐述系统为x86体系架构，idt，gdt，tss，系统启动引导过程均以x86架构为蓝本，arm不适用，并且由于参考资料过于过于久远，读者应谨慎参考&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Linux基础</title>
+      <link>https://1078249029.github.io/posts/linux-basics/</link>
+      <pubDate>Tue, 23 Jan 2024 18:18:18 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
+      <guid>https://1078249029.github.io/posts/linux-basics/</guid>
+      <description>&lt;p&gt;基础的Linux应用与驱动开发&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>FreeRTOS</title>
+      <link>https://1078249029.github.io/posts/freertos/</link>
+      <pubDate>Sun, 24 Dec 2023 10:06:40 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
+      <guid>https://1078249029.github.io/posts/freertos/</guid>
+      <description>&lt;p&gt;本文为FreeRTOS的系统性学习的总结，内容包含简单API的使用和RTOS的原理介绍，参考视资料为b站的&lt;a href=&#34;https://www.bilibili.com/video/BV1844y1g7ud/?spm_id_from=..search-card.all.click&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;韦东山视频&lt;/a&gt;，内部并未优化排版。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
