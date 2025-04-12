@@ -453,7 +453,7 @@
     <a href="#%e7%a1%ac%e4%bb%b6" class="header-mark"></a>硬件</h2><p>SOC: system on chip
 电机会有死区电压，表现为电压很低时电机不能启动，死区电压约占额定电压的10%，此时需要给一PWM占空比最小值从而避免死区电压</p>
 <p>
-<figure><a class="lightgallery" href="assets/113862122249687.webp" title="2023-12-20_22-20" data-thumbnail="assets/113862122249687.webp" data-sub-html="<h2> </h2><p>2023-12-20_22-20</p>"><img   src='assets/113862122249687.webp'   alt="2023-12-20_22-20"  ></a><figcaption class="image-caption">2023-12-20_22-20</figcaption>
+<figure><a class="lightgallery" href="/image/113862122249687.webp" title="2023-12-20_22-20" data-thumbnail="/image/113862122249687.webp" data-sub-html="<h2> </h2><p>2023-12-20_22-20</p>"><img   src='/image/113862122249687.webp'   alt="2023-12-20_22-20" height="1193" width="1128"></a><figcaption class="image-caption">2023-12-20_22-20</figcaption>
     </figure>
 处于三相电PWM调功率中的开关器件(如IGBT)，换相时为防止三相电任意上半桥和下半桥同时开启导致短路，我们要给死区时间，一般会占整个周期的百分之几，但当PWM占空比极小时，死区时间就会产生很大影响，最终影响输出纹波</p>
 <p>常量保存在Flash里，全局初始化非零的变量保存在SRAM的.data段内，静态变量或者全局初始化为零的变量保存在.bss段内。函数和函数内的局部变量保存在栈上<strong>需要注意的是，.bss段内部在运行时不一定始终保持为0。例如如下代码</strong></p>
@@ -560,10 +560,10 @@
 <p>尽量把数据保存在栈上，这样防止产生内存安全问题，并且栈上访问数据速度更快(数据局部性原理？)
 栈是从高地址向低地址增长，堆是从低地址向高地址增长</p>
 <p>
-<figure><a class="lightgallery" href="assets/326561215267371.webp" title="2024-04-09_15-12" data-thumbnail="assets/326561215267371.webp" data-sub-html="<h2> </h2><p>2024-04-09_15-12</p>"><img   src='assets/326561215267371.webp'   alt="2024-04-09_15-12"  ></a><figcaption class="image-caption">2024-04-09_15-12</figcaption>
+<figure><a class="lightgallery" href="/image/326561215267371.webp" title="2024-04-09_15-12" data-thumbnail="/image/326561215267371.webp" data-sub-html="<h2> </h2><p>2024-04-09_15-12</p>"><img   src='/image/326561215267371.webp'   alt="2024-04-09_15-12" height="1337" width="602"></a><figcaption class="image-caption">2024-04-09_15-12</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="assets/321153610251887.webp" title="2024-04-09_10-34" data-thumbnail="assets/321153610251887.webp" data-sub-html="<h2> </h2><p>2024-04-09_10-34</p>"><img   src='assets/321153610251887.webp'   alt="2024-04-09_10-34"  ></a><figcaption class="image-caption">2024-04-09_10-34</figcaption>
+<figure><a class="lightgallery" href="/image/321153610251887.webp" title="2024-04-09_10-34" data-thumbnail="/image/321153610251887.webp" data-sub-html="<h2> </h2><p>2024-04-09_10-34</p>"><img   src='/image/321153610251887.webp'   alt="2024-04-09_10-34" height="1260" width="977"></a><figcaption class="image-caption">2024-04-09_10-34</figcaption>
     </figure></p>
 <p>操作Flash前需要关中断</p>
 <p>计算机底层是小端存储的原因是在C程序员眼里，小端更符合直觉，在不定长的int，char中可以相互转换而不改变变量值(变量长度小于int、char最小值的情况下)，但是对于传输协议来说，大部分为定长字段传输，这就造成了大端存储更符合从左至右的阅读习惯</p>
@@ -777,7 +777,7 @@
 编译阶段时，具体的函数，变量地址并未确定，每个需要重定位的地方称为重定位入口，因此还需要链接器在链接阶段进行变量，函数的重定位，这样就可以获得程序的加载地址了</p>
 <p>产生的.bss段在文件中并不占用可执行文件的空间，.bss只在运行程序时需要声明所占内存的大小</p>
 <p>
-<figure><a class="lightgallery" href="assets/282042521240360.webp" title="2024-03-19_21-25" data-thumbnail="assets/282042521240360.webp" data-sub-html="<h2> </h2><p>2024-03-19_21-25</p>"><img   src='assets/282042521240360.webp'   alt="2024-03-19_21-25"  ></a><figcaption class="image-caption">2024-03-19_21-25</figcaption>
+<figure><a class="lightgallery" href="/image/282042521240360.webp" title="2024-03-19_21-25" data-thumbnail="/image/282042521240360.webp" data-sub-html="<h2> </h2><p>2024-03-19_21-25</p>"><img   src='/image/282042521240360.webp'   alt="2024-03-19_21-25" height="947" width="1199"></a><figcaption class="image-caption">2024-03-19_21-25</figcaption>
     </figure></p>
 <p>编译产生的文件被称为目标文件，其包括可执行文件(linux的elf，或者unix的out)，动态链接库文件以及静态链接库(这两位也是可执行文件<strong>格式</strong>存储的)</p>
 <p>.comment保存的是编译器和系统版本信息，这些信息也是只读的</p>
@@ -963,27 +963,27 @@
 <ul>
 <li>首先从所有设备中抽离出kobject对象，这个对象代表了任意一个设备，若干个设备被集合为同一种并被kset对象进行管理，下图中/sys目录下的每一种设备都是kset。因此对于sysfs子系统(也就是/sys目录)来说他有若干个kset组成
 
-<figure><a class="lightgallery" href="assets/517493116268555.webp" title="2024-04-10_16-31" data-thumbnail="assets/517493116268555.webp" data-sub-html="<h2> </h2><p>2024-04-10_16-31</p>"><img   src='assets/517493116268555.webp'   alt="2024-04-10_16-31"  ></a><figcaption class="image-caption">2024-04-10_16-31</figcaption>
+<figure><a class="lightgallery" href="/image/517493116268555.webp" title="2024-04-10_16-31" data-thumbnail="/image/517493116268555.webp" data-sub-html="<h2> </h2><p>2024-04-10_16-31</p>"><img   src='/image/517493116268555.webp'   alt="2024-04-10_16-31" height="596" width="962"></a><figcaption class="image-caption">2024-04-10_16-31</figcaption>
     </figure></li>
 </ul>
 <p>
-<figure><a class="lightgallery" href="assets/597195016246741.webp" title="2024-04-07_16-50" data-thumbnail="assets/597195016246741.webp" data-sub-html="<h2> </h2><p>2024-04-07_16-50</p>"><img   src='assets/597195016246741.webp'   alt="2024-04-07_16-50"  ></a><figcaption class="image-caption">2024-04-07_16-50</figcaption>
+<figure><a class="lightgallery" href="/image/597195016246741.webp" title="2024-04-07_16-50" data-thumbnail="/image/597195016246741.webp" data-sub-html="<h2> </h2><p>2024-04-07_16-50</p>"><img   src='/image/597195016246741.webp'   alt="2024-04-07_16-50" height="802" width="1332"></a><figcaption class="image-caption">2024-04-07_16-50</figcaption>
     </figure></p>
 <ul>
 <li>之后device结构体又对kobject进行了封装，但是在封装的过程中又引入了bus_type，device_driver等特性来支持总线设备驱动模型，这完美体现了OOP思想</li>
 </ul>
 <p>
-<figure><a class="lightgallery" href="assets/538480117266907.webp" title="2024-04-07_17-01" data-thumbnail="assets/538480117266907.webp" data-sub-html="<h2> </h2><p>2024-04-07_17-01</p>"><img   src='assets/538480117266907.webp'   alt="2024-04-07_17-01"  ></a><figcaption class="image-caption">2024-04-07_17-01</figcaption>
+<figure><a class="lightgallery" href="/image/538480117266907.webp" title="2024-04-07_17-01" data-thumbnail="/image/538480117266907.webp" data-sub-html="<h2> </h2><p>2024-04-07_17-01</p>"><img   src='/image/538480117266907.webp'   alt="2024-04-07_17-01" height="847" width="1045"></a><figcaption class="image-caption">2024-04-07_17-01</figcaption>
     </figure></p>
 <ul>
 <li>device只是对总线设备驱动模型的一次封装，对于具体的设备类型我们还需要再次封装来实例化device对象，例如对于USB设备驱动来说它有USB状态，速度等特性，因此有了下面的结构体</li>
 </ul>
 <p>
-<figure><a class="lightgallery" href="assets/225970417259576.webp" title="2024-04-07_17-03" data-thumbnail="assets/225970417259576.webp" data-sub-html="<h2> </h2><p>2024-04-07_17-03</p>"><img   src='assets/225970417259576.webp'   alt="2024-04-07_17-03"  ></a><figcaption class="image-caption">2024-04-07_17-03</figcaption>
+<figure><a class="lightgallery" href="/image/225970417259576.webp" title="2024-04-07_17-03" data-thumbnail="/image/225970417259576.webp" data-sub-html="<h2> </h2><p>2024-04-07_17-03</p>"><img   src='/image/225970417259576.webp'   alt="2024-04-07_17-03" height="868" width="889"></a><figcaption class="image-caption">2024-04-07_17-03</figcaption>
     </figure></p>
 <p>总结：
 
-<figure><a class="lightgallery" href="assets/587770417256131.webp" title="2024-04-07_17-04" data-thumbnail="assets/587770417256131.webp" data-sub-html="<h2> </h2><p>2024-04-07_17-04</p>"><img   src='assets/587770417256131.webp'   alt="2024-04-07_17-04"  ></a><figcaption class="image-caption">2024-04-07_17-04</figcaption>
+<figure><a class="lightgallery" href="/image/587770417256131.webp" title="2024-04-07_17-04" data-thumbnail="/image/587770417256131.webp" data-sub-html="<h2> </h2><p>2024-04-07_17-04</p>"><img   src='/image/587770417256131.webp'   alt="2024-04-07_17-04" height="504" width="933"></a><figcaption class="image-caption">2024-04-07_17-04</figcaption>
     </figure></p>
 <h3 id="alias" class="headerLink">
     <a href="#alias" class="header-mark"></a>alias</h3><p>GNU C 扩展了一个 alias 属性，这个属性很简单，主要用来给函数定义一个别名</p>
@@ -2673,19 +2673,19 @@ Valgrind包含一套工具集，其中一个内存检测工具Memcheck可以对�
 <h3 id="多发射" class="headerLink">
     <a href="#%e5%a4%9a%e5%8f%91%e5%b0%84" class="header-mark"></a>多发射</h3><p>在执行阶段时CPU有不同的执行单元，例如乘法器，加法器，FPU等，为了能够充分利用这些资源，CPU采用了多发射并行执行指令的方法，每一时刻，CPU都在同时运行不同的执行单元，而每个执行单元也都有不同的取指器，译指器，因此这些准备工作也是并行执行的</p>
 <p>
-<figure><a class="lightgallery" href="assets/15434216240366.webp" title="2024-03-25_16-41" data-thumbnail="assets/15434216240366.webp" data-sub-html="<h2> </h2><p>2024-03-25_16-41</p>"><img   src='assets/15434216240366.webp'   alt="2024-03-25_16-41"  ></a><figcaption class="image-caption">2024-03-25_16-41</figcaption>
+<figure><a class="lightgallery" href="/image/15434216240366.webp" title="2024-03-25_16-41" data-thumbnail="/image/15434216240366.webp" data-sub-html="<h2> </h2><p>2024-03-25_16-41</p>"><img   src='/image/15434216240366.webp'   alt="2024-03-25_16-41" height="604" width="784"></a><figcaption class="image-caption">2024-03-25_16-41</figcaption>
     </figure></p>
 <h3 id="总线" class="headerLink">
     <a href="#%e6%80%bb%e7%ba%bf" class="header-mark"></a>总线</h3><p>
-<figure><a class="lightgallery" href="assets/90255319258792.webp" title="2024-03-25_19-52" data-thumbnail="assets/90255319258792.webp" data-sub-html="<h2> </h2><p>2024-03-25_19-52</p>"><img   src='assets/90255319258792.webp'   alt="2024-03-25_19-52"  ></a><figcaption class="image-caption">2024-03-25_19-52</figcaption>
+<figure><a class="lightgallery" href="/image/90255319258792.webp" title="2024-03-25_19-52" data-thumbnail="/image/90255319258792.webp" data-sub-html="<h2> </h2><p>2024-03-25_19-52</p>"><img   src='/image/90255319258792.webp'   alt="2024-03-25_19-52" height="727" width="790"></a><figcaption class="image-caption">2024-03-25_19-52</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="assets/367155319266825.webp" title="2024-03-25_19-53" data-thumbnail="assets/367155319266825.webp" data-sub-html="<h2> </h2><p>2024-03-25_19-53</p>"><img   src='assets/367155319266825.webp'   alt="2024-03-25_19-53"  ></a><figcaption class="image-caption">2024-03-25_19-53</figcaption>
+<figure><a class="lightgallery" href="/image/367155319266825.webp" title="2024-03-25_19-53" data-thumbnail="/image/367155319266825.webp" data-sub-html="<h2> </h2><p>2024-03-25_19-53</p>"><img   src='/image/367155319266825.webp'   alt="2024-03-25_19-53" height="746" width="923"></a><figcaption class="image-caption">2024-03-25_19-53</figcaption>
     </figure></p>
 <p>计算机一般采用两种编址方式：统一编址和独立编址。对于arm架构来说采用的是统一编址模式，这意味着CPU访问外设的内部寄存器就像访问RAM一样。而x86采用了独立编址模式，这意味着内存RAM和外部设备的寄存器独立编址，分别占用不同的地址空间，所以CPU访问外设内部寄存器需要单独的指令</p>
 <h3 id="arm工作模式与寄存器" class="headerLink">
     <a href="#arm%e5%b7%a5%e4%bd%9c%e6%a8%a1%e5%bc%8f%e4%b8%8e%e5%af%84%e5%ad%98%e5%99%a8" class="header-mark"></a>arm工作模式与寄存器</h3><p>
-<figure><a class="lightgallery" href="assets/491142321259494.webp" title="2024-03-25_21-23" data-thumbnail="assets/491142321259494.webp" data-sub-html="<h2> </h2><p>2024-03-25_21-23</p>"><img   src='assets/491142321259494.webp'   alt="2024-03-25_21-23"  ></a><figcaption class="image-caption">2024-03-25_21-23</figcaption>
+<figure><a class="lightgallery" href="/image/491142321259494.webp" title="2024-03-25_21-23" data-thumbnail="/image/491142321259494.webp" data-sub-html="<h2> </h2><p>2024-03-25_21-23</p>"><img   src='/image/491142321259494.webp'   alt="2024-03-25_21-23" height="785" width="1483"></a><figcaption class="image-caption">2024-03-25_21-23</figcaption>
     </figure></p>
 <p>对于arm而言，R0~R12属于通用寄存器，其他的属于特殊寄存器
 R13(SP，Stack Pointer)：堆栈指针寄存器，保存了当前运行程序的栈顶
@@ -2695,7 +2695,7 @@ CPSR(Current Processor State Register)：当前状态寄存器
 SPSR(Saved Processor State Register)：当前状态保存寄存器，当CPU从异常状态返回时会从SPSR寄存器中恢复原先的处理器状态，即将SPSR加载进CPSR从而切换到原来的工作模式继续运行</p>
 <p>ARM处理器则使用R13寄存器(SP，栈顶指针)和R11寄存器(FP，栈底指针)来管理堆栈</p>
 <p>
-<figure><a class="lightgallery" href="assets/391243121256049.webp" title="2024-03-25_21-31" data-thumbnail="assets/391243121256049.webp" data-sub-html="<h2> </h2><p>2024-03-25_21-31</p>"><img   src='assets/391243121256049.webp'   alt="2024-03-25_21-31"  ></a><figcaption class="image-caption">2024-03-25_21-31</figcaption>
+<figure><a class="lightgallery" href="/image/391243121256049.webp" title="2024-03-25_21-31" data-thumbnail="/image/391243121256049.webp" data-sub-html="<h2> </h2><p>2024-03-25_21-31</p>"><img   src='/image/391243121256049.webp'   alt="2024-03-25_21-31" height="818" width="1239"></a><figcaption class="image-caption">2024-03-25_21-31</figcaption>
     </figure></p>
 <p>在ARM所有的工作模式中，有一种工作模式比较特殊，即FIQ模式。为了快速响应中断，减少中断现场保护带来的时间开销，在FIQ工作模式下，ARM处理器有自己独享的R8~R12寄存器</p>
 <h3 id="超线程技术" class="headerLink">
@@ -2704,7 +2704,7 @@ SPSR(Saved Processor State Register)：当前状态保存寄存器，当CPU从�
 <h3 id="启动方式" class="headerLink">
     <a href="#%e5%90%af%e5%8a%a8%e6%96%b9%e5%bc%8f" class="header-mark"></a>启动方式</h3><p>在一个嵌入式系统中，很多人可能认为U-boot是系统上电运行的第一行代码，然而事实并非如此，CPU上电后会首先运行固化在CPU芯片内部的一小段代码，这片代码通常被称为ROMCODE，这部分代码的主要功能就是初始化存储器接口，建立存储映射。它首先会根据CPU管脚或eFuse值来判断系统的启动方式：从NOR Flash、NAND Flash启动还是从SD卡启动
 
-<figure><a class="lightgallery" href="assets/545560515269767.webp" title="2024-04-09_15-05" data-thumbnail="assets/545560515269767.webp" data-sub-html="<h2> </h2><p>2024-04-09_15-05</p>"><img   src='assets/545560515269767.webp'   alt="2024-04-09_15-05"  ></a><figcaption class="image-caption">2024-04-09_15-05</figcaption>
+<figure><a class="lightgallery" href="/image/545560515269767.webp" title="2024-04-09_15-05" data-thumbnail="/image/545560515269767.webp" data-sub-html="<h2> </h2><p>2024-04-09_15-05</p>"><img   src='/image/545560515269767.webp'   alt="2024-04-09_15-05" height="877" width="914"></a><figcaption class="image-caption">2024-04-09_15-05</figcaption>
     </figure></p>
 <p>如果我们将U-boot代码“烧写”在NOR Flash上，设置系统从NORFlash启动，这段ROMCODE代码就会将NOR Flash映射到零地址，然后系统复位，CPU默认从零地址取代码执行，即从NOR Flash上开始执行U-boot指令
 如果系统从NAND Flash或SD卡启动，通过上面的学习我们已经知道，除了SRAM和NOR Flash支持随机读写，可以直接运行代码，其他Flash设备是不支持代码直接运行的，因此我们只能将这些代码从NAND Flash或SD卡复制到内存执行。因为此时DDR SDRAM内存还没有被初始化，所以我们一般会先将NAND Flash或SD卡中的一部分代码(通常为前4KB)复制到芯片内部集成的SRAM中去执行，然后在这4KB代码中完成各种初始化、代码复制、重定位等工作，最后PC指针才会跳到DDRSDRAM内存中去运行</p>
@@ -2763,7 +2763,7 @@ ABI (application binary interface，应用二进制接口)，我们把符号修�
             <div class="footer-line">
                 <span id="run-time"></span>
             </div><div class="footer-line">
-                    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.146.1">Hugo</a>&nbsp;|&nbsp;Theme - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.4.1"><svg class="icon"
+                    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.146.2">Hugo</a>&nbsp;|&nbsp;Theme - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.4.1"><svg class="icon"
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg> DoIt</a>
                 </div><div class="footer-line"><svg class="icon"
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 448c-110.532 0-200-89.451-200-200 0-110.531 89.451-200 200-200 110.532 0 200 89.451 200 200 0 110.532-89.451 200-200 200zm107.351-101.064c-9.614 9.712-45.53 41.396-104.065 41.396-82.43 0-140.484-61.425-140.484-141.567 0-79.152 60.275-139.401 139.762-139.401 55.531 0 88.738 26.62 97.593 34.779a11.965 11.965 0 0 1 1.936 15.322l-18.155 28.113c-3.841 5.95-11.966 7.282-17.499 2.921-8.595-6.776-31.814-22.538-61.708-22.538-48.303 0-77.916 35.33-77.916 80.082 0 41.589 26.888 83.692 78.277 83.692 32.657 0 56.843-19.039 65.726-27.225 5.27-4.857 13.596-4.039 17.82 1.738l19.865 27.17a11.947 11.947 0 0 1-1.152 15.518z"/></svg>2023 - 2025<span class="author">&nbsp;<a href="wumingzi.top" target="_blank" rel="noopener noreferrer">吾铭子</a></span></div>
