@@ -2,21 +2,21 @@
     xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     ><url>
-            <loc>https://1078249029.github.io/essay/</loc><lastmod>2025-04-07T10:59:37&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
-            <loc>https://1078249029.github.io/</loc><lastmod>2025-04-09T18:46:00&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
-            <loc>https://1078249029.github.io/friend/</loc><lastmod>2025-04-09T18:46:00&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
-            <loc>https://1078249029.github.io/about/</loc><lastmod>2025-04-08T15:27:43&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
-            <loc>https://1078249029.github.io/categories/</loc><lastmod>2025-04-07T19:32:31&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
-            <loc>https://1078249029.github.io/tags/computer-architecture/</loc><lastmod>2025-04-07T19:32:31&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
-            <loc>https://1078249029.github.io/posts/</loc><lastmod>2025-04-07T19:32:31&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
-            <loc>https://1078249029.github.io/posts/risc-v/</loc><lastmod>2025-04-07T19:32:31&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
-            <loc>https://1078249029.github.io/tags/</loc><lastmod>2025-04-07T19:32:31&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
-            <loc>https://1078249029.github.io/categories/tech/</loc><lastmod>2025-04-07T19:32:31&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
-            <loc>https://1078249029.github.io/tags/tech/</loc><lastmod>2025-04-07T19:32:31&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
-            <loc>https://1078249029.github.io/tags/programing-language/</loc><lastmod>2025-04-07T19:32:31&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
-            <loc>https://1078249029.github.io/posts/rust/</loc><lastmod>2025-04-07T19:32:31&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>https://1078249029.github.io/essay/</loc><lastmod>2025-04-07T10:59:37&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
+            <loc>https://1078249029.github.io/</loc><lastmod>2025-04-09T18:46:00&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
+            <loc>https://1078249029.github.io/friend/</loc><lastmod>2025-04-09T18:46:00&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
+            <loc>https://1078249029.github.io/about/</loc><lastmod>2025-04-08T15:27:43&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
+            <loc>https://1078249029.github.io/categories/</loc><lastmod>2025-04-07T19:32:31&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
+            <loc>https://1078249029.github.io/tags/computer-architecture/</loc><lastmod>2025-04-07T19:32:31&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
+            <loc>https://1078249029.github.io/posts/</loc><lastmod>2025-04-07T19:32:31&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
+            <loc>https://1078249029.github.io/posts/risc-v/</loc><lastmod>2025-04-07T19:32:31&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
+            <loc>https://1078249029.github.io/tags/</loc><lastmod>2025-04-07T19:32:31&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
+            <loc>https://1078249029.github.io/categories/tech/</loc><lastmod>2025-04-07T19:32:31&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
+            <loc>https://1078249029.github.io/tags/tech/</loc><lastmod>2025-04-07T19:32:31&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
+            <loc>https://1078249029.github.io/tags/programing-language/</loc><lastmod>2025-04-07T19:32:31&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
+            <loc>https://1078249029.github.io/posts/rust/</loc><lastmod>2025-04-07T19:32:31&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
             <loc>https://1078249029.github.io/tags/esp32/</loc><lastmod>2024-11-04T15:02:01&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
-            <loc>https://1078249029.github.io/tags/os/</loc><lastmod>2025-03-31T16:51:18&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
+            <loc>https://1078249029.github.io/tags/os/</loc><lastmod>2025-03-31T16:51:18&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url><url>
             <loc>https://1078249029.github.io/tags/rt-thread/</loc><lastmod>2024-11-04T15:02:01&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
             <loc>https://1078249029.github.io/posts/planting-esp32spi-to-rtthread/</loc><lastmod>2024-11-04T15:02:01&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
             <loc>https://1078249029.github.io/tags/life/</loc><lastmod>2024-10-19T21:15:26&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
@@ -25,10 +25,10 @@
             <loc>https://1078249029.github.io/tags/rss/</loc><lastmod>2024-10-19T21:15:26&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
             <loc>https://1078249029.github.io/tags/network/</loc><lastmod>2024-09-09T13:51:35&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
             <loc>https://1078249029.github.io/posts/computer-network/</loc><lastmod>2024-09-09T13:51:35&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
-            <loc>https://1078249029.github.io/posts/linux-advanced/</loc><lastmod>2025-03-31T16:51:18&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
+            <loc>https://1078249029.github.io/posts/linux-advanced/</loc><lastmod>2025-03-31T16:51:18&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url><url>
             <loc>https://1078249029.github.io/posts/linux-kernel/</loc><lastmod>2024-10-28T19:39:58&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
             <loc>https://1078249029.github.io/posts/linux-basics/</loc><lastmod>2024-10-28T19:39:19&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
-            <loc>https://1078249029.github.io/posts/cpp/</loc><lastmod>2025-04-04T09:37:57&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
+            <loc>https://1078249029.github.io/posts/cpp/</loc><lastmod>2025-04-04T09:37:57&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url><url>
             <loc>https://1078249029.github.io/posts/python/</loc><lastmod>2024-09-08T17:57:43&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
             <loc>https://1078249029.github.io/tags/tools/</loc><lastmod>2024-10-29T11:24:43&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
             <loc>https://1078249029.github.io/posts/toolchains/</loc><lastmod>2024-10-29T11:24:43&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
@@ -43,5 +43,5 @@
             <loc>https://1078249029.github.io/categories/industry/</loc><lastmod>2023-02-07T14:47:09&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
             <loc>https://1078249029.github.io/tags/industrymechanichistory/</loc><lastmod>2023-02-07T14:47:09&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
             <loc>https://1078249029.github.io/posts/century-industry/</loc><lastmod>2023-02-07T14:47:09&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
-            <loc>https://1078249029.github.io/posts/test1/</loc><lastmod>2025-04-07T19:32:31&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
-            <loc>https://1078249029.github.io/posts/hello-world/</loc><lastmod>2025-04-07T19:32:31&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url></urlset>
+            <loc>https://1078249029.github.io/posts/test1/</loc><lastmod>2025-04-07T19:32:31&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
+            <loc>https://1078249029.github.io/posts/hello-world/</loc><lastmod>2025-04-07T19:32:31&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url></urlset>

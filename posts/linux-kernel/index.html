@@ -414,11 +414,11 @@
 <a href="https://blog.csdn.net/yxc135/article/details/8734452" target="_blank" rel="noopener noreferrer">中断向量表和中断描述符表IDT-CSDN</a></p>
 <p><a href="https://blog.csdn.net/ybxuwei/article/details/80657461" target="_blank" rel="noopener noreferrer">linux分段-CSDN</a></p>
 <p>
-<figure><a class="lightgallery" href="/image/373000621257049.webp" title="2024-02-22_21-06" data-thumbnail="/image/373000621257049.webp" data-sub-html="<h2> </h2><p>2024-02-22_21-06</p>"><img   src='/image/373000621257049.webp'   alt="2024-02-22_21-06" height="628" width="778"></a><figcaption class="image-caption">2024-02-22_21-06</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/373000621257049.webp" title="2024-02-22_21-06" data-thumbnail="/posts/linux-kernel/assets/373000621257049.webp" data-sub-html="<h2> </h2><p>2024-02-22_21-06</p>"><img   src='/posts/linux-kernel/assets/373000621257049.webp'   alt="2024-02-22_21-06" height="628" width="778"></a><figcaption class="image-caption">2024-02-22_21-06</figcaption>
     </figure></p>
 <p>TSS(任务状态段)就是特殊寄存器 + 通用寄存器的信息</p>
 <p>
-<figure><a class="lightgallery" href="/image/56405009258689.webp" title="2024-02-22_09-49" data-thumbnail="/image/56405009258689.webp" data-sub-html="<h2> </h2><p>2024-02-22_09-49</p>"><img   src='/image/56405009258689.webp'   alt="2024-02-22_09-49" height="1070" width="1903"></a><figcaption class="image-caption">2024-02-22_09-49</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/56405009258689.webp" title="2024-02-22_09-49" data-thumbnail="/posts/linux-kernel/assets/56405009258689.webp" data-sub-html="<h2> </h2><p>2024-02-22_09-49</p>"><img   src='/posts/linux-kernel/assets/56405009258689.webp'   alt="2024-02-22_09-49" height="1070" width="1903"></a><figcaption class="image-caption">2024-02-22_09-49</figcaption>
     </figure></p>
 <h3 id="fork的实现" class="headerLink">
     <a href="#fork%e7%9a%84%e5%ae%9e%e7%8e%b0" class="header-mark"></a>fork的实现</h3><ul>
@@ -428,7 +428,7 @@
 </ul>
 <p>需要注意的是fork出的子进程的文件描述符比父进程大1，这也是Linux基础文章中现象的实现</p>
 <p>
-<figure><a class="lightgallery" href="/image/402763010246556.webp" title="2024-02-22_10-28" data-thumbnail="/image/402763010246556.webp" data-sub-html="<h2> </h2><p>2024-02-22_10-28</p>"><img   src='/image/402763010246556.webp'   alt="2024-02-22_10-28" height="1079" width="1144"></a><figcaption class="image-caption">2024-02-22_10-28</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/402763010246556.webp" title="2024-02-22_10-28" data-thumbnail="/posts/linux-kernel/assets/402763010246556.webp" data-sub-html="<h2> </h2><p>2024-02-22_10-28</p>"><img   src='/posts/linux-kernel/assets/402763010246556.webp'   alt="2024-02-22_10-28" height="1079" width="1144"></a><figcaption class="image-caption">2024-02-22_10-28</figcaption>
     </figure></p>
 <h3 id="进程调度" class="headerLink">
     <a href="#%e8%bf%9b%e7%a8%8b%e8%b0%83%e5%ba%a6" class="header-mark"></a>进程调度</h3><p>在0.11内核中，进程调度分为调度和切换两个步骤，调度负责将用完时间片的进程挂起，并将进程的状态位改为暂停状态，切换时为了效率采用汇编，它的作用是将那些设置状态位的进程加载进CPU寄存器中，即执行上下文切换的功能</p>
@@ -454,7 +454,7 @@
 </li>
 </ul>
 <p>
-<figure><a class="lightgallery" href="/image/231530512266722.webp" title="2024-02-22_12-05" data-thumbnail="/image/231530512266722.webp" data-sub-html="<h2> </h2><p>2024-02-22_12-05</p>"><img   src='/image/231530512266722.webp'   alt="2024-02-22_12-05" height="609" width="2090"></a><figcaption class="image-caption">2024-02-22_12-05</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/231530512266722.webp" title="2024-02-22_12-05" data-thumbnail="/posts/linux-kernel/assets/231530512266722.webp" data-sub-html="<h2> </h2><p>2024-02-22_12-05</p>"><img   src='/posts/linux-kernel/assets/231530512266722.webp'   alt="2024-02-22_12-05" height="609" width="2090"></a><figcaption class="image-caption">2024-02-22_12-05</figcaption>
     </figure></p>
 <h2 id="linux内核启动引导" class="headerLink">
     <a href="#linux%e5%86%85%e6%a0%b8%e5%90%af%e5%8a%a8%e5%bc%95%e5%af%bc" class="header-mark"></a>Linux内核启动引导</h2><h3 id="操作系统的启动" class="headerLink">
@@ -480,13 +480,13 @@
 </li>
 </ul>
 <p>
-<figure><a class="lightgallery" href="/image/577701316251700.webp" title="2024-02-22_16-13" data-thumbnail="/image/577701316251700.webp" data-sub-html="<h2> </h2><p>2024-02-22_16-13</p>"><img   src='/image/577701316251700.webp'   alt="2024-02-22_16-13" height="943" width="2260"></a><figcaption class="image-caption">2024-02-22_16-13</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/577701316251700.webp" title="2024-02-22_16-13" data-thumbnail="/posts/linux-kernel/assets/577701316251700.webp" data-sub-html="<h2> </h2><p>2024-02-22_16-13</p>"><img   src='/posts/linux-kernel/assets/577701316251700.webp'   alt="2024-02-22_16-13" height="943" width="2260"></a><figcaption class="image-caption">2024-02-22_16-13</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="/image/239811716269580.webp" title="2024-02-22_16-17" data-thumbnail="/image/239811716269580.webp" data-sub-html="<h2> </h2><p>2024-02-22_16-17</p>"><img   src='/image/239811716269580.webp'   alt="2024-02-22_16-17" height="807" width="2206"></a><figcaption class="image-caption">2024-02-22_16-17</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/239811716269580.webp" title="2024-02-22_16-17" data-thumbnail="/posts/linux-kernel/assets/239811716269580.webp" data-sub-html="<h2> </h2><p>2024-02-22_16-17</p>"><img   src='/posts/linux-kernel/assets/239811716269580.webp'   alt="2024-02-22_16-17" height="807" width="2206"></a><figcaption class="image-caption">2024-02-22_16-17</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="/image/97113816267184.webp" title="2024-02-22_16-37" data-thumbnail="/image/97113816267184.webp" data-sub-html="<h2> </h2><p>2024-02-22_16-37</p>"><img   src='/image/97113816267184.webp'   alt="2024-02-22_16-37" height="1283" width="2522"></a><figcaption class="image-caption">2024-02-22_16-37</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/97113816267184.webp" title="2024-02-22_16-37" data-thumbnail="/posts/linux-kernel/assets/97113816267184.webp" data-sub-html="<h2> </h2><p>2024-02-22_16-37</p>"><img   src='/posts/linux-kernel/assets/97113816267184.webp'   alt="2024-02-22_16-37" height="1283" width="2522"></a><figcaption class="image-caption">2024-02-22_16-37</figcaption>
     </figure></p>
 <p>系统第一个APP是根文件系统(linuxrc)</p>
 <p>4.9.88内核main函数位于/init文件夹，调用流程如下</p>
@@ -601,7 +601,7 @@
 </ul>
 <p>0号进程不会关闭，如果其他进程没有被执行，那么就执行0号进程，内部是pause函数</p>
 <p>
-<figure><a class="lightgallery" href="/image/220153713259391.webp" title="2024-02-22_13-35" data-thumbnail="/image/220153713259391.webp" data-sub-html="<h2> </h2><p>2024-02-22_13-35</p>"><img   src='/image/220153713259391.webp'   alt="2024-02-22_13-35" height="961" width="884"></a><figcaption class="image-caption">2024-02-22_13-35</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/220153713259391.webp" title="2024-02-22_13-35" data-thumbnail="/posts/linux-kernel/assets/220153713259391.webp" data-sub-html="<h2> </h2><p>2024-02-22_13-35</p>"><img   src='/posts/linux-kernel/assets/220153713259391.webp'   alt="2024-02-22_13-35" height="961" width="884"></a><figcaption class="image-caption">2024-02-22_13-35</figcaption>
     </figure></p>
 <p>init函数就是在不断地创建shell，并在子进程中执行，等子进程执行完毕后由父进程接收结果</p>
 <div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
@@ -743,21 +743,21 @@
 </div>
 <p>Linux启动时会进行异常的初始化，这些初始化函数分为两种，一类是设置用户特权的异常，一类是设置内核特权的异常</p>
 <p>
-<figure><a class="lightgallery" href="/image/179150820264686.webp" title="2024-02-22_20-07" data-thumbnail="/image/179150820264686.webp" data-sub-html="<h2> </h2><p>2024-02-22_20-07</p>"><img   src='/image/179150820264686.webp'   alt="2024-02-22_20-07" height="217" width="2282"></a><figcaption class="image-caption">2024-02-22_20-07</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/179150820264686.webp" title="2024-02-22_20-07" data-thumbnail="/posts/linux-kernel/assets/179150820264686.webp" data-sub-html="<h2> </h2><p>2024-02-22_20-07</p>"><img   src='/posts/linux-kernel/assets/179150820264686.webp'   alt="2024-02-22_20-07" height="217" width="2282"></a><figcaption class="image-caption">2024-02-22_20-07</figcaption>
     </figure></p>
 <p>内核通过分段将machine_desc结构体放于内存某一固定位置中，这些machine_desc用于linux识别设备</p>
 <p>
-<figure><a class="lightgallery" href="/image/86192421250183.webp" title="2024-02-22_21-23" data-thumbnail="/image/86192421250183.webp" data-sub-html="<h2> </h2><p>2024-02-22_21-23</p>"><img   src='/image/86192421250183.webp'   alt="2024-02-22_21-23" height="736" width="1376"></a><figcaption class="image-caption">2024-02-22_21-23</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/86192421250183.webp" title="2024-02-22_21-23" data-thumbnail="/posts/linux-kernel/assets/86192421250183.webp" data-sub-html="<h2> </h2><p>2024-02-22_21-23</p>"><img   src='/posts/linux-kernel/assets/86192421250183.webp'   alt="2024-02-22_21-23" height="736" width="1376"></a><figcaption class="image-caption">2024-02-22_21-23</figcaption>
     </figure></p>
 <p>此代码位于head-common.s，在head.s被调用
 
-<figure><a class="lightgallery" href="/image/196132721240713.webp" title="2024-02-22_21-27" data-thumbnail="/image/196132721240713.webp" data-sub-html="<h2> </h2><p>2024-02-22_21-27</p>"><img   src='/image/196132721240713.webp'   alt="2024-02-22_21-27" height="333" width="1231"></a><figcaption class="image-caption">2024-02-22_21-27</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/196132721240713.webp" title="2024-02-22_21-27" data-thumbnail="/posts/linux-kernel/assets/196132721240713.webp" data-sub-html="<h2> </h2><p>2024-02-22_21-27</p>"><img   src='/posts/linux-kernel/assets/196132721240713.webp'   alt="2024-02-22_21-27" height="333" width="1231"></a><figcaption class="image-caption">2024-02-22_21-27</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="/image/98102821243217.webp" title="2024-02-22_21-27_1" data-thumbnail="/image/98102821243217.webp" data-sub-html="<h2> </h2><p>2024-02-22_21-27_1</p>"><img   src='/image/98102821243217.webp'   alt="2024-02-22_21-27_1" height="408" width="1411"></a><figcaption class="image-caption">2024-02-22_21-27_1</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/98102821243217.webp" title="2024-02-22_21-27_1" data-thumbnail="/posts/linux-kernel/assets/98102821243217.webp" data-sub-html="<h2> </h2><p>2024-02-22_21-27_1</p>"><img   src='/posts/linux-kernel/assets/98102821243217.webp'   alt="2024-02-22_21-27_1" height="408" width="1411"></a><figcaption class="image-caption">2024-02-22_21-27_1</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="/image/338033421252164.webp" title="2024-02-22_21-34" data-thumbnail="/image/338033421252164.webp" data-sub-html="<h2> </h2><p>2024-02-22_21-34</p>"><img   src='/image/338033421252164.webp'   alt="2024-02-22_21-34" height="901" width="1416"></a><figcaption class="image-caption">2024-02-22_21-34</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/338033421252164.webp" title="2024-02-22_21-34" data-thumbnail="/posts/linux-kernel/assets/338033421252164.webp" data-sub-html="<h2> </h2><p>2024-02-22_21-34</p>"><img   src='/posts/linux-kernel/assets/338033421252164.webp'   alt="2024-02-22_21-34" height="901" width="1416"></a><figcaption class="image-caption">2024-02-22_21-34</figcaption>
     </figure></p>
 <h3 id="linux移植浅谈" class="headerLink">
     <a href="#linux%e7%a7%bb%e6%a4%8d%e6%b5%85%e8%b0%88" class="header-mark"></a>Linux移植浅谈</h3><p>Linux系统移植分为2步：</p>
@@ -768,18 +768,18 @@
 <p>Linux内核移植必须能够在庞大的源码中找到所需代码</p>
 <h2 id="linux内核文件系统" class="headerLink">
     <a href="#linux%e5%86%85%e6%a0%b8%e6%96%87%e4%bb%b6%e7%b3%bb%e7%bb%9f" class="header-mark"></a>Linux内核文件系统</h2><p>
-<figure><a class="lightgallery" href="/image/223495114240269.webp" title="2024-02-28_14-51" data-thumbnail="/image/223495114240269.webp" data-sub-html="<h2> </h2><p>2024-02-28_14-51</p>"><img   src='/image/223495114240269.webp'   alt="2024-02-28_14-51" height="1363" width="1116"></a><figcaption class="image-caption">2024-02-28_14-51</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/223495114240269.webp" title="2024-02-28_14-51" data-thumbnail="/posts/linux-kernel/assets/223495114240269.webp" data-sub-html="<h2> </h2><p>2024-02-28_14-51</p>"><img   src='/posts/linux-kernel/assets/223495114240269.webp'   alt="2024-02-28_14-51" height="1363" width="1116"></a><figcaption class="image-caption">2024-02-28_14-51</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="/image/204512201251703.webp" title="2024-02-25_01-21_1" data-thumbnail="/image/204512201251703.webp" data-sub-html="<h2> </h2><p>2024-02-25_01-21_1</p>"><img   src='/image/204512201251703.webp'   alt="2024-02-25_01-21_1" height="738" width="1716"></a><figcaption class="image-caption">2024-02-25_01-21_1</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/204512201251703.webp" title="2024-02-25_01-21_1" data-thumbnail="/posts/linux-kernel/assets/204512201251703.webp" data-sub-html="<h2> </h2><p>2024-02-25_01-21_1</p>"><img   src='/posts/linux-kernel/assets/204512201251703.webp'   alt="2024-02-25_01-21_1" height="738" width="1716"></a><figcaption class="image-caption">2024-02-25_01-21_1</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="/image/48782501269583.webp" title="2024-02-25_01-24" data-thumbnail="/image/48782501269583.webp" data-sub-html="<h2> </h2><p>2024-02-25_01-24</p>"><img   src='/image/48782501269583.webp'   alt="2024-02-25_01-24" height="371" width="1040"></a><figcaption class="image-caption">2024-02-25_01-24</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/48782501269583.webp" title="2024-02-25_01-24" data-thumbnail="/posts/linux-kernel/assets/48782501269583.webp" data-sub-html="<h2> </h2><p>2024-02-25_01-24</p>"><img   src='/posts/linux-kernel/assets/48782501269583.webp'   alt="2024-02-25_01-24" height="371" width="1040"></a><figcaption class="image-caption">2024-02-25_01-24</figcaption>
     </figure></p>
 <p>文件系统由内核启动：
 由bootloader传进来的taglist放入内存中某个段，由<strong>内核</strong>进行解析后(也就是字符串处理)将原有的init=linuxrc转换为comandline=linuxrc，如果bootloader没有定义init=linuxrc，那么内核会在下列文件夹中依次寻找，然后进入文件系统。默认情况下/sbin/init等文件是一个指向/bin/busybox的软链接，这个busybox只有在嵌入式系统中才有，对于Ubuntu而言对应的则是dash，而后由busybox启动文件文件系统</p>
 <p>
-<figure><a class="lightgallery" href="/image/318163113258690.webp" title="2024-02-23_13-31" data-thumbnail="/image/318163113258690.webp" data-sub-html="<h2> </h2><p>2024-02-23_13-31</p>"><img   src='/image/318163113258690.webp'   alt="2024-02-23_13-31" height="1600" width="2559"></a><figcaption class="image-caption">2024-02-23_13-31</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/318163113258690.webp" title="2024-02-23_13-31" data-thumbnail="/posts/linux-kernel/assets/318163113258690.webp" data-sub-html="<h2> </h2><p>2024-02-23_13-31</p>"><img   src='/posts/linux-kernel/assets/318163113258690.webp'   alt="2024-02-23_13-31" height="1600" width="2559"></a><figcaption class="image-caption">2024-02-23_13-31</figcaption>
     </figure></p>
 <p>busybox是一个极简的工具箱，它提供了基础的命令，与文件系统关系紧密</p>
 <p>启动脚本位于/etc/rc.d</p>
@@ -802,7 +802,7 @@
 <li>退出后再次执行run_action，不断的重复第一步</li>
 </ul>
 <p>
-<figure><a class="lightgallery" href="/image/434772809258691.webp" title="2024-02-24_09-28" data-thumbnail="/image/434772809258691.webp" data-sub-html="<h2> </h2><p>2024-02-24_09-28</p>"><img   src='/image/434772809258691.webp'   alt="2024-02-24_09-28" height="1020" width="1634"></a><figcaption class="image-caption">2024-02-24_09-28</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/434772809258691.webp" title="2024-02-24_09-28" data-thumbnail="/posts/linux-kernel/assets/434772809258691.webp" data-sub-html="<h2> </h2><p>2024-02-24_09-28</p>"><img   src='/posts/linux-kernel/assets/434772809258691.webp'   alt="2024-02-24_09-28" height="1020" width="1634"></a><figcaption class="image-caption">2024-02-24_09-28</figcaption>
     </figure></p>
 <p>一个文件系统需要什么？</p>
 <ul>
@@ -823,18 +823,18 @@ i节点位图：同理，描述inode节点的使用情况<br>
 逻辑块：用来存储数据的数据存储单元<br>
 i节点：目录与磁盘的桥接，文件的属性描述</p>
 <p>
-<figure><a class="lightgallery" href="/image/310545216240345.webp" title="2024-03-04_16-44" data-thumbnail="/image/310545216240345.webp" data-sub-html="<h2> </h2><p>2024-03-04_16-44</p>"><img   src='/image/310545216240345.webp'   alt="2024-03-04_16-44" height="908" width="1886"></a><figcaption class="image-caption">2024-03-04_16-44</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/310545216240345.webp" title="2024-03-04_16-44" data-thumbnail="/posts/linux-kernel/assets/310545216240345.webp" data-sub-html="<h2> </h2><p>2024-03-04_16-44</p>"><img   src='/posts/linux-kernel/assets/310545216240345.webp'   alt="2024-03-04_16-44" height="908" width="1886"></a><figcaption class="image-caption">2024-03-04_16-44</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="/image/84782010246558.webp" title="2024-02-24_10-19" data-thumbnail="/image/84782010246558.webp" data-sub-html="<h2> </h2><p>2024-02-24_10-19</p>"><img   src='/image/84782010246558.webp'   alt="2024-02-24_10-19" height="974" width="1368"></a><figcaption class="image-caption">2024-02-24_10-19</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/84782010246558.webp" title="2024-02-24_10-19" data-thumbnail="/posts/linux-kernel/assets/84782010246558.webp" data-sub-html="<h2> </h2><p>2024-02-24_10-19</p>"><img   src='/posts/linux-kernel/assets/84782010246558.webp'   alt="2024-02-24_10-19" height="974" width="1368"></a><figcaption class="image-caption">2024-02-24_10-19</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="/image/61462210266724.webp" title="2024-02-24_10-21" data-thumbnail="/image/61462210266724.webp" data-sub-html="<h2> </h2><p>2024-02-24_10-21</p>"><img   src='/image/61462210266724.webp'   alt="2024-02-24_10-21" height="239" width="2122"></a><figcaption class="image-caption">2024-02-24_10-21</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/61462210266724.webp" title="2024-02-24_10-21" data-thumbnail="/posts/linux-kernel/assets/61462210266724.webp" data-sub-html="<h2> </h2><p>2024-02-24_10-21</p>"><img   src='/posts/linux-kernel/assets/61462210266724.webp'   alt="2024-02-24_10-21" height="239" width="2122"></a><figcaption class="image-caption">2024-02-24_10-21</figcaption>
     </figure></p>
 <h3 id="高速缓冲区" class="headerLink">
     <a href="#%e9%ab%98%e9%80%9f%e7%bc%93%e5%86%b2%e5%8c%ba" class="header-mark"></a>高速缓冲区</h3><p>高速缓冲区存储着块设备驱动程序的数据，并且当从块设备读取数据时，OS会首先在高速缓冲区中查找，找到了且是最新的数据，那么直接和高速缓冲区交互，如果没有找到或者不是最新的则需要在块设备或内存中查找</p>
 <p>
-<figure><a class="lightgallery" href="/image/485035712251806.webp" title="2024-03-28_12-56" data-thumbnail="/image/485035712251806.webp" data-sub-html="<h2> </h2><p>2024-03-28_12-56</p>"><img   src='/image/485035712251806.webp'   alt="2024-03-28_12-56" height="790" width="683"></a><figcaption class="image-caption">2024-03-28_12-56</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/485035712251806.webp" title="2024-03-28_12-56" data-thumbnail="/posts/linux-kernel/assets/485035712251806.webp" data-sub-html="<h2> </h2><p>2024-03-28_12-56</p>"><img   src='/posts/linux-kernel/assets/485035712251806.webp'   alt="2024-03-28_12-56" height="790" width="683"></a><figcaption class="image-caption">2024-03-28_12-56</figcaption>
     </figure></p>
 <h4 id="哈希hash表" class="headerLink">
     <a href="#%e5%93%88%e5%b8%8chash%e8%a1%a8" class="header-mark"></a>哈希(hash)表</h4><p>哈希表又称为散列表，由哈希函数和数组(也称为散列数组)构成，哈希表是为了解决遍历数组时间复杂度O(logn，以2为底)的问题，首先由输入元素经过哈希函数生成一个整数n，然后再把该元素放到arr[n]的位置，下次如果需要找到此元素，则可以通过hash函数生成一个整数n，从而在数组中找到该元素，这样就把查询的时间复杂度降为O(1)了。因此对于hash函数有如下要求：</p>
@@ -844,11 +844,11 @@ i节点：目录与磁盘的桥接，文件的属性描述</p>
 </ul>
 <h3 id="缓冲区头" class="headerLink">
     <a href="#%e7%bc%93%e5%86%b2%e5%8c%ba%e5%a4%b4" class="header-mark"></a>缓冲区头</h3><p>
-<figure><a class="lightgallery" href="/image/238122013240343.webp" title="2024-03-02_13-20" data-thumbnail="/image/238122013240343.webp" data-sub-html="<h2> </h2><p>2024-03-02_13-20</p>"><img   src='/image/238122013240343.webp'   alt="2024-03-02_13-20" height="806" width="1693"></a><figcaption class="image-caption">2024-03-02_13-20</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/238122013240343.webp" title="2024-03-02_13-20" data-thumbnail="/posts/linux-kernel/assets/238122013240343.webp" data-sub-html="<h2> </h2><p>2024-03-02_13-20</p>"><img   src='/posts/linux-kernel/assets/238122013240343.webp'   alt="2024-03-02_13-20" height="806" width="1693"></a><figcaption class="image-caption">2024-03-02_13-20</figcaption>
     </figure></p>
 <p>高速缓冲区结构中有个缓冲区头，类似于文件系统引导块</p>
 <p>
-<figure><a class="lightgallery" href="/image/217335710259393.webp" title="2024-02-24_10-56" data-thumbnail="/image/217335710259393.webp" data-sub-html="<h2> </h2><p>2024-02-24_10-56</p>"><img   src='/image/217335710259393.webp'   alt="2024-02-24_10-56" height="481" width="1101"></a><figcaption class="image-caption">2024-02-24_10-56</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/217335710259393.webp" title="2024-02-24_10-56" data-thumbnail="/posts/linux-kernel/assets/217335710259393.webp" data-sub-html="<h2> </h2><p>2024-02-24_10-56</p>"><img   src='/posts/linux-kernel/assets/217335710259393.webp'   alt="2024-02-24_10-56" height="481" width="1101"></a><figcaption class="image-caption">2024-02-24_10-56</figcaption>
     </figure></p>
 <div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
   <div class="
@@ -955,7 +955,7 @@ i节点：目录与磁盘的桥接，文件的属性描述</p>
 </span></span><span class="line"><span class="cl"><span class="p">};</span></span></span></code></pre>
 </div>
 <p>
-<figure><a class="lightgallery" href="/image/35364515255948.webp" title="2024-02-24_15-44" data-thumbnail="/image/35364515255948.webp" data-sub-html="<h2> </h2><p>2024-02-24_15-44</p>"><img   src='/image/35364515255948.webp'   alt="2024-02-24_15-44" height="770" width="1790"></a><figcaption class="image-caption">2024-02-24_15-44</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/35364515255948.webp" title="2024-02-24_15-44" data-thumbnail="/posts/linux-kernel/assets/35364515255948.webp" data-sub-html="<h2> </h2><p>2024-02-24_15-44</p>"><img   src='/posts/linux-kernel/assets/35364515255948.webp'   alt="2024-02-24_15-44" height="770" width="1790"></a><figcaption class="image-caption">2024-02-24_15-44</figcaption>
     </figure></p>
 <p>因此，对于块设备而言我们想要获得块，所需要做的是：</p>
 <ul>
@@ -980,7 +980,7 @@ i节点：目录与磁盘的桥接，文件的属性描述</p>
 <h3 id="bio" class="headerLink">
     <a href="#bio" class="header-mark"></a>bio</h3><p>在2.6内核后，buffer_head的功能逐渐弱化为映射内存和磁盘关系的结构体，大部分的操作函数主要在bio结构体中实现</p>
 <p>
-<figure><a class="lightgallery" href="/image/554253314258769.webp" title="2024-03-02_14-33" data-thumbnail="/image/554253314258769.webp" data-sub-html="<h2> </h2><p>2024-03-02_14-33</p>"><img   src='/image/554253314258769.webp'   alt="2024-03-02_14-33" height="833" width="1542"></a><figcaption class="image-caption">2024-03-02_14-33</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/554253314258769.webp" title="2024-03-02_14-33" data-thumbnail="/posts/linux-kernel/assets/554253314258769.webp" data-sub-html="<h2> </h2><p>2024-03-02_14-33</p>"><img   src='/posts/linux-kernel/assets/554253314258769.webp'   alt="2024-03-02_14-33" height="833" width="1542"></a><figcaption class="image-caption">2024-03-02_14-33</figcaption>
     </figure></p>
 <p>bio里重要的结构体：</p>
 <ul>
@@ -1001,10 +1001,10 @@ i节点：目录与磁盘的桥接，文件的属性描述</p>
 </li>
 </ul>
 <p>
-<figure><a class="lightgallery" href="/image/180953814246636.webp" title="2024-03-02_14-38" data-thumbnail="/image/180953814246636.webp" data-sub-html="<h2> </h2><p>2024-03-02_14-38</p>"><img   src='/image/180953814246636.webp'   alt="2024-03-02_14-38" height="165" width="549"></a><figcaption class="image-caption">2024-03-02_14-38</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/180953814246636.webp" title="2024-03-02_14-38" data-thumbnail="/posts/linux-kernel/assets/180953814246636.webp" data-sub-html="<h2> </h2><p>2024-03-02_14-38</p>"><img   src='/posts/linux-kernel/assets/180953814246636.webp'   alt="2024-03-02_14-38" height="165" width="549"></a><figcaption class="image-caption">2024-03-02_14-38</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="/image/185623914266802.webp" title="2024-03-02_14-39" data-thumbnail="/image/185623914266802.webp" data-sub-html="<h2> </h2><p>2024-03-02_14-39</p>"><img   src='/image/185623914266802.webp'   alt="2024-03-02_14-39" height="812" width="1168"></a><figcaption class="image-caption">2024-03-02_14-39</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/185623914266802.webp" title="2024-03-02_14-39" data-thumbnail="/posts/linux-kernel/assets/185623914266802.webp" data-sub-html="<h2> </h2><p>2024-03-02_14-39</p>"><img   src='/posts/linux-kernel/assets/185623914266802.webp'   alt="2024-03-02_14-39" height="812" width="1168"></a><figcaption class="image-caption">2024-03-02_14-39</figcaption>
     </figure></p>
 <p>相比buffer_head，bio有如下优点：</p>
 <ul>
@@ -1035,13 +1035,13 @@ i节点：目录与磁盘的桥接，文件的属性描述</p>
 inode中有dev和block，根据这两个信息就可以把硬盘载入高速缓冲区</p>
 <p>从上面代码中可以看出,内核从哈希表中搜索现成的缓冲块时,只看设备号和块号,其他的什么都不管。只要缓冲块与硬盘数据块的绑定关系还存在,就认定数据块中的数据仍然停留在缓冲块中,就可以直接用,不需要从硬盘上读取,节省了100倍的硬盘读取时间</p>
 <p>
-<figure><a class="lightgallery" href="/image/429192314240267.webp" title="2024-02-26_14-23" data-thumbnail="/image/429192314240267.webp" data-sub-html="<h2> </h2><p>2024-02-26_14-23</p>"><img   src='/image/429192314240267.webp'   alt="2024-02-26_14-23" height="693" width="1786"></a><figcaption class="image-caption">2024-02-26_14-23</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/429192314240267.webp" title="2024-02-26_14-23" data-thumbnail="/posts/linux-kernel/assets/429192314240267.webp" data-sub-html="<h2> </h2><p>2024-02-26_14-23</p>"><img   src='/posts/linux-kernel/assets/429192314240267.webp'   alt="2024-02-26_14-23" height="693" width="1786"></a><figcaption class="image-caption">2024-02-26_14-23</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="/image/331743316246560.webp" title="2024-02-26_16-33" data-thumbnail="/image/331743316246560.webp" data-sub-html="<h2> </h2><p>2024-02-26_16-33</p>"><img   src='/image/331743316246560.webp'   alt="2024-02-26_16-33" height="894" width="2020"></a><figcaption class="image-caption">2024-02-26_16-33</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/331743316246560.webp" title="2024-02-26_16-33" data-thumbnail="/posts/linux-kernel/assets/331743316246560.webp" data-sub-html="<h2> </h2><p>2024-02-26_16-33</p>"><img   src='/posts/linux-kernel/assets/331743316246560.webp'   alt="2024-02-26_16-33" height="894" width="2020"></a><figcaption class="image-caption">2024-02-26_16-33</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="/image/55283316258693.webp" title="2024-02-26_16-32" data-thumbnail="/image/55283316258693.webp" data-sub-html="<h2> </h2><p>2024-02-26_16-32</p>"><img   src='/image/55283316258693.webp'   alt="2024-02-26_16-32" height="476" width="1467"></a><figcaption class="image-caption">2024-02-26_16-32</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/55283316258693.webp" title="2024-02-26_16-32" data-thumbnail="/posts/linux-kernel/assets/55283316258693.webp" data-sub-html="<h2> </h2><p>2024-02-26_16-32</p>"><img   src='/posts/linux-kernel/assets/55283316258693.webp'   alt="2024-02-26_16-32" height="476" width="1467"></a><figcaption class="image-caption">2024-02-26_16-32</figcaption>
     </figure></p>
 <h3 id="io调度算法" class="headerLink">
     <a href="#io%e8%b0%83%e5%ba%a6%e7%ae%97%e6%b3%95" class="header-mark"></a>IO调度算法</h3><p>由于APP对读写要求的不同：对读操作时间敏感，对写操作则不然，并且主流存储设备为磁盘时还需要优化寻道时间，因此产生了如下算法</p>
@@ -1061,10 +1061,10 @@ inode中有dev和block，根据这两个信息就可以把硬盘载入高速缓�
 <p><a href="https://docs.kernel.org/arch/arm64/memory.html" target="_blank" rel="noopener noreferrer">linux内存布局</a>
 <a href="https://docs.kernel.org/arch/arm64/ptdump.html" target="_blank" rel="noopener noreferrer">使用命令行生成内存布局</a></p>
 <p>
-<figure><a class="lightgallery" href="/image/511861922246638.webp" title="2024-03-04_22-19" data-thumbnail="/image/511861922246638.webp" data-sub-html="<h2> </h2><p>2024-03-04_22-19</p>"><img   src='/image/511861922246638.webp'   alt="2024-03-04_22-19" height="868" width="1102"></a><figcaption class="image-caption">2024-03-04_22-19</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/511861922246638.webp" title="2024-03-04_22-19" data-thumbnail="/posts/linux-kernel/assets/511861922246638.webp" data-sub-html="<h2> </h2><p>2024-03-04_22-19</p>"><img   src='/posts/linux-kernel/assets/511861922246638.webp'   alt="2024-03-04_22-19" height="868" width="1102"></a><figcaption class="image-caption">2024-03-04_22-19</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="/image/247874222266804.webp" title="2024-03-04_22-42" data-thumbnail="/image/247874222266804.webp" data-sub-html="<h2> </h2><p>2024-03-04_22-42</p>"><img   src='/image/247874222266804.webp'   alt="2024-03-04_22-42" height="1153" width="904"></a><figcaption class="image-caption">2024-03-04_22-42</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/247874222266804.webp" title="2024-03-04_22-42" data-thumbnail="/posts/linux-kernel/assets/247874222266804.webp" data-sub-html="<h2> </h2><p>2024-03-04_22-42</p>"><img   src='/posts/linux-kernel/assets/247874222266804.webp'   alt="2024-03-04_22-42" height="1153" width="904"></a><figcaption class="image-caption">2024-03-04_22-42</figcaption>
     </figure></p>
 <p>vmalloc是在虚拟内存中申请一块连续地址，kmalloc则是在物理内存中申请一块连续地址。内核代码主要使用kmalloc，这是因为当物理地址不连续时需要为每个独立的物理地址项建立页表项，这会损失性能</p>
 <p>内核空间栈小且固定(现在应该支持可变大小了？)，用户空间栈大且可变</p>
@@ -1234,7 +1234,7 @@ inode中有dev和block，根据这两个信息就可以把硬盘载入高速缓�
 <p>为了管理众多进程，CFS采用红黑树的数据结构，这样可以使搜索时间显著下降</p>
 <p>内存屏障：由于CPU执行与编译器编译后的结果是乱序的，为了保证代码按正确的顺序的运行，厂家提供了内存屏障指令，在内存屏障的上下文代码按一定顺序执行，如下文，在线程2，先执行<code>c=b;</code>而后执行<code>d=a;</code>，如果没有内存屏障代码的话假如线程1与线程2被执行时同时颠倒顺序会导致出现预料外的结果</p>
 <p>
-<figure><a class="lightgallery" href="/image/72572111240342.webp" title="2024-03-01_11-20" data-thumbnail="/image/72572111240342.webp" data-sub-html="<h2> </h2><p>2024-03-01_11-20</p>"><img   src='/image/72572111240342.webp'   alt="2024-03-01_11-20" height="566" width="1699"></a><figcaption class="image-caption">2024-03-01_11-20</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-kernel/assets/72572111240342.webp" title="2024-03-01_11-20" data-thumbnail="/posts/linux-kernel/assets/72572111240342.webp" data-sub-html="<h2> </h2><p>2024-03-01_11-20</p>"><img   src='/posts/linux-kernel/assets/72572111240342.webp'   alt="2024-03-01_11-20" height="566" width="1699"></a><figcaption class="image-caption">2024-03-01_11-20</figcaption>
     </figure></p>
 <p>为了保证检索定时器的效率，Linux将定时器分为五组，当超过规定时间时定时器将随组一起下移，这保证了搜索效率</p>
 <p>不负责的程序员经常使用get_cpu()等函数来保证数据与CPU绑定(每个CPU都有一段专属的内存区域)，虽然这对防止竟态有重要作用(唯一需要注意的内核抢占问题也在get_cpu()中自动实现了)，但是这也会造成一核有难多核围观的后果</p>
@@ -1281,7 +1281,7 @@ inode中有dev和block，根据这两个信息就可以把硬盘载入高速缓�
             <div class="footer-line">
                 <span id="run-time"></span>
             </div><div class="footer-line">
-                    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.146.2">Hugo</a>&nbsp;|&nbsp;Theme - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.4.1"><svg class="icon"
+                    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.146.5">Hugo</a>&nbsp;|&nbsp;Theme - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.4.1"><svg class="icon"
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg> DoIt</a>
                 </div><div class="footer-line"><svg class="icon"
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 448c-110.532 0-200-89.451-200-200 0-110.531 89.451-200 200-200 110.532 0 200 89.451 200 200 0 110.532-89.451 200-200 200zm107.351-101.064c-9.614 9.712-45.53 41.396-104.065 41.396-82.43 0-140.484-61.425-140.484-141.567 0-79.152 60.275-139.401 139.762-139.401 55.531 0 88.738 26.62 97.593 34.779a11.965 11.965 0 0 1 1.936 15.322l-18.155 28.113c-3.841 5.95-11.966 7.282-17.499 2.921-8.595-6.776-31.814-22.538-61.708-22.538-48.303 0-77.916 35.33-77.916 80.082 0 41.589 26.888 83.692 78.277 83.692 32.657 0 56.843-19.039 65.726-27.225 5.27-4.857 13.596-4.039 17.82 1.738l19.865 27.17a11.947 11.947 0 0 1-1.152 15.518z"/></svg>2023 - 2025<span class="author">&nbsp;<a href="wumingzi.top" target="_blank" rel="noopener noreferrer">吾铭子</a></span></div>

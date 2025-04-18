@@ -334,14 +334,14 @@
     <a href="#%e5%86%85%e8%81%94%e6%b1%87%e7%bc%96" class="header-mark"></a>内联汇编</h2><p>为了保证效率或者使用特殊指令(如原子操作)时需要使用汇编，使用方法是：单独将汇编代码放在.S文件中，在C函数中使用extern声明之后就可以使用汇编文件里的函数了</p>
 <p>对于内联汇编需要使用__asm___关键字修饰函数
 
-<figure><a class="lightgallery" href="/image/30092012266713.webp" title="2024-02-13_12-19" data-thumbnail="/image/30092012266713.webp" data-sub-html="<h2> </h2><p>2024-02-13_12-19</p>"><img   src='/image/30092012266713.webp'   alt="2024-02-13_12-19" height="731" width="1062"></a><figcaption class="image-caption">2024-02-13_12-19</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-advanced/assets/30092012266713.webp" title="2024-02-13_12-19" data-thumbnail="/posts/linux-advanced/assets/30092012266713.webp" data-sub-html="<h2> </h2><p>2024-02-13_12-19</p>"><img   src='/posts/linux-advanced/assets/30092012266713.webp'   alt="2024-02-13_12-19" height="731" width="1062"></a><figcaption class="image-caption">2024-02-13_12-19</figcaption>
     </figure></p>
 <h2 id="同步互斥的深入" class="headerLink">
     <a href="#%e5%90%8c%e6%ad%a5%e4%ba%92%e6%96%a5%e7%9a%84%e6%b7%b1%e5%85%a5" class="header-mark"></a>同步互斥的深入</h2><p>在单核CPU上关中断开中断是可以实现同步互斥的，但是在多核CPU上开关中断不能保证其他CPU不会修改临界变量</p>
 <h3 id="原子操作" class="headerLink">
     <a href="#%e5%8e%9f%e5%ad%90%e6%93%8d%e4%bd%9c" class="header-mark"></a>原子操作</h3><p>对于ARMv6之前的内核，通过关中断恢复中断来实现原子操作，但是在v6之后(包括v6)，由于arm支持SMP(多核CPU)，因此不能简单的使用开关中断来实现原子操作，而是使用ldrex，strex汇编语句来实现，其根本原理是在要ldr数据上打上标记，在要str的数据上消除标记，根据能否消除标记而返回不同的值，根据值来判断是否申请资源成功，不成功的话则再次重复，直到能申请资源为止</p>
 <p>
-<figure><a class="lightgallery" href="/image/333854115259382.webp" title="2024-02-13_15-41" data-thumbnail="/image/333854115259382.webp" data-sub-html="<h2> </h2><p>2024-02-13_15-41</p>"><img   src='/image/333854115259382.webp'   alt="2024-02-13_15-41" height="1096" width="1809"></a><figcaption class="image-caption">2024-02-13_15-41</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-advanced/assets/333854115259382.webp" title="2024-02-13_15-41" data-thumbnail="/posts/linux-advanced/assets/333854115259382.webp" data-sub-html="<h2> </h2><p>2024-02-13_15-41</p>"><img   src='/posts/linux-advanced/assets/333854115259382.webp'   alt="2024-02-13_15-41" height="1096" width="1809"></a><figcaption class="image-caption">2024-02-13_15-41</figcaption>
     </figure></p>
 <h2 id="锁" class="headerLink">
     <a href="#%e9%94%81" class="header-mark"></a>锁</h2><h3 id="自旋锁" class="headerLink">
@@ -457,7 +457,7 @@
 </span></span><span class="line"><span class="cl">//可以修改打印级别，第一个1为console消息级别，4为默认级别</span></span></code></pre>
 </div>
 <p>
-<figure><a class="lightgallery" href="/image/348042421240255.webp" title="2024-02-14_21-24" data-thumbnail="/image/348042421240255.webp" data-sub-html="<h2> </h2><p>2024-02-14_21-24</p>"><img   src='/image/348042421240255.webp'   alt="2024-02-14_21-24" height="1349" width="1852"></a><figcaption class="image-caption">2024-02-14_21-24</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-advanced/assets/348042421240255.webp" title="2024-02-14_21-24" data-thumbnail="/posts/linux-advanced/assets/348042421240255.webp" data-sub-html="<h2> </h2><p>2024-02-14_21-24</p>"><img   src='/posts/linux-advanced/assets/348042421240255.webp'   alt="2024-02-14_21-24" height="1349" width="1852"></a><figcaption class="image-caption">2024-02-14_21-24</figcaption>
     </figure></p>
 <h2 id="pci与pcie" class="headerLink">
     <a href="#pci%e4%b8%8epcie" class="header-mark"></a>PCI与PCIe</h2><p>为了简化CPU与外部设备通信及硬件连线使得访问外设像访问内存一样，PCI总线应运而生。有了PCI后，CPU不必关注具体的操作细节，比如不使用PCI，CPU与GPIO，I2C等设备直接相连时，程序员需要关注GPIO，I2C等设备的具体实现，而使用PCI总线时，直接访问PCI设备控制器即可，具体访问操作会由PCI硬件实现，同时也会简化硬件的连线复杂度
@@ -467,36 +467,36 @@
 <h3 id="pci总线原理" class="headerLink">
     <a href="#pci%e6%80%bb%e7%ba%bf%e5%8e%9f%e7%90%86" class="header-mark"></a>PCI总线原理</h3><p>由于PCI总线为并行传输，数据地址统一不做区分的发送到AD引脚上</p>
 <p>
-<figure><a class="lightgallery" href="/image/289363023240259.webp" title="2024-02-18_23-30" data-thumbnail="/image/289363023240259.webp" data-sub-html="<h2> </h2><p>2024-02-18_23-30</p>"><img   src='/image/289363023240259.webp'   alt="2024-02-18_23-30" height="1343" width="929"></a><figcaption class="image-caption">2024-02-18_23-30</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-advanced/assets/289363023240259.webp" title="2024-02-18_23-30" data-thumbnail="/posts/linux-advanced/assets/289363023240259.webp" data-sub-html="<h2> </h2><p>2024-02-18_23-30</p>"><img   src='/posts/linux-advanced/assets/289363023240259.webp'   alt="2024-02-18_23-30" height="1343" width="929"></a><figcaption class="image-caption">2024-02-18_23-30</figcaption>
     </figure></p>
 <p>对于非桥设备而言会PCI会发出type0信号以表示访问非桥设备</p>
 <p>
-<figure><a class="lightgallery" href="/image/552403423246552.webp" title="2024-02-18_23-34" data-thumbnail="/image/552403423246552.webp" data-sub-html="<h2> </h2><p>2024-02-18_23-34</p>"><img   src='/image/552403423246552.webp'   alt="2024-02-18_23-34" height="188" width="1269"></a><figcaption class="image-caption">2024-02-18_23-34</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-advanced/assets/552403423246552.webp" title="2024-02-18_23-34" data-thumbnail="/posts/linux-advanced/assets/552403423246552.webp" data-sub-html="<h2> </h2><p>2024-02-18_23-34</p>"><img   src='/posts/linux-advanced/assets/552403423246552.webp'   alt="2024-02-18_23-34" height="188" width="1269"></a><figcaption class="image-caption">2024-02-18_23-34</figcaption>
     </figure></p>
 <p>如果想设置PCI设备的地址，首先要在IDSET引脚置高电平，然后由CPU发出cpuaddr，经PCI控制器转换后得到PCIaddr，再发送type1命令并根据type0的function number设置具体的功能，最后按照register number设置寄存器的值，具体的配置项如下图，此配置项写在PCI设备的寄存器内。包含了设备ID，厂家ID，创建设备时申请多大的PCI空间
 如果想读写PCI设备的地址，需要按照手册在C/BE引脚设置值，然后设置frame引脚，再发送type0命令，当frame引脚为低电平时遇到的第一个时钟发出的AD信号是addr，第二个发出的则是data</p>
 <p>
-<figure><a class="lightgallery" href="/image/73993423258685.webp" title="2024-02-18_23-33" data-thumbnail="/image/73993423258685.webp" data-sub-html="<h2> </h2><p>2024-02-18_23-33</p>"><img   src='/image/73993423258685.webp'   alt="2024-02-18_23-33" height="1246" width="967"></a><figcaption class="image-caption">2024-02-18_23-33</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-advanced/assets/73993423258685.webp" title="2024-02-18_23-33" data-thumbnail="/posts/linux-advanced/assets/73993423258685.webp" data-sub-html="<h2> </h2><p>2024-02-18_23-33</p>"><img   src='/posts/linux-advanced/assets/73993423258685.webp'   alt="2024-02-18_23-33" height="1246" width="967"></a><figcaption class="image-caption">2024-02-18_23-33</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="/image/23054423266718.webp" title="2024-02-18_23-43" data-thumbnail="/image/23054423266718.webp" data-sub-html="<h2> </h2><p>2024-02-18_23-43</p>"><img   src='/image/23054423266718.webp'   alt="2024-02-18_23-43" height="1429" width="1996"></a><figcaption class="image-caption">2024-02-18_23-43</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-advanced/assets/23054423266718.webp" title="2024-02-18_23-43" data-thumbnail="/posts/linux-advanced/assets/23054423266718.webp" data-sub-html="<h2> </h2><p>2024-02-18_23-43</p>"><img   src='/posts/linux-advanced/assets/23054423266718.webp'   alt="2024-02-18_23-43" height="1429" width="1996"></a><figcaption class="image-caption">2024-02-18_23-43</figcaption>
     </figure></p>
 <p>对于桥设备而言
 如果需要配置PCI设备需要发送type1命令，若header type的值为01h则为桥设备，此时需要收到PCI设备根据收到的信息检测bus number，如果在子节点找到bus number那么就转发到下一层PCI设备，如果下一层设备还是桥设备的话就继续转发，直到遇到非桥设备且是目标设备为止，然后根据发送的信息判断是配置还是读写寄存器</p>
 <p>
-<figure><a class="lightgallery" href="/image/308534923259387.webp" title="2024-02-18_23-48" data-thumbnail="/image/308534923259387.webp" data-sub-html="<h2> </h2><p>2024-02-18_23-48</p>"><img   src='/image/308534923259387.webp'   alt="2024-02-18_23-48" height="864" width="892"></a><figcaption class="image-caption">2024-02-18_23-48</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-advanced/assets/308534923259387.webp" title="2024-02-18_23-48" data-thumbnail="/posts/linux-advanced/assets/308534923259387.webp" data-sub-html="<h2> </h2><p>2024-02-18_23-48</p>"><img   src='/posts/linux-advanced/assets/308534923259387.webp'   alt="2024-02-18_23-48" height="864" width="892"></a><figcaption class="image-caption">2024-02-18_23-48</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="/image/454445523255942.webp" title="2024-02-18_23-55" data-thumbnail="/image/454445523255942.webp" data-sub-html="<h2> </h2><p>2024-02-18_23-55</p>"><img   src='/image/454445523255942.webp'   alt="2024-02-18_23-55" height="1200" width="2086"></a><figcaption class="image-caption">2024-02-18_23-55</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-advanced/assets/454445523255942.webp" title="2024-02-18_23-55" data-thumbnail="/posts/linux-advanced/assets/454445523255942.webp" data-sub-html="<h2> </h2><p>2024-02-18_23-55</p>"><img   src='/posts/linux-advanced/assets/454445523255942.webp'   alt="2024-02-18_23-55" height="1200" width="2086"></a><figcaption class="image-caption">2024-02-18_23-55</figcaption>
     </figure></p>
 <h3 id="pcie总线原理" class="headerLink">
     <a href="#pcie%e6%80%bb%e7%ba%bf%e5%8e%9f%e7%90%86" class="header-mark"></a>PCIe总线原理</h3><p>PCIe的配置过程(基于ID的路由方式)：
 PCIe采用深度优先的配置模式，首先由Host将配置信号发送至子设备，首先由 A设备先进行配置，A设备的上层总线号是Bus0，下层总线号是Bus1，于是A设备在其配置寄存器内记录，由于子设备数sub并不确定，A设备先令其值为255。而后再配置A的子设备C，同理将其配置为1，2，255，之后再配置D，当配置到Bus3的下层的具体设备时，会将bus，dev，fuction的值3，0，1、3，0，0记录在设备中，由于遇到了end point，所以返回至D端口，修改sub将其从255修改至3(bus的最大值)，但由于只配置了D，因此还需要配置同层的E设备，配置方式同D下面的end point。之后返回至上层C，将sub值修改为4(C设备下总线号的最大值)</p>
 <p>
-<figure><a class="lightgallery" href="image/183812710258774.webp" title="2024-03-07_10-25" data-thumbnail="image/183812710258774.webp" data-sub-html="<h2> </h2><p>2024-03-07_10-25</p>"><img   src='image/183812710258774.webp'   alt="2024-03-07_10-25"  ></a><figcaption class="image-caption">2024-03-07_10-25</figcaption>
+<figure><a class="lightgallery" href="assets/183812710258774.webp" title="2024-03-07_10-25" data-thumbnail="assets/183812710258774.webp" data-sub-html="<h2> </h2><p>2024-03-07_10-25</p>"><img   src='assets/183812710258774.webp'   alt="2024-03-07_10-25"  ></a><figcaption class="image-caption">2024-03-07_10-25</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="/image/330711215258686.webp" title="2024-02-19_15-12" data-thumbnail="/image/330711215258686.webp" data-sub-html="<h2> </h2><p>2024-02-19_15-12</p>"><img   src='/image/330711215258686.webp'   alt="2024-02-19_15-12" height="1417" width="1493"></a><figcaption class="image-caption">2024-02-19_15-12</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-advanced/assets/330711215258686.webp" title="2024-02-19_15-12" data-thumbnail="/posts/linux-advanced/assets/330711215258686.webp" data-sub-html="<h2> </h2><p>2024-02-19_15-12</p>"><img   src='/posts/linux-advanced/assets/330711215258686.webp'   alt="2024-02-19_15-12" height="1417" width="1493"></a><figcaption class="image-caption">2024-02-19_15-12</figcaption>
     </figure></p>
 <p>PCIe将发送数据分为三层，分别为：事务层，数据链路层，物理层，每层将上下层数据处理后传递给下一层或者上一层，具体收发数据原理如下：</p>
 <p>发送数据时：</p>
@@ -507,7 +507,7 @@ PCIe采用深度优先的配置模式，首先由Host将配置信号发送至子
 <li>物理层负责将信号拆分并发送出去</li>
 </ul>
 <p>
-<figure><a class="lightgallery" href="/image/331411115240260.webp" title="2024-02-19_15-11" data-thumbnail="/image/331411115240260.webp" data-sub-html="<h2> </h2><p>2024-02-19_15-11</p>"><img   src='/image/331411115240260.webp'   alt="2024-02-19_15-11" height="1256" width="2194"></a><figcaption class="image-caption">2024-02-19_15-11</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-advanced/assets/331411115240260.webp" title="2024-02-19_15-11" data-thumbnail="/posts/linux-advanced/assets/331411115240260.webp" data-sub-html="<h2> </h2><p>2024-02-19_15-11</p>"><img   src='/posts/linux-advanced/assets/331411115240260.webp'   alt="2024-02-19_15-11" height="1256" width="2194"></a><figcaption class="image-caption">2024-02-19_15-11</figcaption>
     </figure></p>
 <p>发送数据时：</p>
 <h4 id="pcie三种路由方式" class="headerLink">
@@ -571,7 +571,7 @@ PCIe采用深度优先的配置模式，首先由Host将配置信号发送至子
 </li>
 </ul>
 <p>
-<figure><a class="lightgallery" href="/image/426695921246553.webp" title="2024-02-19_21-59" data-thumbnail="/image/426695921246553.webp" data-sub-html="<h2> </h2><p>2024-02-19_21-59</p>"><img   src='/image/426695921246553.webp'   alt="2024-02-19_21-59" height="957" width="1653"></a><figcaption class="image-caption">2024-02-19_21-59</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-advanced/assets/426695921246553.webp" title="2024-02-19_21-59" data-thumbnail="/posts/linux-advanced/assets/426695921246553.webp" data-sub-html="<h2> </h2><p>2024-02-19_21-59</p>"><img   src='/posts/linux-advanced/assets/426695921246553.webp'   alt="2024-02-19_21-59" height="957" width="1653"></a><figcaption class="image-caption">2024-02-19_21-59</figcaption>
     </figure></p>
 <h3 id="低速全速与高速信号的识别" class="headerLink">
     <a href="#%e4%bd%8e%e9%80%9f%e5%85%a8%e9%80%9f%e4%b8%8e%e9%ab%98%e9%80%9f%e4%bf%a1%e5%8f%b7%e7%9a%84%e8%af%86%e5%88%ab" class="header-mark"></a>低速，全速与高速信号的识别</h3><p>对于USB2.0而言，支持了高速信号就不能支持低速信号，其设备速率识别方法如下</p>
@@ -581,13 +581,13 @@ PCIe采用深度优先的配置模式，首先由Host将配置信号发送至子
 </ul>
 <p>工作在高速模式下的设备会断开Data的上拉电阻，这是为了保证高速传输数据时发生干扰，并且还需要在通信双方的D+/D-引脚串联一个45Ohm的电阻，如果不串联电阻，那么发送端的信号到达接收端就会反射，当下次发射信号时，上一次反射的信号会和这一次的信号叠加使信号失真，这种加电阻的方法就叫做<strong>阻抗匹配</strong>，我们检测高速设备是否断开连接时就是检测反射信号的强弱，当设备断开连接时，接收方相当于阻抗无穷大，会造成反射信号的增强。在开发中，如果发现设备总是断开连接也有可能是阻抗匹配没有做好</p>
 <p>
-<figure><a class="lightgallery" href="/image/99161123259388.webp" title="2024-02-19_23-11" data-thumbnail="/image/99161123259388.webp" data-sub-html="<h2> </h2><p>2024-02-19_23-11</p>"><img   src='/image/99161123259388.webp'   alt="2024-02-19_23-11" height="1292" width="924"></a><figcaption class="image-caption">2024-02-19_23-11</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-advanced/assets/99161123259388.webp" title="2024-02-19_23-11" data-thumbnail="/posts/linux-advanced/assets/99161123259388.webp" data-sub-html="<h2> </h2><p>2024-02-19_23-11</p>"><img   src='/posts/linux-advanced/assets/99161123259388.webp'   alt="2024-02-19_23-11" height="1292" width="924"></a><figcaption class="image-caption">2024-02-19_23-11</figcaption>
     </figure></p>
 <p>
-<img   src='/image/471142623251697.webp'   alt="471142623251697.webp" height="382" width="1305"></p>
+<img   src='/posts/linux-advanced/assets/471142623251697.webp'   alt="471142623251697.webp" height="382" width="1305"></p>
 <p>USB协议通信数据如下
 
-<img   src='/image/96661723255943.webp'   alt="96661723255943.webp" height="387" width="1029"></p>
+<img   src='/posts/linux-advanced/assets/96661723255943.webp'   alt="96661723255943.webp" height="387" width="1029"></p>
 <p>sop(start of package)，具体信号参见手册
 enp(end of package)，具体信号参见手册
 sync，同步信号，由于USB没有时钟线只有两条数据线，因此sync是为了确定通信速率的</p>
@@ -598,7 +598,7 @@ sync，同步信号，由于USB没有时钟线只有两条数据线，因此sync
     <a href="#%e5%8d%8f%e8%ae%ae%e5%86%85%e5%ae%b9" class="header-mark"></a>协议内容</h3><p>一次传输由一个或多个事务实现，事务下层根据目的不同被划分成了三种包，令牌包指明传输的对象和地址，数据包只传输数据，握手包由接收方设备发出，内容为各种应答信号。每个包内部又分为各种域(field)，sop field代表传输的开始，sync field代表传输的速率，PID filed代表传输的包的ID，根据取值不同PID被分为四类，令牌类，数据类，握手类，特殊类，令牌类用于令牌包，表明发送的是令牌类数据。在PID field后的filed就是传输的数据，为了保证数据正确还需要CRC field，在传输的末尾还要加上eop field来表明传输完成</p>
 <p>对于握手包而言没有Data field与CRC field</p>
 <p>
-<figure><a class="lightgallery" href="/image/294182210240261.webp" title="2024-02-20_10-22" data-thumbnail="/image/294182210240261.webp" data-sub-html="<h2> </h2><p>2024-02-20_10-22</p>"><img   src='/image/294182210240261.webp'   alt="2024-02-20_10-22" height="612" width="1906"></a><figcaption class="image-caption">2024-02-20_10-22</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-advanced/assets/294182210240261.webp" title="2024-02-20_10-22" data-thumbnail="/posts/linux-advanced/assets/294182210240261.webp" data-sub-html="<h2> </h2><p>2024-02-20_10-22</p>"><img   src='/posts/linux-advanced/assets/294182210240261.webp'   alt="2024-02-20_10-22" height="612" width="1906"></a><figcaption class="image-caption">2024-02-20_10-22</figcaption>
     </figure></p>
 <p>USB设备种类繁多有不同要求，这些要求可以分为下列几种</p>
 <ul>
@@ -656,12 +656,12 @@ sync，同步信号，由于USB没有时钟线只有两条数据线，因此sync
 </div>
 <p>当插入OTG接口时，id引脚(typec模式时为cc引脚)被连接，id引脚的取值被Host设备的主控芯片(arm)所决定，当arm板以Device模式通信时，由于arm芯片内部有100k的上拉电阻因此三极管是导通的，EN引脚为低电平，5v的电源不能输出，此时为Device模式。而当转换器接入板子时，转换器内部的下拉电阻会将arm的上拉电阻拉低，导致5v电源能够输出，此时arm板可以给外界设备供电，工作在Host模式</p>
 <p>
-<figure><a class="lightgallery" href="/image/445734316258687.webp" title="2024-02-20_16-43" data-thumbnail="/image/445734316258687.webp" data-sub-html="<h2> </h2><p>2024-02-20_16-43</p>"><img   src='/image/445734316258687.webp'   alt="2024-02-20_16-43" height="854" width="2128"></a><figcaption class="image-caption">2024-02-20_16-43</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-advanced/assets/445734316258687.webp" title="2024-02-20_16-43" data-thumbnail="/posts/linux-advanced/assets/445734316258687.webp" data-sub-html="<h2> </h2><p>2024-02-20_16-43</p>"><img   src='/posts/linux-advanced/assets/445734316258687.webp'   alt="2024-02-20_16-43" height="854" width="2128"></a><figcaption class="image-caption">2024-02-20_16-43</figcaption>
     </figure></p>
 <h2 id="i2c深入" class="headerLink">
     <a href="#i2c%e6%b7%b1%e5%85%a5" class="header-mark"></a>I2C深入</h2><p>对于通用的platform_device在i2c驱动模型中被称为i2c_client</p>
 <p>
-<figure><a class="lightgallery" href="/image/368701710269666.webp" title="2024-03-08_10-16" data-thumbnail="/image/368701710269666.webp" data-sub-html="<h2> </h2><p>2024-03-08_10-16</p>"><img   src='/image/368701710269666.webp'   alt="2024-03-08_10-16" height="955" width="745"></a><figcaption class="image-caption">2024-03-08_10-16</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-advanced/assets/368701710269666.webp" title="2024-03-08_10-16" data-thumbnail="/posts/linux-advanced/assets/368701710269666.webp" data-sub-html="<h2> </h2><p>2024-03-08_10-16</p>"><img   src='/posts/linux-advanced/assets/368701710269666.webp'   alt="2024-03-08_10-16" height="955" width="745"></a><figcaption class="image-caption">2024-03-08_10-16</figcaption>
     </figure></p>
 <p>I2C驱动框架如图所示，在基础的设备总线驱动模型的基础上加入了adapter适配器，这可以使每一个I2C硬件设备支持不同的adapter使其产生不同的功能。具体的驱动编写框架如下：</p>
 <ul>
@@ -670,10 +670,10 @@ sync，同步信号，由于USB没有时钟线只有两条数据线，因此sync
 <li>实现adapter结构体，实现master_xfer函数以作为adapter成员，master_xfer是最为关键的传输函数</li>
 </ul>
 <p>
-<figure><a class="lightgallery" href="/image/239433619246554.webp" title="2024-02-20_19-30" data-thumbnail="/image/239433619246554.webp" data-sub-html="<h2> </h2><p>2024-02-20_19-30</p>"><img   src='/image/239433619246554.webp'   alt="2024-02-20_19-30" height="919" width="1760"></a><figcaption class="image-caption">2024-02-20_19-30</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-advanced/assets/239433619246554.webp" title="2024-02-20_19-30" data-thumbnail="/posts/linux-advanced/assets/239433619246554.webp" data-sub-html="<h2> </h2><p>2024-02-20_19-30</p>"><img   src='/posts/linux-advanced/assets/239433619246554.webp'   alt="2024-02-20_19-30" height="919" width="1760"></a><figcaption class="image-caption">2024-02-20_19-30</figcaption>
     </figure></p>
 <p>
-<img   src='/image/311334919266720.webp'   alt="311334919266720.webp" height="759" width="1418"></p>
+<img   src='/posts/linux-advanced/assets/311334919266720.webp'   alt="311334919266720.webp" height="759" width="1418"></p>
 <p>总结：</p>
 <ul>
 <li>i2c驱动注册时：
@@ -698,57 +698,57 @@ sync，同步信号，由于USB没有时钟线只有两条数据线，因此sync
 <p>对于SPI控制器而言可以扩展多个设备，具体可以看设备树文件
 由于SPI控制器与SPI设备分别由内核解析，并且采用了分离的思想，因此在写SPI设备的驱动程序时需要调用Linux提供的函数接口来引入SPI控制器的资源，尤其是spi_master.transfer函数</p>
 <p>
-<figure><a class="lightgallery" href="/image/298425915256031.webp" title="2024-03-07_15-58" data-thumbnail="/image/298425915256031.webp" data-sub-html="<h2> </h2><p>2024-03-07_15-58</p>"><img   src='/image/298425915256031.webp'   alt="2024-03-07_15-58" height="616" width="877"></a><figcaption class="image-caption">2024-03-07_15-58</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-advanced/assets/298425915256031.webp" title="2024-03-07_15-58" data-thumbnail="/posts/linux-advanced/assets/298425915256031.webp" data-sub-html="<h2> </h2><p>2024-03-07_15-58</p>"><img   src='/posts/linux-advanced/assets/298425915256031.webp'   alt="2024-03-07_15-58" height="616" width="877"></a><figcaption class="image-caption">2024-03-07_15-58</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="/image/237874415266807.webp" title="2024-03-07_15-43" data-thumbnail="/image/237874415266807.webp" data-sub-html="<h2> </h2><p>2024-03-07_15-43</p>"><img   src='/image/237874415266807.webp'   alt="2024-03-07_15-43" height="1243" width="2090"></a><figcaption class="image-caption">2024-03-07_15-43</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-advanced/assets/237874415266807.webp" title="2024-03-07_15-43" data-thumbnail="/posts/linux-advanced/assets/237874415266807.webp" data-sub-html="<h2> </h2><p>2024-03-07_15-43</p>"><img   src='/posts/linux-advanced/assets/237874415266807.webp'   alt="2024-03-07_15-43" height="1243" width="2090"></a><figcaption class="image-caption">2024-03-07_15-43</figcaption>
     </figure></p>
 <p>在SPI子系统一个transfer对应一个传输，为了管理多个传输采用了链表结构，SPI控制器的驱动程序spi_master内部有一个queue，每一个具体设备spi_device都会生成一个message并挂载到queue，每一个message会有多种transfer，这些transfer会挂载到message上</p>
 <p>
-<figure><a class="lightgallery" href="/image/595081621255944.webp" title="2024-02-20_21-16" data-thumbnail="/image/595081621255944.webp" data-sub-html="<h2> </h2><p>2024-02-20_21-16</p>"><img   src='/image/595081621255944.webp'   alt="2024-02-20_21-16" height="870" width="866"></a><figcaption class="image-caption">2024-02-20_21-16</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-advanced/assets/595081621255944.webp" title="2024-02-20_21-16" data-thumbnail="/posts/linux-advanced/assets/595081621255944.webp" data-sub-html="<h2> </h2><p>2024-02-20_21-16</p>"><img   src='/posts/linux-advanced/assets/595081621255944.webp'   alt="2024-02-20_21-16" height="870" width="866"></a><figcaption class="image-caption">2024-02-20_21-16</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="/image/19941422251698.webp" title="2024-02-20_22-13" data-thumbnail="/image/19941422251698.webp" data-sub-html="<h2> </h2><p>2024-02-20_22-13</p>"><img   src='/image/19941422251698.webp'   alt="2024-02-20_22-13" height="1401" width="1501"></a><figcaption class="image-caption">2024-02-20_22-13</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-advanced/assets/19941422251698.webp" title="2024-02-20_22-13" data-thumbnail="/posts/linux-advanced/assets/19941422251698.webp" data-sub-html="<h2> </h2><p>2024-02-20_22-13</p>"><img   src='/posts/linux-advanced/assets/19941422251698.webp'   alt="2024-02-20_22-13" height="1401" width="1501"></a><figcaption class="image-caption">2024-02-20_22-13</figcaption>
     </figure></p>
 <p>新方法的spi_master的驱动程序，使用方便但规矩多，支持同步异步传输</p>
 <p>
-<figure><a class="lightgallery" href="/image/506282422269578.webp" title="2024-02-20_22-22" data-thumbnail="/image/506282422269578.webp" data-sub-html="<h2> </h2><p>2024-02-20_22-22</p>"><img   src='/image/506282422269578.webp'   alt="2024-02-20_22-22" height="1361" width="2157"></a><figcaption class="image-caption">2024-02-20_22-22</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-advanced/assets/506282422269578.webp" title="2024-02-20_22-22" data-thumbnail="/posts/linux-advanced/assets/506282422269578.webp" data-sub-html="<h2> </h2><p>2024-02-20_22-22</p>"><img   src='/posts/linux-advanced/assets/506282422269578.webp'   alt="2024-02-20_22-22" height="1361" width="2157"></a><figcaption class="image-caption">2024-02-20_22-22</figcaption>
     </figure></p>
 <p>老方法的spi_master的驱动程序，使用繁琐规矩少，支持同步异步传输</p>
 <p>
-<figure><a class="lightgallery" href="/image/197332522267182.webp" title="2024-02-20_22-22_1" data-thumbnail="/image/197332522267182.webp" data-sub-html="<h2> </h2><p>2024-02-20_22-22_1</p>"><img   src='/image/197332522267182.webp'   alt="2024-02-20_22-22_1" height="619" width="1359"></a><figcaption class="image-caption">2024-02-20_22-22_1</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-advanced/assets/197332522267182.webp" title="2024-02-20_22-22_1" data-thumbnail="/posts/linux-advanced/assets/197332522267182.webp" data-sub-html="<h2> </h2><p>2024-02-20_22-22_1</p>"><img   src='/posts/linux-advanced/assets/197332522267182.webp'   alt="2024-02-20_22-22_1" height="619" width="1359"></a><figcaption class="image-caption">2024-02-20_22-22_1</figcaption>
     </figure></p>
 <h2 id="gpio深入" class="headerLink">
     <a href="#gpio%e6%b7%b1%e5%85%a5" class="header-mark"></a>GPIO深入</h2><p>GPIO Controller驱动是编程的核心，其他LED，Button驱动程序只是调用GPIO Controller驱动的函数，对于LED，Button驱动程序只需要调用内核的GPIO lib库即可，我们编写控制器驱动程序的时候也只需要将驱动注册进GPIO lib库</p>
 <p>
-<img   src='/image/509103522264684.webp'   alt="509103522264684.webp" height="581" width="1054"></p>
+<img   src='/posts/linux-advanced/assets/509103522264684.webp'   alt="509103522264684.webp" height="581" width="1054"></p>
 <p>一个GPIO Controller对应一个GPIO device结构体，其内部有chips(相当于fop)，desc(描述单个引脚的数组指针，内部描述了引脚的高低电平，输入输出模式等)，base(引脚基地址等)</p>
 <p>
-<figure><a class="lightgallery" href="/image/236145522245925.webp" title="2024-02-20_22-55" data-thumbnail="/image/236145522245925.webp" data-sub-html="<h2> </h2><p>2024-02-20_22-55</p>"><img   src='/image/236145522245925.webp'   alt="2024-02-20_22-55" height="966" width="2392"></a><figcaption class="image-caption">2024-02-20_22-55</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-advanced/assets/236145522245925.webp" title="2024-02-20_22-55" data-thumbnail="/posts/linux-advanced/assets/236145522245925.webp" data-sub-html="<h2> </h2><p>2024-02-20_22-55</p>"><img   src='/posts/linux-advanced/assets/236145522245925.webp'   alt="2024-02-20_22-55" height="966" width="2392"></a><figcaption class="image-caption">2024-02-20_22-55</figcaption>
     </figure></p>
 <p>Pinctl子系统会统一管理引脚，GPIO引脚与Pinctl引脚的映射统一在设备树中管理</p>
 <p>
-<figure><a class="lightgallery" href="/image/306550423268365.webp" title="2024-02-20_23-04" data-thumbnail="/image/306550423268365.webp" data-sub-html="<h2> </h2><p>2024-02-20_23-04</p>"><img   src='/image/306550423268365.webp'   alt="2024-02-20_23-04" height="1414" width="2100"></a><figcaption class="image-caption">2024-02-20_23-04</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-advanced/assets/306550423268365.webp" title="2024-02-20_23-04" data-thumbnail="/posts/linux-advanced/assets/306550423268365.webp" data-sub-html="<h2> </h2><p>2024-02-20_23-04</p>"><img   src='/posts/linux-advanced/assets/306550423268365.webp'   alt="2024-02-20_23-04" height="1414" width="2100"></a><figcaption class="image-caption">2024-02-20_23-04</figcaption>
     </figure></p>
 <h2 id="pinctl深入" class="headerLink">
     <a href="#pinctl%e6%b7%b1%e5%85%a5" class="header-mark"></a>Pinctl深入</h2><p>使用设备树时分为Pinctl Controller与Client</p>
 <p>
-<img   src='/image/177683023263501.webp'   alt="177683023263501.webp" height="507" width="1374"></p>
+<img   src='/posts/linux-advanced/assets/177683023263501.webp'   alt="177683023263501.webp" height="507" width="1374"></p>
 <p>每一个Pinctl Controller都会使用Pinctl device来描述，Pinctl Controller有三大功能：引脚配置，复用及命名，三者统一在pinctrl_dev.pinctrl_decs结构体中实现
 如果写Pinctl Controller驱动，则需要实现pinctrl_decs，并使用pinctrl_register注册</p>
 <p>
-<figure><a class="lightgallery" href="/image/573293123257047.webp" title="2024-02-20_23-31" data-thumbnail="/image/573293123257047.webp" data-sub-html="<h2> </h2><p>2024-02-20_23-31</p>"><img   src='/image/573293123257047.webp'   alt="2024-02-20_23-31" height="1339" width="1717"></a><figcaption class="image-caption">2024-02-20_23-31</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-advanced/assets/573293123257047.webp" title="2024-02-20_23-31" data-thumbnail="/posts/linux-advanced/assets/573293123257047.webp" data-sub-html="<h2> </h2><p>2024-02-20_23-31</p>"><img   src='/posts/linux-advanced/assets/573293123257047.webp'   alt="2024-02-20_23-31" height="1339" width="1717"></a><figcaption class="image-caption">2024-02-20_23-31</figcaption>
     </figure></p>
 <p>platform_device从设备树中解析得到，里面会构造一个dev.dev_pin_info结构体，内部的pinctrl与pinctrl_state结构体储存了设备树中节点的信息</p>
 <p>
-<figure><a class="lightgallery" href="/image/361124423250181.webp" title="2024-02-20_23-44" data-thumbnail="/image/361124423250181.webp" data-sub-html="<h2> </h2><p>2024-02-20_23-44</p>"><img   src='/image/361124423250181.webp'   alt="2024-02-20_23-44" height="1599" width="1299"></a><figcaption class="image-caption">2024-02-20_23-44</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-advanced/assets/361124423250181.webp" title="2024-02-20_23-44" data-thumbnail="/posts/linux-advanced/assets/361124423250181.webp" data-sub-html="<h2> </h2><p>2024-02-20_23-44</p>"><img   src='/posts/linux-advanced/assets/361124423250181.webp'   alt="2024-02-20_23-44" height="1599" width="1299"></a><figcaption class="image-caption">2024-02-20_23-44</figcaption>
     </figure></p>
 <p>Pinctl Controller下的子节点会被内核解析成一个个pinctrl_map，然后被转换为成一个个pinctrl_setting挂载到pinctrl_state，client就可以从pinctrl_state结构体中获得设备树信息</p>
 <p>
-<figure><a class="lightgallery" href="/image/165440100243216.webp" title="2024-02-21_00-00" data-thumbnail="/image/165440100243216.webp" data-sub-html="<h2> </h2><p>2024-02-21_00-00</p>"><img   src='/image/165440100243216.webp'   alt="2024-02-21_00-00" height="658" width="2255"></a><figcaption class="image-caption">2024-02-21_00-00</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-advanced/assets/165440100243216.webp" title="2024-02-21_00-00" data-thumbnail="/posts/linux-advanced/assets/165440100243216.webp" data-sub-html="<h2> </h2><p>2024-02-21_00-00</p>"><img   src='/posts/linux-advanced/assets/165440100243216.webp'   alt="2024-02-21_00-00" height="658" width="2255"></a><figcaption class="image-caption">2024-02-21_00-00</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="/image/204334523240711.webp" title="2024-02-20_23-45" data-thumbnail="/image/204334523240711.webp" data-sub-html="<h2> </h2><p>2024-02-20_23-45</p>"><img   src='/image/204334523240711.webp'   alt="2024-02-20_23-45" height="1166" width="2162"></a><figcaption class="image-caption">2024-02-20_23-45</figcaption>
+<figure><a class="lightgallery" href="/posts/linux-advanced/assets/204334523240711.webp" title="2024-02-20_23-45" data-thumbnail="/posts/linux-advanced/assets/204334523240711.webp" data-sub-html="<h2> </h2><p>2024-02-20_23-45</p>"><img   src='/posts/linux-advanced/assets/204334523240711.webp'   alt="2024-02-20_23-45" height="1166" width="2162"></a><figcaption class="image-caption">2024-02-20_23-45</figcaption>
     </figure></p>
 </div>
 
@@ -785,7 +785,7 @@ sync，同步信号，由于USB没有时钟线只有两条数据线，因此sync
             <div class="footer-line">
                 <span id="run-time"></span>
             </div><div class="footer-line">
-                    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.146.2">Hugo</a>&nbsp;|&nbsp;Theme - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.4.1"><svg class="icon"
+                    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.146.5">Hugo</a>&nbsp;|&nbsp;Theme - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.4.1"><svg class="icon"
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg> DoIt</a>
                 </div><div class="footer-line"><svg class="icon"
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 448c-110.532 0-200-89.451-200-200 0-110.531 89.451-200 200-200 110.532 0 200 89.451 200 200 0 110.532-89.451 200-200 200zm107.351-101.064c-9.614 9.712-45.53 41.396-104.065 41.396-82.43 0-140.484-61.425-140.484-141.567 0-79.152 60.275-139.401 139.762-139.401 55.531 0 88.738 26.62 97.593 34.779a11.965 11.965 0 0 1 1.936 15.322l-18.155 28.113c-3.841 5.95-11.966 7.282-17.499 2.921-8.595-6.776-31.814-22.538-61.708-22.538-48.303 0-77.916 35.33-77.916 80.082 0 41.589 26.888 83.692 78.277 83.692 32.657 0 56.843-19.039 65.726-27.225 5.27-4.857 13.596-4.039 17.82 1.738l19.865 27.17a11.947 11.947 0 0 1-1.152 15.518z"/></svg>2023 - 2025<span class="author">&nbsp;<a href="wumingzi.top" target="_blank" rel="noopener noreferrer">吾铭子</a></span></div>

@@ -205,10 +205,10 @@
 使用vTaskDelet函数要注意不要在自己的进程内部自杀，这样会导致空闲任务无法清理内存</p>
 <!-- more -->
 <p>
-<figure><a class="lightgallery" href="/image/520675109231265.webp" title="2023-12-24_09-51" data-thumbnail="/image/520675109231265.webp" data-sub-html="<h2> </h2><p>2023-12-24_09-51</p>"><img   src='/image/520675109231265.webp'   alt="2023-12-24_09-51" height="1215" width="1058"></a><figcaption class="image-caption">2023-12-24_09-51</figcaption>
+<figure><a class="lightgallery" href="/posts/freertos/assets/520675109231265.webp" title="2023-12-24_09-51" data-thumbnail="/posts/freertos/assets/520675109231265.webp" data-sub-html="<h2> </h2><p>2023-12-24_09-51</p>"><img   src='/posts/freertos/assets/520675109231265.webp'   alt="2023-12-24_09-51" height="1215" width="1058"></a><figcaption class="image-caption">2023-12-24_09-51</figcaption>
     </figure></p>
 <p>
-<figure><a class="lightgallery" href="/image/261583815249686.webp" title="2023-12-19_15-36" data-thumbnail="/image/261583815249686.webp" data-sub-html="<h2> </h2><p>2023-12-19_15-36</p>"><img   src='/image/261583815249686.webp'   alt="2023-12-19_15-36" height="1271" width="1568"></a><figcaption class="image-caption">2023-12-19_15-36</figcaption>
+<figure><a class="lightgallery" href="/posts/freertos/assets/261583815249686.webp" title="2023-12-19_15-36" data-thumbnail="/posts/freertos/assets/261583815249686.webp" data-sub-html="<h2> </h2><p>2023-12-19_15-36</p>"><img   src='/posts/freertos/assets/261583815249686.webp'   alt="2023-12-19_15-36" height="1271" width="1568"></a><figcaption class="image-caption">2023-12-19_15-36</figcaption>
     </figure>
 TCB结构体内部包含函数指针，SP位置，优先级，函数名字，函数参数等，但并不包括函数的指针(用来执行本函数)，也不包括函数参数，CPU通过保存所有寄存器的值来保存这两项，保存的位置在该函数栈的顶部，其中R0，R1&hellip;保存了函数的参数(约定俗成)，R15(PC)保存了函数的指针，来进行函数的跳转操作
 优先级最大值只能取到最大值-1，高于这个值的会自动变为最大值-1
@@ -228,7 +228,7 @@ TCB结构体内部包含函数指针，SP位置，优先级，函数名字，函
 <a href="https://www.cnblogs.com/weidongshan/p/15624113.html" target="_blank" rel="noopener noreferrer">博客园</a></li>
 </ol>
 <p>
-<figure><a class="lightgallery" href="/image/24251810231257.webp" title="2023-12-16_10-16" data-thumbnail="/image/24251810231257.webp" data-sub-html="<h2> </h2><p>2023-12-16_10-16</p>"><img   src='/image/24251810231257.webp'   alt="2023-12-16_10-16" height="1055" width="1697"></a><figcaption class="image-caption">2023-12-16_10-16</figcaption>
+<figure><a class="lightgallery" href="/posts/freertos/assets/24251810231257.webp" title="2023-12-16_10-16" data-thumbnail="/posts/freertos/assets/24251810231257.webp" data-sub-html="<h2> </h2><p>2023-12-16_10-16</p>"><img   src='/posts/freertos/assets/24251810231257.webp'   alt="2023-12-16_10-16" height="1055" width="1697"></a><figcaption class="image-caption">2023-12-16_10-16</figcaption>
     </figure>
 采用这种方式运行并发程序会导致Task3 Task4在将锁置为1之前就都已经进入if语句内部了，这就会导致概率性并发Bug
 写队列函数xQueueSend与xQueueSendToBack是一样的，都是默认在队列尾部写入数据，而xQueueSendToFront则是在头部写入数据(头部就是pcReadFrom指针所指的地址，并不是队列的最右侧)，此时还需要将pcReadFrom指针减去一个ItemSize的地址
@@ -248,31 +248,31 @@ TCB结构体内部包含函数指针，SP位置，优先级，函数名字，函
 </ol>
 <p>事件组要么等待事件中的某一个发生，要么等待事件中的所有都发生，不能等待事件中的指定某几个发生
 
-<figure><a class="lightgallery" href="/image/28523719231258.webp" title="2023-12-17_19-34" data-thumbnail="/image/28523719231258.webp" data-sub-html="<h2> </h2><p>2023-12-17_19-34</p>"><img   src='/image/28523719231258.webp'   alt="2023-12-17_19-34" height="831" width="832"></a><figcaption class="image-caption">2023-12-17_19-34</figcaption>
+<figure><a class="lightgallery" href="/posts/freertos/assets/28523719231258.webp" title="2023-12-17_19-34" data-thumbnail="/posts/freertos/assets/28523719231258.webp" data-sub-html="<h2> </h2><p>2023-12-17_19-34</p>"><img   src='/posts/freertos/assets/28523719231258.webp'   alt="2023-12-17_19-34" height="831" width="832"></a><figcaption class="image-caption">2023-12-17_19-34</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="/image/2063919250386.webp" title="2023-12-17_19-38" data-thumbnail="/image/2063919250386.webp" data-sub-html="<h2> </h2><p>2023-12-17_19-38</p>"><img   src='/image/2063919250386.webp'   alt="2023-12-17_19-38" height="498" width="1277"></a><figcaption class="image-caption">2023-12-17_19-38</figcaption>
+<figure><a class="lightgallery" href="/posts/freertos/assets/2063919250386.webp" title="2023-12-17_19-38" data-thumbnail="/posts/freertos/assets/2063919250386.webp" data-sub-html="<h2> </h2><p>2023-12-17_19-38</p>"><img   src='/posts/freertos/assets/2063919250386.webp'   alt="2023-12-17_19-38" height="498" width="1277"></a><figcaption class="image-caption">2023-12-17_19-38</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="/image/280143719249684.webp" title="2023-12-17_19-34_1" data-thumbnail="/image/280143719249684.webp" data-sub-html="<h2> </h2><p>2023-12-17_19-34_1</p>"><img   src='/image/280143719249684.webp'   alt="2023-12-17_19-34_1" height="474" width="404"></a><figcaption class="image-caption">2023-12-17_19-34_1</figcaption>
+<figure><a class="lightgallery" href="/posts/freertos/assets/280143719249684.webp" title="2023-12-17_19-34_1" data-thumbnail="/posts/freertos/assets/280143719249684.webp" data-sub-html="<h2> </h2><p>2023-12-17_19-34_1</p>"><img   src='/posts/freertos/assets/280143719249684.webp'   alt="2023-12-17_19-34_1" height="474" width="404"></a><figcaption class="image-caption">2023-12-17_19-34_1</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="/image/371893719237551.webp" title="2023-12-17_19-35" data-thumbnail="/image/371893719237551.webp" data-sub-html="<h2> </h2><p>2023-12-17_19-35</p>"><img   src='/image/371893719237551.webp'   alt="2023-12-17_19-35" height="853" width="879"></a><figcaption class="image-caption">2023-12-17_19-35</figcaption>
+<figure><a class="lightgallery" href="/posts/freertos/assets/371893719237551.webp" title="2023-12-17_19-35" data-thumbnail="/posts/freertos/assets/371893719237551.webp" data-sub-html="<h2> </h2><p>2023-12-17_19-35</p>"><img   src='/posts/freertos/assets/371893719237551.webp'   alt="2023-12-17_19-35" height="853" width="879"></a><figcaption class="image-caption">2023-12-17_19-35</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="/image/462943719257717.webp" title="2023-12-17_19-35_1" data-thumbnail="/image/462943719257717.webp" data-sub-html="<h2> </h2><p>2023-12-17_19-35_1</p>"><img   src='/image/462943719257717.webp'   alt="2023-12-17_19-35_1" height="626" width="403"></a><figcaption class="image-caption">2023-12-17_19-35_1</figcaption>
+<figure><a class="lightgallery" href="/posts/freertos/assets/462943719257717.webp" title="2023-12-17_19-35_1" data-thumbnail="/posts/freertos/assets/462943719257717.webp" data-sub-html="<h2> </h2><p>2023-12-17_19-35_1</p>"><img   src='/posts/freertos/assets/462943719257717.webp'   alt="2023-12-17_19-35_1" height="626" width="403"></a><figcaption class="image-caption">2023-12-17_19-35_1</figcaption>
     </figure>
 切换任务后是直接执行在任务中断处执行，一般为while(1)循环内继续执行，因此对于在循环外部的初始化变量一定小心，例如在while(1)外部定义了i，while(1)循环内部定义了for循环，使用的变量是前面的i，这样，当第一次while(1)循环结束后i的是值为跳出循环的值，从本次循环开始，就不会再进入for内部了
 任务通知是多对一的关系
 对于任务通知来说，发送方发送的结果只有两种，要么成功要么失败，并不会等待，而对于接收方则有三种情况
 
-<figure><a class="lightgallery" href="/image/221873617231259.webp" title="2023-12-18_17-35" data-thumbnail="/image/221873617231259.webp" data-sub-html="<h2> </h2><p>2023-12-18_17-35</p>"><img   src='/image/221873617231259.webp'   alt="2023-12-18_17-35" height="601" width="621"></a><figcaption class="image-caption">2023-12-18_17-35</figcaption>
+<figure><a class="lightgallery" href="/posts/freertos/assets/221873617231259.webp" title="2023-12-18_17-35" data-thumbnail="/posts/freertos/assets/221873617231259.webp" data-sub-html="<h2> </h2><p>2023-12-18_17-35</p>"><img   src='/posts/freertos/assets/221873617231259.webp'   alt="2023-12-18_17-35" height="601" width="621"></a><figcaption class="image-caption">2023-12-18_17-35</figcaption>
     </figure>
 xQueueReceive()与xEventGroupWaitBits()中的WaitForAllBits数量有关，如果WaitForAllBits是pdFalse时，则需要一个xQueueReceive()就够了，否则会造成从未赋值的中间变量中取数据的Bug，造成的现象是同时多个数据被写入队列时会产生数据被读取多次，次数取决于并发的程序数量，不同时写入数据则会只覆盖队列中第一个数据，第二个数据始终被保留。而WaitForAllBits是pdTure时，则需要多个xQueueReceive()，这样才会有足够多的中间变量存储数据，而后被一次读走(具体实验可以看24_freertos_example_tasknotify_event_group)
 使用任务通知构造轻量化事件组无法等待指定的某个任务，但是可以通过判断xTaskNotifyWait()中的pulNotificationValue值来进行等待某个指定任务
 定时器函数在守护任务中被执行，每当产生Tick时定时器函数会比较当前Tick与预设Tick，并根据结果来执行回调函数(CallBackFun)，想要设置其定时器函数的具体参数需要经过队列通信来完成 <br>
 
-<figure><a class="lightgallery" href="/image/335880917237553.webp" title="2023-12-19_17-09" data-thumbnail="/image/335880917237553.webp" data-sub-html="<h2> </h2><p>2023-12-19_17-09</p>"><img   src='/image/335880917237553.webp'   alt="2023-12-19_17-09" height="253" width="764"></a><figcaption class="image-caption">2023-12-19_17-09</figcaption>
+<figure><a class="lightgallery" href="/posts/freertos/assets/335880917237553.webp" title="2023-12-19_17-09" data-thumbnail="/posts/freertos/assets/335880917237553.webp" data-sub-html="<h2> </h2><p>2023-12-19_17-09</p>"><img   src='/posts/freertos/assets/335880917237553.webp'   alt="2023-12-19_17-09" height="253" width="764"></a><figcaption class="image-caption">2023-12-19_17-09</figcaption>
     </figure>
 调用如上函数时，如果不加static关键字会导致每次调用函数都会产生新的栈和新的cnt，这样cnt的值就不是理想的，如果初始化cnt为0，则每次都会打印0，也不符合逻辑，解决办法是使用static关键字来存储每次产生的cnt
 FreeRTOS对于中断会使用不同的ISR(Interrupt Service Routines)函数，这是为了保证ISR执行的时候不能处于阻塞状态，这样才能保证实时性
@@ -508,11 +508,11 @@ POP指令本质是读指令 POP {R3,LR}
 <p>栈的大小取决于局部变量的大小以及函数调用的深度，函数调用需要Push LR
 TCB结构体内部包含函数指针，SP位置，优先级，函数名字，函数参数等，但并不包括函数的指针(用来执行本函数)，也不包括函数参数，CPU通过保存所有寄存器的值来保存这两项，保存的位置在该函数栈的顶部，其中R0，R1&hellip;保存了函数的参数(约定俗成)，R15(PC)保存了函数的指针，来进行函数的跳转操作
 
-<figure><a class="lightgallery" href="/image/450634810237564.webp" title="2023-12-30_10-48" data-thumbnail="/image/450634810237564.webp" data-sub-html="<h2> </h2><p>2023-12-30_10-48</p>"><img   src='/image/450634810237564.webp'   alt="2023-12-30_10-48" height="901" width="1041"></a><figcaption class="image-caption">2023-12-30_10-48</figcaption>
+<figure><a class="lightgallery" href="/posts/freertos/assets/450634810237564.webp" title="2023-12-30_10-48" data-thumbnail="/posts/freertos/assets/450634810237564.webp" data-sub-html="<h2> </h2><p>2023-12-30_10-48</p>"><img   src='/posts/freertos/assets/450634810237564.webp'   alt="2023-12-30_10-48" height="901" width="1041"></a><figcaption class="image-caption">2023-12-30_10-48</figcaption>
     </figure>
 申请堆栈的指令名为SPACE，这是在初始化文件里就执行的
 
-<figure><a class="lightgallery" href="/image/240683821237558.webp" title="2023-12-24_21-33_1" data-thumbnail="/image/240683821237558.webp" data-sub-html="<h2> </h2><p>2023-12-24_21-33_1</p>"><img   src='/image/240683821237558.webp'   alt="2023-12-24_21-33_1" height="660" width="1284"></a><figcaption class="image-caption">2023-12-24_21-33_1</figcaption>
+<figure><a class="lightgallery" href="/posts/freertos/assets/240683821237558.webp" title="2023-12-24_21-33_1" data-thumbnail="/posts/freertos/assets/240683821237558.webp" data-sub-html="<h2> </h2><p>2023-12-24_21-33_1</p>"><img   src='/posts/freertos/assets/240683821237558.webp'   alt="2023-12-24_21-33_1" height="660" width="1284"></a><figcaption class="image-caption">2023-12-24_21-33_1</figcaption>
     </figure>
 main函数的栈是在STM32汇编文件文件中设置的，与芯片厂商相关，步骤如下</p>
 <ol>
@@ -524,7 +524,7 @@ main函数的栈是在STM32汇编文件文件中设置的，与芯片厂商相�
 任务调度原理: 任务存在三个大类链表中，分别是ReadyList链表数组，DelayList，PendingList。当程序被阻塞时会被放入delaylist内，这时产生阻塞的一般是信号量take，延时函数，互斥锁等操作。当程序被挂起时会被放入pendinglist内，这时产生挂起行为的唯一的方法是调用vTaskSuspend函数，而想要解除挂起状态只能让其他程序调用vTaskResume函数。其中ReadyList链表数组按照优先级排列(0-4)共有五个链表，FreeRTOS会先从ReadyList中最高优先级的一个开始寻找任务并执行，当高优先级任务发生阻塞时会将其从ReadyList移到DelayList，这时就不会执行了，而是去找低优先级的任务去执行。当创建任务时，会有指针指向当前创建的<strong>优先级最高的任务</strong>，因此，最后创建的任务总会先执行，然后再按前文所说按优先级高低依次执行其他任务。
 选要注意的是，当所有任务优先级为0时，最后创建的是IdleTask。因此指针指向的是空闲任务。最终程序首先执行的IdleTask并没有现象，程序“看起来”好像是从最初的Task开始运行的
 
-<figure><a class="lightgallery" href="/image/585701409231266.webp" title="2023-12-25_09-14" data-thumbnail="/image/585701409231266.webp" data-sub-html="<h2> </h2><p>2023-12-25_09-14</p>"><img   src='/image/585701409231266.webp'   alt="2023-12-25_09-14" height="704" width="1295"></a><figcaption class="image-caption">2023-12-25_09-14</figcaption>
+<figure><a class="lightgallery" href="/posts/freertos/assets/585701409231266.webp" title="2023-12-25_09-14" data-thumbnail="/posts/freertos/assets/585701409231266.webp" data-sub-html="<h2> </h2><p>2023-12-25_09-14</p>"><img   src='/posts/freertos/assets/585701409231266.webp'   alt="2023-12-25_09-14" height="704" width="1295"></a><figcaption class="image-caption">2023-12-25_09-14</figcaption>
     </figure>
 在整个任务调度的过程中利用的是任务的TCB结构体
 为防止写队列过程中发生调度导致失败，所以在写队列中需要互斥，这是通过关闭中断来实现的(任务调度本质上是定时器产生中断)
@@ -546,7 +546,7 @@ xTaskWaitingToSend以及xTaskWaitingToReceive仅仅是为了记录哪个任务�
 critical: 临界区
 读队列内核操作
 
-<figure><a class="lightgallery" href="/image/35974111249692.webp" title="2023-12-25_11-40" data-thumbnail="/image/35974111249692.webp" data-sub-html="<h2> </h2><p>2023-12-25_11-40</p>"><img   src='/image/35974111249692.webp'   alt="2023-12-25_11-40" height="743" width="1085"></a><figcaption class="image-caption">2023-12-25_11-40</figcaption>
+<figure><a class="lightgallery" href="/posts/freertos/assets/35974111249692.webp" title="2023-12-25_11-40" data-thumbnail="/posts/freertos/assets/35974111249692.webp" data-sub-html="<h2> </h2><p>2023-12-25_11-40</p>"><img   src='/posts/freertos/assets/35974111249692.webp'   alt="2023-12-25_11-40" height="743" width="1085"></a><figcaption class="image-caption">2023-12-25_11-40</figcaption>
     </figure>
 信号量是一种特殊的队列，它不传递数据，因此它只有Queue_t(队列头)，在Queue_t内部还有个链表用来记录Take失败的任务，以便之后唤醒
 互斥量优先级继承是通过高优先级任务的优先级赋值给低优先级任务完成的，在这之前还需要记录低优先级任务的优先级，这样才能保证Give互斥量之后回到原优先级
@@ -557,7 +557,7 @@ critical: 临界区
 定时器队列中，写队列一侧是systick，读队列一侧是守护任务。有趣的是创建Timer任务和启动Timer也是写队列，所以在函数xTimerStart(xTimer，xTicksToWait)中有两个参数，第二个参数给的就是当定时器队列满时是否接受等待
 中断的优先级: systick服务于任务调度，pendsv服务于任务切换，其他的类似GPIO的中断用于业务，为了能够让业务正常执行，GPIO中断优先级最高，systick和pendsv优先级最低
 
-<figure><a class="lightgallery" href="/image/575191910231268.webp" title="2023-12-27_10-19" data-thumbnail="/image/575191910231268.webp" data-sub-html="<h2> </h2><p>2023-12-27_10-19</p>"><img   src='/image/575191910231268.webp'   alt="2023-12-27_10-19" height="1156" width="1455"></a><figcaption class="image-caption">2023-12-27_10-19</figcaption>
+<figure><a class="lightgallery" href="/posts/freertos/assets/575191910231268.webp" title="2023-12-27_10-19" data-thumbnail="/posts/freertos/assets/575191910231268.webp" data-sub-html="<h2> </h2><p>2023-12-27_10-19</p>"><img   src='/posts/freertos/assets/575191910231268.webp'   alt="2023-12-27_10-19" height="1156" width="1455"></a><figcaption class="image-caption">2023-12-27_10-19</figcaption>
     </figure>
 pendsv本质上是保存现场和任务切换的汇编代码</p>
 <div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
@@ -658,11 +658,11 @@ pendsv本质上是保存现场和任务切换的汇编代码</p>
 </span></span><span class="line"><span class="cl"><span class="nf">xTaskResumeAll</span><span class="p">();</span></span></span></code></pre>
 </div>
 <p>
-<figure><a class="lightgallery" href="/image/333245509231271.webp" title="2023-12-30_09-55" data-thumbnail="/image/333245509231271.webp" data-sub-html="<h2> </h2><p>2023-12-30_09-55</p>"><img   src='/image/333245509231271.webp'   alt="2023-12-30_09-55" height="748" width="1654"></a><figcaption class="image-caption">2023-12-30_09-55</figcaption>
+<figure><a class="lightgallery" href="/posts/freertos/assets/333245509231271.webp" title="2023-12-30_09-55" data-thumbnail="/posts/freertos/assets/333245509231271.webp" data-sub-html="<h2> </h2><p>2023-12-30_09-55</p>"><img   src='/posts/freertos/assets/333245509231271.webp'   alt="2023-12-30_09-55" height="748" width="1654"></a><figcaption class="image-caption">2023-12-30_09-55</figcaption>
     </figure>
 可以通过116行将宏消除(因为宏未定义，编译器会消除宏)
 
-<figure><a class="lightgallery" href="/image/243322210249697.webp" title="2023-12-30_10-22" data-thumbnail="/image/243322210249697.webp" data-sub-html="<h2> </h2><p>2023-12-30_10-22</p>"><img   src='/image/243322210249697.webp'   alt="2023-12-30_10-22" height="1022" width="1507"></a><figcaption class="image-caption">2023-12-30_10-22</figcaption>
+<figure><a class="lightgallery" href="/posts/freertos/assets/243322210249697.webp" title="2023-12-30_10-22" data-thumbnail="/posts/freertos/assets/243322210249697.webp" data-sub-html="<h2> </h2><p>2023-12-30_10-22</p>"><img   src='/posts/freertos/assets/243322210249697.webp'   alt="2023-12-30_10-22" height="1022" width="1507"></a><figcaption class="image-caption">2023-12-30_10-22</figcaption>
     </figure>
 FreeRTOS的链表构成如上图，xList负责产生头xMINI_List_Item，并记录链表中信息(如元素个数，当前指针的位置)，xMINI_List_Item本身作为链表头，xList_Item产生节点。要注意xList_Item的pvOwner才是学习链表时的&quot;container&quot;(容器)，container内部有下一个Node，Node里面也有下一个的container，而对应Node节点的就是FreeRTOS的Item。此时的pxContainer是指向新加入元素的那个List的指针
 内存管理:
@@ -671,15 +671,15 @@ FreeRTOS的链表构成如上图，xList负责产生头xMINI_List_Item，并记�
 heap1到heap5内存回收机制逐渐增强，一般常用heap4
 heap_1.c里，只实现了pvPortMalloc函数，vPortFree函数并未实现。并在malloc函数内实现了互斥，以防止其他任务再次进行malloc
 
-<img   src='/image/305274714257730.webp'   alt="305274714257730.webp" height="322" width="1200">
+<img   src='/posts/freertos/assets/305274714257730.webp'   alt="305274714257730.webp" height="322" width="1200">
 使用heap1进行内存申请时，首先heap1内部会定义两个指针，pucAlignedHeap与xWantedSize，pucAlignedHeap主要负责内存对齐，每次pucAlignedHeap移动到下一个内存对齐的地址(最大移动8个地址)。xWantedSize负责给出申请空间的尾地址，这样将xWantedSize赋值给pucAlignedHeap就可以知道下一次该在何处对齐内存。例如，想在0x4000 0001处申请99字节的空间，首先pucAlignedHeap会指向0x4000 0004处(32位机内存块大小为4*8字节，所以pucAlignedHeap最大偏移量为4)，而后计算xWantedSize大小，考虑99不能被4整除，因此向上取整为100，所以新申请的内存地址为0x4000 0004至0x4000 0104，而0x4000 0001到0x4000 0003处内存被丢弃
 heap2实现了内存回收，但没有解决内存碎片问题
 
-<img   src='/image/528693015258192.webp'   alt="528693015258192.webp" height="181" width="891">
+<img   src='/posts/freertos/assets/528693015258192.webp'   alt="528693015258192.webp" height="181" width="891">
 
-<img   src='/image/177122815242708.webp'   alt="177122815242708.webp" height="166" width="799">
+<img   src='/posts/freertos/assets/177122815242708.webp'   alt="177122815242708.webp" height="166" width="799">
 
-<img   src='/image/249192815260588.webp'   alt="249192815260588.webp" height="517" width="1266">
+<img   src='/posts/freertos/assets/249192815260588.webp'   alt="249192815260588.webp" height="517" width="1266">
 heap2实现的内存分配的方法是，首先生成一个链表，让链表头指向一个未分配的很大的heap(大小17k)，每当申请空间时首先会在已经空闲的block中找出是否能拆分出需求大小的block，如果不能，则从未划分block的堆中划分出一个新block，划分出的block内部包含申请空间的大小以及下一个空闲内存的指针。如果找到大于申请内存大小的block时，首先将该block裁剪为申请内存的大小，并在新申请的block记录该block大小，之后会将链表内的指针指向下一个未被占用的block。
 heap2实现的内存回收的方法是，当需要free时，链表头就会free指定的地址，并将当前指针向前移动(pxNextFreeBlock+xBlockSize)个地址，从而找到block起始位置，但是这种方法并没有实现将这些已经free的内存重新归还到整个未被使用的内存中，因此这种free的空间在整个内存上来看是被各种pxNextFreeBlock+xBlockSize结构体分割出来的，这就是 <strong>内存的碎片化</strong>
 需要注意的是，使用heap2进行malloc操作的时候，链表申请是从小到大排序的，这样方便查找需要的block
@@ -687,18 +687,18 @@ heap3直接使用的是c库的管理算法，只是对c库封装了一层接口�
 heap4能在free时检测前后方是否有空闲内存，有的话就合并，这很大程度上减少了内存碎片的问题
 heap4能够进行内存碎片回收，链表按地址排序
 
-<figure><a class="lightgallery" href="/image/505642615231272.webp" title="2023-12-31_15-26" data-thumbnail="/image/505642615231272.webp" data-sub-html="<h2> </h2><p>2023-12-31_15-26</p>"><img   src='/image/505642615231272.webp'   alt="2023-12-31_15-26" height="226" width="1528"></a><figcaption class="image-caption">2023-12-31_15-26</figcaption>
+<figure><a class="lightgallery" href="/posts/freertos/assets/505642615231272.webp" title="2023-12-31_15-26" data-thumbnail="/posts/freertos/assets/505642615231272.webp" data-sub-html="<h2> </h2><p>2023-12-31_15-26</p>"><img   src='/posts/freertos/assets/505642615231272.webp'   alt="2023-12-31_15-26" height="226" width="1528"></a><figcaption class="image-caption">2023-12-31_15-26</figcaption>
     </figure>
 为了增加程序的健壮性，heap4加入了block使用的标志位(1&laquo;31)
 
-<figure><a class="lightgallery" href="/image/598883612258568.webp" title="2024-01-01_12-36" data-thumbnail="/image/598883612258568.webp" data-sub-html="<h2> </h2><p>2024-01-01_12-36</p>"><img   src='/image/598883612258568.webp'   alt="2024-01-01_12-36" height="268" width="1309"></a><figcaption class="image-caption">2024-01-01_12-36</figcaption>
+<figure><a class="lightgallery" href="/posts/freertos/assets/598883612258568.webp" title="2024-01-01_12-36" data-thumbnail="/posts/freertos/assets/598883612258568.webp" data-sub-html="<h2> </h2><p>2024-01-01_12-36</p>"><img   src='/posts/freertos/assets/598883612258568.webp'   alt="2024-01-01_12-36" height="268" width="1309"></a><figcaption class="image-caption">2024-01-01_12-36</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="/image/544572912240142.webp" title="2024-01-01_12-29" data-thumbnail="/image/544572912240142.webp" data-sub-html="<h2> </h2><p>2024-01-01_12-29</p>"><img   src='/image/544572912240142.webp'   alt="2024-01-01_12-29" height="389" width="1340"></a><figcaption class="image-caption">2024-01-01_12-29</figcaption>
+<figure><a class="lightgallery" href="/posts/freertos/assets/544572912240142.webp" title="2024-01-01_12-29" data-thumbnail="/posts/freertos/assets/544572912240142.webp" data-sub-html="<h2> </h2><p>2024-01-01_12-29</p>"><img   src='/posts/freertos/assets/544572912240142.webp'   alt="2024-01-01_12-29" height="389" width="1340"></a><figcaption class="image-caption">2024-01-01_12-29</figcaption>
     </figure>
 heap5与heap4的不同点在于heap5支持多块内存，在使用heap5时需要手动调用vPortDefineHeapRegions()函数，并以数组方式传入想要划分为堆的地址，这个数组以NULL结尾来确定数组结束的标志
 
-<img   src='/image/568893712246435.webp'   alt="568893712246435.webp" height="580" width="1209"></p>
+<img   src='/posts/freertos/assets/568893712246435.webp'   alt="568893712246435.webp" height="580" width="1209"></p>
 </div>
 
         <div class="post-footer" id="post-footer">
@@ -734,7 +734,7 @@ heap5与heap4的不同点在于heap5支持多块内存，在使用heap5时需要
             <div class="footer-line">
                 <span id="run-time"></span>
             </div><div class="footer-line">
-                    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.146.2">Hugo</a>&nbsp;|&nbsp;Theme - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.4.1"><svg class="icon"
+                    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.146.5">Hugo</a>&nbsp;|&nbsp;Theme - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.4.1"><svg class="icon"
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg> DoIt</a>
                 </div><div class="footer-line"><svg class="icon"
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 448c-110.532 0-200-89.451-200-200 0-110.531 89.451-200 200-200 110.532 0 200 89.451 200 200 0 110.532-89.451 200-200 200zm107.351-101.064c-9.614 9.712-45.53 41.396-104.065 41.396-82.43 0-140.484-61.425-140.484-141.567 0-79.152 60.275-139.401 139.762-139.401 55.531 0 88.738 26.62 97.593 34.779a11.965 11.965 0 0 1 1.936 15.322l-18.155 28.113c-3.841 5.95-11.966 7.282-17.499 2.921-8.595-6.776-31.814-22.538-61.708-22.538-48.303 0-77.916 35.33-77.916 80.082 0 41.589 26.888 83.692 78.277 83.692 32.657 0 56.843-19.039 65.726-27.225 5.27-4.857 13.596-4.039 17.82 1.738l19.865 27.17a11.947 11.947 0 0 1-1.152 15.518z"/></svg>2023 - 2025<span class="author">&nbsp;<a href="wumingzi.top" target="_blank" rel="noopener noreferrer">吾铭子</a></span></div>

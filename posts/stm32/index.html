@@ -250,19 +250,19 @@ AHB 先进高性能总线
 APB 外设总线
 内核的外设不需要开启时钟</p>
 <p>
-<img   src='assets/262091315231061_1.png'   alt="262091315231061_1.png"  >
+<img   src='/posts/stm32/assets/262091315231061_1.webp'   alt="262091315231061_1.webp" height="929" width="682">
 复用输入指的是同一引脚默认有很多输入功能，需要对GPIO指定使用哪个功能(TIM4就无复用功能)，而重定义则是非默认功能，需要进行AFIO选择进而变为复用功能
 
-<figure><a class="lightgallery" href="assets/384774915259273_1.png" title="2024-01-04_15-49" data-thumbnail="assets/384774915259273_1.png" data-sub-html="<h2> </h2><p>2024-01-04_15-49</p>"><img   src='assets/384774915259273_1.png'   alt="2024-01-04_15-49"  ></a><figcaption class="image-caption">2024-01-04_15-49</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/384774915259273_1.webp" title="2024-01-04_15-49" data-thumbnail="/posts/stm32/assets/384774915259273_1.webp" data-sub-html="<h2> </h2><p>2024-01-04_15-49</p>"><img   src='/posts/stm32/assets/384774915259273_1.webp'   alt="2024-01-04_15-49" height="522" width="1563"></a><figcaption class="image-caption">2024-01-04_15-49</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/581333822257516_1.png" title="2023-10-16_22-3845" data-thumbnail="assets/581333822257516_1.png" data-sub-html="<h2> </h2><p>2023-10-16_22-3845</p>"><img   src='assets/581333822257516_1.png'   alt="2023-10-16_22-3845"  ></a><figcaption class="image-caption">2023-10-16_22-3845</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/581333822257516_1.webp" title="2023-10-16_22-3845" data-thumbnail="/posts/stm32/assets/581333822257516_1.webp" data-sub-html="<h2> </h2><p>2023-10-16_22-3845</p>"><img   src='/posts/stm32/assets/581333822257516_1.webp'   alt="2023-10-16_22-3845" height="1063" width="1581"></a><figcaption class="image-caption">2023-10-16_22-3845</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/198312916249480_1.png" title="2023-10-13_16-2857" data-thumbnail="assets/198312916249480_1.png" data-sub-html="<h2> </h2><p>2023-10-13_16-2857</p>"><img   src='assets/198312916249480_1.png'   alt="2023-10-13_16-2857"  ></a><figcaption class="image-caption">2023-10-13_16-2857</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/198312916249480_1.webp" title="2023-10-13_16-2857" data-thumbnail="/posts/stm32/assets/198312916249480_1.webp" data-sub-html="<h2> </h2><p>2023-10-13_16-2857</p>"><img   src='/posts/stm32/assets/198312916249480_1.webp'   alt="2023-10-13_16-2857" height="1158" width="1915"></a><figcaption class="image-caption">2023-10-13_16-2857</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/285460417237347_1.png" title="2023-10-13_17-0326" data-thumbnail="assets/285460417237347_1.png" data-sub-html="<h2> </h2><p>2023-10-13_17-0326</p>"><img   src='assets/285460417237347_1.png'   alt="2023-10-13_17-0326"  ></a><figcaption class="image-caption">2023-10-13_17-0326</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/285460417237347_1.webp" title="2023-10-13_17-0326" data-thumbnail="/posts/stm32/assets/285460417237347_1.webp" data-sub-html="<h2> </h2><p>2023-10-13_17-0326</p>"><img   src='/posts/stm32/assets/285460417237347_1.webp'   alt="2023-10-13_17-0326" height="1174" width="1985"></a><figcaption class="image-caption">2023-10-13_17-0326</figcaption>
     </figure>
 最小系统电路: 单独的芯片不能工作，需要连接最基本的电路，由这些电路组成的就是最小系统电路</p>
 <h2 id="gpio" class="headerLink">
@@ -272,13 +272,13 @@ GPIO高低电平看外部输入输出,输入情况下,与外部电平极性相�
 AIN是模拟输入专用模式，此时GPIO不输入输出，防止对外界信号干扰
 AF_PP是复用推挽模式，片上外设使用这种模式
 
-<figure><a class="lightgallery" href="assets/231855213249483_1.png" title="2023-10-14_16-5334" data-thumbnail="assets/231855213249483_1.png" data-sub-html="<h2> </h2><p>2023-10-14_16-5334</p>"><img   src='assets/231855213249483_1.png'   alt="2023-10-14_16-5334"  ></a><figcaption class="image-caption">2023-10-14_16-5334</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/231855213249483_1.webp" title="2023-10-14_16-5334" data-thumbnail="/posts/stm32/assets/231855213249483_1.webp" data-sub-html="<h2> </h2><p>2023-10-14_16-5334</p>"><img   src='/posts/stm32/assets/231855213249483_1.webp'   alt="2023-10-14_16-5334" height="1096" width="1628"></a><figcaption class="image-caption">2023-10-14_16-5334</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/216535216249481_1.png" title="2023-10-14_16-5138" data-thumbnail="assets/216535216249481_1.png" data-sub-html="<h2> </h2><p>2023-10-14_16-5138</p>"><img   src='assets/216535216249481_1.png'   alt="2023-10-14_16-5138"  ></a><figcaption class="image-caption">2023-10-14_16-5138</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/216535216249481_1.webp" title="2023-10-14_16-5138" data-thumbnail="/posts/stm32/assets/216535216249481_1.webp" data-sub-html="<h2> </h2><p>2023-10-14_16-5138</p>"><img   src='/posts/stm32/assets/216535216249481_1.webp'   alt="2023-10-14_16-5138" height="751" width="1984"></a><figcaption class="image-caption">2023-10-14_16-5138</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/447993209231056_1.png" title="2023-10-15_09-3232" data-thumbnail="assets/447993209231056_1.png" data-sub-html="<h2> </h2><p>2023-10-15_09-3232</p>"><img   src='assets/447993209231056_1.png'   alt="2023-10-15_09-3232"  ></a><figcaption class="image-caption">2023-10-15_09-3232</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/447993209231056_1.webp" title="2023-10-15_09-3232" data-thumbnail="/posts/stm32/assets/447993209231056_1.webp" data-sub-html="<h2> </h2><p>2023-10-15_09-3232</p>"><img   src='/posts/stm32/assets/447993209231056_1.webp'   alt="2023-10-15_09-3232" height="1017" width="1876"></a><figcaption class="image-caption">2023-10-15_09-3232</figcaption>
     </figure>
 VDD 3.3V     VSS 0V
 GPIO 控制流程：1.激活 RCC 时钟    2.使用 GPIO_Init 初始化 GPIO 函数<br>
@@ -291,74 +291,74 @@ OLED函数showhexnum与shownum每逢10相差6，hexnum的数值比num高6</p>
 两个优先级相同的情况下按中断号排队,所以并不是先来后到
 NVIC 分组在整个项目中只需要执行一次
 
-<figure><a class="lightgallery" href="assets/543234908231058_1.png" title="2023-10-17_08-4844" data-thumbnail="assets/543234908231058_1.png" data-sub-html="<h2> </h2><p>2023-10-17_08-4844</p>"><img   src='assets/543234908231058_1.png'   alt="2023-10-17_08-4844"  ></a><figcaption class="image-caption">2023-10-17_08-4844</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/543234908231058_1.webp" title="2023-10-17_08-4844" data-thumbnail="/posts/stm32/assets/543234908231058_1.webp" data-sub-html="<h2> </h2><p>2023-10-17_08-4844</p>"><img   src='/posts/stm32/assets/543234908231058_1.webp'   alt="2023-10-17_08-4844" height="1145" width="1997"></a><figcaption class="image-caption">2023-10-17_08-4844</figcaption>
     </figure>
 EXTI (external interrupt) 外部中断控制器
 EXTI 负责监控GPIO的电平变化,当产生跳变时,EXTI向NVIC发送中断申请,经NVIC裁决优先级后执行中断程序
 
-<figure><a class="lightgallery" href="assets/571455113231057_1.png" title="2023-10-16_13-5138" data-thumbnail="assets/571455113231057_1.png" data-sub-html="<h2> </h2><p>2023-10-16_13-5138</p>"><img   src='assets/571455113231057_1.png'   alt="2023-10-16_13-5138"  ></a><figcaption class="image-caption">2023-10-16_13-5138</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/571455113231057_1.webp" title="2023-10-16_13-5138" data-thumbnail="/posts/stm32/assets/571455113231057_1.webp" data-sub-html="<h2> </h2><p>2023-10-16_13-5138</p>"><img   src='/posts/stm32/assets/571455113231057_1.webp'   alt="2023-10-16_13-5138" height="874" width="1954"></a><figcaption class="image-caption">2023-10-16_13-5138</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/49500515237350_1.png" title="2023-10-16_15-0452" data-thumbnail="assets/49500515237350_1.png" data-sub-html="<h2> </h2><p>2023-10-16_15-0452</p>"><img   src='assets/49500515237350_1.png'   alt="2023-10-16_15-0452"  ></a><figcaption class="image-caption">2023-10-16_15-0452</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/49500515237350_1.webp" title="2023-10-16_15-0452" data-thumbnail="/posts/stm32/assets/49500515237350_1.webp" data-sub-html="<h2> </h2><p>2023-10-16_15-0452</p>"><img   src='/posts/stm32/assets/49500515237350_1.webp'   alt="2023-10-16_15-0452" height="1069" width="1820"></a><figcaption class="image-caption">2023-10-16_15-0452</figcaption>
     </figure>
 GPIO_EXTILineConfig(GPIO_PortSourceGPIOx,GPIO_PinSourcex) 是配置AFIO的函数，参数是GPIO的通道和引脚</p>
 <h2 id="定时器" class="headerLink">
     <a href="#%e5%ae%9a%e6%97%b6%e5%99%a8" class="header-mark"></a>定时器</h2><p>TIM (timer) 定时器
 TRGO(Trigger Out)定时器主模式，可以不用进中断就可以执行程序
 
-<figure><a class="lightgallery" href="assets/63075813242496_1.png" title="2023-10-18_13-4440" data-thumbnail="assets/63075813242496_1.png" data-sub-html="<h2> </h2><p>2023-10-18_13-4440</p>"><img   src='assets/63075813242496_1.png'   alt="2023-10-18_13-4440"  ></a><figcaption class="image-caption">2023-10-18_13-4440</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/63075813242496_1.webp" title="2023-10-18_13-4440" data-thumbnail="/posts/stm32/assets/63075813242496_1.webp" data-sub-html="<h2> </h2><p>2023-10-18_13-4440</p>"><img   src='/posts/stm32/assets/63075813242496_1.webp'   alt="2023-10-18_13-4440" height="1013" width="1858"></a><figcaption class="image-caption">2023-10-18_13-4440</figcaption>
     </figure>
 预分频器(PSC)对时钟频率进行分频,置0 不分频,置1 频率=原时钟频率/2  置2 频率=原时钟频率/3 等等
 下列公式注意预分频器需要加 1,ARR加1的原因是ARR从 0 开始计数 CK_PSC是 72MHz
 
-<figure><a class="lightgallery" href="assets/209484414237352_1.png" title="2023-10-18_14-4239" data-thumbnail="assets/209484414237352_1.png" data-sub-html="<h2> </h2><p>2023-10-18_14-4239</p>"><img   src='assets/209484414237352_1.png'   alt="2023-10-18_14-4239"  ></a><figcaption class="image-caption">2023-10-18_14-4239</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/209484414237352_1.webp" title="2023-10-18_14-4239" data-thumbnail="/posts/stm32/assets/209484414237352_1.webp" data-sub-html="<h2> </h2><p>2023-10-18_14-4239</p>"><img   src='/posts/stm32/assets/209484414237352_1.webp'   alt="2023-10-18_14-4239" height="1033" width="1697"></a><figcaption class="image-caption">2023-10-18_14-4239</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/359324514257518_1.png" title="2023-10-18_14-4245" data-thumbnail="assets/359324514257518_1.png" data-sub-html="<h2> </h2><p>2023-10-18_14-4245</p>"><img   src='assets/359324514257518_1.png'   alt="2023-10-18_14-4245"  ></a><figcaption class="image-caption">2023-10-18_14-4245</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/359324514257518_1.webp" title="2023-10-18_14-4245" data-thumbnail="/posts/stm32/assets/359324514257518_1.webp" data-sub-html="<h2> </h2><p>2023-10-18_14-4245</p>"><img   src='/posts/stm32/assets/359324514257518_1.webp'   alt="2023-10-18_14-4245" height="1043" width="1821"></a><figcaption class="image-caption">2023-10-18_14-4245</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/195431212258590_1.png" title="2024-01-23_12-12" data-thumbnail="assets/195431212258590_1.png" data-sub-html="<h2> </h2><p>2024-01-23_12-12</p>"><img   src='assets/195431212258590_1.png'   alt="2024-01-23_12-12"  ></a><figcaption class="image-caption">2024-01-23_12-12</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/195431212258590_1.webp" title="2024-01-23_12-12" data-thumbnail="/posts/stm32/assets/195431212258590_1.webp" data-sub-html="<h2> </h2><p>2024-01-23_12-12</p>"><img   src='/posts/stm32/assets/195431212258590_1.webp'   alt="2024-01-23_12-12" height="1440" width="1129"></a><figcaption class="image-caption">2024-01-23_12-12</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/215645813260376_1.png" title="2023-10-18_13-4450" data-thumbnail="assets/215645813260376_1.png" data-sub-html="<h2> </h2><p>2023-10-18_13-4450</p>"><img   src='assets/215645813260376_1.png'   alt="2023-10-18_13-4450"  ></a><figcaption class="image-caption">2023-10-18_13-4450</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/215645813260376_1.webp" title="2023-10-18_13-4450" data-thumbnail="/posts/stm32/assets/215645813260376_1.webp" data-sub-html="<h2> </h2><p>2023-10-18_13-4450</p>"><img   src='/posts/stm32/assets/215645813260376_1.webp'   alt="2023-10-18_13-4450" height="1045" width="1897"></a><figcaption class="image-caption">2023-10-18_13-4450</figcaption>
     </figure>
 OC(output compare) : 输出比较
 PWM(pause width modulation) : 脉冲宽度调制
 
-<figure><a class="lightgallery" href="assets/378974320231059_1.png" title="2023-10-18_20-4321" data-thumbnail="assets/378974320231059_1.png" data-sub-html="<h2> </h2><p>2023-10-18_20-4321</p>"><img   src='assets/378974320231059_1.png'   alt="2023-10-18_20-4321"  ></a><figcaption class="image-caption">2023-10-18_20-4321</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/378974320231059_1.webp" title="2023-10-18_20-4321" data-thumbnail="/posts/stm32/assets/378974320231059_1.webp" data-sub-html="<h2> </h2><p>2023-10-18_20-4321</p>"><img   src='/posts/stm32/assets/378974320231059_1.webp'   alt="2023-10-18_20-4321" height="1006" width="1840"></a><figcaption class="image-caption">2023-10-18_20-4321</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/290555320249485_1.png" title="2023-10-18_20-5305" data-thumbnail="assets/290555320249485_1.png" data-sub-html="<h2> </h2><p>2023-10-18_20-5305</p>"><img   src='assets/290555320249485_1.png'   alt="2023-10-18_20-5305"  ></a><figcaption class="image-caption">2023-10-18_20-5305</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/290555320249485_1.webp" title="2023-10-18_20-5305" data-thumbnail="/posts/stm32/assets/290555320249485_1.webp" data-sub-html="<h2> </h2><p>2023-10-18_20-5305</p>"><img   src='/posts/stm32/assets/290555320249485_1.webp'   alt="2023-10-18_20-5305" height="1032" width="1689"></a><figcaption class="image-caption">2023-10-18_20-5305</figcaption>
     </figure>
 IC(Input Capture): 输入捕获
 输入捕获每次CNT转运到CCR时需要清0,此时可以配置从模式,让硬件电路自动清零
 
-<figure><a class="lightgallery" href="assets/45323416249487_1.png" title="2023-10-20_16-3336" data-thumbnail="assets/45323416249487_1.png" data-sub-html="<h2> </h2><p>2023-10-20_16-3336</p>"><img   src='assets/45323416249487_1.png'   alt="2023-10-20_16-3336"  ></a><figcaption class="image-caption">2023-10-20_16-3336</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/45323416249487_1.webp" title="2023-10-20_16-3336" data-thumbnail="/posts/stm32/assets/45323416249487_1.webp" data-sub-html="<h2> </h2><p>2023-10-20_16-3336</p>"><img   src='/posts/stm32/assets/45323416249487_1.webp'   alt="2023-10-20_16-3336" height="1043" width="1950"></a><figcaption class="image-caption">2023-10-20_16-3336</figcaption>
     </figure>
 FP(filter polarity)，滤波器极性选择
 主模式:让定时器内部信号映射到TRGO引脚,用于触发别的外设    从模式:接受其他外设或自身的信号用于控制自身定时器的运行
 
-<figure><a class="lightgallery" href="assets/57140816231064_1.png" title="2023-10-23_16-0729" data-thumbnail="assets/57140816231064_1.png" data-sub-html="<h2> </h2><p>2023-10-23_16-0729</p>"><img   src='assets/57140816231064_1.png'   alt="2023-10-23_16-0729"  ></a><figcaption class="image-caption">2023-10-23_16-0729</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/57140816231064_1.webp" title="2023-10-23_16-0729" data-thumbnail="/posts/stm32/assets/57140816231064_1.webp" data-sub-html="<h2> </h2><p>2023-10-23_16-0729</p>"><img   src='/posts/stm32/assets/57140816231064_1.webp'   alt="2023-10-23_16-0729" height="1010" width="1855"></a><figcaption class="image-caption">2023-10-23_16-0729</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/275013416237354_1.png" title="2023-10-20_16-3416" data-thumbnail="assets/275013416237354_1.png" data-sub-html="<h2> </h2><p>2023-10-20_16-3416</p>"><img   src='assets/275013416237354_1.png'   alt="2023-10-20_16-3416"  ></a><figcaption class="image-caption">2023-10-20_16-3416</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/275013416237354_1.webp" title="2023-10-20_16-3416" data-thumbnail="/posts/stm32/assets/275013416237354_1.webp" data-sub-html="<h2> </h2><p>2023-10-20_16-3416</p>"><img   src='/posts/stm32/assets/275013416237354_1.webp'   alt="2023-10-20_16-3416" height="1071" width="1955"></a><figcaption class="image-caption">2023-10-20_16-3416</figcaption>
     </figure>
 滤波器也是计数器,但不会改变信号原有的频率,原理是当有x个信号均为同一性质(高电平或低电平时)才滞后输出信号,x是给定的参数值
 通道3,4不支持PWMI配置
 使用编码器时,定时器的其他功能就无法使用了
 通道3,4不支持编码器
 
-<figure><a class="lightgallery" href="assets/586090018257520_1.png" title="2023-10-20_18-0044" data-thumbnail="assets/586090018257520_1.png" data-sub-html="<h2> </h2><p>2023-10-20_18-0044</p>"><img   src='assets/586090018257520_1.png'   alt="2023-10-20_18-0044"  ></a><figcaption class="image-caption">2023-10-20_18-0044</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/586090018257520_1.webp" title="2023-10-20_18-0044" data-thumbnail="/posts/stm32/assets/586090018257520_1.webp" data-sub-html="<h2> </h2><p>2023-10-20_18-0044</p>"><img   src='/posts/stm32/assets/586090018257520_1.webp'   alt="2023-10-20_18-0044" height="1037" width="1850"></a><figcaption class="image-caption">2023-10-20_18-0044</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/126585719249490_1.png" title="2023-10-23_19-5640" data-thumbnail="assets/126585719249490_1.png" data-sub-html="<h2> </h2><p>2023-10-23_19-5640</p>"><img   src='assets/126585719249490_1.png'   alt="2023-10-23_19-5640"  ></a><figcaption class="image-caption">2023-10-23_19-5640</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/126585719249490_1.webp" title="2023-10-23_19-5640" data-thumbnail="/posts/stm32/assets/126585719249490_1.webp" data-sub-html="<h2> </h2><p>2023-10-23_19-5640</p>"><img   src='/posts/stm32/assets/126585719249490_1.webp'   alt="2023-10-23_19-5640" height="768" width="1249"></a><figcaption class="image-caption">2023-10-23_19-5640</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/440272210231263_1.png" title="2023-12-22_10-22" data-thumbnail="assets/440272210231263_1.png" data-sub-html="<h2> </h2><p>2023-12-22_10-22</p>"><img   src='assets/440272210231263_1.png'   alt="2023-12-22_10-22"  ></a><figcaption class="image-caption">2023-12-22_10-22</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/440272210231263_1.webp" title="2023-12-22_10-22" data-thumbnail="/posts/stm32/assets/440272210231263_1.webp" data-sub-html="<h2> </h2><p>2023-12-22_10-22</p>"><img   src='/posts/stm32/assets/440272210231263_1.webp'   alt="2023-12-22_10-22" height="1279" width="1513"></a><figcaption class="image-caption">2023-12-22_10-22</figcaption>
     </figure>
 TI1可以选择接到TI1FP1上也可以选择TI1FP2上，这样可以通过极性选择来计算出上升沿到下降沿的时间，这个功能可以在PWMI模式中体现
 
-<figure><a class="lightgallery" href="assets/373924222231061_1.png" title="2023-10-20_22-4215" data-thumbnail="assets/373924222231061_1.png" data-sub-html="<h2> </h2><p>2023-10-20_22-4215</p>"><img   src='assets/373924222231061_1.png'   alt="2023-10-20_22-4215"  ></a><figcaption class="image-caption">2023-10-20_22-4215</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/373924222231061_1.webp" title="2023-10-20_22-4215" data-thumbnail="/posts/stm32/assets/373924222231061_1.webp" data-sub-html="<h2> </h2><p>2023-10-20_22-4215</p>"><img   src='/posts/stm32/assets/373924222231061_1.webp'   alt="2023-10-20_22-4215" height="1005" width="1900"></a><figcaption class="image-caption">2023-10-20_22-4215</figcaption>
     </figure>
 编码器会接管时钟,所以不需要TIM_InternalClockConfig()
 uint16_t 中比0小一位是65535，如果想变为-1需要把uint强制转换为int</p>
@@ -371,29 +371,29 @@ ADC数据来源于比较器的结果，其核心是未知的外界信号与芯�
 EOC(End Of Convert) 规则组: EOC 注入组: JEOC
 注意要开启RCC_ADC的时钟
 
-<figure><a class="lightgallery" href="assets/130635312231062_1.png" title="2023-10-21_12-5239" data-thumbnail="assets/130635312231062_1.png" data-sub-html="<h2> </h2><p>2023-10-21_12-5239</p>"><img   src='assets/130635312231062_1.png'   alt="2023-10-21_12-5239"  ></a><figcaption class="image-caption">2023-10-21_12-5239</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/130635312231062_1.webp" title="2023-10-21_12-5239" data-thumbnail="/posts/stm32/assets/130635312231062_1.webp" data-sub-html="<h2> </h2><p>2023-10-21_12-5239</p>"><img   src='/posts/stm32/assets/130635312231062_1.webp'   alt="2023-10-21_12-5239" height="1053" width="1922"></a><figcaption class="image-caption">2023-10-21_12-5239</figcaption>
     </figure>
 通道数大于 1 扫描模式才有意义，转换是对循环而言
 在连续转换模式下，会自动读取EOC的值，所以不需要手动写 while 判断是否转换完毕
 
-<figure><a class="lightgallery" href="assets/206605312249488_1.png" title="2023-10-21_12-5301" data-thumbnail="assets/206605312249488_1.png" data-sub-html="<h2> </h2><p>2023-10-21_12-5301</p>"><img   src='assets/206605312249488_1.png'   alt="2023-10-21_12-5301"  ></a><figcaption class="image-caption">2023-10-21_12-5301</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/206605312249488_1.webp" title="2023-10-21_12-5301" data-thumbnail="/posts/stm32/assets/206605312249488_1.webp" data-sub-html="<h2> </h2><p>2023-10-21_12-5301</p>"><img   src='/posts/stm32/assets/206605312249488_1.webp'   alt="2023-10-21_12-5301" height="1114" width="1857"></a><figcaption class="image-caption">2023-10-21_12-5301</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/273734611234218_1.png" title="2023-12-23_11-46" data-thumbnail="assets/273734611234218_1.png" data-sub-html="<h2> </h2><p>2023-12-23_11-46</p>"><img   src='assets/273734611234218_1.png'   alt="2023-12-23_11-46"  ></a><figcaption class="image-caption">2023-12-23_11-46</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/273734611234218_1.webp" title="2023-12-23_11-46" data-thumbnail="/posts/stm32/assets/273734611234218_1.webp" data-sub-html="<h2> </h2><p>2023-12-23_11-46</p>"><img   src='/posts/stm32/assets/273734611234218_1.webp'   alt="2023-12-23_11-46" height="1104" width="1646"></a><figcaption class="image-caption">2023-12-23_11-46</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/342044611243165_1.png" title="2023-12-23_11-46_1" data-thumbnail="assets/342044611243165_1.png" data-sub-html="<h2> </h2><p>2023-12-23_11-46_1</p>"><img   src='assets/342044611243165_1.png'   alt="2023-12-23_11-46_1"  ></a><figcaption class="image-caption">2023-12-23_11-46_1</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/342044611243165_1.webp" title="2023-12-23_11-46_1" data-thumbnail="/posts/stm32/assets/342044611243165_1.webp" data-sub-html="<h2> </h2><p>2023-12-23_11-46_1</p>"><img   src='/posts/stm32/assets/342044611243165_1.webp'   alt="2023-12-23_11-46_1" height="1095" width="1631"></a><figcaption class="image-caption">2023-12-23_11-46_1</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/408774611236050_1.png" title="2023-12-23_11-46_2" data-thumbnail="assets/408774611236050_1.png" data-sub-html="<h2> </h2><p>2023-12-23_11-46_2</p>"><img   src='assets/408774611236050_1.png'   alt="2023-12-23_11-46_2"  ></a><figcaption class="image-caption">2023-12-23_11-46_2</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/408774611236050_1.webp" title="2023-12-23_11-46_2" data-thumbnail="/posts/stm32/assets/408774611236050_1.webp" data-sub-html="<h2> </h2><p>2023-12-23_11-46_2</p>"><img   src='/posts/stm32/assets/408774611236050_1.webp'   alt="2023-12-23_11-46_2" height="1106" width="1727"></a><figcaption class="image-caption">2023-12-23_11-46_2</figcaption>
     </figure>
 单次连续模式是针对某个通道，扫描非扫描模式针对所有通道
 保持时间越长，越能抵抗毛刺信号的干扰
 
-<figure><a class="lightgallery" href="assets/238990513237355_1.png" title="2023-10-21_13-0507" data-thumbnail="assets/238990513237355_1.png" data-sub-html="<h2> </h2><p>2023-10-21_13-0507</p>"><img   src='assets/238990513237355_1.png'   alt="2023-10-21_13-0507"  ></a><figcaption class="image-caption">2023-10-21_13-0507</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/238990513237355_1.webp" title="2023-10-21_13-0507" data-thumbnail="/posts/stm32/assets/238990513237355_1.webp" data-sub-html="<h2> </h2><p>2023-10-21_13-0507</p>"><img   src='/posts/stm32/assets/238990513237355_1.webp'   alt="2023-10-21_13-0507" height="836" width="1635"></a><figcaption class="image-caption">2023-10-21_13-0507</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/415310713257521_1.png" title="2023-10-21_13-0729" data-thumbnail="assets/415310713257521_1.png" data-sub-html="<h2> </h2><p>2023-10-21_13-0729</p>"><img   src='assets/415310713257521_1.png'   alt="2023-10-21_13-0729"  ></a><figcaption class="image-caption">2023-10-21_13-0729</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/415310713257521_1.webp" title="2023-10-21_13-0729" data-thumbnail="/posts/stm32/assets/415310713257521_1.webp" data-sub-html="<h2> </h2><p>2023-10-21_13-0729</p>"><img   src='/posts/stm32/assets/415310713257521_1.webp'   alt="2023-10-21_13-0729" height="884" width="1894"></a><figcaption class="image-caption">2023-10-21_13-0729</figcaption>
     </figure>
 ADC数据对齐方式一般选右对齐，左对齐是为了直接取出数据的高n位，方便裁剪分辨率，但是也可以通过右对齐然后读取出的数据进行右移的方式来操作分辨率</p>
 <h2 id="dma" class="headerLink">
@@ -405,7 +405,7 @@ DMA只操作存储器到存储器的数据搬运,上面提的外设到SRAM是指
 DCode总线专门访问Flash <br>
 DMA虽然有多个通道,但是只有一条DMA总线,需要仲裁器进行仲裁,使优先级高的通过获得数据,通道号越小优先级越高
 
-<figure><a class="lightgallery" href="assets/193325211231063_1.png" title="2023-10-22_11-5155" data-thumbnail="assets/193325211231063_1.png" data-sub-html="<h2> </h2><p>2023-10-22_11-5155</p>"><img   src='assets/193325211231063_1.png'   alt="2023-10-22_11-5155"  ></a><figcaption class="image-caption">2023-10-22_11-5155</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/193325211231063_1.webp" title="2023-10-22_11-5155" data-thumbnail="/posts/stm32/assets/193325211231063_1.webp" data-sub-html="<h2> </h2><p>2023-10-22_11-5155</p>"><img   src='/posts/stm32/assets/193325211231063_1.webp'   alt="2023-10-22_11-5155" height="1086" width="1957"></a><figcaption class="image-caption">2023-10-22_11-5155</figcaption>
     </figure>
 数据宽度参数  字节: 8位 半字: 16位 字: 32位
 自动重装器决定传输计数器自减到0后是否恢复到初值,如果恢复到初值则为连续模式,否则为单次模式
@@ -421,7 +421,7 @@ ADC -&gt; DR 得到的是DR的值 &amp;ADC -&gt; DR得到的是DR的地址</p>
     <a href="#uart" class="header-mark"></a>UART</h2><p>USART支持同步异步传输，有时钟线，并对协议进行增强
 UART仅支持异步传输，没有时钟线</p>
 <p>
-<figure><a class="lightgallery" href="assets/217544314231149_1.png" title="2023-11-08_14-4250" data-thumbnail="assets/217544314231149_1.png" data-sub-html="<h2> </h2><p>2023-11-08_14-4250</p>"><img   src='assets/217544314231149_1.png'   alt="2023-11-08_14-4250"  ></a><figcaption class="image-caption">2023-11-08_14-4250</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/217544314231149_1.webp" title="2023-11-08_14-4250" data-thumbnail="/posts/stm32/assets/217544314231149_1.webp" data-sub-html="<h2> </h2><p>2023-11-08_14-4250</p>"><img   src='/posts/stm32/assets/217544314231149_1.webp'   alt="2023-11-08_14-4250" height="1023" width="1921"></a><figcaption class="image-caption">2023-11-08_14-4250</figcaption>
     </figure>
 全双工: 通信双方能够同时双向通信    一般两根通信线，一根发射一根接收
 半双工: 通信双方同时只能有一方通信
@@ -432,45 +432,45 @@ UART仅支持异步传输，没有时钟线</p>
 I2C 和 SPI 有时钟线，所以是同步时钟
 USART默认为低位先行
 
-<figure><a class="lightgallery" href="assets/393512511231714_1.png" title="2023-12-23_11-25" data-thumbnail="assets/393512511231714_1.png" data-sub-html="<h2> </h2><p>2023-12-23_11-25</p>"><img   src='assets/393512511231714_1.png'   alt="2023-12-23_11-25"  ></a><figcaption class="image-caption">2023-12-23_11-25</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/393512511231714_1.webp" title="2023-12-23_11-25" data-thumbnail="/posts/stm32/assets/393512511231714_1.webp" data-sub-html="<h2> </h2><p>2023-12-23_11-25</p>"><img   src='/posts/stm32/assets/393512511231714_1.webp'   alt="2023-12-23_11-25" height="1122" width="1663"></a><figcaption class="image-caption">2023-12-23_11-25</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/164010215249575_1.png" title="2023-11-08_15-0206" data-thumbnail="assets/164010215249575_1.png" data-sub-html="<h2> </h2><p>2023-11-08_15-0206</p>"><img   src='assets/164010215249575_1.png'   alt="2023-11-08_15-0206"  ></a><figcaption class="image-caption">2023-11-08_15-0206</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/164010215249575_1.webp" title="2023-11-08_15-0206" data-thumbnail="/posts/stm32/assets/164010215249575_1.webp" data-sub-html="<h2> </h2><p>2023-11-08_15-0206</p>"><img   src='/posts/stm32/assets/164010215249575_1.webp'   alt="2023-11-08_15-0206" height="741" width="1888"></a><figcaption class="image-caption">2023-11-08_15-0206</figcaption>
     </figure>
 RS232 1 0 位如此设置的原因是增加抗干扰能力
 RS485 是差分信号，传输距离可达上千米
 
-<figure><a class="lightgallery" href="assets/575961815237442_1.png" title="2023-11-08_15-1736" data-thumbnail="assets/575961815237442_1.png" data-sub-html="<h2> </h2><p>2023-11-08_15-1736</p>"><img   src='assets/575961815237442_1.png'   alt="2023-11-08_15-1736"  ></a><figcaption class="image-caption">2023-11-08_15-1736</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/575961815237442_1.webp" title="2023-11-08_15-1736" data-thumbnail="/posts/stm32/assets/575961815237442_1.webp" data-sub-html="<h2> </h2><p>2023-11-08_15-1736</p>"><img   src='/posts/stm32/assets/575961815237442_1.webp'   alt="2023-11-08_15-1736" height="1005" width="1847"></a><figcaption class="image-caption">2023-11-08_15-1736</figcaption>
     </figure>
 二进制调制情况下波特率 == 比特率
 奇偶校验: 校验位补 0 或 1 使得数据位+校验位有偶数或奇数个 1
 
-<img   src='assets/580015516231149_1.png'   alt="580015516231149_1.png"  >
+<img   src='/posts/stm32/assets/580015516231149_1.webp'   alt="580015516231149_1.webp" height="870" width="783">
 数据流控的: 通过告知其他带有数据流控的设备，本机是否可以接受或发送数据，从而解决通信双方处理数据能力不同而导致一方在忙，另一方发送的数据丢失或覆盖之前发送数据的问题
 
-<figure><a class="lightgallery" href="assets/540040017249575_1.png" title="2023-11-08_17-0036" data-thumbnail="assets/540040017249575_1.png" data-sub-html="<h2> </h2><p>2023-11-08_17-0036</p>"><img   src='assets/540040017249575_1.png'   alt="2023-11-08_17-0036"  ></a><figcaption class="image-caption">2023-11-08_17-0036</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/540040017249575_1.webp" title="2023-11-08_17-0036" data-thumbnail="/posts/stm32/assets/540040017249575_1.webp" data-sub-html="<h2> </h2><p>2023-11-08_17-0036</p>"><img   src='/posts/stm32/assets/540040017249575_1.webp'   alt="2023-11-08_17-0036" height="1045" width="1897"></a><figcaption class="image-caption">2023-11-08_17-0036</figcaption>
     </figure>
 TXE(发送数据寄存器非空)与RXNE(接受移位寄存器非空) 是TDR与RDR置位的
 单片机的TX和RX与USB转串口模块的TX和RX要交叉连接
 
-<figure><a class="lightgallery" href="assets/211121617237442_1.png" title="2023-11-08_17-1603" data-thumbnail="assets/211121617237442_1.png" data-sub-html="<h2> </h2><p>2023-11-08_17-1603</p>"><img   src='assets/211121617237442_1.png'   alt="2023-11-08_17-1603"  ></a><figcaption class="image-caption">2023-11-08_17-1603</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/211121617237442_1.webp" title="2023-11-08_17-1603" data-thumbnail="/posts/stm32/assets/211121617237442_1.webp" data-sub-html="<h2> </h2><p>2023-11-08_17-1603</p>"><img   src='/posts/stm32/assets/211121617237442_1.webp'   alt="2023-11-08_17-1603" height="1007" width="1600"></a><figcaption class="image-caption">2023-11-08_17-1603</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/514231617257608_1.png" title="2023-11-08_17-1643" data-thumbnail="assets/514231617257608_1.png" data-sub-html="<h2> </h2><p>2023-11-08_17-1643</p>"><img   src='assets/514231617257608_1.png'   alt="2023-11-08_17-1643"  ></a><figcaption class="image-caption">2023-11-08_17-1643</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/514231617257608_1.webp" title="2023-11-08_17-1643" data-thumbnail="/posts/stm32/assets/514231617257608_1.webp" data-sub-html="<h2> </h2><p>2023-11-08_17-1643</p>"><img   src='/posts/stm32/assets/514231617257608_1.webp'   alt="2023-11-08_17-1643" height="469" width="1633"></a><figcaption class="image-caption">2023-11-08_17-1643</figcaption>
     </figure>
 波特率除以16是因为采样时钟(fpclk)是以波特率的16倍速度进行采样的，具体数值硬件会帮忙算，我们只需要直接给出波特率就行
 Odd 奇数 Even 偶数
 
-<figure><a class="lightgallery" href="assets/27624421231150_1.png" title="2023-11-09_21-4348" data-thumbnail="assets/27624421231150_1.png" data-sub-html="<h2> </h2><p>2023-11-09_21-4348</p>"><img   src='assets/27624421231150_1.png'   alt="2023-11-09_21-4348"  ></a><figcaption class="image-caption">2023-11-09_21-4348</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/27624421231150_1.webp" title="2023-11-09_21-4348" data-thumbnail="/posts/stm32/assets/27624421231150_1.webp" data-sub-html="<h2> </h2><p>2023-11-09_21-4348</p>"><img   src='/posts/stm32/assets/27624421231150_1.webp'   alt="2023-11-09_21-4348" height="995" width="1761"></a><figcaption class="image-caption">2023-11-09_21-4348</figcaption>
     </figure>
 固定包长适合载荷数据与包头包尾重复率高的情况，这样利于分割以及接收数据
 
-<figure><a class="lightgallery" href="assets/278622111241184_1.png" title="2023-12-23_11-21" data-thumbnail="assets/278622111241184_1.png" data-sub-html="<h2> </h2><p>2023-12-23_11-21</p>"><img   src='assets/278622111241184_1.png'   alt="2023-12-23_11-21"  ></a><figcaption class="image-caption">2023-12-23_11-21</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/278622111241184_1.webp" title="2023-12-23_11-21" data-thumbnail="/posts/stm32/assets/278622111241184_1.webp" data-sub-html="<h2> </h2><p>2023-12-23_11-21</p>"><img   src='/posts/stm32/assets/278622111241184_1.webp'   alt="2023-12-23_11-21" height="300" width="826"></a><figcaption class="image-caption">2023-12-23_11-21</figcaption>
     </figure>
 在发送数据时需要加上包头包尾(个人规定0xFF为包头，0xFE为包尾)
 相比文本数据包，HEX数据包效率高，因为文本还需要编码译码的过程
 
-<figure><a class="lightgallery" href="assets/215810522249576_1.png" title="2023-11-09_22-0509" data-thumbnail="assets/215810522249576_1.png" data-sub-html="<h2> </h2><p>2023-11-09_22-0509</p>"><img   src='assets/215810522249576_1.png'   alt="2023-11-09_22-0509"  ></a><figcaption class="image-caption">2023-11-09_22-0509</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/215810522249576_1.webp" title="2023-11-09_22-0509" data-thumbnail="/posts/stm32/assets/215810522249576_1.webp" data-sub-html="<h2> </h2><p>2023-11-09_22-0509</p>"><img   src='/posts/stm32/assets/215810522249576_1.webp'   alt="2023-11-09_22-0509" height="1021" width="1880"></a><figcaption class="image-caption">2023-11-09_22-0509</figcaption>
     </figure>
 HEX数据包接收运用了状态机的思想，通过不同的S的值进中断后的行为不同，进而执行相应的动</p>
 <h2 id="i2c" class="headerLink">
@@ -478,51 +478,51 @@ HEX数据包接收运用了状态机的思想，通过不同的S的值进中断�
 同步协议需要时钟线来控制数据的读写，好处是对时钟要求不严格，不需要硬件电路的配合，而异步需要硬件电路产生准确的时钟信号才能通信。因此同步协议主打低端市场。同时，如果主机进入中断，异步协议就会出错，而同步协议利用时钟线则不会出错
 第一个数据帧最低位0为写，1为读
 
-<figure><a class="lightgallery" href="assets/366935514231151_1.png" title="2023-11-10_14-5525" data-thumbnail="assets/366935514231151_1.png" data-sub-html="<h2> </h2><p>2023-11-10_14-5525</p>"><img   src='assets/366935514231151_1.png'   alt="2023-11-10_14-5525"  ></a><figcaption class="image-caption">2023-11-10_14-5525</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/366935514231151_1.webp" title="2023-11-10_14-5525" data-thumbnail="/posts/stm32/assets/366935514231151_1.webp" data-sub-html="<h2> </h2><p>2023-11-10_14-5525</p>"><img   src='/posts/stm32/assets/366935514231151_1.webp'   alt="2023-11-10_14-5525" height="604" width="1809"></a><figcaption class="image-caption">2023-11-10_14-5525</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/506021715249577_1.png" title="2023-11-10_15-1740" data-thumbnail="assets/506021715249577_1.png" data-sub-html="<h2> </h2><p>2023-11-10_15-1740</p>"><img   src='assets/506021715249577_1.png'   alt="2023-11-10_15-1740"  ></a><figcaption class="image-caption">2023-11-10_15-1740</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/506021715249577_1.webp" title="2023-11-10_15-1740" data-thumbnail="/posts/stm32/assets/506021715249577_1.webp" data-sub-html="<h2> </h2><p>2023-11-10_15-1740</p>"><img   src='/posts/stm32/assets/506021715249577_1.webp'   alt="2023-11-10_15-1740" height="1029" width="1927"></a><figcaption class="image-caption">2023-11-10_15-1740</figcaption>
     </figure>
 I2C两根总线为避免主从设备同时输出造成电源短路现象，规定了SDA与SCL均采用开漏输出模式，这样，无论主从设备是否同时输出，均不会达到强上拉，而是在外接电阻R的作用下被限制为弱上拉，下拉模式不受影响。同时，在下拉状态中，多主机情况下可以进行I2C控制权的仲裁
 
-<figure><a class="lightgallery" href="assets/9423215237444_1.png" title="2023-11-10_15-1740" data-thumbnail="assets/9423215237444_1.png" data-sub-html="<h2> </h2><p>2023-11-10_15-1740</p>"><img   src='assets/9423215237444_1.png'   alt="2023-11-10_15-1740"  ></a><figcaption class="image-caption">2023-11-10_15-1740</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/9423215237444_1.webp" title="2023-11-10_15-1740" data-thumbnail="/posts/stm32/assets/9423215237444_1.webp" data-sub-html="<h2> </h2><p>2023-11-10_15-1740</p>"><img   src='/posts/stm32/assets/9423215237444_1.webp'   alt="2023-11-10_15-1740" height="1029" width="1927"></a><figcaption class="image-caption">2023-11-10_15-1740</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/42071912231161_1.png" title="2023-11-20_12-1845" data-thumbnail="assets/42071912231161_1.png" data-sub-html="<h2> </h2><p>2023-11-20_12-1845</p>"><img   src='assets/42071912231161_1.png'   alt="2023-11-20_12-1845"  ></a><figcaption class="image-caption">2023-11-20_12-1845</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/42071912231161_1.webp" title="2023-11-20_12-1845" data-thumbnail="/posts/stm32/assets/42071912231161_1.webp" data-sub-html="<h2> </h2><p>2023-11-20_12-1845</p>"><img   src='/posts/stm32/assets/42071912231161_1.webp'   alt="2023-11-20_12-1845" height="995" width="1746"></a><figcaption class="image-caption">2023-11-20_12-1845</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/487730912263614_1.png" title="2023-12-23_12-09" data-thumbnail="assets/487730912263614_1.png" data-sub-html="<h2> </h2><p>2023-12-23_12-09</p>"><img   src='assets/487730912263614_1.png'   alt="2023-12-23_12-09"  ></a><figcaption class="image-caption">2023-12-23_12-09</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/487730912263614_1.webp" title="2023-12-23_12-09" data-thumbnail="/posts/stm32/assets/487730912263614_1.webp" data-sub-html="<h2> </h2><p>2023-12-23_12-09</p>"><img   src='/posts/stm32/assets/487730912263614_1.webp'   alt="2023-12-23_12-09" height="999" width="1929"></a><figcaption class="image-caption">2023-12-23_12-09</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/241635315246834_1.png" title="2023-11-10_15-5315" data-thumbnail="assets/241635315246834_1.png" data-sub-html="<h2> </h2><p>2023-11-10_15-5315</p>"><img   src='assets/241635315246834_1.png'   alt="2023-11-10_15-5315"  ></a><figcaption class="image-caption">2023-11-10_15-5315</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/241635315246834_1.webp" title="2023-11-10_15-5315" data-thumbnail="/posts/stm32/assets/241635315246834_1.webp" data-sub-html="<h2> </h2><p>2023-11-10_15-5315</p>"><img   src='/posts/stm32/assets/241635315246834_1.webp'   alt="2023-11-10_15-5315" height="985" width="1928"></a><figcaption class="image-caption">2023-11-10_15-5315</figcaption>
     </figure>
 0表示应答 1表示非应答
 SCL低电平变换SDA数据，高电平读取SDA数据
 由于I2C对硬件要求不高，因此软件可以完全模拟I2C协议
 
-<figure><a class="lightgallery" href="assets/106080617231152_1.png" title="2023-11-11_17-0558" data-thumbnail="assets/106080617231152_1.png" data-sub-html="<h2> </h2><p>2023-11-11_17-0558</p>"><img   src='assets/106080617231152_1.png'   alt="2023-11-11_17-0558"  ></a><figcaption class="image-caption">2023-11-11_17-0558</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/106080617231152_1.webp" title="2023-11-11_17-0558" data-thumbnail="/posts/stm32/assets/106080617231152_1.webp" data-sub-html="<h2> </h2><p>2023-11-11_17-0558</p>"><img   src='/posts/stm32/assets/106080617231152_1.webp'   alt="2023-11-11_17-0558" height="1165" width="1599"></a><figcaption class="image-caption">2023-11-11_17-0558</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/292720617249578_1.png" title="2023-11-11_17-0623" data-thumbnail="assets/292720617249578_1.png" data-sub-html="<h2> </h2><p>2023-11-11_17-0623</p>"><img   src='assets/292720617249578_1.png'   alt="2023-11-11_17-0623"  ></a><figcaption class="image-caption">2023-11-11_17-0623</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/292720617249578_1.webp" title="2023-11-11_17-0623" data-thumbnail="/posts/stm32/assets/292720617249578_1.webp" data-sub-html="<h2> </h2><p>2023-11-11_17-0623</p>"><img   src='/posts/stm32/assets/292720617249578_1.webp'   alt="2023-11-11_17-0623" height="1065" width="1945"></a><figcaption class="image-caption">2023-11-11_17-0623</figcaption>
     </figure>
 硬件I2C与USART类似，都是通过TXE和RXNE寄存器控制数据收发，只不过I2C是高位先行，因此移位寄存器向左移位，而USART低位先行，是向右移位，这里的高低位先行指的是HEX数据的发送接收模式，正常的文本模式下仍按照人类的从左至右(从高到低)发送文本
 7位寻址与10位寻址的区别是，10位寻址时前两个数据包是寻址，之后的是数据，而7位则是第一个数据包是寻址
 EV(event): 事件，产生多个标志位
 
-<figure><a class="lightgallery" href="assets/349465415231154_1.png" title="2023-11-13_15-5406" data-thumbnail="assets/349465415231154_1.png" data-sub-html="<h2> </h2><p>2023-11-13_15-5406</p>"><img   src='assets/349465415231154_1.png'   alt="2023-11-13_15-5406"  ></a><figcaption class="image-caption">2023-11-13_15-5406</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/349465415231154_1.webp" title="2023-11-13_15-5406" data-thumbnail="/posts/stm32/assets/349465415231154_1.webp" data-sub-html="<h2> </h2><p>2023-11-13_15-5406</p>"><img   src='/posts/stm32/assets/349465415231154_1.webp'   alt="2023-11-13_15-5406" height="1276" width="2079"></a><figcaption class="image-caption">2023-11-13_15-5406</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/326215515249580_1.png" title="2023-11-13_15-5518" data-thumbnail="assets/326215515249580_1.png" data-sub-html="<h2> </h2><p>2023-11-13_15-5518</p>"><img   src='assets/326215515249580_1.png'   alt="2023-11-13_15-5518"  ></a><figcaption class="image-caption">2023-11-13_15-5518</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/326215515249580_1.webp" title="2023-11-13_15-5518" data-thumbnail="/posts/stm32/assets/326215515249580_1.webp" data-sub-html="<h2> </h2><p>2023-11-13_15-5518</p>"><img   src='/posts/stm32/assets/326215515249580_1.webp'   alt="2023-11-13_15-5518" height="1289" width="2099"></a><figcaption class="image-caption">2023-11-13_15-5518</figcaption>
     </figure>
 I2C在频率很高时，由于开漏模式弱上拉的作用，实际的SCL和SDA并不完美，当频率快到一定程度时，SCL的方波甚至会被压缩至三角波，为了给SDA传送数据时所需要的上拉一定时间，所以需要SCL低电平时占空比适当增加
 由于I2C的弱上拉的作用，使得在标准模式下支持100KHz的信号，快速模式下也只能支持400KHz的信号
 硬件I2C下，STM32默认为从模式
 STM32的I2C被分为主从两种模式，每种模式又被分为发送和接受两种模式
 
-<figure><a class="lightgallery" href="assets/12961513231162_1.png" title="2023-11-21_13-1436" data-thumbnail="assets/12961513231162_1.png" data-sub-html="<h2> </h2><p>2023-11-21_13-1436</p>"><img   src='assets/12961513231162_1.png'   alt="2023-11-21_13-1436"  ></a><figcaption class="image-caption">2023-11-21_13-1436</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/12961513231162_1.webp" title="2023-11-21_13-1436" data-thumbnail="/posts/stm32/assets/12961513231162_1.webp" data-sub-html="<h2> </h2><p>2023-11-21_13-1436</p>"><img   src='/posts/stm32/assets/12961513231162_1.webp'   alt="2023-11-21_13-1436" height="1070" width="1728"></a><figcaption class="image-caption">2023-11-21_13-1436</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/156651513249588_1.png" title="2023-11-21_13-1509" data-thumbnail="assets/156651513249588_1.png" data-sub-html="<h2> </h2><p>2023-11-21_13-1509</p>"><img   src='assets/156651513249588_1.png'   alt="2023-11-21_13-1509"  ></a><figcaption class="image-caption">2023-11-21_13-1509</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/156651513249588_1.webp" title="2023-11-21_13-1509" data-thumbnail="/posts/stm32/assets/156651513249588_1.webp" data-sub-html="<h2> </h2><p>2023-11-21_13-1509</p>"><img   src='/posts/stm32/assets/156651513249588_1.webp'   alt="2023-11-21_13-1509" height="1086" width="1734"></a><figcaption class="image-caption">2023-11-21_13-1509</figcaption>
     </figure>
 硬件I2C接收模式下，要在发送最后一个字节前将STOP置1，并把Ack置0，这是因为停止位(EV7_1)配置位于接收数据之前，只有接受下个数据后，才能把之前设置的停止事件发送出去。而发送模式的停止事件(EV8_2)位于发送数据后</p>
 <h2 id="spi" class="headerLink">
@@ -534,26 +534,26 @@ SPI没有应答机制，有几个从机就有几个SS线
 输出引脚为推挽输出，输入引脚为浮空或上拉
 SPI的理解可以不采用江科大的上升下降沿分别移入移出的思想，可以采用纯采样的思想<a href="https://blog.csdn.net/p0o9i83463rrfd4/article/details/123900524" target="_blank" rel="noopener noreferrer">CSDN</a>
 
-<figure><a class="lightgallery" href="assets/67613916231376_1.png" title="2023-12-23_16-38" data-thumbnail="assets/67613916231376_1.png" data-sub-html="<h2> </h2><p>2023-12-23_16-38</p>"><img   src='assets/67613916231376_1.png'   alt="2023-12-23_16-38"  ></a><figcaption class="image-caption">2023-12-23_16-38</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/67613916231376_1.webp" title="2023-12-23_16-38" data-thumbnail="/posts/stm32/assets/67613916231376_1.webp" data-sub-html="<h2> </h2><p>2023-12-23_16-38</p>"><img   src='/posts/stm32/assets/67613916231376_1.webp'   alt="2023-12-23_16-38" height="915" width="1095"></a><figcaption class="image-caption">2023-12-23_16-38</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/164584216231515_1.png" title="2023-12-23_16-41" data-thumbnail="assets/164584216231515_1.png" data-sub-html="<h2> </h2><p>2023-12-23_16-41</p>"><img   src='assets/164584216231515_1.png'   alt="2023-12-23_16-41"  ></a><figcaption class="image-caption">2023-12-23_16-41</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/164584216231515_1.webp" title="2023-12-23_16-41" data-thumbnail="/posts/stm32/assets/164584216231515_1.webp" data-sub-html="<h2> </h2><p>2023-12-23_16-41</p>"><img   src='/posts/stm32/assets/164584216231515_1.webp'   alt="2023-12-23_16-41" height="1176" width="952"></a><figcaption class="image-caption">2023-12-23_16-41</figcaption>
     </figure>
 <a href="https://zhuanlan.zhihu.com/p/290620901" target="_blank" rel="noopener noreferrer">知乎</a>
 
-<figure><a class="lightgallery" href="assets/468571916231155_1.png" title="2023-11-14_16-1847" data-thumbnail="assets/468571916231155_1.png" data-sub-html="<h2> </h2><p>2023-11-14_16-1847</p>"><img   src='assets/468571916231155_1.png'   alt="2023-11-14_16-1847"  ></a><figcaption class="image-caption">2023-11-14_16-1847</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/468571916231155_1.webp" title="2023-11-14_16-1847" data-thumbnail="/posts/stm32/assets/468571916231155_1.webp" data-sub-html="<h2> </h2><p>2023-11-14_16-1847</p>"><img   src='/posts/stm32/assets/468571916231155_1.webp'   alt="2023-11-14_16-1847" height="1057" width="1810"></a><figcaption class="image-caption">2023-11-14_16-1847</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/2221017249581_1.png" title="2023-11-14_17-0955" data-thumbnail="assets/2221017249581_1.png" data-sub-html="<h2> </h2><p>2023-11-14_17-0955</p>"><img   src='assets/2221017249581_1.png'   alt="2023-11-14_17-0955"  ></a><figcaption class="image-caption">2023-11-14_17-0955</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/2221017249581_1.webp" title="2023-11-14_17-0955" data-thumbnail="/posts/stm32/assets/2221017249581_1.webp" data-sub-html="<h2> </h2><p>2023-11-14_17-0955</p>"><img   src='/posts/stm32/assets/2221017249581_1.webp'   alt="2023-11-14_17-0955" height="903" width="1727"></a><figcaption class="image-caption">2023-11-14_17-0955</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/157911017237448_1.png" title="2023-11-14_17-1008" data-thumbnail="assets/157911017237448_1.png" data-sub-html="<h2> </h2><p>2023-11-14_17-1008</p>"><img   src='assets/157911017237448_1.png'   alt="2023-11-14_17-1008"  ></a><figcaption class="image-caption">2023-11-14_17-1008</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/157911017237448_1.webp" title="2023-11-14_17-1008" data-thumbnail="/posts/stm32/assets/157911017237448_1.webp" data-sub-html="<h2> </h2><p>2023-11-14_17-1008</p>"><img   src='/posts/stm32/assets/157911017237448_1.webp'   alt="2023-11-14_17-1008" height="1096" width="1887"></a><figcaption class="image-caption">2023-11-14_17-1008</figcaption>
     </figure>
 存储器划分 Block - Sector，并且，整个存储空间全被划分成了Page
 发送的3个字节组成的地址，最低位是页里的字节地址，高2个字节是页地址
 由于结构特性，Flash的数据bit位只能由1变为0，不能由0变为1，因此写入数据前必须先擦除，将所有数据由0“擦除”至1，而后写入数据.
 
-<figure><a class="lightgallery" href="assets/502194319257614_1.png" title="2023-11-14_19-4334" data-thumbnail="assets/502194319257614_1.png" data-sub-html="<h2> </h2><p>2023-11-14_19-4334</p>"><img   src='assets/502194319257614_1.png'   alt="2023-11-14_19-4334"  ></a><figcaption class="image-caption">2023-11-14_19-4334</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/502194319257614_1.webp" title="2023-11-14_19-4334" data-thumbnail="/posts/stm32/assets/502194319257614_1.webp" data-sub-html="<h2> </h2><p>2023-11-14_19-4334</p>"><img   src='/posts/stm32/assets/502194319257614_1.webp'   alt="2023-11-14_19-4334" height="1072" width="1915"></a><figcaption class="image-caption">2023-11-14_19-4334</figcaption>
     </figure>
 为了防止误操作，Flash使用前需要先写使能
 驱动层是沟通应用层与通信层的桥梁
@@ -562,45 +562,45 @@ SPI的理解可以不采用江科大的上升下降沿分别移入移出的思�
 SPI要想接收数据必须发送数据，因此可以发一些没用的数据(Dummy Data)给从机</p>
 <h2 id="bkp与rtc" class="headerLink">
     <a href="#bkp%e4%b8%8ertc" class="header-mark"></a>BKP与RTC</h2><p>
-<figure><a class="lightgallery" href="assets/262320221231242_1.png" title="2023-12-01_21-0209" data-thumbnail="assets/262320221231242_1.png" data-sub-html="<h2> </h2><p>2023-12-01_21-0209</p>"><img   src='assets/262320221231242_1.png'   alt="2023-12-01_21-0209"  ></a><figcaption class="image-caption">2023-12-01_21-0209</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/262320221231242_1.webp" title="2023-12-01_21-0209" data-thumbnail="/posts/stm32/assets/262320221231242_1.webp" data-sub-html="<h2> </h2><p>2023-12-01_21-0209</p>"><img   src='/posts/stm32/assets/262320221231242_1.webp'   alt="2023-12-01_21-0209" height="1049" width="1949"></a><figcaption class="image-caption">2023-12-01_21-0209</figcaption>
     </figure>
 UNIX时间戳默认从1970年1月1日开始，而有些C库默认为1900年开始
 
-<figure><a class="lightgallery" href="assets/49470421249668_1.png" title="2023-12-01_21-0358" data-thumbnail="assets/49470421249668_1.png" data-sub-html="<h2> </h2><p>2023-12-01_21-0358</p>"><img   src='assets/49470421249668_1.png'   alt="2023-12-01_21-0358"  ></a><figcaption class="image-caption">2023-12-01_21-0358</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/49470421249668_1.webp" title="2023-12-01_21-0358" data-thumbnail="/posts/stm32/assets/49470421249668_1.webp" data-sub-html="<h2> </h2><p>2023-12-01_21-0358</p>"><img   src='/posts/stm32/assets/49470421249668_1.webp'   alt="2023-12-01_21-0358" height="949" width="1926"></a><figcaption class="image-caption">2023-12-01_21-0358</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/277330421237535_1.png" title="2023-12-01_21-0419" data-thumbnail="assets/277330421237535_1.png" data-sub-html="<h2> </h2><p>2023-12-01_21-0419</p>"><img   src='assets/277330421237535_1.png'   alt="2023-12-01_21-0419"  ></a><figcaption class="image-caption">2023-12-01_21-0419</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/277330421237535_1.webp" title="2023-12-01_21-0419" data-thumbnail="/posts/stm32/assets/277330421237535_1.webp" data-sub-html="<h2> </h2><p>2023-12-01_21-0419</p>"><img   src='/posts/stm32/assets/277330421237535_1.webp'   alt="2023-12-01_21-0419" height="1034" width="1801"></a><figcaption class="image-caption">2023-12-01_21-0419</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/467510421257701_1.png" title="2023-12-01_21-0438" data-thumbnail="assets/467510421257701_1.png" data-sub-html="<h2> </h2><p>2023-12-01_21-0438</p>"><img   src='assets/467510421257701_1.png'   alt="2023-12-01_21-0438"  ></a><figcaption class="image-caption">2023-12-01_21-0438</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/467510421257701_1.webp" title="2023-12-01_21-0438" data-thumbnail="/posts/stm32/assets/467510421257701_1.webp" data-sub-html="<h2> </h2><p>2023-12-01_21-0438</p>"><img   src='/posts/stm32/assets/467510421257701_1.webp'   alt="2023-12-01_21-0438" height="948" width="1861"></a><figcaption class="image-caption">2023-12-01_21-0438</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/467672617243605_1.png" title="2023-12-23_17-26" data-thumbnail="assets/467672617243605_1.png" data-sub-html="<h2> </h2><p>2023-12-23_17-26</p>"><img   src='assets/467672617243605_1.png'   alt="2023-12-23_17-26"  ></a><figcaption class="image-caption">2023-12-23_17-26</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/467672617243605_1.webp" title="2023-12-23_17-26" data-thumbnail="/posts/stm32/assets/467672617243605_1.webp" data-sub-html="<h2> </h2><p>2023-12-23_17-26</p>"><img   src='/posts/stm32/assets/467672617243605_1.webp'   alt="2023-12-23_17-26" height="986" width="1833"></a><figcaption class="image-caption">2023-12-23_17-26</figcaption>
     </figure>
 HSE(高速外部时钟)
 RTC时钟优先选择LSE，因为频率为2^15^因而容易分频
 
-<figure><a class="lightgallery" href="assets/68282421250370_1.png" title="2023-12-01_21-2350" data-thumbnail="assets/68282421250370_1.png" data-sub-html="<h2> </h2><p>2023-12-01_21-2350</p>"><img   src='assets/68282421250370_1.png'   alt="2023-12-01_21-2350"  ></a><figcaption class="image-caption">2023-12-01_21-2350</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/68282421250370_1.webp" title="2023-12-01_21-2350" data-thumbnail="/posts/stm32/assets/68282421250370_1.webp" data-sub-html="<h2> </h2><p>2023-12-01_21-2350</p>"><img   src='/posts/stm32/assets/68282421250370_1.webp'   alt="2023-12-01_21-2350" height="1081" width="1615"></a><figcaption class="image-caption">2023-12-01_21-2350</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/250002421246925_1.png" title="2023-12-01_21-2355" data-thumbnail="assets/250002421246925_1.png" data-sub-html="<h2> </h2><p>2023-12-01_21-2355</p>"><img   src='assets/250002421246925_1.png'   alt="2023-12-01_21-2355"  ></a><figcaption class="image-caption">2023-12-01_21-2355</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/250002421246925_1.webp" title="2023-12-01_21-2355" data-thumbnail="/posts/stm32/assets/250002421246925_1.webp" data-sub-html="<h2> </h2><p>2023-12-01_21-2355</p>"><img   src='/posts/stm32/assets/250002421246925_1.webp'   alt="2023-12-01_21-2355" height="1025" width="1949"></a><figcaption class="image-caption">2023-12-01_21-2355</figcaption>
     </figure></p>
 <h2 id="pwr" class="headerLink">
     <a href="#pwr" class="header-mark"></a>PWR</h2><p>只有外部中断才能唤醒STM32的停止模式，因此PVD，RTC，USB，ETH等可以通向EXTI中断
 
-<figure><a class="lightgallery" href="assets/451815913249669_1.png" title="2023-12-02_13-5934" data-thumbnail="assets/451815913249669_1.png" data-sub-html="<h2> </h2><p>2023-12-02_13-5934</p>"><img   src='assets/451815913249669_1.png'   alt="2023-12-02_13-5934"  ></a><figcaption class="image-caption">2023-12-02_13-5934</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/451815913249669_1.webp" title="2023-12-02_13-5934" data-thumbnail="/posts/stm32/assets/451815913249669_1.webp" data-sub-html="<h2> </h2><p>2023-12-02_13-5934</p>"><img   src='/posts/stm32/assets/451815913249669_1.webp'   alt="2023-12-02_13-5934" height="1064" width="1413"></a><figcaption class="image-caption">2023-12-02_13-5934</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/132775313231243_1.png" title="2023-12-02_13-5301" data-thumbnail="assets/132775313231243_1.png" data-sub-html="<h2> </h2><p>2023-12-02_13-5301</p>"><img   src='assets/132775313231243_1.png'   alt="2023-12-02_13-5301"  ></a><figcaption class="image-caption">2023-12-02_13-5301</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/132775313231243_1.webp" title="2023-12-02_13-5301" data-thumbnail="/posts/stm32/assets/132775313231243_1.webp" data-sub-html="<h2> </h2><p>2023-12-02_13-5301</p>"><img   src='/posts/stm32/assets/132775313231243_1.webp'   alt="2023-12-02_13-5301" height="1029" width="1914"></a><figcaption class="image-caption">2023-12-02_13-5301</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/447284812231244_1.png" title="2023-12-03_12-4826" data-thumbnail="assets/447284812231244_1.png" data-sub-html="<h2> </h2><p>2023-12-03_12-4826</p>"><img   src='assets/447284812231244_1.png'   alt="2023-12-03_12-4826"  ></a><figcaption class="image-caption">2023-12-03_12-4826</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/447284812231244_1.webp" title="2023-12-03_12-4826" data-thumbnail="/posts/stm32/assets/447284812231244_1.webp" data-sub-html="<h2> </h2><p>2023-12-03_12-4826</p>"><img   src='/posts/stm32/assets/447284812231244_1.webp'   alt="2023-12-03_12-4826" height="788" width="1872"></a><figcaption class="image-caption">2023-12-03_12-4826</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/25854912249670_1.png" title="2023-12-03_12-4853" data-thumbnail="assets/25854912249670_1.png" data-sub-html="<h2> </h2><p>2023-12-03_12-4853</p>"><img   src='assets/25854912249670_1.png'   alt="2023-12-03_12-4853"  ></a><figcaption class="image-caption">2023-12-03_12-4853</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/25854912249670_1.webp" title="2023-12-03_12-4853" data-thumbnail="/posts/stm32/assets/25854912249670_1.webp" data-sub-html="<h2> </h2><p>2023-12-03_12-4853</p>"><img   src='/posts/stm32/assets/25854912249670_1.webp'   alt="2023-12-03_12-4853" height="962" width="1844"></a><figcaption class="image-caption">2023-12-03_12-4853</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/191684912237537_1.png" title="2023-12-03_12-4910" data-thumbnail="assets/191684912237537_1.png" data-sub-html="<h2> </h2><p>2023-12-03_12-4910</p>"><img   src='assets/191684912237537_1.png'   alt="2023-12-03_12-4910"  ></a><figcaption class="image-caption">2023-12-03_12-4910</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/191684912237537_1.webp" title="2023-12-03_12-4910" data-thumbnail="/posts/stm32/assets/191684912237537_1.webp" data-sub-html="<h2> </h2><p>2023-12-03_12-4910</p>"><img   src='/posts/stm32/assets/191684912237537_1.webp'   alt="2023-12-03_12-4910" height="755" width="1908"></a><figcaption class="image-caption">2023-12-03_12-4910</figcaption>
     </figure>
 从上到下越来越省电，但也越来越难被唤醒
 系统进入停机模式时，HSI被选为系统时钟，此时系统主频8MHz，而正常情况下使用的是HSE*9=72MHz，因此会发生Running刷新不及时的现象，此时需要SystemInit来重新初始化时钟
@@ -609,28 +609,28 @@ RTC时钟优先选择LSE，因为频率为2^15^因而容易分频
     <a href="#%e7%9c%8b%e9%97%a8%e7%8b%97" class="header-mark"></a>看门狗</h2><p>看门狗负责复位程序
 独立看门狗精度低，使用LSI时钟(40KHz)，窗口看门狗精度高，使用PCLK1的时钟(APB1的时钟，36MHz)
 
-<figure><a class="lightgallery" href="assets/481471612231244_1.png" title="2023-12-03_12-1627" data-thumbnail="assets/481471612231244_1.png" data-sub-html="<h2> </h2><p>2023-12-03_12-1627</p>"><img   src='assets/481471612231244_1.png'   alt="2023-12-03_12-1627"  ></a><figcaption class="image-caption">2023-12-03_12-1627</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/481471612231244_1.webp" title="2023-12-03_12-1627" data-thumbnail="/posts/stm32/assets/481471612231244_1.webp" data-sub-html="<h2> </h2><p>2023-12-03_12-1627</p>"><img   src='/posts/stm32/assets/481471612231244_1.webp'   alt="2023-12-03_12-1627" height="915" width="1810"></a><figcaption class="image-caption">2023-12-03_12-1627</figcaption>
     </figure>
 键寄存器可以以理解为多位的控制寄存器，这样设计是为了防止外界干扰导致一位的控制寄存器失效，因此设置多位
 
-<figure><a class="lightgallery" href="assets/430081812249670_1.png" title="2023-12-03_12-1833" data-thumbnail="assets/430081812249670_1.png" data-sub-html="<h2> </h2><p>2023-12-03_12-1833</p>"><img   src='assets/430081812249670_1.png'   alt="2023-12-03_12-1833"  ></a><figcaption class="image-caption">2023-12-03_12-1833</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/430081812249670_1.webp" title="2023-12-03_12-1833" data-thumbnail="/posts/stm32/assets/430081812249670_1.webp" data-sub-html="<h2> </h2><p>2023-12-03_12-1833</p>"><img   src='/posts/stm32/assets/430081812249670_1.webp'   alt="2023-12-03_12-1833" height="927" width="1847"></a><figcaption class="image-caption">2023-12-03_12-1833</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/63541912237537_1.png" title="2023-12-03_12-1854" data-thumbnail="assets/63541912237537_1.png" data-sub-html="<h2> </h2><p>2023-12-03_12-1854</p>"><img   src='assets/63541912237537_1.png'   alt="2023-12-03_12-1854"  ></a><figcaption class="image-caption">2023-12-03_12-1854</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/63541912237537_1.webp" title="2023-12-03_12-1854" data-thumbnail="/posts/stm32/assets/63541912237537_1.webp" data-sub-html="<h2> </h2><p>2023-12-03_12-1854</p>"><img   src='/posts/stm32/assets/63541912237537_1.webp'   alt="2023-12-03_12-1854" height="1049" width="1701"></a><figcaption class="image-caption">2023-12-03_12-1854</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/316311912257703_1.png" title="2023-12-03_12-1925" data-thumbnail="assets/316311912257703_1.png" data-sub-html="<h2> </h2><p>2023-12-03_12-1925</p>"><img   src='assets/316311912257703_1.png'   alt="2023-12-03_12-1925"  ></a><figcaption class="image-caption">2023-12-03_12-1925</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/316311912257703_1.webp" title="2023-12-03_12-1925" data-thumbnail="/posts/stm32/assets/316311912257703_1.webp" data-sub-html="<h2> </h2><p>2023-12-03_12-1925</p>"><img   src='/posts/stm32/assets/316311912257703_1.webp'   alt="2023-12-03_12-1925" height="999" width="1563"></a><figcaption class="image-caption">2023-12-03_12-1925</figcaption>
     </figure>
 
-<figure><a class="lightgallery" href="assets/514261912250372_1.png" title="2023-12-03_12-1945" data-thumbnail="assets/514261912250372_1.png" data-sub-html="<h2> </h2><p>2023-12-03_12-1945</p>"><img   src='assets/514261912250372_1.png'   alt="2023-12-03_12-1945"  ></a><figcaption class="image-caption">2023-12-03_12-1945</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/514261912250372_1.webp" title="2023-12-03_12-1945" data-thumbnail="/posts/stm32/assets/514261912250372_1.webp" data-sub-html="<h2> </h2><p>2023-12-03_12-1945</p>"><img   src='/posts/stm32/assets/514261912250372_1.webp'   alt="2023-12-03_12-1945" height="1119" width="1870"></a><figcaption class="image-caption">2023-12-03_12-1945</figcaption>
     </figure>
 早期唤醒中断可以进行保存数据，再次喂狗等紧急操作，以防止程序未被喂狗而复位
 
-<figure><a class="lightgallery" href="assets/352252112242681_1.png" title="2023-12-03_12-2117" data-thumbnail="assets/352252112242681_1.png" data-sub-html="<h2> </h2><p>2023-12-03_12-2117</p>"><img   src='assets/352252112242681_1.png'   alt="2023-12-03_12-2117"  ></a><figcaption class="image-caption">2023-12-03_12-2117</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/352252112242681_1.webp" title="2023-12-03_12-2117" data-thumbnail="/posts/stm32/assets/352252112242681_1.webp" data-sub-html="<h2> </h2><p>2023-12-03_12-2117</p>"><img   src='/posts/stm32/assets/352252112242681_1.webp'   alt="2023-12-03_12-2117" height="1056" width="1770"></a><figcaption class="image-caption">2023-12-03_12-2117</figcaption>
     </figure>
 窗口时间即为进入WWDG最小的时间，并非通常意义的&quot;窗口&quot;时间
 
-<figure><a class="lightgallery" href="assets/486482112260561_1.png" title="2023-12-03_12-2142" data-thumbnail="assets/486482112260561_1.png" data-sub-html="<h2> </h2><p>2023-12-03_12-2142</p>"><img   src='assets/486482112260561_1.png'   alt="2023-12-03_12-2142"  ></a><figcaption class="image-caption">2023-12-03_12-2142</figcaption>
+<figure><a class="lightgallery" href="/posts/stm32/assets/486482112260561_1.webp" title="2023-12-03_12-2142" data-thumbnail="/posts/stm32/assets/486482112260561_1.webp" data-sub-html="<h2> </h2><p>2023-12-03_12-2142</p>"><img   src='/posts/stm32/assets/486482112260561_1.webp'   alt="2023-12-03_12-2142" height="999" width="1942"></a><figcaption class="image-caption">2023-12-03_12-2142</figcaption>
     </figure>
 利用内部闪存编程时，当读取内部闪存时CPU会被暂停，因为程序放在闪存里，CPU运行的程序需要从闪存中取出，如果此时正在执行中断函数时中断会卡住一段时间。</p>
 <h2 id="启动文件详解" class="headerLink">
@@ -670,7 +670,7 @@ RTC时钟优先选择LSE，因为频率为2^15^因而容易分频
             <div class="footer-line">
                 <span id="run-time"></span>
             </div><div class="footer-line">
-                    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.146.2">Hugo</a>&nbsp;|&nbsp;Theme - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.4.1"><svg class="icon"
+                    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.146.5">Hugo</a>&nbsp;|&nbsp;Theme - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.4.1"><svg class="icon"
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg> DoIt</a>
                 </div><div class="footer-line"><svg class="icon"
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 448c-110.532 0-200-89.451-200-200 0-110.531 89.451-200 200-200 110.532 0 200 89.451 200 200 0 110.532-89.451 200-200 200zm107.351-101.064c-9.614 9.712-45.53 41.396-104.065 41.396-82.43 0-140.484-61.425-140.484-141.567 0-79.152 60.275-139.401 139.762-139.401 55.531 0 88.738 26.62 97.593 34.779a11.965 11.965 0 0 1 1.936 15.322l-18.155 28.113c-3.841 5.95-11.966 7.282-17.499 2.921-8.595-6.776-31.814-22.538-61.708-22.538-48.303 0-77.916 35.33-77.916 80.082 0 41.589 26.888 83.692 78.277 83.692 32.657 0 56.843-19.039 65.726-27.225 5.27-4.857 13.596-4.039 17.82 1.738l19.865 27.17a11.947 11.947 0 0 1-1.152 15.518z"/></svg>2023 - 2025<span class="author">&nbsp;<a href="wumingzi.top" target="_blank" rel="noopener noreferrer">吾铭子</a></span></div>

@@ -512,7 +512,7 @@ RV64I：64位的riscv整数指令集，兼容RV32I</p>
 </ul>
 <p>elf文件大致内容如下
 
-<figure><a class="lightgallery" href="/image/78955821256435.webp" title="2025-01-01_21-57" data-thumbnail="/image/78955821256435.webp" data-sub-html="<h2> </h2><p>2025-01-01_21-57</p>"><img   src='/image/78955821256435.webp'   alt="2025-01-01_21-57" height="1599" width="2560"></a><figcaption class="image-caption">2025-01-01_21-57</figcaption>
+<figure><a class="lightgallery" href="/posts/risc-v/assets/78955821256435.webp" title="2025-01-01_21-57" data-thumbnail="/posts/risc-v/assets/78955821256435.webp" data-sub-html="<h2> </h2><p>2025-01-01_21-57</p>"><img   src='/posts/risc-v/assets/78955821256435.webp'   alt="2025-01-01_21-57" height="1599" width="2560"></a><figcaption class="image-caption">2025-01-01_21-57</figcaption>
     </figure>
 elf header指定了该elf文件的基本内容，包括编译器，可运行的架构等内容，program header table指定了运行时该以何种方式加载进内存。section header table表示了该文件链接时是如何生成的。不将这些section直接加载进内存的原因是这些段需要内存对齐，一旦对齐会浪费很多空间。因此program header table将相似的section作为segment来将其加载进内存</p>
 <p>由于elf文件内有许多运行代码时不需要的调试信息，我们可以生成.bin文件来删除这些信息</p>
@@ -539,41 +539,41 @@ elf header指定了该elf文件的基本内容，包括编译器，可运行的�
 <p>大段序：数据高位放在内存低地址
 小段序：数据低位放在内存低地址</p>
 <p>
-<img   src='/image/209553211276602.webp'   alt="209553211276602.webp" height="1409" width="993"></p>
+<img   src='/posts/risc-v/assets/209553211276602.webp'   alt="209553211276602.webp" height="1409" width="993"></p>
 <h3 id="算数运算指令" class="headerLink">
     <a href="#%e7%ae%97%e6%95%b0%e8%bf%90%e7%ae%97%e6%8c%87%e4%bb%a4" class="header-mark"></a>算数运算指令</h3><p>rs：register source
 rd：register destination</p>
 <p>
-<img   src='/image/460211113269271.webp'   alt="460211113269271.webp" height="1600" width="2560"></p>
+<img   src='/posts/risc-v/assets/460211113269271.webp'   alt="460211113269271.webp" height="1600" width="2560"></p>
 <p>
-<img   src='/image/69745313265826.webp'   alt="69745313265826.webp" height="1600" width="2560"></p>
+<img   src='/posts/risc-v/assets/69745313265826.webp'   alt="69745313265826.webp" height="1600" width="2560"></p>
 <p>立即数
 
-<img   src='/image/167202814261580.webp'   alt="167202814261580.webp" height="1600" width="2560"></p>
+<img   src='/posts/risc-v/assets/167202814261580.webp'   alt="167202814261580.webp" height="1600" width="2560"></p>
 <p>riscv没有subi指令，这是由于subi可以用addi代替</p>
 <p>
-<img   src='/image/563603014279460.webp'   alt="563603014279460.webp" height="1600" width="2560"></p>
+<img   src='/posts/risc-v/assets/563603014279460.webp'   alt="563603014279460.webp" height="1600" width="2560"></p>
 <p>
-<img   src='/image/564253514277064.webp'   alt="564253514277064.webp" height="1600" width="2560"></p>
+<img   src='/posts/risc-v/assets/564253514277064.webp'   alt="564253514277064.webp" height="1600" width="2560"></p>
 <p>直接加载一个大数会出现符号问题
 
-<img   src='/image/19844314274566.webp'   alt="19844314274566.webp" height="1600" width="2560">
+<img   src='/posts/risc-v/assets/19844314274566.webp'   alt="19844314274566.webp" height="1600" width="2560">
 这时会出现addi x1,x1,0xfff实际上加的是-1的情况</p>
 <p>
-<img   src='/image/133624314255807.webp'   alt="133624314255807.webp" height="1600" width="2560">
+<img   src='/posts/risc-v/assets/133624314255807.webp'   alt="133624314255807.webp" height="1600" width="2560">
 
-<img   src='/image/232894314278247.webp'   alt="232894314278247.webp" height="1600" width="2560">
+<img   src='/posts/risc-v/assets/232894314278247.webp'   alt="232894314278247.webp" height="1600" width="2560">
 代码中常用li指令赋值，之后由汇编器进行判断对指令转换成何种形式</p>
 <p>
-<img   src='/image/2505814273383.webp'   alt="2505814273383.webp" height="1600" width="2560">
+<img   src='/posts/risc-v/assets/2505814273383.webp'   alt="2505814273383.webp" height="1600" width="2560">
 auipc用于构造相对地址，常用于相对寻址和位置无关码的生成中</p>
 <p>
-<img   src='/image/127620115266929.webp'   alt="127620115266929.webp" height="1600" width="2560">
+<img   src='/posts/risc-v/assets/127620115266929.webp'   alt="127620115266929.webp" height="1600" width="2560">
 使用la伪指令后，链接器会自动找到label的地址并替换，最后使用auipc进行寻址</p>
 <h3 id="逻辑运算指令" class="headerLink">
     <a href="#%e9%80%bb%e8%be%91%e8%bf%90%e7%ae%97%e6%8c%87%e4%bb%a4" class="header-mark"></a>逻辑运算指令</h3><p>riscv只提供了与，或，异或等指令，并没有直接提供非指令，非指令通过伪指令来提供，实际上它是使用异或来实现的
 
-<img   src='/image/426421215260063.webp'   alt="426421215260063.webp" height="1600" width="2560"></p>
+<img   src='/posts/risc-v/assets/426421215260063.webp'   alt="426421215260063.webp" height="1600" width="2560"></p>
 <blockquote>
   <p>如下异或运算
 10101010
@@ -583,34 +583,34 @@ auipc用于构造相对地址，常用于相对寻址和位置无关码的生成
 </blockquote><h3 id="移位运算指令" class="headerLink">
     <a href="#%e7%a7%bb%e4%bd%8d%e8%bf%90%e7%ae%97%e6%8c%87%e4%bb%a4" class="header-mark"></a>移位运算指令</h3><p>移位运算可以通过寄存器指定移位的值，也可以通过立即数指定
 
-<img   src='/image/263142115250593.webp'   alt="263142115250593.webp" height="1600" width="2560"></p>
+<img   src='/posts/risc-v/assets/263142115250593.webp'   alt="263142115250593.webp" height="1600" width="2560"></p>
 <p>算数移位只有右移没有左移，因为左移会把符号位移丢弃
 
-<img   src='/image/64892915253097.webp'   alt="64892915253097.webp" height="1600" width="2560"></p>
+<img   src='/posts/risc-v/assets/64892915253097.webp'   alt="64892915253097.webp" height="1600" width="2560"></p>
 <h3 id="内存读写指令" class="headerLink">
     <a href="#%e5%86%85%e5%ad%98%e8%af%bb%e5%86%99%e6%8c%87%e4%bb%a4" class="header-mark"></a>内存读写指令</h3><p>sign-extended：符号扩展，如果取到的数的位数不足32bit，那么剩下的bit使用该数的符号位填充剩余的位
 zero-extended：零扩展，如果取到的数的位数不足32bit，那么剩下的bit使用0填充剩余的位</p>
 <p>
-<img   src='/image/95633715262044.webp'   alt="95633715262044.webp" height="1600" width="2560"></p>
+<img   src='/posts/risc-v/assets/95633715262044.webp'   alt="95633715262044.webp" height="1600" width="2560"></p>
 <p>
-<img   src='/image/9334415255538.webp'   alt="9334415255538.webp" height="1600" width="2560">
+<img   src='/posts/risc-v/assets/9334415255538.webp'   alt="9334415255538.webp" height="1600" width="2560">
 内存写指令没有0扩展或者符号扩展是因为磁盘存储单位是字节，不必区分两种扩展</p>
 <h3 id="条件分支指令" class="headerLink">
     <a href="#%e6%9d%a1%e4%bb%b6%e5%88%86%e6%94%af%e6%8c%87%e4%bb%a4" class="header-mark"></a>条件分支指令</h3><p>
-<img   src='/image/552010419282493.webp'   alt="552010419282493.webp" height="1600" width="2560"></p>
+<img   src='/posts/risc-v/assets/552010419282493.webp'   alt="552010419282493.webp" height="1600" width="2560"></p>
 <h3 id="无条件跳转指令" class="headerLink">
     <a href="#%e6%97%a0%e6%9d%a1%e4%bb%b6%e8%b7%b3%e8%bd%ac%e6%8c%87%e4%bb%a4" class="header-mark"></a>无条件跳转指令</h3><p>
-<img   src='/image/481143220264706.webp'   alt="481143220264706.webp" height="1600" width="2560"></p>
+<img   src='/posts/risc-v/assets/481143220264706.webp'   alt="481143220264706.webp" height="1600" width="2560"></p>
 <h2 id="汇编函数调用约定" class="headerLink">
     <a href="#%e6%b1%87%e7%bc%96%e5%87%bd%e6%95%b0%e8%b0%83%e7%94%a8%e7%ba%a6%e5%ae%9a" class="header-mark"></a>汇编函数调用约定</h2><p><strong>注意：ra存放的是函数返回地址，a0存放的是函数参数和返回值</strong>
 
-<img   src='/image/528351521254004.webp'   alt="528351521254004.webp" height="1600" width="2560">
+<img   src='/posts/risc-v/assets/528351521254004.webp'   alt="528351521254004.webp" height="1600" width="2560">
 
-<img   src='/image/546284815250149.webp'   alt="546284815250149.webp" height="774" width="1342">
+<img   src='/posts/risc-v/assets/546284815250149.webp'   alt="546284815250149.webp" height="774" width="1342">
 函数参数使用a0-a7传递，返回值使用a0和a1传递</p>
 <p>我们在编程时常使用伪指令，尤其是call和ret
 
-<img   src='/image/73404121250255.webp'   alt="73404121250255.webp" height="1600" width="2560"></p>
+<img   src='/posts/risc-v/assets/73404121250255.webp'   alt="73404121250255.webp" height="1600" width="2560"></p>
 <p>编写汇编调用函数时需要在被调用的函数最前方写压栈操作，末尾写出栈操作。在编写c代码时不必如此，因为编译器会自动生成这些代码</p>
 <h2 id="汇编与c混合编程" class="headerLink">
     <a href="#%e6%b1%87%e7%bc%96%e4%b8%8ec%e6%b7%b7%e5%90%88%e7%bc%96%e7%a8%8b" class="header-mark"></a>汇编与C混合编程</h2><p>在汇编中调用c函数直接使用call func_name即可</p>
@@ -1018,11 +1018,11 @@ zero-extended：零扩展，如果取到的数的位数不足32bit，那么剩�
 <p>csrr是csrrs的伪指令，csrrs(control state register atomic read and set)，csrr只保留了读取csr的功能</p>
 <p>riscv采用了类似arm的统一编址的方法，不必像x86那样需要使用独立的io命令才能读取对应的寄存器，我们只需像使用内存那样使用io的寄存器即可。但是在使用时需要先将io寄存器映射至地址空间，这个过程类似加载dram：如图所示，尽管dram拥有0x8000 0000-0x8800 0000的128m地址空间，但并不意味着cpu可以任意访问这128m地址空间，这只是说明，在这台机器上支持插入不大于128m的内存。同理，io的映射也是如此
 
-<img   src='/image/469414215250395.webp'   alt="469414215250395.webp" height="1600" width="2560"></p>
+<img   src='/posts/risc-v/assets/469414215250395.webp'   alt="469414215250395.webp" height="1600" width="2560"></p>
 <p>各个.o文件统一被链接为可执行文件的过程会使用链接器脚本，脚本内部指定了链接时各个.o文件的各个段该如何加载为一个.elf文件中的一个段，以及该段应该被加载进内存的哪个位置。而这些信息会根据板子的不同而不同</p>
 <p>链接器脚本会自动帮我们算出各段的起始地址和大小，我们可以给予其名称来在c代码中调用</p>
 <p>
-<img   src='/image/480325111250145.webp'   alt="480325111250145.webp" height="1600" width="2560"></p>
+<img   src='/posts/risc-v/assets/480325111250145.webp'   alt="480325111250145.webp" height="1600" width="2560"></p>
 <h2 id="rvos" class="headerLink">
     <a href="#rvos" class="header-mark"></a>rvos</h2><p>rvos启动流程(没有bootloader)：</p>
 <ul>
@@ -1035,41 +1035,41 @@ zero-extended：零扩展，如果取到的数的位数不足32bit，那么剩�
 <h3 id="中断和异常" class="headerLink">
     <a href="#%e4%b8%ad%e6%96%ad%e5%92%8c%e5%bc%82%e5%b8%b8" class="header-mark"></a>中断和异常</h3><p>riscv的csr
 
-<img   src='/image/444262316268571.webp'   alt="444262316268571.webp" height="1600" width="2560"></p>
+<img   src='/posts/risc-v/assets/444262316268571.webp'   alt="444262316268571.webp" height="1600" width="2560"></p>
 <p>mtvec类似arm的中断向量表的基址寄存器
 
-<img   src='/image/36792816256438.webp'   alt="36792816256438.webp" height="1600" width="2560">
+<img   src='/posts/risc-v/assets/36792816256438.webp'   alt="36792816256438.webp" height="1600" width="2560">
 mtvec的vectored mode类似于arm的中断向量表</p>
 <p>类似函数调用时需要保存当前指令地址，调用中断处理函数也需要保存当前正在执行的函数的执行位置，这时应把当前执行指令的<strong>当前指令或下一条指令</strong>保存到mepc
 
-<img   src='/image/550284016276604.webp'   alt="550284016276604.webp" height="1600" width="2560"></p>
+<img   src='/posts/risc-v/assets/550284016276604.webp'   alt="550284016276604.webp" height="1600" width="2560"></p>
 <p>mcause是中断异常原因寄存器
 
-<img   src='/image/287974816269273.webp'   alt="287974816269273.webp" height="1600" width="2560">
+<img   src='/posts/risc-v/assets/287974816269273.webp'   alt="287974816269273.webp" height="1600" width="2560">
 
-<img   src='/image/517154816265828.webp'   alt="517154816265828.webp" height="1600" width="2560">
+<img   src='/posts/risc-v/assets/517154816265828.webp'   alt="517154816265828.webp" height="1600" width="2560">
 mtval可以获得更详细的异常信息
 
-<img   src='/image/72605116261582.webp'   alt="72605116261582.webp" height="1600" width="2560"></p>
+<img   src='/posts/risc-v/assets/72605116261582.webp'   alt="72605116261582.webp" height="1600" width="2560"></p>
 <p>mstatus的xpie可用于恢复中断时获取原中断状态，xpp用于保存中断发生值前的权限级别(user/supervisor/machine)
 
-<img   src='/image/218425316277066.webp'   alt="218425316277066.webp" height="1600" width="2560">
+<img   src='/posts/risc-v/assets/218425316277066.webp'   alt="218425316277066.webp" height="1600" width="2560">
 xpie与xpp的p指的是previous</p>
 <p>riscv的trap处理流程分为上下两部分，上半部通过硬件设置寄存器完成，下半部通过软件处理trap完成
 需要注意的是，riscv默认不支持中断嵌套
 
-<img   src='/image/144191517274568.webp'   alt="144191517274568.webp" height="1600" width="2560"></p>
+<img   src='/posts/risc-v/assets/144191517274568.webp'   alt="144191517274568.webp" height="1600" width="2560"></p>
 <p>从特权模式下返回
 
-<img   src='/image/383552117255809.webp'   alt="383552117255809.webp" height="1600" width="2560"></p>
+<img   src='/posts/risc-v/assets/383552117255809.webp'   alt="383552117255809.webp" height="1600" width="2560"></p>
 <p>mie可以被写，用来控制中断开关，mip可以被读，用来获取中断状态
 
-<img   src='/image/322183019278249.webp'   alt="322183019278249.webp" height="1600" width="2560"></p>
+<img   src='/posts/risc-v/assets/322183019278249.webp'   alt="322183019278249.webp" height="1600" width="2560"></p>
 <p>plic(paltform level interrupt controller)类似于linux的pinctrl子系统中的gic，它负责将多个中断源汇聚起来分配给若干个hart
 
-<img   src='/image/245044119273385.webp'   alt="245044119273385.webp" height="1600" width="2560">
+<img   src='/posts/risc-v/assets/245044119273385.webp'   alt="245044119273385.webp" height="1600" width="2560">
 
-<img   src='/image/575575619266931.webp'   alt="575575619266931.webp" height="1600" width="2560"></p>
+<img   src='/posts/risc-v/assets/575575619266931.webp'   alt="575575619266931.webp" height="1600" width="2560"></p>
 <p>软中断不同于外部中断和定时器中断是硬件触发的中断，它是软件触发的中断。我们只需要在clint的msip寄存器写1即可触发，这样就实现了软件控制</p>
 <p>异常处理流程总结</p>
 <ul>
@@ -1090,14 +1090,14 @@ xpie与xpp的p指的是previous</p>
 <p>在用户态我们就无法获取内核态所能访问的寄存器，例如mhartid寄存器，当用户态强行访问该寄存器时会触发异常，之后系统会转到异常调用表里执行对应异常处理函数(此时并未涉及到系统调用号)。从用户态转为内核态时需要使用ecall指令，内核处理完成转为用户态时使用eret指令</p>
 <p>ecall用于主动触发异常，根据触发异常时系统的特权模式产生不同的异常码，异常产生时epc寄存器存放的是ecall指令本身的地址，我们还需要将其+4后执行否则会造成死循环，处理异常后需要调用mret指令将内核态切换到用户态
 
-<img   src='/image/261743422260066.webp'   alt="261743422260066.webp" height="1600" width="2560"></p>
+<img   src='/posts/risc-v/assets/261743422260066.webp'   alt="261743422260066.webp" height="1600" width="2560"></p>
 <p>与其他体系架构不同的是，riscv在切换特权级别时并没有寄存器或者比特位来存储系统调用号，它参考linux系统调用，规定了系统调用号放在a7寄存器中
 
-<img   src='/image/123995522253100.webp'   alt="123995522253100.webp" height="1600" width="2560">
+<img   src='/posts/risc-v/assets/123995522253100.webp'   alt="123995522253100.webp" height="1600" width="2560">
 上图的trap_handler是根据riscv芯片手册指定的异常处理函数编写的，内部包含了缺页异常，io异常，系统调用，除零异常等异常</p>
 <p>对于syscall头文件需要分为两份，一份给c库，一份给内核。这样在程序开发者的手中可以根据libc的库文件编译出来包含系统调用的app，app在运行时就可以调用内核的系统调用
 
-<img   src='/image/44885822262047.webp'   alt="44885822262047.webp" height="1600" width="2560"></p>
+<img   src='/posts/risc-v/assets/44885822262047.webp'   alt="44885822262047.webp" height="1600" width="2560"></p>
 <h2 id="riscv体系结构编程与实践-----笨叔" class="headerLink">
     <a href="#riscv%e4%bd%93%e7%b3%bb%e7%bb%93%e6%9e%84%e7%bc%96%e7%a8%8b%e4%b8%8e%e5%ae%9e%e8%b7%b5-----%e7%ac%a8%e5%8f%94" class="header-mark"></a>RISCV体系结构编程与实践    -笨叔</h2><h3 id="链接器与脚本" class="headerLink">
     <a href="#%e9%93%be%e6%8e%a5%e5%99%a8%e4%b8%8e%e8%84%9a%e6%9c%ac" class="header-mark"></a>链接器与脚本</h3><p>链接器ld(loader)：在早期unix系统中被称为加载器，是os的一部分，后来由于os越来越复杂，链接器就独立出来了</p>
@@ -1826,28 +1826,28 @@ xpie与xpp的p指的是previous</p>
 <p>异常不仅有m模式还有s模式，这可以避免因模式切换带来的性能损失</p>
 <p>riscv中断分为本地中断(软件，定时器)，和外部中断(外设等)，本地终端通过CLINT(core local interruptor)产生并直接发送给hart来处理，外部中断由外设等产生，经由PLIC路由再发给对应的hart处理，因此内部中断无需PLIC路由</p>
 <p>
-<img   src='/image/317401016268789.webp'   alt="317401016268789.webp" height="876" width="1406"></p>
+<img   src='/posts/risc-v/assets/317401016268789.webp'   alt="317401016268789.webp" height="876" width="1406"></p>
 <p>svc是arm的触发软件中断进入内核层的命令，ecall是riscv的。svc通过立即数传递系统调用号，ecall通过寄存器传递。并且ecall还支持从s模式向m模式切换</p>
 <h3 id="主存高速缓存与tlb简要介绍" class="headerLink">
     <a href="#%e4%b8%bb%e5%ad%98%e9%ab%98%e9%80%9f%e7%bc%93%e5%ad%98%e4%b8%8etlb%e7%ae%80%e8%a6%81%e4%bb%8b%e7%bb%8d" class="header-mark"></a>主存，高速缓存与TLB简要介绍</h3><p>多进程访问同一个虚拟地址可以成功的原因是，每个进程都有自己的运行空间，也就有一套自己的页表，根本原因是切换进程时需要切换页表基地址寄存器，这样在查找n级页表时就是对应进程的n级页表了</p>
 <p>rv64通常使用3(sv39)或4级页表(sv48)，rv32使用二级页表(sv32)，所谓的svxx指的是虚拟地址的低xx位用于页表索引</p>
 <p>以内存为视角，体系结构分为两种：UMA(均匀存储器)， NUMA(非均匀存储器)
 
-<img   src='/image/190901916256656.webp'   alt="190901916256656.webp" height="925" width="1115"></p>
+<img   src='/posts/risc-v/assets/190901916256656.webp'   alt="190901916256656.webp" height="925" width="1115"></p>
 <p>
-<img   src='/image/316801916276822.webp'   alt="316801916276822.webp" height="803" width="1454"></p>
+<img   src='/posts/risc-v/assets/316801916276822.webp'   alt="316801916276822.webp" height="803" width="1454"></p>
 <p>tlb只缓存查询页表的结果</p>
 <p>以vipt(virtual index physical tagged)为例讲解cpu寻址过程：
 cpu访问虚拟地址时，会将其同时发给tlb和高速缓存，若tlb未命中，则需创建对应线程的页表，并将地址和数据写入高速缓存中以待cpu读取。若tlb命中，则直接获取物理地址，并根据该地址从告诉缓存中获取数据
 
-<img   src='/image/209982116269491.webp'   alt="209982116269491.webp" height="1218" width="1477"></p>
+<img   src='/posts/risc-v/assets/209982116269491.webp'   alt="209982116269491.webp" height="1218" width="1477"></p>
 <p>同时高速缓存根据虚拟地址的索引来确定所需的数据位于哪个组，并通过标记域修在组内寻找高速缓存的某一行，若找到就被称为高速缓存命中。若未命中，则需要重新从主存获取数据</p>
 <p>由于高速缓存是按行来组织的，因此cpu每次访问内存都至少会将一个高速缓存行大小的数据写入高速缓存，这样，内存中实际的最小单元就不是字节而是高速缓存行大小了。例如某个高速缓存有如下组织：</p>
 <ul>
 <li>1路，128行，共64KB高速缓存，每行512字节
 因此，在主存就被划分为若干块的区域，每块大小32KB，内存地址与高速缓存的地址映射关系是：数据在高速缓冲区的行号=主存地址%32KB/512，在缓存的内的偏移量为主存地址%32KB%512
 
-<img   src='/image/34812616266046.webp'   alt="34812616266046.webp" height="643" width="1477"></li>
+<img   src='/posts/risc-v/assets/34812616266046.webp'   alt="34812616266046.webp" height="643" width="1477"></li>
 </ul>
 <p>如果我们访问内存的数据都落在0x80000000-0x8000000FF，高速缓存将发挥他的最大威力，但是当我们访存的数据位于0x80000000，0x80000100，0x80000200，那么高速缓存的第一个缓存行就会被频繁的换入换出，这就是高速缓存颠簸</p>
 <p>高速缓存的组织方式包括以下三种</p>
@@ -1856,24 +1856,24 @@ cpu访问虚拟地址时，会将其同时发给tlb和高速缓存，若tlb未�
 <li>全相联映射</li>
 <li>组相联映射
 
-<img   src='/image/594942816261800.webp'   alt="594942816261800.webp" height="1069" width="1242"></li>
+<img   src='/posts/risc-v/assets/594942816261800.webp'   alt="594942816261800.webp" height="1069" width="1242"></li>
 </ul>
 <p>
-<img   src='/image/144242916279680.webp'   alt="144242916279680.webp" height="650" width="1207"></p>
+<img   src='/posts/risc-v/assets/144242916279680.webp'   alt="144242916279680.webp" height="650" width="1207"></p>
 <p>
-<img   src='/image/345392916277284.webp'   alt="345392916277284.webp" height="818" width="1242"></p>
+<img   src='/posts/risc-v/assets/345392916277284.webp'   alt="345392916277284.webp" height="818" width="1242"></p>
 <p>为了解决缓存颠簸问题我们采用了组相连缓存的组织方法，我们只需要将原来的缓存大小一分为二，这被称为2路组相连缓存，其中一个作为备份以应对缓存颠簸，当颠簸发生时，我们有50%的可能性会发生缓存换入换出的问题，如果是4路，该问题发生的可能性降低为25%
 <strong>注意，当采用组相连缓存时，新的组概念意味着彼此不同路的行的集合，路概念被保留</strong>
 
-<img   src='/image/48553016274786.webp'   alt="48553016274786.webp" height="1006" width="1461"></p>
+<img   src='/posts/risc-v/assets/48553016274786.webp'   alt="48553016274786.webp" height="1006" width="1461"></p>
 <p>cpu使用地址访问高速缓存时，传入的地址是虚拟地址还是物理地址？这实际上分为3种情况</p>
 <ol>
 <li>cpu通过物理地址查询高速缓存，这种方式每次都需要查询tlb，效率较低
 
-<img   src='/image/18493416256027.webp'   alt="18493416256027.webp" height="541" width="1457"></li>
+<img   src='/posts/risc-v/assets/18493416256027.webp'   alt="18493416256027.webp" height="541" width="1457"></li>
 <li>cpu通过虚拟地址查询高速缓存
 
-<img   src='/image/290443516278467.webp'   alt="290443516278467.webp" height="548" width="1421"></li>
+<img   src='/posts/risc-v/assets/290443516278467.webp'   alt="290443516278467.webp" height="548" width="1421"></li>
 <li>实际上，还有一种物理地址和虚拟地址结合的查找方式，详见下文</li>
 </ol>
 <p>当cpu通过地址来查找高速缓存时，该地址被解析乘标记域和索引域。也就是说标记域与索引域可能来自虚拟地址也可能来自物理地址，因此有如下3种情况</p>
@@ -1886,7 +1886,7 @@ cpu访问虚拟地址时，会将其同时发给tlb和高速缓存，若tlb未�
 VIPT解决别名问题的办法：由于别名问题产生的根本原因是多个va引用了同一个pa导致数据不同步的现象，并且在同一个进程内是不会产生别名的，哪怕该进程使用了共享内存。因此要避免别名只需上下文切换时通过冲刷高速缓存(先使主存有效，后令高速缓存无效)保证数据同步即可</p>
 <p>tlb的作用类似高速缓冲区，因此可以由直接映射，全相联映射，组相联映射三种方式组成
 
-<img   src='/image/515085516282713.webp'   alt="515085516282713.webp" height="1292" width="1047"></p>
+<img   src='/posts/risc-v/assets/515085516282713.webp'   alt="515085516282713.webp" height="1292" width="1047"></p>
 <p>arm9采用的是VIVT方式，arm11采用的是VIPT方式，arm偏爱虚拟索引的原因是不必每次访存都依赖mmu，后期采用物理标记的原因是避免虚拟标记产生的重名问题</p>
 <ul>
 <li>
@@ -1898,7 +1898,7 @@ VIPT解决别名问题的办法：由于别名问题产生的根本原因是多�
 <li>浪费高速缓存空间</li>
 <li>缓存一致性问题
 
-<img   src='/image/42304616250813.webp'   alt="42304616250813.webp" height="517" width="730"></li>
+<img   src='/posts/risc-v/assets/42304616250813.webp'   alt="42304616250813.webp" height="517" width="730"></li>
 </ul>
 </li>
 <li>
@@ -1913,7 +1913,7 @@ VIPT解决别名问题的办法：由于别名问题产生的根本原因是多�
 <li>
 <p>解决办法：切换线程时把脏的高速缓存写回内存，然后使所有高速缓存行失效，这样新进程就会得到干净的虚拟高速缓存，同时，也有对tlb执行清除操作。但是这个办法并不好，由于每次切换进程时都需要让高速缓存的数据失效，这会造成效率问题。rv架构给出了ASID的解决方案，这会在后文详细介绍
 
-<img   src='/image/138314716253317.webp'   alt="138314716253317.webp" height="547" width="864"></p>
+<img   src='/posts/risc-v/assets/138314716253317.webp'   alt="138314716253317.webp" height="547" width="864"></p>
 </li>
 </ul>
 <p>在rv规范中，要求处理器不允许产生别名问题，因此该问题需要在微架构层面得到解决</p>
@@ -1967,7 +1967,7 @@ I：<strong>数据无效</strong></p>
 <h4 id="高速缓存伪共享" class="headerLink">
     <a href="#%e9%ab%98%e9%80%9f%e7%bc%93%e5%ad%98%e4%bc%aa%e5%85%b1%e4%ba%ab" class="header-mark"></a>高速缓存伪共享</h4><p>当某2个数据位于同一行高速缓存行且有2个cpu想修改这2个数据时就会出现问题，其表现是2个cpu会反复修改本地的缓存行并反复让对方的缓存行失效，这会带来严重的性能问题
 
-<img   src='/image/525884816262264.webp'   alt="525884816262264.webp" height="897" width="1428">
+<img   src='/posts/risc-v/assets/525884816262264.webp'   alt="525884816262264.webp" height="897" width="1428">
 解决的办法是在软件中避免此类问题</p>
 <ol>
 <li>缓存行对齐技术：通过__attribute__(__aligned__xxx)将一个结构体的所有成员对齐到同一个高速缓冲行，因此当需要修改该结构体时只需要一个cpu的一次操作。多个cpu想同时修改该成员的情况也就不会发生了</li>
@@ -2086,7 +2086,7 @@ I：<strong>数据无效</strong></p>
 <li>外设通过DMA将DMA缓冲区的数据转移到外设fifo中</li>
 <li>当cpu软件侧产生新数据时立即使用缓存清理命令将数据刷写到内存的DMA缓冲区中
 
-<img   src='image/207945116255149.webp'   alt="207945116255149.webp"  ></li>
+<img   src='assets/207945116255149.webp'   alt="207945116255149.webp"  ></li>
 </ul>
 </li>
 <li>
@@ -2096,7 +2096,7 @@ I：<strong>数据无效</strong></p>
 <li>若高速缓冲区有数据则令其失效，因为此时的数据是上次传输的旧数据</li>
 <li>DMA将设备数据由fifo搬运到DMA缓冲区中
 
-<img   src='image/223625316255758.webp'   alt="223625316255758.webp"  ></li>
+<img   src='assets/223625316255758.webp'   alt="223625316255758.webp"  ></li>
 </ul>
 </li>
 </ul>
@@ -2113,7 +2113,7 @@ I：<strong>数据无效</strong></p>
 这个问题的解决办法是使用写内存屏障指令(fence w w)将所有写内存屏障指令之前的存储操作完成后才处理该指令之后的存储操作
 例如下图会将abcd写入l1完成后，再写入ef
 
-<img   src='image/257300217254224.webp'   alt="257300217254224.webp"  ></p>
+<img   src='assets/257300217254224.webp'   alt="257300217254224.webp"  ></p>
 <p>同样的，令其他值失效时MESI也有类似的缺点，当cpu0需要写一个本地无缓存的数据，此时其他cpu的失效操作仍需要一定时间，这时，当系统需要大量加载和写操作时，整体效率会变低。因此可以引入无效队列，当其他cpu想要令本地cpu某个数据失效时，本地cpu会将该数据放入无效队列，并立即恢复应答信号等之后有空闲时再执行失效操作
 同样的，这也会产生乱序问题，当失效操作只是挂载到失效队列而没有执行时，如果其他cpu发来读数据的操作，那么就会读到该数据的旧值，解决办法是使用读内存屏障指令(fence r r)将读数据之前的所有无效队列的数据全部失效</p>
 <p>对于自旋锁而言，不同体系结构有不同实现方式，对于x86而言，由于其内部结构是强内存一致性模型，自旋锁实现就隐含了内存屏障。但对于rv的rvwmo规范，其实现的是弱一致性模型，自旋锁的实现并不包括内存屏障指令，这也是弱一致性模型效率高的表现，但这也会造成指令乱序的问题，因此rv为了保证锁的正确性，在自旋锁的实现中也引入了内存屏障指令作为每次调用smp自旋锁后的api，这样，在linux内核中rv的锁编程会多出一步调用内存屏障指令api的操作</p>
@@ -2132,7 +2132,7 @@ I：<strong>数据无效</strong></p>
 <li>和stap寄存器的asid以及属性进行匹配，若匹配，则tlb命中，这是新增的步骤
 在页表项内，还有一位和tlb相关，这就是G位，用于表示全局类型的tlb页表项
 
-<img   src='image/242190017264926.webp'   alt="242190017264926.webp"  ></li>
+<img   src='assets/242190017264926.webp'   alt="242190017264926.webp"  ></li>
 </ol>
 <p>rlb刷新查找页表的操作已被OpenSBI实现了，并开放接口给Linux</p>
 <h3 id="bbmbreak-before-make" class="headerLink">
@@ -2937,7 +2937,7 @@ fence rw, w 代表fence语句<strong>之前的rw操作</strong>不应越过fence
 当处理小数据时，需要将一个8位数据对应的加载到一个单独的64位寄存器中，不能有效利用cpu资源
 simp对多个数据元素同时执行相同的操作，这些数据元素被打包成一个更大的寄存器中的独立通道(也被称为元素)，假设矢量寄存器的长度是128位，那么add指令会把4个32位数据元素加在一起，这些值被打包到两对128寄存器(v1，v2)中的单独通道中，然后对第一个源寄存器的每个通道与第二个源寄存器的对应通道相加，结果存在v0对应通道中
 
-<img   src='/image/430661012250476.webp'   alt="430661012250476.webp" height="737" width="1168"></p>
+<img   src='/posts/risc-v/assets/430661012250476.webp'   alt="430661012250476.webp" height="737" width="1168"></p>
 <p>simd非常适合图像处理场景。图像常用rgb565，rgba8888，yuv422等格式的数据，这些格式的特点是一个像素的一个分量用3或4个8位数据表示，处理的时候是能够行处理</p>
 <h4 id="simd的历史" class="headerLink">
     <a href="#simd%e7%9a%84%e5%8e%86%e5%8f%b2" class="header-mark"></a>SIMD的历史</h4><p>1999年，Intel推出SSE(streaming SIMD extension， 流式SIMD扩展)指令集，解决浮点数运算问题并把矢量寄存器的宽度升级到128位
@@ -4517,7 +4517,7 @@ simp对多个数据元素同时执行相同的操作，这些数据元素被打�
 </span></span></span></code></pre>
 </div>
 <p>
-<img   src='/image/352771512250615.webp'   alt="352771512250615.webp" height="584" width="1436"></p>
+<img   src='/posts/risc-v/assets/352771512250615.webp'   alt="352771512250615.webp" height="584" width="1436"></p>
 <h5 id="加宽模式的加减法指令" class="headerLink">
     <a href="#%e5%8a%a0%e5%ae%bd%e6%a8%a1%e5%bc%8f%e7%9a%84%e5%8a%a0%e5%87%8f%e6%b3%95%e6%8c%87%e4%bb%a4" class="header-mark"></a>加宽模式的加减法指令</h5><div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
   <div class="
@@ -4615,9 +4615,9 @@ simp对多个数据元素同时执行相同的操作，这些数据元素被打�
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">vwaddu</span><span class="p">.</span><span class="n">wv</span> <span class="n">vd</span> <span class="n">vs2</span> <span class="n">vs1</span> <span class="n">vm</span></span></span></code></pre>
 </div>
 <p>
-<img   src='/image/490231512262705.webp'   alt="490231512262705.webp" height="843" width="1401"></p>
+<img   src='/posts/risc-v/assets/490231512262705.webp'   alt="490231512262705.webp" height="843" width="1401"></p>
 <p>
-<img   src='/image/28291612267744.webp'   alt="28291612267744.webp" height="980" width="1463"></p>
+<img   src='/posts/risc-v/assets/28291612267744.webp'   alt="28291612267744.webp" height="980" width="1463"></p>
 <h5 id="位操作指令" class="headerLink">
     <a href="#%e4%bd%8d%e6%93%8d%e4%bd%9c%e6%8c%87%e4%bb%a4" class="header-mark"></a>位操作指令</h5><div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
   <div class="
@@ -4915,12 +4915,12 @@ simp对多个数据元素同时执行相同的操作，这些数据元素被打�
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">vmslt</span><span class="p">.</span><span class="n">vv</span> <span class="n">v0</span> <span class="n">vb</span> <span class="n">vc</span> <span class="n">v0</span><span class="p">.</span><span class="n">t</span></span></span></code></pre>
 </div>
 <p>
-<img   src='/image/388953112269039.webp'   alt="388953112269039.webp" height="683" width="1667"></p>
+<img   src='/posts/risc-v/assets/388953112269039.webp'   alt="388953112269039.webp" height="683" width="1667"></p>
 <h5 id="其他" class="headerLink">
     <a href="#%e5%85%b6%e4%bb%96" class="header-mark"></a>其他</h5><p>gcc提供了rvv的内置函数，我们可以像c风格一样直接调用，编译器会自动生成对应汇编
 我们也可以使用gcc提供的自动矢量化选项来自动矢量化代码，从而充分利用矢量寄存器的带宽。其原理之一是将已知循环次数的循环体展开到矢量寄存器内，具体选项为-free-loop-vectorize，开启o3优化时会自动选择该项
 
-<img   src='/image/451273212270041.webp'   alt="451273212270041.webp" height="640" width="1575"></p>
+<img   src='/posts/risc-v/assets/451273212270041.webp'   alt="451273212270041.webp" height="640" width="1575"></p>
 <h3 id="压缩指令集" class="headerLink">
     <a href="#%e5%8e%8b%e7%bc%a9%e6%8c%87%e4%bb%a4%e9%9b%86" class="header-mark"></a>压缩指令集</h3><p>由于riscv指令集相比其他risc商业指令集(如armv8)密度低，例如arm有专用的成对加载/存储指令，一条指令完成riscv两条指令的工作。这就会造成编译后的代码增多，从而需要更大的存储介质并提高指令缓存的未命中率导致降低程序效率</p>
 <p>因此rv推出压缩指令扩展(C)，压缩指令扩展使用16位宽指令替换32位宽或64位宽指令，由于32/64位指令严格兼容16位指令，因此效率不会降低，实验表明，一个程序中有50%的指令可以使用压缩指令集中的指令来替代</p>
@@ -4944,7 +4944,7 @@ simp对多个数据元素同时执行相同的操作，这些数据元素被打�
 <p>2005年，Intel引入了硬件虚拟化技术(virtualization technology，vt)。vt的基本思想是创建可以运行虚拟机的容器。vt中，cpu有两种模式：根与非根，这两种模式都有ring0~ring3四个特权级</p>
 <p>根模式是个vmm用的，这种模式支持vmx指令集。非根模式是给vm用的，该模式不支持vmx。进入与退出根模式可以通过指令进行，类似ecall
 
-<img   src='/image/532353312270218.webp'   alt="532353312270218.webp" height="360" width="643"></p>
+<img   src='/posts/risc-v/assets/532353312270218.webp'   alt="532353312270218.webp" height="360" width="643"></p>
 <h4 id="内存地址的虚拟化" class="headerLink">
     <a href="#%e5%86%85%e5%ad%98%e5%9c%b0%e5%9d%80%e7%9a%84%e8%99%9a%e6%8b%9f%e5%8c%96" class="header-mark"></a>内存地址的虚拟化</h4><p>在内存虚拟化中：存在四种地址</p>
 <ul>
@@ -4956,7 +4956,7 @@ simp对多个数据元素同时执行相同的操作，这些数据元素被打�
 <p>在访问内存时，由于页表项位于内存，因此当需要修改页表项时仅是对非敏感内存的操作，这并不涉及敏感指令。因此vm不会陷入vmm中，为了能捕获vmm行为，vmm会创建影子页表供vm修改。但这个影子页表是只读的，一旦修改就会触发缺页异常导致陷入vmm
 这样，vm修改pa就需要3步：GVA-&gt;GPA-&gt;HPA，这三步也被称为影子页表。相比于HVA-&gt;HPA的宿主机的页表查询，前者会产生性能问题，为了解决这个问题，可以使用硬件来加速影子页表的查询速度。Intel就实现了这种被称为EPT的技术
 
-<img   src='/image/139923412255770.webp'   alt="139923412255770.webp" height="734" width="557"></p>
+<img   src='/posts/risc-v/assets/139923412255770.webp'   alt="139923412255770.webp" height="734" width="557"></p>
 <h4 id="io虚拟化" class="headerLink">
     <a href="#io%e8%99%9a%e6%8b%9f%e5%8c%96" class="header-mark"></a>io虚拟化</h4><p>vm使用io的同时也会使用到dma，但这会造成内存问题，例如vm改写宿主机的内存。因此在vm场景下，需要将GPA，HPA的关系进行映射，并由iommu硬件保证安全。iommu类似cpu中的mmu，只不过iommu用来将设备访问的虚拟地址转换为物理地址。因此在vm场景下，iommu能够根据GPA和HPA的转换重新建立映射，这样就能避免vm的外设在进行dma时影响到vm以外的内存，这个过程被称为dma重映射。iommu的另一个好处是实现了设备隔离，从而保证设备可以直接访问分配到的vm内存空间而不影响其他vm的完整性</p>
 <h4 id="rv的虚拟化扩展" class="headerLink">
@@ -4965,19 +4965,19 @@ simp对多个数据元素同时执行相同的操作，这些数据元素被打�
 <li>将s模式扩展为hs模式，增加寄存器和指令来同时兼容两类虚拟机(第一类指的是vmm作为宿主机的os，第二类指的是vmm作为宿主机os管理的一个应用程序)，例如在mstatus寄存器添加了模式(v)字段，v=0表示位于非虚拟化模式，如m，hs或u，v=1表示系统位于vs或vu模式</li>
 <li>新增vs和vu模式，给vm内部划分权限
 
-<img   src='/image/68463512272049.webp'   alt="68463512272049.webp" height="662" width="1284"></li>
+<img   src='/posts/risc-v/assets/68463512272049.webp'   alt="68463512272049.webp" height="662" width="1284"></li>
 </ul>
 <p>在虚拟化场景下，新增了vmm，它被允许运行在hs模式。而vm的os运行在vs模式，vm的应用程序运行在vu模式
 
-<img   src='/image/219363512265094.webp'   alt="219363512265094.webp" height="643" width="1598"></p>
+<img   src='/posts/risc-v/assets/219363512265094.webp'   alt="219363512265094.webp" height="643" width="1598"></p>
 <h4 id="rv内存虚拟化" class="headerLink">
     <a href="#rv%e5%86%85%e5%ad%98%e8%99%9a%e6%8b%9f%e5%8c%96" class="header-mark"></a>rv内存虚拟化</h4><p>与Intel的ept技术类似，riscv也才用了硬件加速影子页表查询来优化内存虚拟化的性能。谓词riscv准备了两个寄存器：vsatp与hgatp。这两个寄存器分别存储v模式和hs模式下的页表基地址，并且hgatp的支持模式包括sv39x4，sv48x4等，相比普通的映射模式，x4代表额外支持2位的页表，如sv39x4支持41位的GPA</p>
 <p>虚拟机两阶段的地址映射过程
 
-<img   src='/image/338443912261861.webp'   alt="338443912261861.webp" height="378" width="1632"></p>
+<img   src='/posts/risc-v/assets/338443912261861.webp'   alt="338443912261861.webp" height="378" width="1632"></p>
 <p>包括宿主机的映射过程
 
-<img   src='/image/458113912252192.webp'   alt="458113912252192.webp" height="695" width="1659"></p>
+<img   src='/posts/risc-v/assets/458113912252192.webp'   alt="458113912252192.webp" height="695" width="1659"></p>
 <p>对于tlb刷新指令来说，sfence.vma与v相关，v=0，也就是位于m或hs模式，此时该指令与普通的sfence指令并无区别，都是刷新宿主机tlb缓存或指定asid刷新tlb缓存。v=1时仅仅作用于vs模式的第一阶段地址转换的tlb说的话新，同样的也可以指定asid刷新vm第一阶段地址转换的tlb缓存
 新增指令hfence.gvma：该指令作用于第二阶段地址转换的tlb刷新</p>
 <p>riscv虚拟化扩展提供两种模式：虚拟化模式和非虚拟化模式，这类似于Intel vt中的根模式与非根模式
@@ -4986,13 +4986,13 @@ simp对多个数据元素同时执行相同的操作，这些数据元素被打�
 <p>进入vm：可以配置hstatus的spv以及spvp字段，然后执行sret指令从而进入vm
 退出vm：vm在运行中遇到需要vmm处理的事件，如外部中断或却也异常，cpu可以自动挂起vm，切换到非虚拟化模式(hs或m)从而退出vm
 
-<img   src='/image/322534212270235.webp'   alt="322534212270235.webp" height="438" width="749"></p>
+<img   src='/posts/risc-v/assets/322534212270235.webp'   alt="322534212270235.webp" height="438" width="749"></p>
 <h4 id="中断虚拟化" class="headerLink">
     <a href="#%e4%b8%ad%e6%96%ad%e8%99%9a%e6%8b%9f%e5%8c%96" class="header-mark"></a>中断虚拟化</h4><p>由于中断虚拟化标准尚未成熟，此处只做简要介绍，rv的中断虚拟化主要采用中断注入和陷入模拟。注入指的是提供hvip寄存器来讲虚拟中断注入虚拟机。hvip支持软件中断，定时器中断和外设中断</p>
 <p>陷入与模拟：目前riscv在硬件中断虚拟化中仅支持最基本的中断注入功能，要完成一次中断处理过程需要陷入vmm中模拟</p>
 <p>下面以定时器中断触发流程讲解中断注入，非陷入与模拟
 
-<img   src='/image/469174312275990.webp'   alt="469174312275990.webp" height="799" width="994"></p>
+<img   src='/posts/risc-v/assets/469174312275990.webp'   alt="469174312275990.webp" height="799" width="994"></p>
 <ol>
 <li>vm中的虚拟定时器驱动通过sbi服务接口陷入hs模式的vmm中，从而配置下次定时器的超时事件</li>
 <li>vmm中的驱动通过sbi服务接口访问m模式下的mysbi固件来配置定时器</li>
@@ -5036,7 +5036,7 @@ simp对多个数据元素同时执行相同的操作，这些数据元素被打�
             <div class="footer-line">
                 <span id="run-time"></span>
             </div><div class="footer-line">
-                    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.146.2">Hugo</a>&nbsp;|&nbsp;Theme - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.4.1"><svg class="icon"
+                    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.146.5">Hugo</a>&nbsp;|&nbsp;Theme - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.4.1"><svg class="icon"
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg> DoIt</a>
                 </div><div class="footer-line"><svg class="icon"
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 448c-110.532 0-200-89.451-200-200 0-110.531 89.451-200 200-200 110.532 0 200 89.451 200 200 0 110.532-89.451 200-200 200zm107.351-101.064c-9.614 9.712-45.53 41.396-104.065 41.396-82.43 0-140.484-61.425-140.484-141.567 0-79.152 60.275-139.401 139.762-139.401 55.531 0 88.738 26.62 97.593 34.779a11.965 11.965 0 0 1 1.936 15.322l-18.155 28.113c-3.841 5.95-11.966 7.282-17.499 2.921-8.595-6.776-31.814-22.538-61.708-22.538-48.303 0-77.916 35.33-77.916 80.082 0 41.589 26.888 83.692 78.277 83.692 32.657 0 56.843-19.039 65.726-27.225 5.27-4.857 13.596-4.039 17.82 1.738l19.865 27.17a11.947 11.947 0 0 1-1.152 15.518z"/></svg>2023 - 2025<span class="author">&nbsp;<a href="wumingzi.top" target="_blank" rel="noopener noreferrer">吾铭子</a></span></div>
