@@ -108,7 +108,36 @@ git diff HEAD~[n] HEAD
 
 ```
 diff后红色内容表示删除内容，绿色表示增加内容
-  
+
+### 常用高级操作  
+
+下面是git的高级操作
+```shell
+/* 从其他分支获取文件，需要在想要获取文件的分支上执行 */
+git restore --source <otherbranch> -- <filename/pathname/blob>
+
+/* 我们使用checkout也能达到相同效果，并且会更简单 */
+git checkout <otherbranch> -- <filename/pathname/blob>
+
+/* 如果想要查看过去的某一版本又不想使用reset，可以使用checkout来临时查看 */
+git checkout <commit-hash>
+/* 退出时切换到对应分支即可 */
+git checkout <your-branch>
+
+/* 从其他分支获取commit，详见[阮一峰](https://www.ruanyifeng.com/blog/2020/04/git-cherry-pick.html) */
+git cherry-pick <commitHash>
+
+/* 以交互式方式(-i)打开commit编辑页面，可以编辑的commit数为n */
+git rebase -i HEAD~n
+
+/* 编辑commit message */
+git commit --amend
+
+/* 仅在暂存区中删除文件，保留工作区内容。可用于提交了不想提交的文件需要撤销时 */
+git rm --cached [filename]
+
+```
+
 ### Git远程操作
 
 ![2024-01-02_18-19](assets/171151918267064.webp)
@@ -240,6 +269,22 @@ git branch 本地分支名 远程仓库别名/远程分支名
 ```
 
 **至此，我们的项目就可以进行开发了，之后同步官方仓库的状态可以使用 git fetch upstream，上传到我们自己的仓库使用 git push origin**
+
+如果遇到了本地需要新建文件但是该文件不能上传到云端，同时也不能修改.gitignore文件，因为这是项目所有人共有的。这就需要将其添加到exclude文件内了，具体位置在`.git/info/exclude`，将对应文件的相对项目文件夹的地址(也就是相对.git的地址)写入exclude文件内即可
+使用这种方法的前提是新文件从来没有被git追踪，如果文件已经被追踪，可以使用下面的方式
+```c
+git update-index --assume-unchanged <path_to_file>
+```
+该命令会忽略对应文件的任何更改，我们也不能对文件进行添加到暂存区和提交的操作。注意这里必须指定具体文件路径，不能指定使用"."或者正则表达式所涵盖的文件
+想要让git再次追踪文件: 
+```c
+git update-index --no-assume-unchanged <path/to/file>
+```
+查看当前文件是否被git忽略
+```c
+git ls-files -v
+```
+文件前有"h"标记的就代表已经被忽略，即hide，带有"H"代表没有被被忽略，并且位于Head，带有"M"代表已经修改，但未提交，即Modify
 
 ## GCC
 

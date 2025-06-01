@@ -1,0 +1,228 @@
+# 嵌入式中的启动流程
+
+
+较为系统的介绍rtos的ota技术以及linux系统的启动流程
+
+<!-- more -->
+
+## mcu的bootloader与ota
+
+拥有ota功能的app通常会将flash等rom分为三个区域：bootloader，app以及download区域。bootloader区用于存储启动加载程序，其内部进行硬件初始化，判断是否需要刷写app以及实际刷写app。app区存放应用程序，该区域也是bootloader的刷写对象。download区用于存放需要更新的app，该区域一般由app刷写，当app刷写完成后，下次启动时bootloader就会从该区域获得app镜像，并刷写到app区。因此在分区时，bootloader区可以给最小，app区域和download区给最大。对于采用不同更新和压缩方式的镜像，app区和download区的相对大小不同。例如当使用全量更新，不对镜像进行压缩时，app区和download区大小应当相等。当使用全量更新，对镜像进行gzip压缩时，download区大小应当是app区的50%(`gzip`压缩率在50%~70%之间)。对于进行增量更新(使用diff算法)，不进行压缩的情况，尽管大多数情况增量更新的镜像包都很小，但有时也会出现很大的情况，这时就需要根据经验设计这两个区域的大小了
+
+每次启动程序时，bootloader都会检测当前是否需要进行升级，这可能是上次程序运行时app收到上位机发来的ota指令，也可能是本次启动时bootloader主动查询服务器是否有新的固件版本。当确定有新的固件版本时，新的固件大小和内容等信息就已经发送到设备上了，bootloader只需要执行升级固件包操作就可以了。升级固件包后在bootloader内调用软件重启代码(例如`NVIC_SystemReset`)，再次启动时就能进入app
+
+以flash大小64KB为例，若bootloader需要16KB(0x4000)，app需要48KB。那么实现ota需要修改三处程序：
+* 烧录地址，将bootloader的烧录地址设为0x8000 0000，app的烧录地址设为0x8000 4000
+* 链接地址，设置为烧录地址的相同的值
+* 中断向量表，将bootloader的中断向量表基地址寄存器设置为0x0(0偏移量)，app的中断向量表基地址寄存器设置为0x4000(0x4000偏移量)，没错，含有bootloader的程序内有两套中断向量表
+
+## uboot与内核
+
+### 使用uboot的步骤
+
+* 进入uboot工程目录
+* 执行`make boardxxx_vendorxxx_defconfig`生成默认配置文件(.config)。如果没有defconfig文件或想要自定义uboot，可以使用`make menuconfig`进行自定义配置，该命令会将.make boardxxx_vendorxxx_defconfig生成的.config中相同的选项覆盖掉
+* 执行`make`即可完成编译，对于该命令uboot会进行以下操作
+    * 将uboot提供的默认配置`u-boot.cfg`(内部设置了uboot的压缩方式，作为`linux`内核还是`qemu`的启动器等)，uboot启动过程中需要的依赖(如emmc控制器驱动，串口驱动)以及用户生成的.config文件打包为能够被make识别的文件以及一个头文件
+    * 按照`makefile.build`的规则进行编译，首先编译uboot源码得到`u-boot-nodtb.bin`，而后编译`dts/boardxxx_vendorxxx.dts`得到对应板厂的dtb文件`boardxxx_vendorxxx.dtb`
+    * 将`u-boot-nodtb.bin`和`boardxxx_vendorxxx.dtb`链接成`u-boot-dtb.bin`
+    * 由于需要将uboot加载到ddr中运行，因此uboot前面还需要有能够初始化ddr内存的片段。该片段可能是`start.S`生成的`start.o`，也可能是`spl`(second process loader)，还有可能是由于sram太小导致spl不能放下而产生的tpl，最终该片段会在sram中执行，因此需要将该片段放在uboot头部
+    * 将引导uboot的片段和uboot打包在一起就得到了最终的镜像文件
+
+### 使用内核的步骤
+
+使用内核与使用uboot类似，首先使用patch命令打补丁，如果没有补丁就跳过。之后使用`make menuconfig`命令配置，或者将厂家提供的config文件复制到指定目录并命名为.config，亦或者使用内核的默认配置文件。如果想在厂家或内核的默认配置文件上修改配置，可以再次执行`make menuconfig`进行二次配置。配置完成后使用`make`就可以编译了
+
+进行配置时，部分选项支持被编译为内核模块，由于根据.config生成的autoconfig.h只能判别是否纳入编译或确定编译中对应宏的值(对应的选项是y或者数值)，对于编程为模块还是编进内核不能确定，因此内核模块的编译需要在为makefile准备的auto.conf中被标记为obj-m，正常的内核选项被标记为obj-y
+，未被标记的选项被标记为obj-。这样我们就可以单独将其编译为xxx.ko了。内核模块可以动态加载。这意味着加载内核模块后不需要重启内核，尽管相比直接编译进内核有一定性能损失，但是在某些场景下还是很有用处的，例如对于usb转ttl驱动而言就可以将其编译为内核模块，这样不必每次开机时都加载这个驱动，其他可选功能一般也被配置为内核模块，例如虚拟化模块kvm
+
+编译内核时，.config会生成两个文件：`auto.conf`和`autoconf.h`。前者被顶层makefile包含进编译过程，内部含有make menuconfig时设置的编译模式，如内核模块的编译需要在该文件中被标记为obj-m。后者作为内核的头文件也被纳入编译过程，控制代码的宏开关和其他固定变量就在这里定义
+
+下面是makefile的总结
+```makefile
+all: vmlinux
+zImage Image xipImage bootpImage uImage: vmlinux
+
+vmlinux: $(vmlinux-lds) $(vmlinux-init) $(vmlinux-main) $(kallsyms.o) FORCE
+
+vmlinux-init := $(head-y) $(init-y)
+head-y := arch/arm/kernel/head$(MMUEXT).o/arch/arm/kernel/init_task.o
+init-y := init/
+init-y := $(patsubst %/, %/built-in.o, $(init-y)) 
+        # = init/buildt-in.o
+
+vmlinux-main := $(core-y) $(libs-y) $(drivers-y) $(net-y)
+core-y := usr/ kernel/ mm/ fs/ ipc/ security/ crypto/ block/
+core-y := $(patsubst %/, %/built-in.o, $(core-y)) 
+        # = usr/buildt-in.o kernel/buildt-in.o mm/buildt-in.o fs/buildt-in.o ipc/buildt-in.o security/buildt-in.o crypto/buildt-in.o block/buildt-in.o
+libs-y = lib/lib.a lib/buildt-in.o
+drivers-y := drivers/buildt-in.o sound/buildt-in.o
+net-y := net/buildt-in.o
+
+vmlinux-all := $(vmlinux-init) $(vmlinux-main)
+vmlinux-lds := arch/$(ARCH)/kernel/vmlinux.lds
+```
+
+可以很清楚的看出，真正的内核是vmlinux，并且uImage依赖于vmlinux
+上面还有一些编写编译脚本的技巧：
+* 在第四行的结尾有`FORCE`这个关键字，这意味着无论`$(vmlinux-lds) $(vmlinux-init) $(vmlinux-main) $(kallsyms.o)`是否有变化，都要强制生成一次vmlinux
+* 无论是`init-y`，`core-y`还是`libs-y`，都使用了`$(patsubst %/, %/built-in.o, $(core-y))`将内部的子文件夹下所有文件统一编译并部分链接为buildt-in.o。实际上，buildt-in.o是生成最终vmlinux.o的中间文件，内部包含了未能确定链接地址的符号和已经确定链接地址的符号。如果不进行这种分步骤操作，内核就需要一次将所有符号链接完成，这种大量，分散的符号链接会增大cpu和链接器的负担。同时使用这种结构还可以强制分模块编译，防止各模块耦合，尽管还有部分符号需要在生成最终链接文件时确定，那也不会加重系统负担
+
+### uboot与内核启动加载流程
+
+启动加载流程会根据具体环境而不同，下面介绍一般的过程
+
+* cpu在上电后会自动读取地址0x0处的代码，此处一般位于`bootrom`。需要注意的是，bootrom并不是flash，而是固化在芯片上的代码，因此cpu不需要将bootrom加载到sram。bootrom会进行最基本的硬件初始化，例如时钟，sram，emmc控制器，nand控制器等部分的初始化，并将外部存储介质中位于uboot之前的片段加载到sram中(该片段可能是start.o，`spl`或由于资源受限而只能加载tpl构成)。并在此时获取启动引脚等信息，判断进行是否烧录固件或者作为linux还是qemu项目的启动器
+* 在sram的片段会将ddr初始化，并将其他外设进一步初始化，例如将bootrom中的低速时钟初始化为高速时钟，较为全面地cpu初始化等。同时片段会将uboot完全载入ddr内存，并获得bootrom阶段时获取的启动引脚等信息。之后进入uboot启动阶段
+* uboot首先进行重定位，该过程会根据厂商和arm公司提供的启动文件计算获得ddr的起始地址和大小，而后将ram划分堆，栈，bss以及用于向内核传输数据的段等区域。之后将完整的uboot拷贝到ddr的预定位置中。至此uboot的重定位完成。除了uboot本身的重定位，我们还需要将uboot中的__rel_dyn_start段中的所有符号重定位，因为在uboot对自身重定位时地址也发生了变化。该段内的符号来源于无法单独依靠链接获得位置无关码的符号，例如全局变量，函数，命令列表等，我们可以在加载地址时动态获取想要加载的位置然后对`_rel_dyn_start`段中的所有符号批量更改即可。例如在加载地址为flash的0x0，某个全局函数的地址为0x100，如果uboot初次定位到dr中的0x3000 0000地址处，我们就可以将_rel_dyn_start段中的所有符号的地址与0x3000 0000相加获得新地址，那么该符号的地址就被修改为0x3000 0100。当uboot进行二次重定位时，例如需要放在0x3002 f000，我们可以再次让_rel_dyn_start段中的所有符号的地址和0x3002 f000，0x3000 0000两者之差再相加，该全局符号的地址就变为了0x3002 f100=0x3000 0100+(0x3002 f000 - 0x3000 0000)，这样就可以完成uboot的全部符号的重定位
+* 之后进入uboot启动内核流程，uboot会将板级信息放入到上一步开辟过的向内核传输数据的段的位置(该段信息的格式被称为TAG，内部包含芯片id，板子id，设备树，内存大小和地址，启动引脚等信息)，而后将`uImage`放入ddr中合适的位置。此处的uImage指的是信息头+内核，信息头内部标明了内核创建时间，crc校验，魔数，cpu架构等信息，其中最重要的是内核入口点和加载点，这两者之差就是信息头大小。因此我们只需要将内核解压缩并跳转到信息头标明的内核入口点运行即可启动内核。启动内核是通过解析boot命令进行的，通过文本解析找到位于命令列表中的对应函数，并将参数(也就是启动时指定的启动设备，内核在启动设备中的位置)传入。命令列表本身是个存放函数并在链接脚本中指明的段，rthread命令列表可能就从中获取灵感。执行启动命令后就正式进入了内核初始化阶段
+* 内核初始化阶段是uboot到内核的第一个c函数`strat_kernel`之间的阶段，该阶段由汇编实现，其中做了如下操作：
+    * 简单处理uboot参数，判断机器id，是否支持这个cpu，判断是否支持这个单板
+    * 建立页表
+    * 使能mmu
+    * 跳转到strat_kernel
+* strat_kernel首先处理上步没有处理完的uboot参数，例如启动介质，控制台输出方式，解析完成后将其解析为文本放在.init.setup段内。随后进行一系列硬件初始化(网络，缓存系统，磁盘，usb，声音系统等)，在某些初始化完成后找到对应的段并将文本作为参数传入相关的初始化函数，如通过sd卡启动根文件系统这个过程中，内核只提供启动函数，但不清楚是从sd还是其他的存储介质启动，因此就需要uboot传入的参数并将其解析为文本参数传给内核中对应的启动函数，最后挂载根文件系统并执行应用程序
+
+### 根文件系统启动流程
+
+首先简单介绍`busybox`，busybox是一个小型的init程序，当内核执行init后调用busybox就可以进入根文件系统，同类产品还有`systemd`和`SysVinit`。进入根文件系统后，任何常用的命令(如cd，rm，ps(需要proc驱动)，mv等)都是busybox下对应程序的软链接(ls->/bin/busybox)
+
+内核根据uboot传入的信息打开相关设备(例如/dev/console)作为标准输入，并将这个设备复制两份作为标准输出和标准错误。而后内核会根据uboot传入的init=xxx将xxx作为自己的第一个程序，如果并未指定程序，内核会按照顺序依次运行/sbin/init, /etc/init, /bin/init/, /bin/sh中的一个并陷入。而init进程则是busybox的链接。具体的应用程序调用链如下：
+```c
+内核调用相关的init程序
+    busybox内部的init_main
+        parse_inittab
+            file=fopen(INITTAB,"r"); // #define INITTAB "/etc/inittab"
+            new_init_action; //利用打开的/etc/inittab文件创建一个init_action结构，把这个结构填充进链表
+        run_actions(SYSINIT);
+            waitfor(a,0); //执行应用程序，并等待其执行完毕
+                run(a); //创建子进程(/etc/inittab中指定的应用程序)
+                waitpid(); //等待结束
+        run_actions(WAIT); //与run_actions(SYSINIT)类似
+        run_actions(ONCE); //与run_actions(SYSINIT)类似
+        while(1){
+            run_actions(RESPAWN);
+            run_actions(ASKFIRST);
+            wpid=wait(); //等待任意一个子进程退出
+            while(wpid > 0){ //如果是父进程受到了子进程退出的信号
+                for(a = init_action_list; a; a = a->next){
+                    a->pid=0; //将所有退出的子进程的pid全设为0以便重启任务
+                }
+            }
+        }
+```
+可以看到内核init程序首先调用busybox的`init_main`程序，而后init_main读取`/etc/inittab`配置文件，而后解析配置文件并创建对应链表，最后依次执行链表中的程序，如果其中有退出的程序就将其重启，否则就进入死循环始终等待。这一过程类似于shell等待命令的过程
+那么/etc/inittab中的文件是什么样子呢，下面是内核给出/etc/inittab的默认配置示例
+```c
+<id>:<runlevels>:<action>:<process>
+id: /dev/id，用于终端，常用console，null或tty作为参数
+runlevels: 忽略
+action: 执行时机，包含sysinit，wait，once，respawn，askfirst，reboot，shutdown等参数
+process: 应用程序或脚本，由用户指定
+
+对于内核的默认/etc/inittab配置如下：
+::shutdown:umount -a -r
+::restart:init
+tty2::askfirst:-/bin/sh
+tty3::askfirst:-/bin/sh
+::sysinit:/etc/init.d/rcS
+```
+这样，配置文件就被解析为对不同设备的操作或指令存储在链表中，甚至最后还运行了自动化脚本文件
+
+由上述过程我们就可以知道根文件系统的组成：
+* init程序本身，嵌入式系统中使用busybox作为init程序来构建根文件系统，对于pc，服务器或其他发行版领域则是systemd或者SysVinit
+* /etc/inittab，该文件指定了开机时启动的应用程序及其启动方式
+* /etc/inittab中的应用程序
+* /etc/inittab中的应用程序所依赖的库
+* /dev/console，/dev/null或者/dev/tty，用于指定串口输入输出设备
+
+### 构建根文件系统
+
+#### 构建并安装busybox
+
+选择busybox作为系统的init程序后就可以使用类似uboot，rtthread等操作进行编译了
+* 首先`make menuconfig`进行配置
+* 之后`make`编译
+* 在上一步获得编译产物后执行`make CONFIG_PREFIX=/path/from/root install`将buysbox安装到目标机器上，**注意这里需要添加参数，防止将busybox安装到pc机上破坏系统**
+
+在执行完上述步骤后，对应的/path/from/root文件夹内就会出现bin，linuxrc，sbin，usr目录，其中linuxrc->/bin/busybox
+
+之后创建/dev/console和/dev/null设备
+* 在本机内获得这两个设备的设备号，`ls /dev/console /dev/null -l`
+* 在/path/from/roo创建文件夹，`mkdir dev`
+* 在dev内创建设备节点，`sudo mknod console c 设备号`，这里的c代表字符设备
+
+设备节点创建完毕
+
+而后修改/etc/inittab
+* `mkdir etc`
+* `vi /etc/inittab`
+* 写入`console::askfirst:-/bin/sh`，这样开机就可以进入shell
+
+下面安装c库，这里的c库来源于交叉编译工具链的c库
+* 创建lib文件夹存放动态链接库文件，`mkdir lib`
+* `cp /path/to/cross-tools/gcc-version-glibc-version/\*.so\*  lib -d`，这里的-d代表将链接文件拷贝过来，而不是将链接的源文件拷贝过来，这样可以减小根文件系统体积
+
+至此文件系统就构建好了，尽管没有指定用户编写的应用程序，但这并不妨碍文件系统正常启动
+
+这里我们还需要将根文件系统制作成映像文件
+
+这里使用yaffs作为映像文件制作工具
+* 安装yaffs，步骤与上面类似
+    * `make`(不需要menuconfig)
+    * 将编译产物放到宿主机的/bin并给予执行权限
+* `mkyaffs2image myfs myfs.yaffs`，这样就制作完成映像文件系统了
+
+将映像文件烧录进带有内核的目标机上就可以启动根文件系统
+
+此时根文件系统下有如下目录：bin dev etc lib linuxrc lost+found  sbin usr
+
+#### 支持ps命令
+
+此时执行ls，cat，rm等命令都可以正常执行，但是执行ps命令就会失败
+这是因为ps需要根文件系统支持proc设备和proc文件系统，在这里就需要将proc作为虚拟文件系统挂载到内核
+执行`mount -t proc none /proc`这里的none指的是不依赖实际硬件设备
+想要将上述步骤自动化，需要作如下修改
+* `vi /etc/inittab`
+* 写入`::sysinit:/etc/init.d/rcS`
+* 创建`/etc/init.d/rcS`文件并给予执行权限
+* 在该文件内写入`mount -t proc none /proc`
+
+此时根文件系统下有如下目录：bin dev etc lib linuxrc lost+found proc sbin usr (新增proc文件夹)
+这里的lost+found文件夹是内核自动创建的，在映像文件系统内没有这个文件夹
+
+#### 进一步支持多种文件系统
+
+除了mount -t mount_point device命令，还有一个更简便的mount -a命令，该命令会查找/etc/fstab文件中查找对应的为文件系统并挂载，想要支持ps命令，需要如下操作
+* `vi /etc/init.d/rcS`
+* 在该文件内写入`mount -a`
+* `vi /etc/fstab`
+* 写入如下内容
+```config
+# device    mount-point    type    options    dump    fsck    order
+proc        /proc          proc    defaults   0       0
+```
+
+#### 使用udev更进一步简化设备挂载过程
+
+udev是内核支持的一个能够自动创建设备节点的机制，为了防止根文件系统内所有设备都执行sudo mknod console c 设备号创建设备节点，linux提供udev机制来自动创建设备节点并挂载设备，该机制依赖于热插拔系统。在busybox中则需要使用mdev，这是udev的简化版本
+下面是该机制的使用方法
+* `vi /etc/fstab`
+* 写入如下内容
+```config
+# device    mount-point    type    options    dump    fsck    order
+proc        /proc          proc    defaults   0       0
+sysfs       /sys           sysfs   defaults   0       0
+tmpfs       /dev           tmpfs   defaults   0       0
+tmpfs       /tmp           tmpfs   defaults   0       0
+```
+* `vi /etc/init.d/rcS`
+* 写入如下内容
+```shell
+mount -a
+mkdir /dev/pts
+mount -t devpts devpts /dev/pts
+echo /bin/mdev > /proc.sys/kernel/hotplug # 将mdev的设备加载到热插拔目录中，这样插入或拔出新设备时会自动创建或删除设备节点
+mdev -s # 主动加载mdev，创建节点
+```
+这样，进入根文件系统后就会自动挂载设备并创建设备节点，此时根文件系统下有如下目录：bin dev etc lib linuxrc lost+found proc sbin sys usr (新增sys文件夹)

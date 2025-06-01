@@ -4,9 +4,16 @@
         <link>https://1078249029.github.io/</link>
         <description>吾铭子</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>1078249029@qq.com (吾铭子)</managingEditor>
-            <webMaster>1078249029@qq.com (吾铭子)</webMaster><lastBuildDate>Wed, 09 Apr 2025 18:46:00 &#43;0800</lastBuildDate>
+            <webMaster>1078249029@qq.com (吾铭子)</webMaster><lastBuildDate>Sun, 01 Jun 2025 17:41:22 &#43;0800</lastBuildDate>
             <atom:link href="https://1078249029.github.io/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>嵌入式中的启动流程</title>
+    <link>https://1078249029.github.io/posts/booting-process-in-embedded/</link>
+    <pubDate>Sun, 01 Jun 2025 17:41:22 &#43;0800</pubDate><author>
+        <name>吾铭子</name>
+    </author><guid>https://1078249029.github.io/posts/booting-process-in-embedded/</guid>
+    <description><![CDATA[<p>较为系统的介绍rtos的ota技术以及linux系统的启动流程</p>]]></description>
+</item><item>
     <title>RISC-V</title>
     <link>https://1078249029.github.io/posts/risc-v/</link>
     <pubDate>Wed, 01 Jan 2025 15:22:46 &#43;0800</pubDate><author>
@@ -69,12 +76,5 @@
         <name>吾铭子</name>
     </author><guid>https://1078249029.github.io/posts/cpp/</guid>
     <description><![CDATA[<p>本文较为详细地介绍了C++的语法和使用中需要注意的坑，还介绍了STL库和Modern C++，甚至涉及C++20的部分新特性。在最后，我们大致的介绍了C++常用的设计模式</p>]]></description>
-</item><item>
-    <title>Python</title>
-    <link>https://1078249029.github.io/posts/python/</link>
-    <pubDate>Sun, 14 Jan 2024 09:37:13 &#43;0800</pubDate><author>
-        <name>吾铭子</name>
-    </author><guid>https://1078249029.github.io/posts/python/</guid>
-    <description><![CDATA[<p>本文较为详细地介绍了Python的语法，参考资料为b站的<a href="https://www.bilibili.com/video/BV1qW4y1a7fU/?share_source=copy_web&amp;vd_source=af2e9dd8c2997005fd3692331c1df718" target="_blank" rel="noopener noreferrer">黑马程序员</a></p>]]></description>
 </item></channel>
 </rss>

@@ -8,8 +8,15 @@
     <language>zh-cn</language>
     <managingEditor>1078249029@qq.com (吾铭子)</managingEditor>
     <webMaster>1078249029@qq.com (吾铭子)</webMaster>
-    <lastBuildDate>Mon, 07 Apr 2025 19:32:31 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 01 Jun 2025 17:41:22 +0800</lastBuildDate>
     <atom:link href="https://1078249029.github.io/categories/tech/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>嵌入式中的启动流程</title>
+      <link>https://1078249029.github.io/posts/booting-process-in-embedded/</link>
+      <pubDate>Sun, 01 Jun 2025 17:41:22 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
+      <guid>https://1078249029.github.io/posts/booting-process-in-embedded/</guid>
+      <description>&lt;p&gt;较为系统的介绍rtos的ota技术以及linux系统的启动流程&lt;/p&gt;</description>
+    </item>
     <item>
       <title>RISC-V</title>
       <link>https://1078249029.github.io/posts/risc-v/</link>
