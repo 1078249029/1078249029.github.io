@@ -34,7 +34,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https://1078249029.github.io/posts/miscs/"
-        },"genre": "posts","keywords":["Tech"],"wordcount":  16107 ,
+        },"genre": "posts","keywords":["Tech"],"wordcount":  16308 ,
         "url": "https://1078249029.github.io/posts/miscs/","datePublished": "2023-12-24T10:07:45+08:00","dateModified": "2024-10-28T20:08:00+08:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -212,9 +212,9 @@
                 <li><a href="#内核栈与用户栈">内核栈与用户栈</a></li>
               </ul>
             </li>
-            <li><a href="#中断函数">中断函数</a></li>
+            <li><a href="#中断与不可重入函数">中断与不可重入函数</a></li>
             <li><a href="#进程间通信">进程间通信</a></li>
-            <li><a href="#进程线程与协程">进程，线程与协程</a></li>
+            <li><a href="#线程池和协程">线程池和协程</a></li>
             <li><a href="#atpcs规则">ATPCS规则</a></li>
             <li><a href="#生命周期与作用域">生命周期与作用域</a></li>
             <li><a href="#数据存储溢出读取与对齐">数据存储，溢出，读取与对齐</a></li>
@@ -304,9 +304,9 @@
                 <li><a href="#内核栈与用户栈">内核栈与用户栈</a></li>
               </ul>
             </li>
-            <li><a href="#中断函数">中断函数</a></li>
+            <li><a href="#中断与不可重入函数">中断与不可重入函数</a></li>
             <li><a href="#进程间通信">进程间通信</a></li>
-            <li><a href="#进程线程与协程">进程，线程与协程</a></li>
+            <li><a href="#线程池和协程">线程池和协程</a></li>
             <li><a href="#atpcs规则">ATPCS规则</a></li>
             <li><a href="#生命周期与作用域">生命周期与作用域</a></li>
             <li><a href="#数据存储溢出读取与对齐">数据存储，溢出，读取与对齐</a></li>
@@ -348,9 +348,9 @@
             <div class="post-meta-line"><svg class="icon"
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>&nbsp;<time datetime="2023-12-24">2023-12-24</time>&nbsp;<svg class="icon"
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg>&nbsp;<time datetime="2024-10-28">2024-10-28</time>&nbsp;<svg class="icon"
-    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;约 16107 字&nbsp;
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;约 16308 字&nbsp;
                     <svg class="icon"
-    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;预计阅读 71 分钟&nbsp;</div>
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;预计阅读 72 分钟&nbsp;</div>
         </div><div class="details toc print:!tw-block" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
                     <span>目录</span>
@@ -412,9 +412,9 @@
                 <li><a href="#内核栈与用户栈">内核栈与用户栈</a></li>
               </ul>
             </li>
-            <li><a href="#中断函数">中断函数</a></li>
+            <li><a href="#中断与不可重入函数">中断与不可重入函数</a></li>
             <li><a href="#进程间通信">进程间通信</a></li>
-            <li><a href="#进程线程与协程">进程，线程与协程</a></li>
+            <li><a href="#线程池和协程">线程池和协程</a></li>
             <li><a href="#atpcs规则">ATPCS规则</a></li>
             <li><a href="#生命周期与作用域">生命周期与作用域</a></li>
             <li><a href="#数据存储溢出读取与对齐">数据存储，溢出，读取与对齐</a></li>
@@ -450,7 +450,7 @@
 <!-- more -->
 <h1 id="杂项" class="headerLink">
     <a href="#%e6%9d%82%e9%a1%b9" class="header-mark"></a>杂项</h1><h2 id="硬件" class="headerLink">
-    <a href="#%e7%a1%ac%e4%bb%b6" class="header-mark"></a>硬件</h2><p>SOC: system on chip
+    <a href="#%e7%a1%ac%e4%bb%b6" class="header-mark"></a>硬件</h2><p>SOC: system on chip<br>
 电机会有死区电压，表现为电压很低时电机不能启动，死区电压约占额定电压的10%，此时需要给一PWM占空比最小值从而避免死区电压</p>
 <p>
 <figure><a class="lightgallery" href="/posts/miscs/assets/113862122249687.webp" title="2023-12-20_22-20" data-thumbnail="/posts/miscs/assets/113862122249687.webp" data-sub-html="<h2> </h2><p>2023-12-20_22-20</p>"><img   src='/posts/miscs/assets/113862122249687.webp'   alt="2023-12-20_22-20" height="1193" width="1128"></a><figcaption class="image-caption">2023-12-20_22-20</figcaption>
@@ -557,7 +557,7 @@
 </span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre>
 </div>
 <p><strong>编译链接完成后，数组a的内存存放方式为：a[0]，a[1]存放在.data，a[2]~a[9]位于.bss段，当输入的num==3时，.bss段内的a[5]的值被更改为4</strong></p>
-<p>尽量把数据保存在栈上，这样防止产生内存安全问题，并且栈上访问数据速度更快(数据局部性原理？)
+<p>尽量把数据保存在栈上，这样防止产生内存安全问题，并且栈上访问数据速度更快<br>
 栈是从高地址向低地址增长，堆是从低地址向高地址增长</p>
 <p>
 <figure><a class="lightgallery" href="/posts/miscs/assets/326561215267371.webp" title="2024-04-09_15-12" data-thumbnail="/posts/miscs/assets/326561215267371.webp" data-sub-html="<h2> </h2><p>2024-04-09_15-12</p>"><img   src='/posts/miscs/assets/326561215267371.webp'   alt="2024-04-09_15-12" height="1337" width="602"></a><figcaption class="image-caption">2024-04-09_15-12</figcaption>
@@ -566,7 +566,7 @@
 <figure><a class="lightgallery" href="/posts/miscs/assets/321153610251887.webp" title="2024-04-09_10-34" data-thumbnail="/posts/miscs/assets/321153610251887.webp" data-sub-html="<h2> </h2><p>2024-04-09_10-34</p>"><img   src='/posts/miscs/assets/321153610251887.webp'   alt="2024-04-09_10-34" height="1260" width="977"></a><figcaption class="image-caption">2024-04-09_10-34</figcaption>
     </figure></p>
 <p>操作Flash前需要关中断</p>
-<p>计算机底层是小端存储的原因是在C程序员眼里，小端更符合直觉，在不定长的int，char中可以相互转换而不改变变量值(变量长度小于int、char最小值的情况下)，但是对于传输协议来说，大部分为定长字段传输，这就造成了大端存储更符合从左至右的阅读习惯</p>
+<p>计算机底层是小端存储的原因是在C程序员眼里，小端更符合直觉，在不定长的int，char中可以相互转换而不改变变量值(变量长度小于int和char的最小值的情况下)，但是对于传输协议来说，大部分为定长字段传输，而大端存储更符合从左至右的阅读习惯，因此传输协议常使用大端</p>
 <h2 id="编译器c与内核" class="headerLink">
     <a href="#%e7%bc%96%e8%af%91%e5%99%a8c%e4%b8%8e%e5%86%85%e6%a0%b8" class="header-mark"></a>编译器、C与内核</h2><h3 id="gnu工具链" class="headerLink">
     <a href="#gnu%e5%b7%a5%e5%85%b7%e9%93%be" class="header-mark"></a>GNU工具链</h3><p>GNU工具集：binutils tools，其中包括</p>
@@ -675,7 +675,7 @@
 </span></span><span class="line"><span class="cl">	<span class="p">.</span><span class="n">release</span> <span class="o">=</span> <span class="n">led_drv_close</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl"><span class="p">};</span></span></span></code></pre>
 </div>
-<p>这里利用了GCC编译器的特性，即采用结构体位域的注册方式，当一个结构体有许多成员时这样注册可以避免普通的结构体注册时将所有成员都注册一遍，那样的话注册<code>file_operations</code>就太繁琐了</p>
+<p>这里利用了GCC编译器的特性，即采用结构体位域的注册方式，当一个结构体有许多成员时这样注册可以避将所有成员都注册一遍，那样的话注册<code>file_operations</code>就太繁琐了</p>
 <h4 id="语句表达式" class="headerLink">
     <a href="#%e8%af%ad%e5%8f%a5%e8%a1%a8%e8%be%be%e5%bc%8f" class="header-mark"></a>语句表达式</h4><p>({ /* do something */ })：语句表达式，其值等于最后一行代码</p>
 <div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
@@ -772,14 +772,15 @@
 </span></span></span><span class="line"><span class="cl"><span class="cp">int y=Y;\
 </span></span></span><span class="line"><span class="cl"><span class="cp">x&gt;y?x:y;})</span></span></span></code></pre>
 </div>
+<p>MAX(X,Y)的值就是三目运算的结果</p>
 <h3 id="链接" class="headerLink">
-    <a href="#%e9%93%be%e6%8e%a5" class="header-mark"></a>链接</h3><p>链接过程包括：地址和空间分配，符号决议和重定位
+    <a href="#%e9%93%be%e6%8e%a5" class="header-mark"></a>链接</h3><p>链接过程包括：地址和空间分配，符号决议和重定位<br>
 编译阶段时，具体的函数，变量地址并未确定，每个需要重定位的地方称为重定位入口，因此还需要链接器在链接阶段进行变量，函数的重定位，这样就可以获得程序的加载地址了</p>
-<p>产生的.bss段在文件中并不占用可执行文件的空间，.bss只在运行程序时需要声明所占内存的大小</p>
+<p>产生的.bss段在文件中并不占用可执行文件的空间，.bss只声明在运行程序时需要所占内存的大小，在运行阶段由加载器解析bss段后分配内存空间</p>
 <p>
 <figure><a class="lightgallery" href="/posts/miscs/assets/282042521240360.webp" title="2024-03-19_21-25" data-thumbnail="/posts/miscs/assets/282042521240360.webp" data-sub-html="<h2> </h2><p>2024-03-19_21-25</p>"><img   src='/posts/miscs/assets/282042521240360.webp'   alt="2024-03-19_21-25" height="947" width="1199"></a><figcaption class="image-caption">2024-03-19_21-25</figcaption>
     </figure></p>
-<p>编译产生的文件被称为目标文件，其包括可执行文件(linux的elf，或者unix的out)，动态链接库文件以及静态链接库(这两位也是可执行文件<strong>格式</strong>存储的)</p>
+<p>编译产生的文件被称为目标文件，其包括可执行文件(linux的elf，或者unix的out)，动态链接库文件以及静态链接库(这两位也是按<strong>可执行文件格式</strong>存储的)</p>
 <p>.comment保存的是编译器和系统版本信息，这些信息也是只读的</p>
 <p>符号表的段：.symtab</p>
 <p>链接时最后的exit()函数负责清理收尾工作，如果要自己重定位main函数入口的话，那么在程序最后就不能使用return了，否则会导致段错误</p>
@@ -787,8 +788,8 @@
 <h4 id="静态链接" class="headerLink">
     <a href="#%e9%9d%99%e6%80%81%e9%93%be%e6%8e%a5" class="header-mark"></a>静态链接</h4><p>静态链接重定位过程:</p>
 <ul>
-<li>静态链接时，由于各个目标文件的各个段需要合并，因此在合并时需要对一些地址操作进行重定位。需要被重定位的代码被统一放在.rel.text段内，而需要被重定向的数据则需要被放在.rel.data段内，这两段也被称为重定位表。重定位时，在分配好目标文件的空间后，编译器会计算PC与需要重定位的数据或指令的地址偏移量，将计算的结果写入到重定位表后就可以找到对应的数据和进行地址操作了。</li>
-<li>在链接时还需要进强弱符号裁决，这时需要将弱符号放入COMMON块内，这个段放的是未知大小的数据。由于弱符号是声明但未初始化的符号，因此需要放入COMMON块内。当裁决完毕后，所有符号的大小都被确定了，这时放入COMMON块的如果是未初始化全局变量的弱符号，那么此时就会放入bss段</li>
+<li>静态链接时，由于各个目标文件的各个段需要合并，因此在合并时需要对一些地址操作进行重定位。需要被重定位的代码被统一放在.rel.text段内，而需要被重定向的数据则需要被放在.rel.data段内，这两段也被称为重定位表。重定位时，在分配好目标文件的空间后，编译器会计算PC与需要重定位的数据或指令的地址偏移量，将计算的结果写入到重定位表后就可以找到对应的数据和地址了</li>
+<li>在链接时还需要进强弱符号裁决，这时需要将弱符号放入COMMON块内，这个段放的是未知大小的数据。由于弱符号是声明但未初始化的符号，因此需要放入COMMON块内。当裁决完毕后，所有符号的大小都被确定了，这时放入COMMON块的如果是未初始化全局变量的弱符号，那么就会被放入bss段</li>
 </ul>
 <p>在编译C++代码时，还需要做好重复代码消除和构造与析构的操作，在使用模板，虚函数表或者重载时会产生前者的问题，解决办法是在函数/模板名后加_参数类型来避免符号重名。对于构造与析构解决的方法是是加入.init与.fini段，这两个段里的代码会分别在main函数前后阶段执行</p>
 <p>elf文件加载过程：
@@ -796,8 +797,8 @@
 <ul>
 <li>装载之前要判断elf文件前的魔数从而获得文件格式(待加载文件也有可能是#!开头的脚本文件)</li>
 <li>对elf文件各段映射到内存中</li>
-<li>初始化可执行文件的环境(调用.init和文件开头的若干参数)</li>
-<li>对于静态链接器来说，需要找到e_entry段从而获得可执行文件入口。对于动态链接来说，需要寻找动态链接.interp段从而找到动态链接器的路径
+<li>初始化可执行文件的环境(调用.init和伴随文件传入的若干参数)</li>
+<li>对于静态链接器来说，需要找到e_entry段从而获得可执行文件入口。对于动态链接来说，需要寻找动态链接.interp段从而找到动态链接器的路径(.interp段的内容是链接时被指定的，通过不同工具链个性化.interp段内容，这也是交叉编译工具链的核心原理)<br>
 这样当从do_execve函数返回时就得到了elf文件的入口</li>
 </ul>
 <h4 id="动态链接" class="headerLink">
@@ -818,17 +819,14 @@
 </li>
 </ul>
 <p>动态加载程序的地址空间中不仅有程序本身，还有依赖的其他动态库，C语言运行库(libc.so)以及动态链接器(ld-2.6.1.so)</p>
-<p>有趣的是真正的动态链接器位于内核，每个进程里的动态链接器是个软链接  ，而动态链接器本身是以静态链接的方式加载的</p>
+<p>有趣的是真正的动态链接器位于内核(或者lib/ld.x.y.z.so)，每个进程里的动态链接器是个软链接  ，而动态链接器本身是以静态链接的方式加载的</p>
 <p>静态链接时的重定位称为链接时重定位，动态链接时重定位称为装载时重定位，也被称为基址重置(Rebasing)</p>
 <h4 id="装载时重定位和地址无关码" class="headerLink">
     <a href="#%e8%a3%85%e8%bd%bd%e6%97%b6%e9%87%8d%e5%ae%9a%e4%bd%8d%e5%92%8c%e5%9c%b0%e5%9d%80%e6%97%a0%e5%85%b3%e7%a0%81" class="header-mark"></a>装载时重定位和地址无关码</h4><p>为了实现<strong>代码之间</strong>的地址无关，即多个进程可以使用同一份内存中的代码(这会造成装载和指令取址的问题)，我们可以通过装载时重定位和地址无关码来解决</p>
 <p>动态链接时代码装载时各个指令的地址无法确定，这样会给取指造成一定的困难，动态链接的解决办法是装载时才确定具体的指令地址</p>
 <ul>
-<li>装载时重定位：类似于静态链接时的重定位功能，但简单很多。因为程序是整段加载进内存的，不需要考虑像编译阶段那样代码行数和地址操作的改变。所以只需要在地址上统一加上装载时的偏移即可</li>
-</ul>
-<p>装载时重定位只考虑了指令和变量的地址安排，但指令具体的地址操作就无能为力了。比如想要取0x80002000地址，对于静态链接这是链接阶段就写好的，而一旦这个地址规定好就只能给一个进程使用了。动态链接的解决办法是让代码段里的代码与地址无关</p>
-<ul>
-<li>地址无关码(PIC，Position-independent Code)：既然有的代码是与进程本身相关的，那么把这些代码分离出来的话剩下的代码不就与进程无关了么？这样就可以在进程中共享代码了。分离出来的代码放在哪？既然这部分代码与各自进程相关，那就放在对应进程的数据段。因此，在数据段中又分离出了一个新的段(.got，Global Offset Table)，这个段内放置了一个指向地址相关符号的数组，只要对里面元素进行解引用就可以找到符号地址了，这时操作由地址相关转化为地址无关(.got及其内部符号的位置是编译器规定的且知晓的)。.got不仅可以保存本进程的地址相关码，也可以保存其他进程的地址相关码，这样就可以共享全局变量和函数了</li>
+<li>装载时重定位：类似于静态链接时的重定位功能，但简单很多。因为程序是整段加载进内存的，不需要考虑像编译阶段那样代码行数和地址操作的改变。所以只需要在地址上统一加上装载时的偏移即可。装载时重定位只考虑了指令和变量的地址安排，但指令具体的地址操作就无能为力了。比如想要取0x80002000地址，对于静态链接这是链接阶段就写好的，而一旦这个地址规定好就只能给一个进程使用了。动态链接的解决办法是让代码段里的代码与地址无关</li>
+<li>地址无关码(PIC，Position-independent Code)：既然有的代码是与进程本身相关的，那么把这些代码分离出来的话剩下的代码不就与进程无关了么？这样就可以在进程中共享代码了。分离出来的代码放在哪？既然这部分代码与各自进程相关，那就放在对应进程的数据段。因此，在数据段中又分离出了一个新的段(.got，Global Offset Table)，这个段内放置了一个指向地址相关符号的数组，只要对里面元素进行解引用就可以找到符号地址了，这时操作由地址相关转化为地址无关(.got及其内部符号的位置是编译器规定且知晓的)。.got不仅可以保存本进程的地址相关码，也可以保存其他进程的地址相关码，这样就可以共享全局变量和函数了</li>
 </ul>
 <p>由于动态链接会有一定的性能损失，这主要由工程内的大量函数引起(因为全局变量会增加模块耦合度，用的很少)，所以想办法降低模块的函数重定位消耗即可，因此我们还需要在PIC上做一定的改进</p>
 <ul>
@@ -845,7 +843,7 @@
 </ul>
 <p>程序加载后映射时如何使得内存占用最小</p>
 <ul>
-<li>无论是动态加载还是静态加载，为了使得内存占用最小。unix将各个段的接壤处不做分割处理，仍然位于同一物理页，但是在映射到虚拟内存的过程中会被映射两次，这样就可以节省物理内存了</li>
+<li>无论是动态加载还是静态加载，为了使得内存占用最小。unix将各个段的接壤处不做分割处理，仍然位于同一物理页，但是在映射到虚拟内存的过程中会被映射两次，这样其他程序就可以通过不同的虚拟内存地址找到同一块物理内存，从而可以节省物理内存了</li>
 </ul>
 <p>内核模块文件.ko本质上也是动态加载的可重定位目标文件，与普通文件的区别是.ko文件运行在内核空间</p>
 <h4 id="强弱符号" class="headerLink">
@@ -855,7 +853,7 @@
 <li>强符号：函数名、初始化的全局变量名，如int i=10</li>
 <li>弱符号：未初始化的全局变量名，如int i</li>
 </ul>
-<p>对于同名强符号，链接阶段时会被报重定义错误，若强弱符号重名，编译器会优先选择强符号。若弱符号未被定义，则会被编译器初始化为0或NULL，因此此时的程序可以过编译链接，但是在运行时可能会得到不正确的结果或段错误</p>
+<p>对于同名强符号，链接阶段时会被报重定义错误，若强弱符号重名，编译器会优先选择强符号。若弱符号未被定义，则会被编译器初始化为0或NULL(并不严格保证)，因此此时的程序可以过编译链接，但是在运行时可能会得到不正确的结果或段错误</p>
 <p>GNU C 通过 __atttribute__ 声明weak属性，可以将一个强符号转换为弱符号</p>
 <div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
   <div class="
@@ -946,8 +944,8 @@
       tw-overflow-y-hidden
       tw-overflow-x-auto
       tw-scrollbar-thin
-      "><span class="line"><span class="cl">    <span class="kt">void</span>  <span class="nf">__attribute__</span><span class="p">((</span><span class="n">weak</span><span class="p">))</span>  <span class="nf">func</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span>  <span class="n">num</span>  <span class="nf">__attribte__</span><span class="p">((</span><span class="n">weak</span><span class="p">);</span></span></span></code></pre>
+      "><span class="line"><span class="cl"><span class="kt">void</span>  <span class="nf">__attribute__</span><span class="p">((</span><span class="n">weak</span><span class="p">))</span>  <span class="nf">func</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span>  <span class="n">num</span>  <span class="nf">__attribte__</span><span class="p">((</span><span class="n">weak</span><span class="p">);</span></span></span></code></pre>
 </div>
 <ul>
 <li>编译阶段：编译器以源文件为单位，将每一个源文件编译为一个 .o 后缀的目标文件。每一个目标文件由代码段、数据段、符号表等组成</li>
@@ -1270,18 +1268,18 @@
       tw-overflow-y-hidden
       tw-overflow-x-auto
       tw-scrollbar-thin
-      "><span class="line"><span class="cl">    <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">typeof</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">k</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">typeof</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="n">q</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">i</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;k = %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">k</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;*p= %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;i = %d</span><span class="se">\n</span><span class="s">&#34;</span> <span class="p">,</span><span class="n">i</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;*q= %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="o">*</span><span class="n">q</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span></span></span></code></pre>
+      "><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">typeof</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">k</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">typeof</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="n">q</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;k = %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">k</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;*p= %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;i = %d</span><span class="se">\n</span><span class="s">&#34;</span> <span class="p">,</span><span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;*q= %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="o">*</span><span class="n">q</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre>
 </div>
 <p>输出结果：</p>
 <div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
@@ -1373,10 +1371,10 @@
       tw-overflow-y-hidden
       tw-overflow-x-auto
       tw-scrollbar-thin
-      "><span class="line"><span class="cl">    <span class="n">k</span>  <span class="o">=</span> <span class="mi">6</span>
-</span></span><span class="line"><span class="cl">    <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="mi">6</span>
-</span></span><span class="line"><span class="cl">    <span class="n">i</span>  <span class="o">=</span> <span class="mi">2</span>
-</span></span><span class="line"><span class="cl">    <span class="o">*</span><span class="n">q</span> <span class="o">=</span> <span class="mi">2</span></span></span></code></pre>
+      "><span class="line"><span class="cl"><span class="n">k</span>  <span class="o">=</span> <span class="mi">6</span>
+</span></span><span class="line"><span class="cl"><span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="mi">6</span>
+</span></span><span class="line"><span class="cl"><span class="n">i</span>  <span class="o">=</span> <span class="mi">2</span>
+</span></span><span class="line"><span class="cl"><span class="o">*</span><span class="n">q</span> <span class="o">=</span> <span class="mi">2</span></span></span></code></pre>
 </div>
 <p>有了typeof后就可以进行“泛型”编程了(虽然C标准不支持泛型)</p>
 <div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
@@ -1469,27 +1467,27 @@
       tw-overflow-x-auto
       tw-scrollbar-thin
       "><span class="line"><span class="cl"><span class="c1">//swap支持多种类型的a,b进行交换
-</span></span></span><span class="line"><span class="cl"><span class="c1">//新定义的变量不需要括号保护，输入参数需要加括号来防止宏展开导致的运算优先级问题
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="cp">#define swap(a, b) \
-</span></span></span><span class="line"><span class="cl"><span class="cp">    do {               \
-</span></span></span><span class="line"><span class="cl"><span class="cp">        typeof(a) __tmp = (a);  \
-</span></span></span><span class="line"><span class="cl"><span class="cp">        (a) = (b);         \
-</span></span></span><span class="line"><span class="cl"><span class="cp">        (b) = __tmp; \
-</span></span></span><span class="line"><span class="cl"><span class="cp">    } while (0)
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>    
+</span></span></span><span class="line"><span class="cl"><span class="c1">//宏内部定义的变量不需要括号保护，输入的变量需要加括号来防止宏展开导致的运算优先级问题
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">#define swap(a, b) \
+</span></span></span><span class="line"><span class="cl"><span class="cp">do {               \
+</span></span></span><span class="line"><span class="cl"><span class="cp">    typeof(a) __tmp = (a);  \
+</span></span></span><span class="line"><span class="cl"><span class="cp">    (a) = (b);         \
+</span></span></span><span class="line"><span class="cl"><span class="cp">    (b) = __tmp; \
+</span></span></span><span class="line"><span class="cl"><span class="cp">} while (0)
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
 </span></span><span class="line"><span class="cl"><span class="c1">//内核中的typeof应用
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="cp">#define min(x, y) ({                \
-</span></span></span><span class="line"><span class="cl"><span class="cp">        typeof(x) _min1 = (x);          \
-</span></span></span><span class="line"><span class="cl"><span class="cp">        typeof(y) _min2 = (y);          \
-</span></span></span><span class="line"><span class="cl"><span class="cp">        </span><span class="c1">//这里的&amp;_min1 == &amp;_min2两个地址进行比较的意思是：两个指针能够进行比较的前提是类型相同，类型不同的指针进行比较会报需要类型转换的warning，这样就可以通过比较操作来判断出入的参数类型是否相同了           \
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">_min1</span> <span class="o">==</span> <span class="o">&amp;</span><span class="n">_min2</span><span class="p">);</span>      \
-</span></span><span class="line"><span class="cl">        <span class="n">_min1</span> <span class="o">&lt;</span> <span class="n">_min2</span> <span class="o">?</span> <span class="nl">_min1</span> <span class="p">:</span> <span class="n">_min2</span><span class="p">;</span> <span class="p">})</span>
-</span></span><span class="line"><span class="cl">        
-</span></span><span class="line"><span class="cl">    <span class="cp">#define max(x, y) ({                \
-</span></span></span><span class="line"><span class="cl"><span class="cp">        typeof(x) _max1 = (x);          \
-</span></span></span><span class="line"><span class="cl"><span class="cp">        typeof(y) _max2 = (y);          \
-</span></span></span><span class="line"><span class="cl"><span class="cp">        (void) (&amp;_max1 == &amp;_max2);      \
-</span></span></span><span class="line"><span class="cl"><span class="cp">        _max1 &gt; _max2 ? _max1 : _max2; })</span></span></span></code></pre>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">#define min(x, y) ({                \
+</span></span></span><span class="line"><span class="cl"><span class="cp">    typeof(x) _min1 = (x);          \
+</span></span></span><span class="line"><span class="cl"><span class="cp">    typeof(y) _min2 = (y);          \
+</span></span></span><span class="line"><span class="cl"><span class="cp">    </span><span class="c1">//这里的&amp;_min1 == &amp;_min2两个地址进行比较的意思是：两个指针能够进行比较的前提是类型相同，类型不同的指针进行比较会报需要类型转换的warning，这样就可以通过比较操作来判断出入的参数类型是否相同了           \
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">_min1</span> <span class="o">==</span> <span class="o">&amp;</span><span class="n">_min2</span><span class="p">);</span>      \
+</span></span><span class="line"><span class="cl">    <span class="n">_min1</span> <span class="o">&lt;</span> <span class="n">_min2</span> <span class="o">?</span> <span class="nl">_min1</span> <span class="p">:</span> <span class="n">_min2</span><span class="p">;</span> <span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#define max(x, y) ({                \
+</span></span></span><span class="line"><span class="cl"><span class="cp">    typeof(x) _max1 = (x);          \
+</span></span></span><span class="line"><span class="cl"><span class="cp">    typeof(y) _max2 = (y);          \
+</span></span></span><span class="line"><span class="cl"><span class="cp">    (void) (&amp;_max1 == &amp;_max2);      \
+</span></span></span><span class="line"><span class="cl"><span class="cp">    _max1 &gt; _max2 ? _max1 : _max2; })</span></span></span></code></pre>
 </div>
 <h3 id="container_of-宏实现" class="headerLink">
     <a href="#container_of-%e5%ae%8f%e5%ae%9e%e7%8e%b0" class="header-mark"></a>container_of 宏实现</h3><div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
@@ -1581,14 +1579,15 @@
       tw-overflow-y-hidden
       tw-overflow-x-auto
       tw-scrollbar-thin
-      "><span class="line"><span class="cl">    <span class="cp">#define offsetof(TYPE, MEMBER) ((size_t) &amp;((TYPE *)0)-&gt;MEMBER)
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>    <span class="cp">#define  container_of(ptr, type, member) ({    \
-</span></span></span><span class="line"><span class="cl"><span class="cp">             const typeof( ((type *)0)-&gt;member ) *__mptr = (ptr); \
-</span></span></span><span class="line"><span class="cl"><span class="cp">             (type *)( (char *)__mptr - offsetof(type,member) );})</span></span></span></code></pre>
+      "><span class="line"><span class="cl"><span class="cp">#define offsetof(TYPE, MEMBER) ((size_t) &amp;((TYPE *)0)-&gt;MEMBER)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define  container_of(ptr, type, member) ({    \
+</span></span></span><span class="line"><span class="cl"><span class="cp">         const typeof( ((type *)0)-&gt;member ) *__mptr = (ptr); \
+</span></span></span><span class="line"><span class="cl"><span class="cp">         (type *)( (char *)__mptr - offsetof(type,member) );})</span></span></span></code></pre>
 </div>
 <h3 id="内核中的符号导出export_symbol" class="headerLink">
-    <a href="#%e5%86%85%e6%a0%b8%e4%b8%ad%e7%9a%84%e7%ac%a6%e5%8f%b7%e5%af%bc%e5%87%baexport_symbol" class="header-mark"></a>内核中的符号导出EXPORT_SYMBOL()</h3><p>本质上是通过将符号单独放入一个段内来导出，并在导出的过程中使用__visible保持目标在当前编译文件中可见
+    <a href="#%e5%86%85%e6%a0%b8%e4%b8%ad%e7%9a%84%e7%ac%a6%e5%8f%b7%e5%af%bc%e5%87%baexport_symbol" class="header-mark"></a>内核中的符号导出EXPORT_SYMBOL()</h3><p>本质上是通过将符号单独放入一个段内来导出，并在导出的过程中使用__visible保持目标在当前编译文件中可见<br>
 <a href="https://medium.com/@boutnaru/the-linux-kernel-macro-journey-visable-a03f7ba273b3" target="_blank" rel="noopener noreferrer">The Linux Kernel Macro Journey — __visible</a></p>
+<p>内核中常用的修饰符<code>__used </code>和<code>__visible</code>也来源于gcc，前者代表即使程序中没有用到该符号也不要让gcc优化，方式运行时符号丢失，__visible代表可以被其他程序访问，用于导出符号</p>
 <div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
   <div class="
     
@@ -1678,29 +1677,9 @@
       tw-overflow-y-hidden
       tw-overflow-x-auto
       tw-scrollbar-thin
-      "><span class="line"><span class="cl"><span class="cp">#define __EXPORT_SYMBOL(sym, sec)				\
-</span></span></span><span class="line"><span class="cl"><span class="cp">	extern typeof(sym) sym;					\
-</span></span></span><span class="line"><span class="cl"><span class="cp">	__CRC_SYMBOL(sym, sec)					\
-</span></span></span><span class="line"><span class="cl"><span class="cp">	static const char __kstrtab_##sym[]			\
-</span></span></span><span class="line"><span class="cl"><span class="cp">	__attribute__((section(&#34;__ksymtab_strings&#34;), aligned(1))) \
-</span></span></span><span class="line"><span class="cl"><span class="cp">	= VMLINUX_SYMBOL_STR(sym);				\
-</span></span></span><span class="line"><span class="cl"><span class="cp">	extern const struct kernel_symbol __ksymtab_##sym;	\
-</span></span></span><span class="line"><span class="cl"><span class="cp">	__visible const struct kernel_symbol __ksymtab_##sym	\
-</span></span></span><span class="line"><span class="cl"><span class="cp">	__used							\
-</span></span></span><span class="line"><span class="cl"><span class="cp">	__attribute__((section(&#34;___ksymtab&#34; sec &#34;+&#34; #sym), unused))	\
-</span></span></span><span class="line"><span class="cl"><span class="cp">	= { (unsigned long)&amp;sym, __kstrtab_##sym }
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
-</span></span><span class="line"><span class="cl"><span class="cp">#define EXPORT_SYMBOL(sym)					\
-</span></span></span><span class="line"><span class="cl"><span class="cp">	__EXPORT_SYMBOL(sym, &#34;&#34;)</span></span></span></code></pre>
+      "><span class="line"><span class="cl"><span class="cp">#define __used         __attribute__((__used__))
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define __visible      __attribute__((__externally_visible__))</span></span></span></code></pre>
 </div>
-<p><a href="https://www.cnblogs.com/iriczhao/p/15493106.html" target="_blank" rel="noopener noreferrer">linux 内核中EXPORT_SYMBOL（）分析与实践</a></p>
-<h3 id="vdso" class="headerLink">
-    <a href="#vdso" class="header-mark"></a>VDSO</h3><p>vdso(Virtual Dynamic Shared Object)，其本质是个.so文件
-发展历程：当APP想要触发软件中断时intel平台会触发sysenter，而AMD也会提供自己的指令，但是这些指令与内核int80中断在实现上有很大区别，为了弥合这些差异，Linux推出了vsyscall机制，其本质是对上面指令的二次封装。但是由于vsyscall采用了固定加载的方式产生了安全的问题。因此Linux又进一步将vsyscall变为了动态加载的.so文件。至此，对于经常触发系统调用的gettimeofday()，time()和getcpu()等APP来说，vsyscall不仅解决了兼容性的问题，在后期还解决了int80中断性能低下的问题
-vdso的出现还解决了glibc在内核中地位的问题，早期的glibc不仅要支持linux各版本还要支持bsd，hurd等os。glibc和linux两个项目都需要进行协调，这在linux内核发行版兼容性上产生了很大的问题，为此linux允许将glibc这个项目作为内核的一部分发行，但运行时为了防止内核膨胀就禁止其运行在内核空间。这样，在磁盘中并没有单独的glibc项目(因为已经随内核发行而被隐藏在内核内部了)，在运行时glibc为了避免内核膨胀而运行在用户态，同时glibc又管理着众多APP，因此glibc被加入了vdso使其在系统运行时就自动加载进用户空间</p>
-<h3 id="自己的printf" class="headerLink">
-    <a href="#%e8%87%aa%e5%b7%b1%e7%9a%84printf" class="header-mark"></a>自己的printf</h3><p>使用自己的printf可以方便的通过宏开关来设置是否打印调试信息，还可以设置打印级别
-<a href="https://www.zhaixue.cc/c-arm/c-arm-format.html" target="_blank" rel="noopener noreferrer">宅学部落</a></p>
 <div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
   <div class="
     
@@ -1790,49 +1769,29 @@ vdso的出现还解决了glibc在内核中地位的问题，早期的glibc不仅
       tw-overflow-y-hidden
       tw-overflow-x-auto
       tw-scrollbar-thin
-      "><span class="line"><span class="cl"><span class="cp">#define DEBUG      </span><span class="c1">//打印开关
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">__attribute__</span><span class="p">((</span><span class="nf">format</span><span class="p">(</span><span class="n">printf</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)))</span> <span class="nf">LOG</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">fmt</span><span class="p">,...)</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl"><span class="cp">#ifdef DEBUG
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>    <span class="n">va_list</span> <span class="n">args</span><span class="p">;</span>          <span class="c1">//定义char*类型的指针args
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">va_start</span><span class="p">(</span><span class="n">args</span><span class="p">,</span><span class="n">fmt</span><span class="p">);</span>    <span class="c1">//根据参数fmt的地址，获取fmt后面参数的地址，并保存在args指针变量中
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">vprintf</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span><span class="n">args</span><span class="p">);</span>     <span class="c1">//调用vprintf打印字符
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">va_end</span><span class="p">(</span><span class="n">args</span><span class="p">);</span>          <span class="c1">//将args指针置空  
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">#endif
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">LOG</span><span class="p">(</span><span class="s">&#34;I am litao, I have %d car</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">num</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre>
+      "><span class="line"><span class="cl"><span class="cp">#define __EXPORT_SYMBOL(sym, sec)				\
+</span></span></span><span class="line"><span class="cl"><span class="cp">	extern typeof(sym) sym;					\
+</span></span></span><span class="line"><span class="cl"><span class="cp">	__CRC_SYMBOL(sym, sec)					\
+</span></span></span><span class="line"><span class="cl"><span class="cp">	static const char __kstrtab_##sym[]			\
+</span></span></span><span class="line"><span class="cl"><span class="cp">	__attribute__((section(&#34;__ksymtab_strings&#34;), aligned(1))) \
+</span></span></span><span class="line"><span class="cl"><span class="cp">	= VMLINUX_SYMBOL_STR(sym);				\
+</span></span></span><span class="line"><span class="cl"><span class="cp">	extern const struct kernel_symbol __ksymtab_##sym;	\
+</span></span></span><span class="line"><span class="cl"><span class="cp">	__visible const struct kernel_symbol __ksymtab_##sym	\
+</span></span></span><span class="line"><span class="cl"><span class="cp">	__used							\
+</span></span></span><span class="line"><span class="cl"><span class="cp">	__attribute__((section(&#34;___ksymtab&#34; sec &#34;+&#34; #sym), unused))	\
+</span></span></span><span class="line"><span class="cl"><span class="cp">	= { (unsigned long)&amp;sym, __kstrtab_##sym }
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#define EXPORT_SYMBOL(sym)					\
+</span></span></span><span class="line"><span class="cl"><span class="cp">	__EXPORT_SYMBOL(sym, &#34;&#34;)</span></span></span></code></pre>
 </div>
-<h3 id="arm汇编" class="headerLink">
-    <a href="#arm%e6%b1%87%e7%bc%96" class="header-mark"></a>arm汇编</h3><h4 id="标准指令" class="headerLink">
-    <a href="#%e6%a0%87%e5%87%86%e6%8c%87%e4%bb%a4" class="header-mark"></a>标准指令</h4><p>B指令：无条件跳转，常用B LOOP代表跳转到LOOP，跳转范围32MB
-BEQ：两个值相等时跳转
-BNE：两个值不相等时跳转
-BL：带链接的跳转，跳转时会保存下一条指令到LR</p>
-<p>C语言中的指针操作，在汇编层次其实就是使用寄存器间接寻址实现的，即将寄存器中的值作为地址去访问内存</p>
-<p>寄存器和内存之间传送指令使用LDR/STR，寄存器之间传送指令使用MOV</p>
-<h4 id="伪指令" class="headerLink">
-    <a href="#%e4%bc%aa%e6%8c%87%e4%bb%a4" class="header-mark"></a>伪指令</h4><p>伪指令不是arm指令集中定义的标准指令，而是编译器厂商自定义的辅助指令</p>
-<p>LDR伪指令：LDR R0，=0x80002000
-由于arm指令操作码与操作数共享32位空间，操作码会挤压操作数的寻址空间，因而需要单独的伪指令来完成这一步骤，为了和arm本身的LDR指令区分开，LDR伪指令会在操作数前加“=”。因此LDR指令支持4GB寻址</p>
-<h3 id="内建函数" class="headerLink">
-    <a href="#%e5%86%85%e5%bb%ba%e5%87%bd%e6%95%b0" class="header-mark"></a>内建函数</h3><p>内建函数，顾名思义，就是编译器内部实现的函数。这些函数跟关键字一样，可以直接使用，无须像标准库函数那样，要 #include 对应的头文件才能使用</p>
-<p>内建函数的函数命名，通常以 __builtin 开头。这些函数主要在编译器内部使用，主要是为编译器服务的。内建函数的主要用途如下：</p>
-<ul>
-<li>用来处理变长参数列表；</li>
-<li>用来处理程序运行异常；</li>
-<li>程序的编译优化、性能优化；</li>
-<li>查看函数运行中的底层信息、堆栈信息等；</li>
-<li>C 标准库函数的内建版本</li>
-</ul>
-<h4 id="__builtin_expectexpc" class="headerLink">
-    <a href="#__builtin_expectexpc" class="header-mark"></a>__builtin_expect(exp,c)</h4><p>内建函数 __builtin_expect 也常常用来编译优化。这个函数有两个参数，返回值就是其中一个参数，仍是 exp。这个函数的意义主要就是告诉编译器：参数 exp 的值为 c 的可能性很大。然后编译器可能就会根据这个提示信息，做一些分支预测上的代码优化</p>
-<h4 id="内核中的-likely-和-unlikely" class="headerLink">
-    <a href="#%e5%86%85%e6%a0%b8%e4%b8%ad%e7%9a%84-likely-%e5%92%8c-unlikely" class="header-mark"></a>内核中的 likely 和 unlikely</h4><p>likely与unlikely本质上是内建函数expect的应用</p>
+<p><a href="https://www.cnblogs.com/iriczhao/p/15493106.html" target="_blank" rel="noopener noreferrer">linux 内核中EXPORT_SYMBOL（）分析与实践</a></p>
+<h3 id="vdso" class="headerLink">
+    <a href="#vdso" class="header-mark"></a>VDSO</h3><p>vdso(Virtual Dynamic Shared Object)，其本质是个.so文件<br>
+发展历程：当APP想要触发软件中断时intel平台会触发sysenter，而AMD也会提供自己的指令，但是这些指令与内核int80中断在实现上有很大区别，为了弥合这些差异，Linux推出了vsyscall机制，其本质是对上面指令的二次封装。但是由于vsyscall采用了固定加载的方式产生了安全的问题。因此Linux又进一步将vsyscall变为了动态加载的.so文件。至此，对于经常触发系统调用的gettimeofday()，time()和getcpu()等APP来说，vsyscall不仅解决了兼容性的问题，在后期还解决了int80中断性能低下的问题<br>
+vdso的出现还解决了glibc在内核中地位的问题，早期的glibc不仅要支持linux各版本还要支持bsd，hurd等os。glibc和linux两个项目都需要进行协调，这在linux内核发行版兼容性上产生了很大的问题，为此linux允许将glibc这个项目作为内核的一部分发行，但运行时为了防止内核膨胀就禁止其运行在内核空间。这样，在磁盘中并没有单独的glibc项目(因为已经随内核发行而被隐藏在内核内部了)，在运行时glibc为了避免内核膨胀而运行在用户态，同时glibc又管理着众多APP，因此glibc被加入了vdso使其在系统运行时就自动加载进用户空间</p>
+<h3 id="自己的printf" class="headerLink">
+    <a href="#%e8%87%aa%e5%b7%b1%e7%9a%84printf" class="header-mark"></a>自己的printf</h3><p>使用自己的printf可以方便的通过宏开关来设置是否打印调试信息，还可以设置打印级别
+<a href="https://www.zhaixue.cc/c-arm/c-arm-format.html" target="_blank" rel="noopener noreferrer">宅学部落</a></p>
 <div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
   <div class="
     
@@ -1922,15 +1881,49 @@ BL：带链接的跳转，跳转时会保存下一条指令到LR</p>
       tw-overflow-y-hidden
       tw-overflow-x-auto
       tw-scrollbar-thin
-      "><span class="line"><span class="cl">    <span class="cp">#define likely(x) __builtin_expect(!!(x),1)
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>    <span class="cp">#define unlikely(x) __builtin_expect(!!(x),0)</span></span></span></code></pre>
+      "><span class="line"><span class="cl"><span class="cp">#define DEBUG      </span><span class="c1">//打印开关
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">__attribute__</span><span class="p">((</span><span class="nf">format</span><span class="p">(</span><span class="n">printf</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)))</span> <span class="nf">LOG</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">fmt</span><span class="p">,...)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#ifdef DEBUG
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>    <span class="n">va_list</span> <span class="n">args</span><span class="p">;</span>          <span class="c1">//定义char*类型的指针args
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">va_start</span><span class="p">(</span><span class="n">args</span><span class="p">,</span><span class="n">fmt</span><span class="p">);</span>    <span class="c1">//根据参数fmt的地址，获取fmt后面参数的地址，并保存在args指针变量中
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">vprintf</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span><span class="n">args</span><span class="p">);</span>     <span class="c1">//调用vprintf打印字符
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">va_end</span><span class="p">(</span><span class="n">args</span><span class="p">);</span>          <span class="c1">//将args指针置空  
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">#endif
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">LOG</span><span class="p">(</span><span class="s">&#34;I am litao, I have %d car</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">num</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre>
 </div>
-<h3 id="内核中的内联函数" class="headerLink">
-    <a href="#%e5%86%85%e6%a0%b8%e4%b8%ad%e7%9a%84%e5%86%85%e8%81%94%e5%87%bd%e6%95%b0" class="header-mark"></a>内核中的内联函数</h3><p>在内核中常见的内联函数定义位于头文件中，这时我们可能会有一点疑惑：头文件如果包含定义的话，而包含头文件的源文件又是多个，这对于作用域是全局的函数来说是致命的，因此可能导致重定义错误</p>
+<h3 id="arm汇编" class="headerLink">
+    <a href="#arm%e6%b1%87%e7%bc%96" class="header-mark"></a>arm汇编</h3><h4 id="标准指令" class="headerLink">
+    <a href="#%e6%a0%87%e5%87%86%e6%8c%87%e4%bb%a4" class="header-mark"></a>标准指令</h4><p>B指令：无条件跳转，常用B LOOP代表跳转到LOOP，跳转范围32MB<br>
+BEQ：两个值相等时跳转<br>
+BNE：两个值不相等时跳转<br>
+BL：带链接的跳转，跳转时会保存下一条指令到LR</p>
+<p>C语言中的指针操作，在汇编层次就是使用寄存器间接寻址实现的，即将寄存器中的值作为地址去访问内存</p>
+<p>寄存器和内存之间传送指令使用LDR/STR，寄存器之间传送指令使用MOV</p>
+<h4 id="伪指令" class="headerLink">
+    <a href="#%e4%bc%aa%e6%8c%87%e4%bb%a4" class="header-mark"></a>伪指令</h4><p>伪指令不是arm指令集中定义的标准指令，而是编译器厂商自定义的辅助指令</p>
+<p>LDR伪指令：LDR R0，=0x80002000<br>
+由于arm指令操作码与操作数共享32位空间，操作码会挤压操作数的寻址空间，因而需要单独的伪指令来完成这一步骤，为了和arm本身的LDR指令区分开，LDR伪指令会在操作数前加“=”。因此LDR指令支持4GB寻址</p>
+<h3 id="内建函数" class="headerLink">
+    <a href="#%e5%86%85%e5%bb%ba%e5%87%bd%e6%95%b0" class="header-mark"></a>内建函数</h3><p>内建函数，顾名思义，就是编译器内部实现的函数。这些函数跟关键字一样，可以直接使用，无须像标准库函数那样要 #include 对应的头文件才能使用</p>
+<p>内建函数的函数命名，通常以 __builtin 开头。这些函数主要在编译器内部使用，主要是为编译器服务的。内建函数的主要用途如下：</p>
 <ul>
-<li>那么为什么还要把内联函数放在头文件中？这是因为inline关键字只对定义有效，而对声明无效，要想其他文件能够引用内联函数就必须将其定义在头文件中</li>
-<li>那么怎么解决上述问题呢？为了防止重定义错误，我们只需要改变内联函数的作用范围就行了，因此我们可以加上关键字static。这就变成了我们在内核中经常看到的内联函数：</li>
+<li>用来处理变长参数列表；</li>
+<li>用来处理程序运行异常；</li>
+<li>程序的编译优化、性能优化；</li>
+<li>查看函数运行中的底层信息、堆栈信息等；</li>
+<li>C 标准库函数的内建版本</li>
 </ul>
+<h4 id="__builtin_expectexpc" class="headerLink">
+    <a href="#__builtin_expectexpc" class="header-mark"></a>__builtin_expect(exp,c)</h4><p>内建函数 __builtin_expect 也常常用来编译优化。这个函数有两个参数，返回值就是其中一个参数，仍是 exp。这个函数的意义主要就是告诉编译器：参数 exp 的值为 c 的可能性很大。然后编译器可能就会根据这个提示信息，做一些分支预测上的代码优化</p>
+<h4 id="内核中的-likely-和-unlikely" class="headerLink">
+    <a href="#%e5%86%85%e6%a0%b8%e4%b8%ad%e7%9a%84-likely-%e5%92%8c-unlikely" class="header-mark"></a>内核中的 likely 和 unlikely</h4><p>likely与unlikely本质上是内建函数expect的应用</p>
 <div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
   <div class="
     
@@ -2020,14 +2013,112 @@ BL：带链接的跳转，跳转时会保存下一条指令到LR</p>
       tw-overflow-y-hidden
       tw-overflow-x-auto
       tw-scrollbar-thin
+      "><span class="line"><span class="cl"><span class="cp">#define likely(x) __builtin_expect(!!(x),1)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define unlikely(x) __builtin_expect(!!(x),0)</span></span></span></code></pre>
+</div>
+<h3 id="内核中的内联函数" class="headerLink">
+    <a href="#%e5%86%85%e6%a0%b8%e4%b8%ad%e7%9a%84%e5%86%85%e8%81%94%e5%87%bd%e6%95%b0" class="header-mark"></a>内核中的内联函数</h3><p>在内核中常见的内联函数定义位于头文件中，这时我们可能会有一点疑惑：头文件如果包含定义的话，而包含头文件的源文件又是多个，这对于作用域是全局的函数来说是致命的，因为可能导致重定义错误</p>
+<ul>
+<li>那么为什么还要把内联函数放在头文件中？这是因为inline关键字只对定义有效，而对声明无效，要想其他文件能够引用内联函数就必须将其定义在头文件中</li>
+<li>那么怎么解决上述问题呢？为了防止重定义错误，我们只需要改变内联函数的作用范围就行了，因此我们可以加上关键字static。这就变成了我们在内核中经常看到的内联函数：</li>
+</ul>
+<div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
+  <div class="
+    
+    tw-flex 
+    tw-flex-row
+    tw-flex-1 
+    tw-justify-between 
+    tw-w-full tw-bg-bgColor-secondary
+    ">      
+    <button 
+      class="
+        code-block-button
+        tw-mx-2 
+        tw-flex
+        tw-flex-row
+        tw-flex-1"
+      aria-hidden="true">
+          <div class="group-[.is-open]:tw-rotate-90 tw-transition-[transform] tw-duration-500 tw-ease-in-out print:!tw-hidden tw-w-min tw-h-min tw-my-1 tw-mx-1"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg></div>
+          <p class="tw-select-none !tw-my-1">c</p>
+      </button>
+
+   <div class="tw-flex">
+      <button 
+        class="
+          line-number-button
+          tw-mx-2 
+          tw-hidden 
+          group-[.is-open]:tw-block 
+          group-[.show-line-numbers]:tw-text-fgColor-link 
+          print:!tw-hidden" 
+        title="Toggle line numbers"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M61.77 401l17.5-20.15a19.92 19.92 0 0 0 5.07-14.19v-3.31C84.34 356 80.5 352 73 352H16a8 8 0 0 0-8 8v16a8 8 0 0 0 8 8h22.83a157.41 157.41 0 0 0-11 12.31l-5.61 7c-4 5.07-5.25 10.13-2.8 14.88l1.05 1.93c3 5.76 6.29 7.88 12.25 7.88h4.73c10.33 0 15.94 2.44 15.94 9.09 0 4.72-4.2 8.22-14.36 8.22a41.54 41.54 0 0 1-15.47-3.12c-6.49-3.88-11.74-3.5-15.6 3.12l-5.59 9.31c-3.72 6.13-3.19 11.72 2.63 15.94 7.71 4.69 20.38 9.44 37 9.44 34.16 0 48.5-22.75 48.5-44.12-.03-14.38-9.12-29.76-28.73-34.88zM496 224H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-160H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 320H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zM16 160h64a8 8 0 0 0 8-8v-16a8 8 0 0 0-8-8H64V40a8 8 0 0 0-8-8H32a8 8 0 0 0-7.14 4.42l-8 16A8 8 0 0 0 24 64h8v64H16a8 8 0 0 0-8 8v16a8 8 0 0 0 8 8zm-3.91 160H80a8 8 0 0 0 8-8v-16a8 8 0 0 0-8-8H41.32c3.29-10.29 48.34-18.68 48.34-56.44 0-29.06-25-39.56-44.47-39.56-21.36 0-33.8 10-40.46 18.75-4.37 5.59-3 10.84 2.8 15.37l8.58 6.88c5.61 4.56 11 2.47 16.12-2.44a13.44 13.44 0 0 1 9.46-3.84c3.33 0 9.28 1.56 9.28 8.75C51 248.19 0 257.31 0 304.59v4C0 316 5.08 320 12.09 320z"/></svg></button>
+
+      <button 
+        class="
+          wrap-code-button
+          tw-select-none 
+          tw-mx-2 
+          tw-hidden 
+          group-[.is-open]:tw-block 
+          group-[.is-wrap]:tw-text-fgColor-link 
+          print:!tw-hidden" 
+        title="Toggle code wrap"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"/></svg></button>
+      
+      <button 
+        class="
+          copy-code-button
+          tw-select-none
+          tw-mx-2 
+          tw-hidden
+          group-[.is-open]:tw-block
+          hover:tw-text-fgColor-link 
+          print:!tw-hidden"
+        title="Copy code">
+          <span class="copy-icon tw-block"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z"/></svg></span>
+          <span class="check-icon tw-hidden"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"/></svg></span>
+      </button>
+        
+      <button 
+        class="
+          tw-select-none 
+          tw-mx-2 
+          tw-block 
+          group-[.is-open]:tw-hidden 
+          print:!tw-hidden" 
+        disabled
+        aria-hidden="true"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z"/></svg></button>
+    </div>
+  </div>
+  <pre style="counter-reset: codeblock;" class="tw-block tw-m-0 tw-p-0"><code 
+    id="codeblock-id-15" 
+    class="
+      chroma 
+      !tw-block 
+      tw-p-0
+      tw-m-0
+      tw-transition-[max-height] 
+      tw-duration-500 
+      tw-ease-in-out 
+      group-[.is-closed]:!tw-max-h-0 
+      group-[.is-wrap]:tw-text-wrap
+      tw-overflow-y-hidden
+      tw-overflow-x-auto
+      tw-scrollbar-thin
       "><span class="line"><span class="cl"><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">func</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">//func body
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span></span></span></code></pre>
 </div>
 <h3 id="对于keil编译后的文件" class="headerLink">
-    <a href="#%e5%af%b9%e4%ba%8ekeil%e7%bc%96%e8%af%91%e5%90%8e%e7%9a%84%e6%96%87%e4%bb%b6" class="header-mark"></a>对于Keil编译后的文件</h3><p>axf文件：包含调试信息
-hex文件：包含地址信息
+    <a href="#%e5%af%b9%e4%ba%8ekeil%e7%bc%96%e8%af%91%e5%90%8e%e7%9a%84%e6%96%87%e4%bb%b6" class="header-mark"></a>对于Keil编译后的文件</h3><p>axf文件：包含调试信息<br>
+hex文件：包含地址信息<br>
 bin文件：最直接的代码映像</p>
 <h3 id="程序文件与运行文件" class="headerLink">
     <a href="#%e7%a8%8b%e5%ba%8f%e6%96%87%e4%bb%b6%e4%b8%8e%e8%bf%90%e8%a1%8c%e6%96%87%e4%bb%b6" class="header-mark"></a>程序文件与运行文件</h3><p>程序文件的区域(在嵌入式领域存储于flash上)：</p>
@@ -2036,7 +2127,7 @@ bin文件：最直接的代码映像</p>
 <li>数据区</li>
 <li>常量区</li>
 </ul>
-<p>通过链接将各种.o文件链接为程序文件，链接过程中，各个程序文件的相同段被分配在一起并且还要给出在编译阶段时没有填充的虚拟地址，但在可执行文件中分配的.bss段不占用文件空间。bss虽然在可执行文件中不占用空间，但是我们依然可以使用readelf或者objdump来查看section header中.bss的大小，这也是程序<strong>运行时</strong>的bss段大小</p>
+<p>通过链接将各种.o文件链接为程序文件，链接过程中，各个程序文件的相同段被分配在一起并且还要计算出在编译阶段时没有填充的虚拟地址，但在可执行文件中分配的.bss段不占用文件空间。bss虽然在可执行文件中不占用空间，但是我们依然可以使用readelf或者objdump来查看section header中.bss的大小，这也是程序<strong>运行时</strong>的bss段大小</p>
 <p>运行文件的区域(存储于ram上)：</p>
 <ul>
 <li>堆</li>
@@ -2045,53 +2136,52 @@ bin文件：最直接的代码映像</p>
 <li>代码</li>
 </ul>
 <p>程序文件加载到RAM时会被OS分配页表项(PTE)，使得OS和MMU分配的物理地址能够与进程虚拟地址相对应。还需要注意的是，在加载过程中，不同进程的相同段也会如程序文件那般被统一分配在一起</p>
-<p>因此为了能够在不同进程中相同的虚拟地址下访问不同的物理地址，OS是通过内核空间中不同进程的页表来访问的</p>
+<p>因此为了能够在不同进程中相同的虚拟地址下访问不同的物理地址，OS是通过内核空间中不同进程的页表来访问物理地址的</p>
 <p>为了防止黑客获取程序信息，内核本身，堆，栈，mmap区在每次机器启动时都会相对其标准地址有一个偏移。在程序运行时，黑客可以通过利用内存溢出而覆盖LR的漏洞来跳转到自己的函数中，或者直接修改got表来达到自己目的</p>
 <h3 id="栈相关" class="headerLink">
     <a href="#%e6%a0%88%e7%9b%b8%e5%85%b3" class="header-mark"></a>栈相关</h3><h4 id="栈大小" class="headerLink">
     <a href="#%e6%a0%88%e5%a4%a7%e5%b0%8f" class="header-mark"></a>栈大小</h4><p>Linux默认给每一个用户进程栈分配8MB大小的空间。栈的容量如果设置得过大，则会增加内存开销和启动时间；如果设置得过小，则程序超出栈设置的内存空间又容易发生栈溢出(Stack Overflow)，产生段错误，修改栈大小使用ulimit命令</p>
 <p>Linux内核栈大小是固定的，默认为8k</p>
 <h4 id="函数栈与进程栈" class="headerLink">
-    <a href="#%e5%87%bd%e6%95%b0%e6%a0%88%e4%b8%8e%e8%bf%9b%e7%a8%8b%e6%a0%88" class="header-mark"></a>函数栈与进程栈</h4><p>函数栈：保存了局部变量，函数参数，并预留一部分临时存储区
+    <a href="#%e5%87%bd%e6%95%b0%e6%a0%88%e4%b8%8e%e8%bf%9b%e7%a8%8b%e6%a0%88" class="header-mark"></a>函数栈与进程栈</h4><p>函数栈：保存了局部变量，函数参数，并预留一部分临时存储区<br>
 进程栈：保存了CPU寄存器，被打断的地址，任务现场。这是因为一个任务由多个函数构成，这些函数也会调用其他的函数，这一系列调用关系也就是一系列函数的栈帧组成了进程的栈</p>
 <h4 id="内核栈与用户栈" class="headerLink">
-    <a href="#%e5%86%85%e6%a0%b8%e6%a0%88%e4%b8%8e%e7%94%a8%e6%88%b7%e6%a0%88" class="header-mark"></a>内核栈与用户栈</h4><p>两者都是进程栈并且维护的都是函数调用关系的一系列栈帧。不同之处在于，用户态无法访问内核栈，因此需要在内核态开辟一块空间来存储内核态的函数的调用关系</p>
-<h3 id="中断函数" class="headerLink">
-    <a href="#%e4%b8%ad%e6%96%ad%e5%87%bd%e6%95%b0" class="header-mark"></a>中断函数</h3><p>因为中断函数返回时是恢复现场，中断函数返回地址、状态不确定，所以没有返回值。中断函数被调用的时间地点无法确定，因此不能给中断函数传参</p>
-<p>由于在中断中只保存了必要的寄存器，返回地址等少量数据，因此当在中断中访问其他区域的数据，如全局变量和静态变量时，程序的行为就会不可控。例如某些全局变量有锁，那么中断中访问这些变量的时间就不可确定，有可能造成中断丢失的现象。
-为了解决上述问题，我们将中断分为可重入函数和不可重入函数，在中断中不能调用不可重入函数，满足下列要求之一的就被称为不可重入函数：</p>
+    <a href="#%e5%86%85%e6%a0%b8%e6%a0%88%e4%b8%8e%e7%94%a8%e6%88%b7%e6%a0%88" class="header-mark"></a>内核栈与用户栈</h4><p>两者都是进程栈并且维护的都是函数调用关系的一系列栈帧。不同之处在于，用户态无法访问内核栈，因此需要在内核态开辟一块空间来存储内核态的函数的调用关系。在arm中使用msp寄存器保存内核栈或中断栈的栈指针，psp保存用户栈或进程栈的栈指针</p>
+<h3 id="中断与不可重入函数" class="headerLink">
+    <a href="#%e4%b8%ad%e6%96%ad%e4%b8%8e%e4%b8%8d%e5%8f%af%e9%87%8d%e5%85%a5%e5%87%bd%e6%95%b0" class="header-mark"></a>中断与不可重入函数</h3><p>因为中断函数返回时需要cpu恢复现场，此时中断函数返回地址、状态不确定，所以中断处理函数没有返回值。再由于中断函数被调用的时间地点无法确定，因此不能给中断函数传参</p>
+<p>由于在中断中只保存了必要的寄存器，返回地址等少量数据，因此当在中断中访问其他区域的数据，如全局变量和静态变量时，程序的行为就会不可控。例如某些全局变量有锁，那么中断中访问这些变量的时间就不可确定，有可能造成中断丢失的现象<br>
+为了解决上述问题，我们将函数分为可重入函数和不可重入函数。可重入函数指的是在执行过程中可以被任意中断，不可重入函数指的是在执行过程中不可以被中断。同时在中断内也不能调用不可重入函数，满足下列要求之一的就被称为不可重入函数：</p>
 <ul>
-<li>函数内部使用了全局变量或静态局部变量。</li>
-<li>函数返回值是一个全局变量或静态变量。</li>
-<li>函数内部调用了malloc()/free()函数。</li>
-<li>函数内部使用了标准I/O函数。</li>
-<li>函数内部调用了其他不可重入函数。
-值得注意的是，不可重入函数只在中断环境中才有讨论的意义。可我们在函数中总要使用全局变量的，这样的话大部分函数就是不可重入的了？有什么解决办法么？我们虽然不能解决在中断中不能使用不可重入函数这个问题，但是我们可以解决不可重入函数被中断的问题：加锁或者更为粗暴的关中断，虽然后者代价会很大(不能相应其他中断)。了解这些后对于为什么不能在中断中使用malloc就好理解了，malloc要维护一个全局的brk指针，这个指针位于glibc库中，更何况malloc是耗时操作。虽然加锁后的malloc是线程安全的，它仍没有解决不可重入这一问题。对于标准IO函数来说来说，它不仅要维护相关的全局变量，同时也是耗时操作外。也有可能在中断中获取文件锁，这时会造成死锁</li>
+<li>函数内部使用了全局变量或静态局部变量</li>
+<li>函数返回值是一个全局变量或静态变量</li>
+<li>函数内部调用了malloc()/free()函数</li>
+<li>函数内部使用了标准I/O函数</li>
+<li>函数内部调用了其他不可重入函数
+值得注意的是，不可重入函数只在中断环境中才有讨论的意义。可我们在函数中总要使用全局变量的，这样的话大部分函数就是不可重入的了？有什么解决办法么？我们虽然不能解决在中断中不能使用不可重入函数这个问题，但是我们可以解决不可重入函数被中断的问题：加锁或者更为粗暴的关中断，虽然后者代价会很大(不能相应其他中断)。了解这些后对于为什么不能在中断中使用malloc就好理解了，malloc要维护一个全局的brk指针，这个指针位于glibc库中，这涉及全局变量，更何况malloc是耗时操作。虽然加锁后的malloc是线程安全的，它仍没有解决不可重入这一问题。对于标准IO函数来说来说，它不仅要维护相关的全局变量，这也是耗时操作，还有可能在中断中获取文件锁，这会造成死锁</li>
 </ul>
-<p>从上面的结论可知，可重入函数一定是线程安全的，但是线程安全的不一定是可重入函数</p>
+<p>从上面的结论可知，可重入函数一定是线程安全的，但是线程安全的不一定是可重入函数(例如持有互斥锁的线程就是不可重入的)</p>
 <h3 id="进程间通信" class="headerLink">
     <a href="#%e8%bf%9b%e7%a8%8b%e9%97%b4%e9%80%9a%e4%bf%a1" class="header-mark"></a>进程间通信</h3><p>对于不同进程间的通信，Linux有以下工具可以使用：</p>
 <ul>
-<li>无名管道:只能用于具有亲缘关系的进程之间的通信。</li>
-<li>有名管道:任意两进程间通信。</li>
-<li>信号量:进程间同步,包括system V信号量、POSIX信号量。</li>
-<li>消息队列:数据传输,包括system V消息队列、POSIX消息队列。</li>
-<li>共享内存:数据传输,包括system V共享内存、POSIX共享内存。</li>
-<li>信号:主要用于进程间的异步通信。</li>
-<li>Linux新增API:signalfd、timerfd、eventfd。</li>
-<li>Socket:套接字缓冲区,不同主机不同进程之间的通信。</li>
-<li>D-BUS:主要用于桌面应用程序之间的通信。</li>
+<li>无名管道:只能用于具有亲缘关系的进程之间的通信</li>
+<li>有名管道:任意两进程间通信</li>
+<li>信号量:进程间同步,包括system V信号量、POSIX信号量</li>
+<li>消息队列:数据传输,包括system V消息队列、POSIX消息队列</li>
+<li>共享内存:数据传输,包括system V共享内存、POSIX共享内存</li>
+<li>信号:主要用于进程间的异步通信</li>
+<li>Linux新增API:signalfd、timerfd、eventfd</li>
+<li>Socket:套接字缓冲区,不同主机不同进程之间的通信</li>
+<li>D-BUS:主要用于桌面应用程序之间的通信</li>
 </ul>
-<h3 id="进程线程与协程" class="headerLink">
-    <a href="#%e8%bf%9b%e7%a8%8b%e7%ba%bf%e7%a8%8b%e4%b8%8e%e5%8d%8f%e7%a8%8b" class="header-mark"></a>进程，线程与协程</h3><p>前两者不必多说，接下来主要介绍线程池和协程</p>
-<p>在一些频繁创建销毁线程的场景中，我们会产生额外的开销。而线程池就是为解决这一问题诞生的。
+<h3 id="线程池和协程" class="headerLink">
+    <a href="#%e7%ba%bf%e7%a8%8b%e6%b1%a0%e5%92%8c%e5%8d%8f%e7%a8%8b" class="header-mark"></a>线程池和协程</h3><p>在一些频繁创建销毁线程的场景中，我们会产生额外的开销。而线程池就是为解决这一问题诞生的。
 一个线程池会首先创建很多线程，这些线程统一由管理线程的模块管理。当线程无任务时会被阻塞在线程池中，有任务时就会被调度器调度。这样我们就可以减少创建和销毁线程的开销了</p>
-<p>虽然线程池技术极大的缓解了创建和销毁线程的开销，但是对于一些互联网开发领域，面对频繁，大量的互联网并发请求时，线程池就无能为力了。这就跟一家三口使用卫生间一样：如果每个人上厕所都要先申请锁，锁门，再开门，释放锁，时间久了会让人感觉很麻烦。一个更好的解决方法是上厕所时大家协商着来，这样就不用频繁地加锁、解锁了。
+<p>虽然线程池技术极大的缓解了创建和销毁线程的开销，但是对于一些互联网开发领域，面对频繁，大量的互联网并发请求时，线程池就无能为力了。这就跟一家三口使用卫生间一样：如果每个人上厕所都要先申请锁，锁门，再开门，释放锁，时间久了会让人感觉很麻烦。一个更好的解决方法是上厕所时大家协商着来，这样就不用频繁地加锁、解锁了<br>
 协程就是按照这个思路实现的，将对共享资源的访问交给程序本身维护和控制，不再使用锁对共享资源互斥访问，无调度开销，执行效率会更高。协程一般适用在彼此熟悉的合作式多任务中，上下文切换成本低，更适合高并发请求的应用场景。
 从切换成本上看，进程的切换成本最大，协程 的切换成本最低。而从安全性上看，进程因为有内存管理保护反而最安全，一个进程崩溃了，操作系统会终止这个进程的运行，并不会影 响其他进程的正常运行，当然也不会影响到操作系统本身。 协程虽然上下文切换成本最低，但是也有缺陷，如无法利用多核CPU实现真正的并发。但这并不妨碍它在编程市场上的受欢迎程度，很多语言都开始支持使用协程编程：Python提供了yield/send协程编程接口，从Python3.5开始又新增了async/await接口。在C语言编程领域，虽然C语言本身并没有提供支持协程的机制，但目前市面上也有很多使用C/C++实现的协程库，用户可以通过库接口函数去实现协程编程</p>
 <h3 id="atpcs规则" class="headerLink">
     <a href="#atpcs%e8%a7%84%e5%88%99" class="header-mark"></a>ATPCS规则</h3><p>ATPCS规则定义了子程序函数调用规则
-子程序间要通过寄存器R0~R3(可记作a0~a3)传递参数，<strong>当参数个数大于4时，剩余的参数使用父函数的堆栈来传递</strong>，参数地址位于父函数的末尾，因此传递时采用FP寄存器向高地址偏移若干位来获得参数值</p>
+子程序间要通过寄存器R0~R3(可记作a0~a3)传递参数，<strong>当参数个数大于4时，剩余的参数使用父函数的堆栈来传递</strong>，参数地址位于父函数的末尾，因此传递时利用FP寄存器存储的值并向高地址偏移若干位来获得各参数值</p>
 <ul>
 <li>子程序通过R0~R1返回结果</li>
 <li>子程序中使用R4~R11(可记作v1~v8)来保存局部变量</li>
@@ -2107,7 +2197,7 @@ bin文件：最直接的代码映像</p>
 <li>可使用extern进行扩展，被其他文件引用</li>
 <li>也可以使用static进行限制，只能在本文件中被引用</li>
 </ul>
-<p>局部变量的作用域如下。</p>
+<p>局部变量的作用域如下</p>
 <ul>
 <li>局部变量的作用域由{}限定</li>
 <li>可以使用static修饰局部变量来改变它们的存储属性(生命周期)，但不能改变其作用域</li>
@@ -2117,7 +2207,7 @@ bin文件：最直接的代码映像</p>
 <p>内存中只有0和1，不区分符号位，是字符还是整型。只有等到使用printf解析时才会根据%来解析内存中的数据，根据不同的解析方式(%d，%u)会产生不同的结果</p>
 <p>对于无符号数，数据溢出会从0重新开始，对于有符号数溢出则会产生一个<strong>ub</strong></p>
 <p>结构体进行数据对齐时会按照结构体内数据类型的最大成员的对齐模数进行对齐，如果最大成员的对齐模数超过编译器的对齐模数的话就按照编译器的对齐模数来确定<strong>结构体整体的对齐模数</strong>。例如，对于GCC来说，对齐模数是4，即使结构体内部有double类型的数据，结构体整体也会按照4字节进行对齐。当结构体内嵌其他结构体来说对齐方式会按照<strong>内嵌结构体内部成员</strong>的最大对齐模数来对齐整个结构体。也就是说，对于普通的多层结构体来说，大概率对齐模数是8或者编译器规定的最大对齐模数</p>
-<p>size_t的一个优点是其大小并非是固定的，而是用来表征针对某平台的最大长度，因此它可以用来存储该平台地址或者开辟一个复制数据的变量而不担心溢出</p>
+<p>size_t的一个优点是其大小跟随平台不同而不同，可以用来表征针对某平台的最大长度，因此它可以用来存储该平台地址或者开辟一个复制数据的变量而不担心溢出</p>
 <p>对于指针来说既然指针大小不会改变那为什么还要指定指针的类型呢？</p>
 <ul>
 <li>方便编译时编译器的类型检查</li>
@@ -2208,7 +2298,7 @@ bin文件：最直接的代码映像</p>
     </div>
   </div>
   <pre style="counter-reset: codeblock;" class="tw-block tw-m-0 tw-p-0"><code 
-    id="codeblock-id-15" 
+    id="codeblock-id-16" 
     class="
       chroma 
       !tw-block 
@@ -2309,7 +2399,7 @@ bin文件：最直接的代码映像</p>
     </div>
   </div>
   <pre style="counter-reset: codeblock;" class="tw-block tw-m-0 tw-p-0"><code 
-    id="codeblock-id-16" 
+    id="codeblock-id-17" 
     class="
       chroma 
       !tw-block 
@@ -2328,21 +2418,18 @@ bin文件：最直接的代码映像</p>
 </span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">list_node</span> <span class="n">node</span><span class="p">;</span><span class="c1">//编译器没有办法知道list_node结构体的大小
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span></span></span></code></pre>
 </div>
-<p>在xxx.c包含其本身库文件xxx.h是为了检查定义与声明的一致性，防止编程时粗心产生错误</p>
+<p>在xyz.c包含其本身库文件xyz.h是为了检查定义与声明的一致性，防止编程时粗心产生错误</p>
 <h3 id="指针与数组" class="headerLink">
     <a href="#%e6%8c%87%e9%92%88%e4%b8%8e%e6%95%b0%e7%bb%84" class="header-mark"></a>指针与数组</h3><p>两指针相减的结果以数据类型的长度为单位</p>
-<p>[]运算符是通过*来实现的，例如a[n]&ndash;&gt;*(a+n)</p>
+<p>[]运算符是通过*来实现的，例如a[n]==*(a+n)</p>
 <p>数组名与指针的区别：</p>
 <ul>
 <li>指针与数组名的类型不同，对于int a[5]来说，它的类型是int (*) [5]</li>
-<li>数组名在不同场合有不同含义，当进行数组初始化时或者使用数组名和sizeof、取址运算
-符&amp;结合使用时，数组名表示的是数组类型，此时与指针有本质不同。在其他情况下，数组名都是一个右值，表示数组首元素的地址，但是可以与间接访问运算符*构成一个左值表达式
-，这时数组名就与指针很相似了</li>
+<li>数组名在不同场合有不同含义，当进行数组初始化时或者使用数组名和sizeof、取址运算符&amp;结合使用时，数组名表示的是数组类型，此时与指针有本质不同。在其他情况下，数组名都是一个右值，表示数组首元素的地址，但是可以与取指运算符*构成一个左值表达式，这时数组名就与指针很相似了</li>
 </ul>
 <h3 id="编程习惯" class="headerLink">
     <a href="#%e7%bc%96%e7%a8%8b%e4%b9%a0%e6%83%af" class="header-mark"></a>编程习惯</h3><p>预防内存泄漏最好的方法就是：内存申请后及时地释放，两者要配对使用，内存释放后要及时将指针设置为NULL，使用内存指针前要进行非空判断</p>
-<p>宏定义时定义的内容使用小括号是个好习惯，这可以很大程度避免运算符号优先级，结合性与外部变量耦合的问题。当然，在定义中间变量时可以不用加小括号，因为这是宏定义的内部变量</p>
-<p>在内核进行宏定义时，我们会经常看到<code>do{}while(0)</code>的结构，这本质上是防止宏定义展开后与外部语句发生耦合，类似上一产生的bug。因此我们在这里需要的只有那个大括号，但是如果只使用大括号会造成语法错误(因为我们使用宏的时候会选择加分号)，这样宏展开后会在大括号末尾处加分号，虽然新的编译器会自动忽略分号但在老的编译器上就很可能报错</p>
+<p>在内核进行宏定义时，我们会经常看到<code>do{}while(0)</code>的结构，这本质上是防止宏定义展开后与外部语句发生耦合。因此我们在这里需要的只有那个大括号，但是如果只使用大括号会造成语法错误(因为我们使用宏的时候会选择加分号)，这样宏展开后会在大括号末尾处加分号，虽然新的编译器会自动忽略分号但在老的编译器上就很可能报错</p>
 <h3 id="好用的工具" class="headerLink">
     <a href="#%e5%a5%bd%e7%94%a8%e7%9a%84%e5%b7%a5%e5%85%b7" class="header-mark"></a>好用的工具</h3><h4 id="内存工具" class="headerLink">
     <a href="#%e5%86%85%e5%ad%98%e5%b7%a5%e5%85%b7" class="header-mark"></a>内存工具</h4><p>内存泄漏检测：MTrace(linux系统自带)</p>
@@ -2421,7 +2508,7 @@ bin文件：最直接的代码映像</p>
     </div>
   </div>
   <pre style="counter-reset: codeblock;" class="tw-block tw-m-0 tw-p-0"><code 
-    id="codeblock-id-17" 
+    id="codeblock-id-18" 
     class="
       chroma 
       !tw-block 
@@ -2530,7 +2617,7 @@ bin文件：最直接的代码映像</p>
     </div>
   </div>
   <pre style="counter-reset: codeblock;" class="tw-block tw-m-0 tw-p-0"><code 
-    id="codeblock-id-18" 
+    id="codeblock-id-19" 
     class="
       chroma 
       !tw-block 
@@ -2551,12 +2638,12 @@ bin文件：最直接的代码映像</p>
 </span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="kt">int</span> <span class="nf">main</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="o">*</span><span class="n">p</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="n">p</span> <span class="o">=</span> <span class="nf">memalign</span><span class="p">(</span><span class="mi">4096</span><span class="err">，</span><span class="mi">512</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">p</span> <span class="o">=</span> <span class="nf">memalign</span><span class="p">(</span><span class="mi">4096</span><span class="p">,</span> <span class="mi">512</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="o">*</span><span class="n">p</span><span class="o">=</span><span class="mi">100</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;*p=%d</span><span class="se">\n</span><span class="s">&#34;</span><span class="err">，</span><span class="o">*</span><span class="n">p</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">mprotect</span><span class="p">(</span><span class="n">p</span><span class="err">，</span><span class="mi">512</span><span class="err">，</span><span class="n">PROT_READ</span><span class="p">);</span><span class="c1">//在p指针变量的后512个字节内检测内存踩踏，这段内存正常情况是只读的
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;*p=%d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mprotect</span><span class="p">(</span><span class="n">p</span><span class="err">，</span><span class="mi">512</span><span class="p">,</span> <span class="n">PROT_READ</span><span class="p">);</span><span class="c1">//在p指针变量的后512个字节内检测内存踩踏，这段内存正常情况是只读的
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">*</span><span class="n">p</span><span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;*p= %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="err">，</span><span class="o">*</span><span class="n">p</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;*p= %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">free</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre>
@@ -2639,7 +2726,7 @@ Valgrind包含一套工具集，其中一个内存检测工具Memcheck可以对�
     </div>
   </div>
   <pre style="counter-reset: codeblock;" class="tw-block tw-m-0 tw-p-0"><code 
-    id="codeblock-id-19" 
+    id="codeblock-id-20" 
     class="
       chroma 
       !tw-block 
@@ -2663,15 +2750,15 @@ Valgrind包含一套工具集，其中一个内存检测工具Memcheck可以对�
 <h3 id="流水线冒险" class="headerLink">
     <a href="#%e6%b5%81%e6%b0%b4%e7%ba%bf%e5%86%92%e9%99%a9" class="header-mark"></a>流水线冒险</h3><p>现在主流CPU有5级流水线：取指/预取，译码，执行，访问内存，写回。但是对于性能强劲的处理器，如Intel i7-3960X，它拥有16级流水线。深度超过5级流水线的被称为超深流水线</p>
 <p>一旦预取指令失败，CPU就会丢失当前执行指令到预取指令间的所有指令，此时流水线就会发生停顿，我们称这种现象为流水线冒险</p>
-<p>流水线冒险一般由于数据冒险(两个不同操作在相邻指令中用到了同一个寄存器)，控制冒险(跳转指令导致取指失败)组成，我们可以采用插入空指令的方式来避免数据冒险(这在超深流水线中很有用)，而对于控制冒险我们可以通过优化代码和编译优化的方式来避免</p>
+<p>流水线冒险一般由于数据冒险(两个不同操作在相邻指令中用到了同一个寄存器)，控制冒险(跳转指令导致取指失败)组成，我们可以采用插入空指令的方式来避免数据冒险(这在超深流水线中很有用)，而对于控制冒险我们可以通过增加分支预测硬件，优化代码和编译优化的方式来避免</p>
 <h3 id="分支预测" class="headerLink">
     <a href="#%e5%88%86%e6%94%af%e9%a2%84%e6%b5%8b" class="header-mark"></a>分支预测</h3><p>分支预测主要分为动态预测和静态预测，静态预测是通过优化代码和编译优化，如内核中的 likely 和 unlikely 宏就采用了静态预测的方法。动态预测指的是程序运行时的预测优化，这一般由预测算法来实现，常见的动态预测方式有1-bit动态预测、n-bit动态预测、下一行预测、双模态预测、局部分支预测、全局分支预测、融合分支预测、循环预测等</p>
-<p>随着APP的大量涌现，分支预测的硬件结构也越来越复杂，在CPU版图上面积占的最大的是Cache，其次就是分支预测结构了</p>
+<p>随着APP的大量涌现，分支预测的硬件结构也越来越复杂，在现代CPU版图上面积占比最大的是Cache，其次就是分支预测结构了</p>
 <h3 id="乱序执行" class="headerLink">
-    <a href="#%e4%b9%b1%e5%ba%8f%e6%89%a7%e8%a1%8c" class="header-mark"></a>乱序执行</h3><p>除了前面提到的插入空指令来避免流水线冒险，我们更好的处理方式是将这些空指令替换为其他指令，这就是CPU的乱序执行</p>
+    <a href="#%e4%b9%b1%e5%ba%8f%e6%89%a7%e8%a1%8c" class="header-mark"></a>乱序执行</h3><p>除了前面提到的插入空指令来避免流水线冒险，我们更好的处理方式是将这些空指令替换为与流水线冒险无关的其他指令，这就是CPU的乱序执行</p>
 <p>乱序执行由CPU硬件来保证</p>
 <h3 id="多发射" class="headerLink">
-    <a href="#%e5%a4%9a%e5%8f%91%e5%b0%84" class="header-mark"></a>多发射</h3><p>在执行阶段时CPU有不同的执行单元，例如乘法器，加法器，FPU等，为了能够充分利用这些资源，CPU采用了多发射并行执行指令的方法，每一时刻，CPU都在同时运行不同的执行单元，而每个执行单元也都有不同的取指器，译指器，因此这些准备工作也是并行执行的</p>
+    <a href="#%e5%a4%9a%e5%8f%91%e5%b0%84" class="header-mark"></a>多发射</h3><p>在执行阶段时CPU有不同的执行单元，例如乘法器，加法器，FPU等，为了能够充分利用这些资源，CPU采用了多发射并行执行指令的方法，每一时刻，CPU都在同时运行不同的执行单元，而每个执行单元也都有不同的取指器，译码器，因此这些准备工作也是并行执行的</p>
 <p>
 <figure><a class="lightgallery" href="/posts/miscs/assets/15434216240366.webp" title="2024-03-25_16-41" data-thumbnail="/posts/miscs/assets/15434216240366.webp" data-sub-html="<h2> </h2><p>2024-03-25_16-41</p>"><img   src='/posts/miscs/assets/15434216240366.webp'   alt="2024-03-25_16-41" height="604" width="784"></a><figcaption class="image-caption">2024-03-25_16-41</figcaption>
     </figure></p>
@@ -2687,13 +2774,13 @@ Valgrind包含一套工具集，其中一个内存检测工具Memcheck可以对�
     <a href="#arm%e5%b7%a5%e4%bd%9c%e6%a8%a1%e5%bc%8f%e4%b8%8e%e5%af%84%e5%ad%98%e5%99%a8" class="header-mark"></a>arm工作模式与寄存器</h3><p>
 <figure><a class="lightgallery" href="/posts/miscs/assets/491142321259494.webp" title="2024-03-25_21-23" data-thumbnail="/posts/miscs/assets/491142321259494.webp" data-sub-html="<h2> </h2><p>2024-03-25_21-23</p>"><img   src='/posts/miscs/assets/491142321259494.webp'   alt="2024-03-25_21-23" height="785" width="1483"></a><figcaption class="image-caption">2024-03-25_21-23</figcaption>
     </figure></p>
-<p>对于arm而言，R0~R12属于通用寄存器，其他的属于特殊寄存器
-R13(SP，Stack Pointer)：堆栈指针寄存器，保存了当前运行程序的栈顶
-R14(LR，Link Register)：链接寄存器，保存了上一级函数的下一条指令，当子函数return时会将当前LR的值加载进PC
-R15(PC，Program Counter)：程序计数器，保存了当前取指的地址。对于3级流水线，32位处理器来说，PC与当前执行指令的地址快2*32地址
-CPSR(Current Processor State Register)：当前状态寄存器
+<p>对于arm而言，R0~R12属于通用寄存器，其他的属于特殊寄存器<br>
+R11(FR，Frame Register)：栈底指针寄存器，用来管理堆栈
+R13(SP，Stack Pointer)：堆栈指针寄存器，保存了当前运行程序的栈顶<br>
+R14(LR，Link Register)：链接寄存器，保存了上一级函数的下一条指令，当子函数return时会将当前LR的值加载进PC<br>
+R15(PC，Program Counter)：程序计数器，保存了当前取指的地址。对于3级流水线，32位处理器来说，PC比当前执行指令的地址快8字节<br>
+CPSR(Current Processor State Register)：当前状态寄存器<br>
 SPSR(Saved Processor State Register)：当前状态保存寄存器，当CPU从异常状态返回时会从SPSR寄存器中恢复原先的处理器状态，即将SPSR加载进CPSR从而切换到原来的工作模式继续运行</p>
-<p>ARM处理器则使用R13寄存器(SP，栈顶指针)和R11寄存器(FP，栈底指针)来管理堆栈</p>
 <p>
 <figure><a class="lightgallery" href="/posts/miscs/assets/391243121256049.webp" title="2024-03-25_21-31" data-thumbnail="/posts/miscs/assets/391243121256049.webp" data-sub-html="<h2> </h2><p>2024-03-25_21-31</p>"><img   src='/posts/miscs/assets/391243121256049.webp'   alt="2024-03-25_21-31" height="818" width="1239"></a><figcaption class="image-caption">2024-03-25_21-31</figcaption>
     </figure></p>
@@ -2706,18 +2793,18 @@ SPSR(Saved Processor State Register)：当前状态保存寄存器，当CPU从�
 
 <figure><a class="lightgallery" href="/posts/miscs/assets/545560515269767.webp" title="2024-04-09_15-05" data-thumbnail="/posts/miscs/assets/545560515269767.webp" data-sub-html="<h2> </h2><p>2024-04-09_15-05</p>"><img   src='/posts/miscs/assets/545560515269767.webp'   alt="2024-04-09_15-05" height="877" width="914"></a><figcaption class="image-caption">2024-04-09_15-05</figcaption>
     </figure></p>
-<p>如果我们将U-boot代码“烧写”在NOR Flash上，设置系统从NORFlash启动，这段ROMCODE代码就会将NOR Flash映射到零地址，然后系统复位，CPU默认从零地址取代码执行，即从NOR Flash上开始执行U-boot指令
+<p>如果我们将U-boot代码“烧写”在NOR Flash上，设置系统从NORFlash启动，这段ROMCODE代码就会将NOR Flash映射到零地址，然后系统复位，CPU默认从零地址取代码执行，即从NOR Flash上开始执行U-boot指令<br>
 如果系统从NAND Flash或SD卡启动，通过上面的学习我们已经知道，除了SRAM和NOR Flash支持随机读写，可以直接运行代码，其他Flash设备是不支持代码直接运行的，因此我们只能将这些代码从NAND Flash或SD卡复制到内存执行。因为此时DDR SDRAM内存还没有被初始化，所以我们一般会先将NAND Flash或SD卡中的一部分代码(通常为前4KB)复制到芯片内部集成的SRAM中去执行，然后在这4KB代码中完成各种初始化、代码复制、重定位等工作，最后PC指针才会跳到DDRSDRAM内存中去运行</p>
 <h2 id="术语" class="headerLink">
     <a href="#%e6%9c%af%e8%af%ad" class="header-mark"></a>术语</h2><p>ISP：In System Programing(还有一种ISP指的是通信供应商) ，使用芯片厂商提供的bootloader以及专用接口(JTAG)进行程序烧录</p>
 <p>IAP：In applicating Programing(重要技术，常与OTA搭配) ，应用软件自身通过预留的接口(串口或网口等)进行falsh程序烧写。在IAP程序中一般有两个程序，第一个代码只执行更新操作，第二段代码才是固件包，第二段代码需要通过第一段代码来烧录进flash，因此当破坏IAP，也就是第一段代码时需要返厂进行IAP程序的烧录，否则第二段程序无法正常执行</p>
-<p>OTA：Over-the-Air Technology，通过无线网络进行固件包的下载，下载后的固件包交由IAP进行升级
+<p>OTA：Over-the-Air Technology，通过无线网络进行固件包的下载，下载后的固件包交由IAP进行升级<br>
 OTG：通过U盘进行固件包的下载</p>
 <p>FPU：浮点运算单元</p>
-<p>.a (archive)文件，linux下的静态库，ar最初实际上是个压缩工具，他把.o文件压缩使得方便文件跨设备传输和管理
+<p>.a (archive)文件，linux下的静态库，ar最初实际上是个压缩工具，他把.o文件压缩使得方便文件跨设备传输和管理<br>
 .so (shared object)文件，linux下的共享库</p>
-<p>API (application programming interface，应用程序接口)，API定义了源代码和库之间的接口，因此源代码可以在支持这个API的任何系统中<strong>编译</strong>
-ABI (application binary interface，应用二进制接口)，我们把符号修饰标准，变量内存布局，函数调用方式，等这些跟可执行代码二进制兼容性相关的内容称为ABI，支持ABI的系统和平台允许将在这个ABI系统上编译出来代码<strong>运行</strong>在另一台支持同样ABI标准的设备上，实现真正的跨平台运行。</p>
+<p>API (application programming interface，应用程序接口)，API定义了源代码和库之间的接口，因此源代码可以在支持这个API的任何系统中<strong>编译</strong><br>
+ABI (application binary interface，应用二进制接口)，我们把符号修饰标准，变量内存布局，函数调用方式，等这些跟可执行代码二进制兼容性相关的内容称为ABI，支持ABI的系统和平台允许将在这个ABI系统上编译出来代码<strong>运行</strong>在另一台支持同样ABI标准的设备上，实现真正的跨平台运行</p>
 <p>ub (undefined behavior，未定义行为)</p>
 <p>ISA (Instruction Set Architecture)：指令集架构</p>
 <p>CRT (C Running Time，C运行库)</p>
@@ -2726,7 +2813,7 @@ ABI (application binary interface，应用二进制接口)，我们把符号修�
 <p>初始化与定义：初始化是指开辟内存的过程，定义是指赋值的过程</p>
 <p>saas(Software as a Service，软件即服务)，常用于云计算云存储等行业，服务提供商将软件统一打包售卖，负责产品的运维升级等工作，类似于实体行业的交钥匙项目</p>
 <p>haas(Hardware as a Service，硬件即服务)，常用于嵌入式等领域，服务提供商利用互联网将硬件资源打包售卖，负责硬件的维护工作，这样需求方无需一次性购买全部设备，采用这种按需购买的方式有助于提高设备利用率从而降低成本</p>
-<p>框架：在应用开发的过程中我们会经常遇到重复性工作，比如在开发音视频播放软件，即时通讯软件，输入法软件或者游戏时我们会有对输入事件响应的需求。这种需求如果让应用程序开发者来处理就太低效了，为了进一步提高代码复用我们就有了框架。例如专职负责输入事件响应的事件处理框架，专职负责显示的QT框架，专职负责音视频解编码的FFmpeg框架等</p>
+<p>框架：在应用开发的过程中我们会经常遇到重复性工作，比如在开发音视频播放软件，即时通讯软件，输入法软件或者游戏时我们会有对输入事件响应的需求。这种需求如果让应用程序开发者来处理就太低效了，为了进一步提高代码复用率我们就有了框架。例如专职负责输入事件响应的事件处理框架，专职负责显示的QT框架，专职负责音视频解编码的FFmpeg框架等</p>
 <p>模块化编程：随着物联网的兴起和边缘计算的发展，嵌入式系统越来越复杂，也越来越碎片化，为了方便用户自行取舍某些功能，我们引入了模块化编程。比如对于流媒体产品来说，我们只需要Wifi，音视频，事件处理框架即可，而对于低功耗，Lora，USB模块则可以裁剪掉</p>
 </div>
 
@@ -2763,7 +2850,7 @@ ABI (application binary interface，应用二进制接口)，我们把符号修�
             <div class="footer-line">
                 <span id="run-time"></span>
             </div><div class="footer-line">
-                    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.147.7">Hugo</a>&nbsp;|&nbsp;Theme - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.4.1"><svg class="icon"
+                    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.147.9">Hugo</a>&nbsp;|&nbsp;Theme - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.4.1"><svg class="icon"
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg> DoIt</a>
                 </div><div class="footer-line"><svg class="icon"
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 448c-110.532 0-200-89.451-200-200 0-110.531 89.451-200 200-200 110.532 0 200 89.451 200 200 0 110.532-89.451 200-200 200zm107.351-101.064c-9.614 9.712-45.53 41.396-104.065 41.396-82.43 0-140.484-61.425-140.484-141.567 0-79.152 60.275-139.401 139.762-139.401 55.531 0 88.738 26.62 97.593 34.779a11.965 11.965 0 0 1 1.936 15.322l-18.155 28.113c-3.841 5.95-11.966 7.282-17.499 2.921-8.595-6.776-31.814-22.538-61.708-22.538-48.303 0-77.916 35.33-77.916 80.082 0 41.589 26.888 83.692 78.277 83.692 32.657 0 56.843-19.039 65.726-27.225 5.27-4.857 13.596-4.039 17.82 1.738l19.865 27.17a11.947 11.947 0 0 1-1.152 15.518z"/></svg>2023 - 2025<span class="author">&nbsp;<a href="wumingzi.top" target="_blank" rel="noopener noreferrer">吾铭子</a></span></div>

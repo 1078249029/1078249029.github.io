@@ -4,7 +4,7 @@
 
 参考书籍：《FreeRTOS 内核实现与应用开发实战指南》  
   
-> 一个工程如果没有 main 函数是编译不成功的,会出错。因为系统在开始执行的时候先执行启动文件里面的复位程序,复位程序里面会调用 C 库函数__main,__main 的作用是初始化好系统变量,如全局变量,只读的,可读可写的等等。__main 最后会调用__rtentry,再由__rtentry 调用 main 函数,从而由汇编跳入到 C 的世界,这里面的 main 函数就需要我们手动编写,如果没有编写 main 函数,就会出现 main 函数没有定义的错误。  
+> 一个工程如果没有 main 函数是编译不成功的，因为系统在开始执行的时候首先执行启动文件里面的复位程序，复位程序里面会调用 C 库函数__main，__main 的作用是初始化好系统变量(将.data段从falsh拷贝到ram)，清零未初始化全局变量或静态变量(清.bss段)，设置堆栈等等。__main 最后会调用__rtentry，该函数主要负责初始化标准I/O以及异常处理，但最主要工作是设置入口函数，例如__rtentry 调用 main 函数，从而由汇编跳入到 C 的世界，这里面的 main 函数就需要我们手动编写，如果没有编写 main 函数，就会出现 main 函数没有定义的错误。 __rtentry 函数存在于armcc工具链中(如keil)，而gcc-arm就可能缺失(例如cubeide)  
   
 <!-- more -->
 
@@ -12,7 +12,7 @@
 
 ## FreeRTOS内核实现  
 
-生成的startup_ARMCM3.s负责启动startup_ARMCM3.c负责时钟配置，本项目默认的时钟为25M 
+生成的startup_ARMCM3.s负责启动startup_ARMCM3.c负责时钟配置，本项目默认时钟为25M 
 
 ```c
 /*----------------------------------------------------------------------------
@@ -20,34 +20,32 @@
  *----------------------------------------------------------------------------*/
 #define  XTAL            ( 5000000UL)      /* Oscillator frequency */
 #define  SYSTEM_CLOCK    (5U * XTAL)
-```  
-
+```
   
 ![2024-01-02_10-16](assets/419821610240143.webp)
   
-  
 对于这种多行宏定义，每行结尾要加 \ 表示该行未结束
   
-::: alert-danger
-若使用 \ 表示该行未完结务必注意 \ 后不能加任何字符，尤其是空格或者Tab。报错如下![2024-01-02_12-05](assets/481670512259271.webp)
-:::
-    
+{{< admonition type=warning title="" open=true >}}
+若使用 \ 表示该行未完结，务必注意 \ 后不能加任何字符，尤其是空格或者Tab。报错如下![2024-01-02_12-05](assets/481670512259271.webp)
+{{< /admonition >}}
+   
 ![2024-01-02_10-44](assets/400010311258569.webp)
   
 ![2024-01-02_11-04](assets/7600511266602.webp)
   
-左值不能进行类型转换，类型转换本质上是在寄存器内对原值进行位操作，得到的结果不放入内存，而左值是需要放进内存的，因此类型转换与左值冲突，若要类型转换，则需要对右值进行操作
+左值不能进行类型转换，类型转换本质上是在寄存器内对原值进行位操作，得到的结果不放入内存，而左值是需要放进内存的，因此类型转换与左值冲突，若要类型转换，则需要对右值进行操作  
 
-:::alert-danger
+{{< admonition type=warning title="" open=true >}}
 当一个a.c文件需要b.h，而b.h包含了c.h，且c.h也包含了b.h时，会发生编译冲突。表现为有未定义的类型或变量，详情参考[博客园](https://www.cnblogs.com/skullboyer/p/8891579.html)，解决办法是理清编译关系，去除重复包含的头文件
 ![2024-01-03_13-26](assets/211612613258570.webp)
-:::  
+{{< /admonition >}}
 
-栈由高地址向低地址增长，栈顶是第一个进栈的元素，栈底是最后一个进栈的元素
-因为32位机一般指令都是32位的，栈顶指针只需4字节对齐即可，但是考虑兼容浮点运算的64位操作则需要8字节。对齐完成后，栈顶指针即可确定位置，而后开辟空间  
+栈由高地址向低地址增长，栈顶是第一个进栈的元素，栈底是最后一个进栈的元素  
+因为32位机的指令一般都是32位的，栈顶指针只需4字节对齐即可，但是考虑兼容浮点运算的64位操作则需要8字节。对齐完成后，栈顶指针即可确定位置，而后开辟空间  
 
 ![2024-01-03_16-01](assets/151190216246437.webp)
-项目的.c 与 .h文件可以不重名，位置可以不同，例如port.c文件放在\freertos\Source\portable\RVDS\ARM_CM3，但是引用port.c内容的portable.h放在\freertos\Source\include    
+项目的.c 与 .h文件可以不重名，位置可以不同，例如port.c文件放在\freertos\Source\portable\RVDS\ARM_CM3，但是引用port.c内容的portable.h放在\freertos\Source\include  
 
 ```c
 /* 这行代码的意思是定义了TaskFunction_t类型的函数指针，参数和返回值都是void，这样就可以进行函数“赋值”，进而从Task1，Task2中抽象出TaskFunction_t这一类型了，并且使用起来很方便 */
@@ -70,29 +68,25 @@ void main()
 
 ```
 
-### 实现就绪链表    
+### 实现就绪链表  
 ```c
 typedef void (*TaskFunction_t)( void * );//将TaskFunction_t函数指针重定义为void*类型
 
 //FreeRTOS中TaskFunction_t内部包含了一个栈顶指针，因此返回值为uint32型
 ```
 
-:::alert=info
-在FreeRTOS里TaskHandle_t是个TCB_t的指针
+{{< admonition type=warning title="" open=true >}}
+在FreeRTOS里TaskHandle_t是个TCB_t的指针  
 在toyFreeRTOS里TaskHandle_t是个void*类型的指针，使用时需要类型强转
-:::  
-
-
+{{< /admonition >}}
 
 #### 设置任务栈时栈顶指针的移动  
 
 ![2024-01-13_13-36](assets/434673613240154.webp)
 
-
 ![2024-01-04_09-41](assets/386434109258571.webp)  
 
-首先由外部函数prvInitialiseNewTask构造出的pxTopOfStack指针传入pxPortInitialiseStack函数，此时pxTopOfStack指针指向A位置，而后移动指针至B，C点从而将xPSR，PC，LR的值依次写入栈顶，方便之后寄存器读取。配置好自动加载到寄存器的内容后再将指针下移至D并返回，从而使任务得到空闲堆栈的指针  
-  
+首先由外部函数prvInitialiseNewTask构造出的pxTopOfStack指针传入pxPortInitialiseStack函数，此时pxTopOfStack指针指向A位置，而后移动指针至B，C点并将xPSR，PC，LR的值依次写入栈顶，方便之后寄存器读取。之后设置R0为传入的参数，最后将指针下移至D并返回，从而使任务得到空闲堆栈的指针  
 
 ### 实现调度器  
 
@@ -145,21 +139,21 @@ __asm void prvStartFirstTask( void )
 	nop
 }
 
+/* 处理第一个任务的SVC */
 __asm void vPortSVCHandler( void )
 {
-
- extern pxCurrentTCB;
- PRESERVE8
- ldr r3, =pxCurrentTCB    //TCB_t volatile *pxCurrentTCB = NULL;
- ldr r1, [r3]             //volatile StackType_t *pxTopOfStack;
- ldr r0, [r1]             //r0 = *pxTopOfStack
- ldmia r0!, {r4-r11}
- msr psp, r0
- isb
- mov r0, #0
- msr basepri, r0	//开中断
- orr r14, #0xd		//设置LR的值
- bx r14				//此处不会返回r14(LR),而是返回到任务堆栈，具体看CM3手册
+    extern pxCurrentTCB;
+    PRESERVE8
+    ldr r3, =pxCurrentTCB    //TCB_t volatile *pxCurrentTCB = NULL;
+    ldr r1, [r3]             //volatile StackType_t *pxTopOfStack;
+    ldr r0, [r1]             //r0 = *pxTopOfStack
+    ldmia r0!, {r4-r11}
+    msr psp, r0
+    isb
+    mov r0, #0
+    msr basepri, r0	    //开中断
+    orr r14, #0xd		//设置LR的值
+    bx r14				//此处不会返回r14(LR),而是返回到任务堆栈，具体看CM3手册
 }
 
  __asm void xPortPendSVHandler( void )
@@ -196,25 +190,29 @@ __asm void vPortSVCHandler( void )
 ```
   
 * 为什么需要PendSV？
-    * pendsv是最低优先级的异常，常用于任务切换，这是为了保证系统实时性所提出的方法。在此之前，采用时间片流转的os经常遇到任务切换的时钟中断将其他中断打断的现象，甚至引发硬件错误。有了pendsv后，定时器中断被延迟到了普通中断之后，以此来保证普通中断的优先级，同时也不会忽略定时器中断
-      
+    * pendsv是最低优先级的异常，常用于任务切换，这是为了保证系统实时性所提出的方法。在此之前，采用时间片流转的os经常遇到任务切换的时钟中断将其他中断打断的问题，甚至引发硬件错误。有了pendsv后，定时器中断被延迟到了普通中断之后，以此来保证普通中断的优先级，同时也不会忽略定时器中断。但是会引起上下文切换不精确的问题，通常情况下由pendsv引发的延时可以忽略，但在中断风暴中问题尤为严重
+
 ![内核的优先级翻转](assets/241410816255828.webp)  
 
 ![任务正常执行](assets/295570916251582.webp)  
 
-
 * 调用svc(请求管理调用)的原因
     * 用户与内核进行操作，但如需使用内核中资源时，需要通过SVC异常来触发内核异常，从而来获得特权模式，这才能执行内核代码
-* 为什么需要SVC启动第一个任务？
+* 为什么需要SVC启动第一个任务
     * 使用了os后，任务调度交给内核，因此不能同裸机一样使用任务函数来启动，必须通过内核的服务才能启动任务
-  
+* 相比pendsv，svc有什么特点
+    * 触发svc中断，其处理是及时的，若不及时会导致硬件fault。svc多用于权限切换或申请内核资源
+
+更多关于pendsv与svc的内容，详见[矜辰所致-infoq](https://xie.infoq.cn/article/e0c671e5ca2d472ce40d272d4)  
+
 ![2024-01-05_10-23](assets/555312310258572.webp)
 
 ![2024-01-05_10-23_1](assets/334622310240146.webp)
   
-:::alert-danger
+
+{{< admonition type=warning title="" open=true >}}
 for循环无循环体时末尾加分号
-:::  
+{{< /admonition >}}
 
 #### 实现调度器总结 
 
@@ -239,18 +237,18 @@ for循环无循环体时末尾加分号
         
     * 开启第一个任务步骤(汇编)：
         * 设置堆栈按8字节对齐
-        * 从SCB_VTOR取出向量表地址，进而获得msp的内容（msp中的第一条指令是哪来的？）
+        * 从SCB_VTOR取出向量表地址，进而获得msp的内容（即复位中断处理函数）
         * 开中断
         * 调用svc指令去获取硬件权限，从而执行svc中断服务程序，并启动第一个任务(svc替代了以前的swi也就是软中断指令)
         
     * svc中断服务程序的操作：
         * 将第一个任务的参数加载到寄存器，包括第一个函数的地址，形参，返回值
-        * 开中断，使用psp寄存器，返回到任务堆栈，这样第一个任务就执行完了，CPU等待执行下一个任务
+        * 开中断，使用psp寄存器，返回到任务堆栈，这样就可以执行第一个，执行完毕后CPU等待执行下一个任务
         
-* 上下文切换的操作：      
+* 上下文切换的操作：
     * 总体与svc中断服务程序的操作类似，但是加上了将优先级载入到basepri的操作
     * 设置好优先级后直接运行至跳转上下文 c 函数
-    * 最后开中断，使用psp寄存器，返回到任务堆栈，CPU等待执行下一个任务，调度器功能就实现了
+    * 最后开中断，使用psp寄存器，返回到任务堆栈，CPU可以执行下一个任务，调度器功能就实现了
   
 [具体任务切换过程参考资料](http://bbs.eeworld.com.cn/thread-617606-1-1.html)
 
@@ -268,16 +266,16 @@ FreeRTOS中的中断管理通过汇编完成，对于关中断而言，其内部
 /* 不带返回值的关中断函数,不能嵌套,不能在中断里面使用 */
 #define portDISABLE_INTERRUPTS() vPortRaiseBASEPRI()
 
-void vPortRaiseBASEPRI( void )
+static portFORCE_INLINE void vPortRaiseBASEPRI( void )
 {
 	//中断号大于191的中断全部被屏蔽
-	uint32_t ulNewBASEPRI = configMAX_SYSCALL_INTERRUPT_PRIORITY;    
+	uint32_t ulNewBASEPRI = configMAX_SYSCALL_INTERRUPT_PRIORITY;
 
 	__asm
 	{
 //将FreeRTOS最大优先级的中断加载到basepri寄存器中，这样会屏蔽FreeRTOS管理的所有中断
-	
-		msr basepri, ulNewBASEPRI    
+
+		msr basepri, ulNewBASEPRI
 		dsb
 		isb
 	}
@@ -285,7 +283,7 @@ void vPortRaiseBASEPRI( void )
 
 /* 带返回值的关中断函数,可以嵌套,可以在中断里面使用 */
 #define portSET_INTERRUPT_MASK_FROM_ISR() ulPortRaiseBASEPRI()
-ulPortRaiseBASEPRI( void )
+static portFORCE_INLINE uint32_t ulPortRaiseBASEPRI( void )
 {
 	uint32_t ulReturn, ulNewBASEPRI = configMAX_SYSCALL_INTERRUPT_PRIORITY; 
 
@@ -329,27 +327,26 @@ inline关键字用于C++，__inline，__forceinline既可用于C，也可以用�
 
 在程序中，如果在关键代码频繁调用某个函数，则会频繁的压栈出栈。为了**提高效率**，C语言提供了inline关键字来优化代码，例如在开关中断时需要inline关键字  
 
-inline的原理是，将某个函数内容原封不动的放入引用处，这样就不会频繁的入栈出栈了。inline减少了函数调用的开销，但使代码膨胀。  
-  
+标记有inline修饰符的函数，编译器会将该函数内容原封不动的放入引用处，这样就不会频繁的入栈出栈了。虽然inline减少了函数调用的开销，但会使代码膨胀。  
 
 ```c
 
-#include <stdio.h>  
- 
-//函数定义为inline即:内联函数  
-inline char* dbtest(int a) 
-{  
-	return (i % 2 > 0) ? "奇" : "偶";  
-}   
-  
-int main()  
-{  
-	int i = 0;  
+#include <stdio.h>
+
+//函数定义为inline即:内联函数
+inline char* dbtest(int a)
+{
+	return (i % 2 > 0) ? "奇" : "偶";
+}
+
+int main()
+{
+	int i = 0;
 	for (i=1; i < 100; i++) 
-	{  
-		printf("i:%d    奇偶性:%s /n", i, dbtest(i));      
-	}  
-} 
+	{
+		printf("i:%d    奇偶性:%s /n", i, dbtest(i));
+	}
+}
 
 ```
 
@@ -357,7 +354,7 @@ int main()
 
 inline，__inline，__forceinline等用法参考[51CTO](https://blog.51cto.com/u_15614325/5272494)
   
-#### volatile作为左值时，即使类型相同右值也需要类型强转么？  
+#### volatile限定左值时，即使类型相同右值也需要类型强转么？  
 
 不需要，Keil编译器问题，但是可能会报warning甚至error，最好类型强转一下
 
@@ -366,25 +363,25 @@ inline，__inline，__forceinline等用法参考[51CTO](https://blog.51cto.com/u
 * 为了能够自动进行任务调度，需要：
     * 设置CPU重装器，设置主频并调用系统中断向量表提供的SysTic中断服务函数
     * 提供一个函数，内部能够完成时基自增和任务延时自减**(后期会取消自减的设置，转而使用“[闹钟](#clock)”的思想)**，并将这个函数放入上一步的SysTick服务函数中，这样能够定时触发从而进行时基自增，在放入SysTick中时，还需要注意此函数前后需要开关中断以保证时基的实时性
-    * 将任务调度器函数`vTaskSwitchContext`重写，调度方式需要判定TCB中的任务延时，值为零，则触发SysTic中断服务函数，而后将任务放入就绪链表
+    * 将任务调度器函数`vTaskSwitchContext`重写，调度方式需要判定TCB中的任务延时，值为零，则触发SysTick中断服务函数，而后将任务放入就绪链表
     
 * 为了加入IdleTask支持，需要：
     * 在启动调度器函数 vTaskStartScheduler中加入空闲任务的启动，这需要设置IdleTask的TCB，栈，函数名称等参数，但**不设置延时**，因为CPU空闲时长不确定，设置完成后将其挂载到就绪列表  
-      
-:::alert-danger
-注意不要在IdleTask中加入任何阻塞或者死循环，否则由于IdleTask没有设置延时，会将同一优先级的所有任务阻塞！！！
-:::
+  
+{{< admonition type=warning title="" open=true >}}
+注意不要在IdleTask中加入任何阻塞或者死循环，否则由于IdleTask没有设置延时且目前抢占式算法未完成，导致调度器将与IdleTask同一优先级的所有任务阻塞！！！
+{{< /admonition >}}
 
 ### 支持多优先级  
 
 CM内核有个计算前导零的指令，以此可以优化寻找最高优先级任务的方法
 ![2024-01-12_10-19](assets/100532010240153.webp)  
 
-主要原理是：找到一个32位变量的最高非零位，此位就是最高的有任务的链表的优先级
+主要原理是：找到一个32位变量的最高非零位，此位就是最高的有任务的链表的优先级(支持的最大优先级数目为32)
 支持多优先级实现过程如下
 * 将`uxPriority`添加到TCB及其相关的函数内使其支持优先级
-* 之后在`prvInitialiseNewTask`函数内添加初始化优先级，并做判断使任务初始化优先级大于等于`configMAX_PRIORITIES`的退化成`configMAX_PRIORITIES-1`
-* 在`prvInitialiseTaskLists`中初始化5个就绪链表
+* 之后在`prvInitialiseNewTask`函数内添加初始化优先级，并做判断使任务初始化的优先级大于等于`configMAX_PRIORITIES`退化成`configMAX_PRIORITIES-1`的优先级
+* 在`prvInitialiseTaskLists`中初始化5个就绪链表，每个链表内的任务都有相同的优先级
 * 在`prvAddTaskToReadyList`宏函数中完成将任务移就绪入链表的操作
     * 记录当前优先级并将当前任务插入到获得的那个优先级链表的尾部
 * **在`prvAddNewTaskToReadyList`函数**中完成具体操作
@@ -426,7 +423,7 @@ for (;;);
 * 抢占式调度(configUSE_PREEMPTION)：高优先级任务可以打断低优先级任务
     * 时间片流转(configUSE_TIME_SLICING)：同优先级任务之间每隔一定时间片进行任务切换
         * 空闲任务让步(configIDLE_SHOULD_YIELD)：空闲任务与用户任务处于同一优先级时，空闲任务等待用户任务使用完CPU后才能获取资源  
-        
+
 默认情况，FreeRTOS上面三个选项均开启
 
 * 支持时间片的操作非常简单
@@ -436,7 +433,7 @@ for (;;);
     * 如果当就绪链表中任务数大于1，那么每进入`xTaskIncrementTick`函数就意味着过去了一个时间片，因此需要进行任务切换。注意在修改该函数时还需要判断上面两个宏是否为1
 
 ### 自己实现
-#### 信号量    
+#### 信号量  
 
 * 初始化Semaphore链表并设置Semaphore结构体的值
 * 完成Take函数
@@ -487,9 +484,8 @@ void vATask( void *pvParameters )
 }
 
 ```
-  
-动态存储使用malloc函数因此不需要传入指针，但是程序速度运行比静态分配慢还需要对内存进行管理
 
+动态存储使用malloc函数因此不需要传入指针，但是程序速度运行比静态分配慢且需要对内存进行管理
 
 ```c
 BaseType_t QueueReceive(QueueHandle_t QueueHandle, 
@@ -516,19 +512,18 @@ BaseType_t QueueReceive(QueueHandle_t QueueHandle,
 
 * 编译关系复杂，各种头文件相互包含导致类型重定义或者定义冲突
     * 理清编译关系，在项目之前做好文件规划，划分各文件的职责
-    * 注意头文件引用顺序
-    * 待补充    
-    
+    * 注意头文件引用顺序  
+
 * Keil编译器有问题，有时候类型符合的赋值编译器不通过，必须类型强转才可编译通过。再或者，虽然已经定义了条件编译但还是对循环引用的头文件报错，这时就需要考虑编译器的问题了，Keil失效的通常的现象和解决办法：
-    * 一般出现编译器问题的条件是：当一个错误卡住了很长时间，并且确定这段代码没有错误，而且当按照编译器的提示将这段代码彻底的进行修改后会爆出更多error，这时就可以考虑是编译器的问题了
+    * 一般出现编译器问题的条件是：当一个错误卡住了很长时间，并且确定这段代码没有错误，而且当按照编译器的提示将这段代码彻底的进行修改后会爆出更多error，这时就可以考虑是编译器的问题了(在写下这篇文章两年后的视角来看，应该是右值类型转换时缺失volatile关键字)
     * ![2024-01-05_22-35](assets/548533722266605.webp)
     * ![2024-01-05_22-36](assets/278363822259274.webp)
     * ![2024-01-05_22-37](assets/341003822255829.webp)
     * ![2024-01-05_22-33](assets/129063322246439.webp)
     * 所有可能的解决办法都失效了，可以考虑是Keil的问题
     * 待补充  
- 
-::: alert-danger   
+{{< admonition type=warning title="" open=true >}}
+
 ```c
 
 void prvIdleTask( void *p_arg )
@@ -545,17 +540,16 @@ void prvIdleTask( void *p_arg )
 
 }
 
-```  
-
+```
 因为在第十章已经实现支持多优先级了，且Task1，Task2优先级均大于0，因此此时空闲任务内可以加循环
-:::    
 
-  
+{{< /admonition >}}
+
 * 遇到调不出来的Bug不要怕，解决方法如下
     * 保持一个清醒的状态
     * 快速定位问题的大概位置
     * 在Bug大概位置处**逐步**调试
-    
+
 ```c
 void tickconst(int tick)
 {
@@ -574,11 +568,11 @@ int main()
     int i = 0;
     for(i=0; i<10; i++)
     {
-        tickconst(i);//const的值可以在定义的时候被修改，但不能在其他地方被修改，也就是说，const可以被变量赋值
+        tickconst(i);//const的值可以在定义的时候被修改，但不能在其他地方被修改，也就是说，const可以被变量赋值`
     }
     return 0;
 }
-```  
+```
 
 在时基函数调用时会用到
 ![2024-01-11_19-53](assets/350415319240152.webp)  
@@ -633,13 +627,13 @@ int main()
 ```
 ![2024-01-11_20-48](assets/175724820240152.webp)    
 
-:::alert-info
+{{< admonition type=warning title="" open=true >}}
 堆栈太小可能会导致程序停止在HardFault
-:::
+{{< /admonition >}}
 
 #### int (\*array)[20] 与 int \*arrary[20]的不同
-前者代表一个指向具有20个整型元素数组的**指针**，后者代表一个具有20个指针元素的**数组**
 
+前者代表一个指向具有20个整型元素数组的**指针**，后者代表一个具有20个指针元素的**数组**
 
 #### 宏定义函数
 * 为什么要使用宏定义函数？
@@ -649,7 +643,7 @@ int main()
 
 #### C99特性  
 
-在keil中可以在“魔术棒”的C/C++设置C99模式，指定后可以在**非全局**作用域下定义不定长数组  
+在keil中可以在“魔术棒”的C/C++设置C99模式，指定后可以在**非全局**作用域下定义不定长数组(vla)  
 ```c
 #define ListNum 5//只能使用宏定义，变量赋值也不行
 #define ItemNum 10
@@ -668,18 +662,17 @@ void arr[20];//非法定义，因为无法知道开辟空间的大小
 
 ### 调试经验  
 
-:::alert-info
+{{< admonition type=info title="" open=true >}}
 善用printf和printk，尤其利用好 \_\_FILE\_\_，\_\_FUNCTION\_\_，\_\_LINE\_\_这三个宏
-:::
+{{< /admonition >}}
 
-不要忽略编译器的警告，否则可能出现逻辑问题，在下图中，编译器的警告是“变量未初始化”，这是因为在错误的那行得到的是地址而不是值
-
+不要忽略编译器的警告，否则可能出现逻辑问题，在下图中，编译器的警告是“变量未初始化”，这是因为在错误的那行得到的是地址而不是值  
 
 ![2024-02-06_22-58](assets/570080123240247.webp)  
 
 ```c
 /* 中间层，只进行数据的上报和汇总 */
-int InputGetEvent(pInputEvent pevent)
+static int InputGetEvent(pInputEvent pevent)
 {
 	InputEvent event;
 	int ret;
@@ -697,8 +690,8 @@ static int GetEventBuf(pInputEvent pEvent)
 {
 	if(!DataEmpty())
 	{
-		pEvent = &InputEventbuf[iread];//error
-		//*pEvent = InputEventbuf[iread];//correct
+		pEvent = &InputEventbuf[iread];//错误，修改的只是栈中的pEvent，而对想要修改的pEvent没进行任何操作
+		//*pEvent = InputEventbuf[iread];//正确，通过地址的方式修改的pEvent
 		iread = (iread + 1) % BUF_LEN; 
 		return 1;
 	}
@@ -711,9 +704,9 @@ static int GetEventBuf(pInputEvent pEvent)
 
 ### 头文件交叉包含解决办法  
 
-解决办法：将引起交叉包含的那部分内容提取出来，统一放在common.h的文件中，然后再包含common.h即可
+解决办法：将引起交叉包含的那部分内容提取出来，统一放在common.h的文件中，然后再包含common.h并排除冲突的头文件即可  
 
-sscanf可以处理复杂字符串
+sscanf可以处理复杂字符串  
 
 ```c
 #include <stdio.h>
@@ -729,7 +722,7 @@ int main()
    sscanf( dtm, "%s %s %d  %d", weekday, month, &day, &year );
 
    printf("%s %d, %d = %s\n", month, day, year, weekday );
-    
+
    return(0);
 }
 ```
