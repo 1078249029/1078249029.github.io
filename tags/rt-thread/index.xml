@@ -17,5 +17,12 @@
       <guid>https://1078249029.github.io/posts/planting-esp32spi-to-rtthread/</guid>
       <description>&lt;p&gt;本文是博主移植驱动工作的总结，详细介绍了移植过程以及遇到的问题及其解决方案，希望对各位有帮助。同时，代码已进入&lt;a href=&#34;https://github.com/RT-Thread/rt-thread/pull/9513&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;RT-Thread主线&lt;/a&gt;。博文同时发表在个人博客&lt;a href=&#34;wumingzi.top&#34; rel=&#34;&#34;&gt;wumingzi.top&lt;/a&gt;&lt;/p&gt;</description>
     </item>
+    <item>
+      <title>RT-Thread平台搭建实验</title>
+      <link>https://1078249029.github.io/posts/rtthread-platform-construction-experiment/</link>
+      <pubDate>Mon, 17 Jun 2024 08:43:37 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
+      <guid>https://1078249029.github.io/posts/rtthread-platform-construction-experiment/</guid>
+      <description>&lt;p&gt;本文为笔者的毕业设计相关内容，目的是使用嵌入式系统将振动数据发送至对应主机。系统使用stm32+rtthread作为基本结构，并选用其他中间件丰富系统功能。由于stm32的ram与rom资源紧缺，后期移植文件系统以及其他中间件会爆内存，因此笔者目前暂停这一方案，并转而使用ESP32C3为主控&lt;/p&gt;</description>
+    </item>
   </channel>
 </rss>

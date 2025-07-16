@@ -158,7 +158,8 @@ volatile用法：如果开启了编译器优化，或者利用无意义加减变
   
 [上述详解](https://blog.csdn.net/wujiangguizhen/article/details/10244627)  
 
-SRAM没有电容结构，因此充放电比DRAM快，读取数据也就比DRAM快，并且也不需要刷新数据
+SRAM没有电容结构，因此充放电比DRAM快，读取数据也就比DRAM快，并且也不需要刷新数据  
+
 需要使用malloc来申请结构体的情况: 
 1. 结构体大小需要动态分配(结构体内包含本身的指针)
 2. 结构体生命周期较长，需要在函数结束时不销毁结构体时需要
@@ -201,27 +202,27 @@ int a = N*N; //a = 3+2*3+2
 内存对齐
 * 为什么要进行内存对齐
     * 32位计算机是以地址为4的倍数读取数据的，如果不进行内存对齐可能会引发CPU额外进行数据裁剪与合并操作，降低CPU效率
-* 怎样计算内存对齐？
-    * gcc中默认#pragma pack(4)，即默认内存对齐有效值为4字节，我们可以在编译器内设置这个值。结构体一个成员的大小为有效值和那个成员的整数倍，并且满足结构体总大小为内存对齐有效值的整数倍
+* 怎样计算内存对齐，成员大小？
+    * gcc中默认#pragma pack(4)，即默认内存对齐有效值为4字节，我们可以在编译器内设置这个值。结构体一个成员的大小为gcc的预设值和那个成员的最小公倍数，并且满足结构体总大小为内存对齐有效值的整数倍
 
 ```c
 struct
 {
-    int i;    
-    char c1;  
-    char c2;  
+    int i;
+    char c1;
+    char c2;
 }x1;
 
 struct{
-    char c1;  
-    int i;    
-    char c2;  
+    char c1;
+    int i;
+    char c2;
 }x2;
 
 struct{
-    char c1;  
-    char c2; 
-    int i;    
+    char c1;
+    char c2;
+    int i;
 }x3;
 
 int main()
@@ -236,23 +237,23 @@ int main()
 ##可以表示粘连两个字符串，例如下面使用##定义了两个不同的变量NAMEa与NAMEb
 
 ```c
-#include <stdio.h>  
-   
-#define NAME(n) int_name##n  
-   
-int main()  
-{  
-      
-    int NAME(a);  
-    int NAME(b);  
-      
-    NAME(a) = 520;  
-    NAME(b) = 111;  
-      
-    printf("%d\n", NAME(a));  
-    printf("%d\n", NAME(b));  
-   
-    return 0;  
+#include <stdio.h>
+
+#define NAME(n) int_name##n
+
+int main()
+{
+
+    int NAME(a);
+    int NAME(b);
+
+    NAME(a) = 520;
+    NAME(b) = 111;
+
+    printf("%d\n", NAME(a));
+    printf("%d\n", NAME(b));
+
+    return 0;
 }
 ```
 结果：

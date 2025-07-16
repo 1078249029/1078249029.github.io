@@ -11,10 +11,10 @@
 
 ### 解释器与编译器  
 
-解释器输出运行的结果
-编译器输出编译的文件
+解释器输出运行的结果  
+编译器输出编译的文件  
 
-字面量：写在代码中的值，可以被分为整数，浮点数，字符串，元组，列表等
+字面量：写在代码中的值，可以被分为整数，浮点数，字符串，元组，列表等  
 python的单引号和双引号意义相同，但是使用单引号可以打出双引号，但不能打出单引号。使用双引号则反之，如果想使用单引号打出单引号，则需要加上反斜杠代表转义字符
   
 <!-- more -->
@@ -38,7 +38,7 @@ int(x) # 将x转换为int类型
 float(x) # 将x转换为float类型
 ```
 
-float转换为int会丢失精度
+float转换为int会丢失精度  
 python舍弃精度时是**四舍五入**
 
 ### 运算符  
@@ -81,7 +81,7 @@ message = f"我是：{name}，出生于：{birth}"
 
 ```py
 input("提示语") # input得到的数据永远是字符串类型
-```  
+```
 
 ### 条件语句  
 
@@ -101,15 +101,14 @@ else:
 ```py
 while condition:
     # todo
-    
+
 for 临时变量 in 数据集 # for循环无法定义循环条件
     #todo
 ```
 
-:::alert-info
+{{< admonition type=warning title="" open=true >}}
 for循环里的临时变量会自动自增，但是while需要手动自增
-:::
-
+{{< /admonition >}}
 
 ### range  
 
@@ -136,8 +135,8 @@ def fun1()
     return None
 ```
 
-函数无返回值，返回的是None
-对于一些不想要设置初始值而需要定义的变量来说，可以先让这个变量赋值为None
+函数无返回值，返回的是None  
+对于一些不想要设置初始值的变量来说，可以先让这个变量赋值为None  
 
 函数作为参数传递
 
@@ -147,10 +146,8 @@ def fun1(fun):
     fun()
     print("fun1")
 
-
 def fun2():
     print("fun2")
-
 
 fun1(fun2) # 注意这里fun2不带()
 ```
@@ -171,13 +168,13 @@ fun1(fun2) # 注意这里fun2不带()
 list(tuple_name()) # 字符串转列表会将字符串变为字符再装载进列表，字典转列表只会将Key值放进列表
 
 # 将其他数据容器转换为元组
-tuple(dict_name) # 情况与字符串列表类似
+tuple(dict_name) # 情况与字符串转列表类似
 
 # 将其他数据容器转换为字符串
 str(list_name) # 其他数据类型任意转换为字符串
 
 # 将其他数据容器转换为集合
-set(str_name) # 情况与字符串列表类似
+set(str_name) # 情况与字符串转列表类似
 ```
 
 #### 列表(list)  
@@ -188,7 +185,7 @@ set(str_name) # 情况与字符串列表类似
 
 ```py
 # 列表的字面量定义
-[Item1,Item2,Item3] 
+[Item1,Item2,Item3]
 
 # 列表内的元素带有下标，可以通过下标索引到元素，索引方向分为从左至右和从右至左两种，下方列表中Item3的下标可以是2，也可以是-1
 # 列表的变量定义
@@ -198,7 +195,7 @@ list_name = [Item1,Item2,Item3]
 list_name = []
 list_name = list()
 ```
-嵌套列表获取元素list_name[0][1]
+嵌套列表获取元素list_name[0][1]  
 
 将函数定义为类中的成员，我们称这种函数叫做方法
 
@@ -213,7 +210,7 @@ list_name.insert(index，Item2) # 在index处插入Item2
 list_name.append(Item3) # 在列表尾部追加append
 
 #追加数据容器
-list_name.extend(其他数据容器) #在列表尾部追加extend
+list_name.extend(其他数据容器) #在列表尾部追加其他数据容器的元素
 
 #删除元素
 element = list_name.pop(index) # 取出index的那个元素并赋值给element，最后在列表中删除
@@ -229,7 +226,7 @@ len(list_name) # 返回值为列表中元素的个数
 ```
 #### 元组(tuple)  
 
-元组一旦定义好，内部的元素就不可修改。但如果元组内嵌套了list，则可以修改list的内容，可以将元组视为不可修改元素的list
+元组一旦定义好，内部的元素就不可修改。但如果元组内嵌套了list，则可以修改list的内容，可以将元组视为不可修改元素的list  
 元组内部数据类型可以不同
 
 ```py
@@ -273,7 +270,7 @@ newlist = list_name[::2]
 
 #### 集合(set)  
 
-集合内元素不能重复且无序，但允许修改
+集合内元素不能重复且无序，但允许修改  
 因为集合不支持下标索引，所以不支持while循环，但支持for循环
 
 ```py
@@ -313,9 +310,10 @@ set3 = set1.union(set2)
 
 #### 字典(dict)  
 
-字典无序没有索引，只能通过Key值找到对应的value
-字典的Key不可重复
-字典的Key和value可以为任意数据类型(但Key不可为字典)
+字典无序没有索引，只能通过Key值找到对应的value  
+字典的Key不可重复  
+字典的Key和value可以为任意数据类型(但Key不可为字典)  
+与集合类似，因为字典不支持下标索引，所以也不支持while循环，但支持for循环
 
 ```py
 # 字典的定义
@@ -353,7 +351,7 @@ for key in dict_name:
 ```py
 def fun_name():
     return 1,2
-    
+
 x,y = fun_name()
 ```
 
@@ -364,10 +362,10 @@ x,y = fun_name()
     * 不定长参数  
         * 位置参数的形式：fun_name(*args)，传参示例：`10，20，30`会将传进去的参数合并成一个元组
         * 关键字传递的形式：fun_name(**kwargs)，传参示例：`age = 10，gender = male`会将传进去的参数合并成一个字典 kwargs(key word args)
-    
+
 #### lambda函数  
 
-lambda函数是一种临时函数，使用一次后就被销毁了，下次使用只能再次重写lambda函数并且lambda函数只能写一行
+lambda函数是一种临时函数，使用一次后就被销毁了，下次使用只能再次重写lambda函数并且lambda函数只能写一行  
 
 lambda函数语法：lambda 参数 : 函数体
 
@@ -375,41 +373,41 @@ lambda函数语法：lambda 参数 : 函数体
 def test_fun(compete):
     result = compete(1,2)
     return result
-    
+
 def compete(x,y):
     return x + y
-    
+
 test_fun(compete)
 
 #############与下列lambda函数相同#################
 def test_fun(compete):
     result = compete(1,2)
     return result
-    
+
 test_fun(lambda x, y: x + y)
- 
+
 ```
 
 ### 异常  
 
 #### 异常的捕获
-  
+
 ```py
 try：
     可能发生异常的代码
-    
+
 except：
     处理异常的代码
-    
+
 #######################例子如下#########################
 
 # 捕获到读取文件异常后(即文件不存在)，就以写的方式创建文件
 try:
     f = open("linux.txt",'r')
-    
+
 execept: # execept可以后加异常名称，这样就会接受指定异常，例如 execept (NameError，ZeroDivisionError) as object:，默认情况则捕获所有异常并命名为 object，或者可以写为execept Exeception:，这也是捕获所有异常的写法
     f = open("linux.txt",'w')
-    
+
 else: # 没有异常则执行的代码
     # todo
 finally: #无论是否出现异常都执行的代码
@@ -424,20 +422,27 @@ finally: #无论是否出现异常都执行的代码
 
 ### 模块  
 
-模块就是一个python文件，可以将模块视作功能包
-不同的模块，相同名称的功能，后导入进来的会覆盖先导入进来的
-[]代表可选的意思
+模块就是一个python文件，可以将模块视作功能包  
+不同的模块，相同名称的功能，后导入进来的会覆盖先导入进来的  
+[]代表参数可选
 
 ```py
 # 只使用import会将模块中所有内容全部导入，而使用from则会将模块中的某一部分导入
-# 例如 from time import sleep 使用方法：sleep 或者 import time 使用方法 time.sleep 
+# 例如 from time import sleep 使用方法：sleep 
+# 若 import time 使用方法： time.sleep 
 [from 模块名] import [模块 | 类 | 方法 | *] [as 别名]
 
 ```
 
+from package import * ：立即将包的所有内容导入内存(立即加载)，并且可以直接只用包内的方法而不必加作用域，使用时可以直接调用func而不必写为package.func  
+
+import package ：只有使用到具体方法时，才将该方法的所有内容导入内存(惰性加载)，并且必须加作用域，使用时必须写为package.func  
+
+这两种调用包的方法都会查找\_\_init\_\_.py的内容，并将该文件内除了子模块的内容导入到文件中  
+
 ### 包
 
-python包 = \_\_init\_\_.py + 若干模块文件  
+python包 = \_\_init\_\_.py文件 + 若干模块文件  
 
 可以在 \_\_init\_\_.py文件内添加 \_\_all\_\_ = ["模块名"]来定义 from package import * 的导入范围
 
@@ -456,68 +461,69 @@ class 类名称:
 # 定义类的方法时与普通的函数定义有细微差别，需要在形参列表最前方加入self关键字
 # 在成员方法内部调用或赋值成员变量需要用到self.来引出
     def add(self,para1,para2):
-    # todo    
+    # todo
 
 # 创建类的对象
-object = calss_name()
+object = class_name()
 ```
 
 #### 构造方法  
 
-构造方法需要使用__init\_\_()方法，与C++构造函数类似，即使不给出__init__()方法，系统也会自动调用
+构造方法需要使用\_\_init\_\_()方法，与C++构造函数类似，即使不给出\_\_init\_\_()方法，系统也会自动调用  
 
-类进行初始化的时候会首先调用\_\_init\_\_()方法，，这个函数可以初始化类的成员变量
+类进行初始化的时候会首先调用\_\_init\_\_()方法，这个函数可以初始化类的成员变量
 
 ```py
 class student:
     name = None
     age = None
     tel = None
-    
+
     def __init__(self,name,age,tel)
         self.name = name
         self.age = age
-        self.tel = tel    
-     
+        self.tel = tel
+
 ```
 #### 魔术方法  
 
-python中，由两个下划线前后包围起来的方法称为魔术方法
-定义__str__方法后，以后将类转换为字符串就会输出__str__方法中的内容
+python中，由两个下划线前后包围起来的方法称为魔术方法  
+定义__str__方法后，以后将类转换为字符串就会输出__str__方法中的内容  
 \_\_lt\_\_，\_\_le\_\_，\_\_eq\_\_是比较两个类大小的魔术方法，由于两个类不能比较，所以需要在这三种方法内部重写比较方法，一般比较的是两个类中成员的大小  
 
 #### 封装  
 
-在成员或者方法前加两个下划线即可将成员或方法变为私有  
+在成员或者方法名称前加两个下划线即可将成员或方法变为私有  
 ```py
 class student:
     name = None
     __age = 18 # 私有成员
-    tel = None 
+    tel = None
     def __print_tel(self): # 私有方法
         print(f"self.tel")
 ```
 
 #### 继承
 
-class 类名(父类名):
-    类的内容
-    
-想要继承多个父类时使用：
-class 类名(父类1,父类2,父类3):
-    类的内容
+class 类名(父类名):  
+    类的内容  
 
-如果只想继承若干个父类，而不想写类的内容，可以使用`pass`关键字，以补全类的内容
-class 类名(父类1,父类2,父类3):
-    pass
+想要继承多个父类时使用：  
+class 类名(父类1,父类2,父类3):  
+    类的内容  
 
-当父类1与父类2中有同名的成员变量或成员方法时，优先继承父类1的内容，遵循先来后到原则
+如果只想继承若干个父类，而不想写类的内容，可以使用`pass`关键字，以补全类的内容  
+class 类名(父类1,父类2,父类3):  
+    pass  
+
+当父类1与父类2中有同名的成员变量或成员方法时，优先继承父类1的内容，遵循先来后到原则  
+
 ```py
 class student:
     name = None
     age = None
     tel = None
-    
+
 class Newstu(student): # 继承
     gender = None
 ```
@@ -528,16 +534,16 @@ class student:
     name = None
     age = 18
     tel = None
-    
-class Newstu(student): 
+
+class Newstu(student):
     age = 80
 ```
 
 #### 多态  
 
-多态：同一个函数，使用不同的对象，产生不同的结果
+多态：同一个函数，使用不同的对象，产生不同的结果  
 
-通过多子类父类以及继承方式可以实现多态，例如
+通过多子类父类以及继承方式可以实现多态，例如  
 * 定义空调父类，定义空调的制冷方法
 * 定义格力空调，美的空调子类，并在其内部重写制冷方法
 * 实现通用制冷函数，可以调用传进来的类的方法
@@ -577,14 +583,11 @@ def outer(fun):
 
     return inner
 
-
 def fun1():
     print("四中")
 
-
 fn = outer(fun1)
 fn()
-
 
 #############带语法糖的装饰器###########
 def outer(fun):
@@ -595,11 +598,9 @@ def outer(fun):
 
     return inner
 
-
 @outer # 跟随outer函数名称改变而改变
 def fun1():
     print("四中")
-
 
 fun1() # 调用的是fun1，而不是outer，这样适合对原函数增加功能后继续调用
 
@@ -607,15 +608,15 @@ fun1() # 调用的是fun1，而不是outer，这样适合对原函数增加功�
 
 ### 迭代器  
 
-迭代是 Python 最强大的功能之一，是访问集合元素的一种方式。
+迭代是 Python 最强大的功能之一，是访问集合元素的一种方式  
 
-迭代器是一个可以记住遍历的位置的对象。
+迭代器是一个可以记住遍历的位置的对象  
 
-迭代器对象从集合的第一个元素开始访问，直到所有的元素被访问完结束。迭代器只能往前不会后退。
+迭代器对象从集合的第一个元素开始访问，直到所有的元素被访问完结束。迭代器只能前进不能后退  
 
 ```py
 #!/usr/bin/python3
- 
+
 list_name=[1,2,3,4]
 it = iter(list_name)    # 创建迭代器对象
 for x in it:
@@ -626,24 +627,24 @@ for x in it:
 1 2 3 4
 ```
 
-把一个类作为一个迭代器使用需要在类中实现两个方法 \_\_iter\_\_() 与 \_\_next\_\_() 
-\_\_iter\_\_() 方法返回一个特殊的迭代器对象， 这个迭代器对象实现了 \_\_next\_\_() 方法并通过 StopIteration 异常标识迭代的完成
-\_\_next\_\_() 方法（Python 2 里是 next()）会返回下一个迭代器对象
+把一个类作为一个迭代器使用需要在类中实现两个方法 \_\_iter\_\_() 与 \_\_next\_\_()  
+\_\_iter\_\_() 方法返回一个特殊的迭代器对象， 这个迭代器对象实现了 \_\_next\_\_() 方法并通过 StopIteration 异常标识迭代的完成  
+\_\_next\_\_() 方法（Python 2 里是 next()）会返回下一个迭代器对象  
 
 ```py
 class MyNumbers:
   def __iter__(self):
     self.a = 1
     return self
- 
+
   def __next__(self):
     x = self.a
     self.a += 1
     return x
- 
+
 myclass = MyNumbers()
 myiter = iter(myclass)
- 
+
 print(next(myiter))
 print(next(myiter))
 print(next(myiter))
@@ -661,24 +662,24 @@ print(next(myiter))
 
 ### 生成器  
 
-在 Python 中，使用了 yield 的函数被称为生成器（generator），生成器函数是一种特殊的函数，可以在迭代过程中逐步产生值，而不是一次性返回所有结果.跟普通函数不同的是，生成器是一个返回迭代器的函数，只能用于迭代操作，更简单点理解生成器就是一个迭代器
+在 Python 中，使用了 yield 的函数被称为生成器（generator），生成器函数是一种特殊的函数，可以在迭代过程中逐步产生值(惰性加载)，而不是一次性返回所有结果。因此，生成器是一个返回迭代器的函数，只能用于迭代操作。生成器实际上就是一个迭代器  
 
-当在生成器函数中使用 yield 语句时，函数的执行将会暂停，并将 yield 后面的表达式作为当前迭代的值返回。然后，每次调用生成器的 next() 方法或使用 for 循环进行迭代时，函数会从上次暂停的地方继续执行，直到再次遇到 yield 语句。这样，生成器函数可以逐步产生值，而不需要一次性计算并返回所有结果。这样可以不必一次生成大量数据，从而节省内存空间
+当在生成器函数中使用 yield 语句时，函数的执行将会暂停，并将 yield 修饰的表达式作为当前迭代的值返回。然后，每次调用生成器的 next() 方法或使用 for 循环进行迭代时，函数会从上次暂停的地方继续执行，直到再次遇到 yield 语句。这样，生成器函数可以逐步产生值，而不需要一次性计算并返回所有结果。这样可以不必一次生成大量数据，从而节省内存空间
 
 ```py
 def countdown(n):
     while n > 0:
         yield n
         n -= 1
- 
+
 # 创建生成器对象
 generator = countdown(5)
- 
+
 # 通过迭代生成器获取值
 print(next(generator))  # 输出: 5
 print(next(generator))  # 输出: 4
 print(next(generator))  # 输出: 3
- 
+
 # 使用 for 循环迭代生成器
 for value in generator:
     print(value)  # 输出: 2 1
@@ -688,22 +689,22 @@ for value in generator:
 
 ```py
 #!/usr/bin/python3
- 
+
 import sys
- 
+
 def fibonacci(n): # 生成器函数 - 斐波那契
     a, b, counter = 0, 1, 0
     while True:
-        if (counter > n): 
+        if (counter > n):
             return
         yield a
         a, b = b, a + b
         counter += 1
 f = fibonacci(10) # f 是一个迭代器，由生成器返回生成
- 
+
 while True:
     try:
-        print (next(f), end=" ")
+        print (next(f), end=" ") # 不可写成print (next(fibonacci(10)), end=" ")，这会导致每次循环都创建一个迭代器，最终导致无限循环
     except StopIteration:
         sys.exit()
 ```

@@ -13,9 +13,9 @@
 
 ### 购买服务器及域名  
 
-可以从主流的服务器提供商购买服务器以及域名，我选择的服务器厂商是雨云(国际厂商可以选择racknerd或VMISS)，域名提供商是namesilo
+可以从主流的服务器提供商购买服务器以及域名，我选择的服务器厂商是雨云(国际厂商可以选择racknerd或VMISS)，域名提供商是namesilo  
 
-购买完毕后需要在国内DNS解析服务器上绑定ip与域名，可以选择腾讯DNS解析服务。绑定格式如下，需要注意的是我这里使用的二级域名需要额外在namesilo生成
+购买完毕后需要在国内DNS解析服务器上绑定ip与域名，可以选择腾讯DNS解析服务。绑定格式如下，需要注意的是我这里使用的二级域名需要额外在namesilo生成  
 ![2024-10-19_13-49](assets/555814913252497.webp)  
 
 ![2024-10-19_13-52](assets/355505213270377.webp)
@@ -29,7 +29,7 @@
 
 ### 部署nginx容器
 
-我这里使用的是[dockerhub上的官方版本](https://hub.docker.com/_/nginx/tags)
+我这里使用的是[dockerhub上的官方版本](https://hub.docker.com/_/nginx/tags)  
 
 首先拉取镜像到本地
 ```shell
@@ -48,7 +48,7 @@ docker run -d -p 443:443 -p 80::80 --net bridge --name nginx nginx:latest
 
 ### 部署rsshub容器
 
-这里可以参考[官方文档](https://docs.rsshub.app/zh/deploy/#docker-compose-%E9%83%A8%E7%BD%B2-%E6%8E%A8%E8%8D%90)使用docker compose部署
+这里可以参考[官方文档](https://docs.rsshub.app/zh/deploy/#docker-compose-%E9%83%A8%E7%BD%B2-%E6%8E%A8%E8%8D%90)使用docker compose部署  
 
 下载docker compose文件(可以理解为docker的配置文件)
 ```shell
@@ -63,7 +63,7 @@ docker-compose up -d
 在漫长的下载过程后会在面板中看到如下三个容器  
 ![2024-10-19_11-27](assets/375582711256743.webp)
 
-这里我映射了1200端口是为了测试用，各位如果不需要测试的话可以不用配置
+这里我映射了1200端口是为了测试用，各位如果不需要测试的话可以不用配置  
 
 假如你和我一样保留了1200测试端口，此时我们访问ip:1200端口就可以访问rsshub了，如果404可能是你防火墙没有开，面板中的安全菜单中可以自行配置
 
@@ -75,14 +75,14 @@ docker-compose up -d
 ```cpp
 docker run --name trojan-mariadb --restart=always -p 3306:3306 -v /home/mariadb:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=trojan -e MYSQL_ROOT_HOST=% -e MYSQL_DATABASE=trojan -d mariadb:10.2
 ```
-注意MYSQL_ROOT_PASSWORD=trojan参数，这里我们下面安装trojan时需要输入数据库的密码就是trojan
+注意MYSQL_ROOT_PASSWORD=trojan参数是访问trojan-web的密码，我们下面安装trojan时需要输入数据库的密码就是trojan  
 
 之后我们拉取trojan的镜像
 ```shell
 docker pull jrohy/trojan
 ```
 
-**注意本次trojan使用桥接网络，这与jrohy大佬提供的命令不同**，因此不需要将端口映射到主机，但为了后需的调整，我们这里预留4431和4432端口
+**注意本次trojan使用桥接网络，这与jrohy提供的命令不同**，因此不需要将端口映射到主机，但为了后需的调整，我们这里预留4431和4432端口
 ```shell
 docker run -it -d --name trojan --net=bridge --restart=always --privileged jrohy/trojan init
 ```
@@ -92,16 +92,16 @@ docker run -it -d --name trojan --net=bridge --restart=always --privileged jrohy
 docker exec -it trojan bash
 ```
 
-此时我们需要安装trojan，shell中输入trojan就行了
+此时我们需要安装trojan
 ```shell
 trojan
 ```
 
-此时会进入安装界面，证书选择let's encrpt证书，域名绑定到服务商域名，此时会需要指定mysql或mariadb的ip和端口号，这里我们可以通过查看容器网络获得也可以给空之后修改(给空有可能安装错误)。这里如果你没有看到桥接网络的话需要设置mariadb网络为桥接bridge，默认端口号是3306，因此我这里的结果是172.17.0.4:3306
+进入安装界面，证书选择let's encrpt证书，域名绑定到服务商域名，此时会需要指定mysql或mariadb的ip和端口号，这里我们可以通过查看容器网络获得也可以给空等待安装完成之后再修改(给空有可能安装错误)。这里如果你没有看到桥接网络的话需要设置mariadb网络为桥接bridge，默认端口号是3306，因此我这里的结果是172.17.0.4:3306
 
 ![2024-10-19_13-57](assets/528665713267981.webp)
 
-之后等待安装完成就可
+之后等待安装完成就可  
 
 别忘了启动服务，设置自启动以及更新程序
 ```shell
@@ -120,16 +120,15 @@ exit
 目前你的容器情况可能如下
 ![2024-10-19_14-01](assets/39770214265483.webp)
 
-我们需要指定rsshub为桥接，这样才能使用nginx将流量转发到rsshub，桥接时务必保留原有的rsshub容器网络
+我们需要指定rsshub为桥接，这样才能使用nginx将流量转发到rsshub，桥接时务必保留原有的rsshub容器网络  
 
 接下来我们进行反向代理的配置
-
 
 ### 申请证书  
 
 在配置反向代理前我们需要准备证书，这也是我们刚才在安装mariadb时跳过的步骤
 
-申请证书很简单，但需要提前获取ip以及域名，申请过程可以参考[Diaoan's Blog](https://www.diaoan.xyz/using-certbot-apply-ssl-certificate/)
+申请证书需要提前获取ip以及域名，申请过程可以参考[Diaoan's Blog](https://www.diaoan.xyz/using-certbot-apply-ssl-certificate/)
 
 我这里直接执行
 ```shell
@@ -144,21 +143,20 @@ certbot certonly --standalone -d free.domain.top
 
 ### 网络拓扑图
 
-反向代理要搞清网络是非常有必要的，我当前网络拓扑图是这样的
+搭建反向代理时搞清网络脱坡是非常有必要的，我当前网络拓扑图是这样的
 ![服务器网络拓扑当前](assets/37634416260188.webp)
 
 而我们目标的网络拓扑是这样的：nginx容器接管一切流量并将其转发到对应应用
 ![服务器网络拓扑目标](assets/127214416256743.webp)
 
-由此可见，我们应该配置trojan的两个个端口，nginx的两个端口。trojan两个端口的作用可以看[官方文档](https://p4gefau1t.github.io/trojan-go/basic/trojan/)，简而言之，近端端口用来进行代理，远端端口用来检测到非法连接从而将非法流量转移到此端口上，因此这个端口可以设置为任意能够ping通的网页。而为了保证流量均由nginx控制，这里采用通过nginx转发trojan远程端口以及管理页面，同时由于远程端口可以任意指定，这里就把管理页面作为远程端口。传输协议方面，由于trojan配置文件需要指定证书文件，因此对于ssl协议的解析需要放在trojan容器内部进行，而rss内部没有解析的功能，我们就需要在nginx内部进行协议的处理
+由此可见，我们应该配置trojan的两个端口，nginx的两个端口。trojan两个端口的作用可以看[官方文档](https://p4gefau1t.github.io/trojan-go/basic/trojan/)，简而言之，近端端口用来进行代理，远端端口用来检测到非法连接从而将非法流量转移到此端口上，因此这个端口可以设置为任意能够ping通的网页。而为了保证流量均由nginx控制，这里采用通过nginx转发trojan远程端口以及管理页面，同时由于远程端口可以任意指定，这里就把管理页面作为远程端口。传输协议方面，由于trojan配置文件需要指定证书文件，因此对于ssl协议的解析需要放在trojan容器内部进行，而rss内部没有解析的功能，我们就需要在nginx内部进行rss协议的处理
 
 ### 修改nginx配置项
 
-首先保证nginx，rsshub，trojan均为桥接，保证在同一个容器网络中
+首先保证nginx，rsshub，trojan均为桥接，保证均处于同一个容器网络中  
 
 而后修改nginx容器内的`/etc/nginx/nginx.conf`文件内容如下
 ```shell
-
 user  nginx;
 worker_processes  auto;
 
@@ -214,7 +212,7 @@ http {
     #gzip  on;
 
     include /etc/nginx/conf.d/*.conf;
-    
+
     # 如果端口设置与stream块相同的话就会导致冲突，因此这里只能监听http协议的80而不能监听https的443
     server {
         listen 80;
@@ -228,28 +226,28 @@ http {
         ssl_certificate /etc/nginx/certs/rss.wumingzi.top/fullchain1.pem;
         ssl_certificate_key /etc/nginx/certs/rss.wumingzi.top/privkey1.pem;
         location / {
-          proxy_pass http://172.17.0.3:1200; # 转到rsshub容器的1200端口，此时需要解析协议，因此是http
+          proxy_pass http://172.17.0.3:1200; # 转到rsshub容器的1200端口，此时解析协议时信息流已经是未加密状态，因此是http
         }
   	}
-  	
+
   	server {
         listen 82; # 监听trojan的远程端口，有流量产生时转发到对应服务
-    
+
         server_name free.wumingzi.top;
 
         # 后台管理页面,通过 free.wumingzi.top/admin 访问
         location /admin {
             proxy_pass   http://172.17.0.5:81/; # 将trojan已经解析的协议发送到nginx容器的81端口这里是trojan-web的协议端口
         }
-    
+
         # 由于 trojan web 前端的部分资源是写在二进制中的，这些资源的访问路径固定
         location ~* ^/(static|common|auth|trojan)/ {
-            proxy_pass  http://172.17.0.5:81; 
+            proxy_pass  http://172.17.0.5:81;
             proxy_http_version 1.1;
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection "Upgrade";
             proxy_set_header Host $host;
-        } 
+        }
     }
 }
 ```
@@ -325,7 +323,6 @@ WantedBy=multi-user.target
 ```
 
 至此配置全部完成，重启全部容器后就可以实现最终效果了
-  
 
 参考文档
 * [VPS 初体验（三）在 VPS 上快速搭建 trojan 服务](https://kiku.vip/2021/10/16/在%20VPS%20快速搭建%20trojan%20服务/)

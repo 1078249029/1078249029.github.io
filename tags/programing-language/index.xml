@@ -15,14 +15,14 @@
       <link>https://1078249029.github.io/posts/rust/</link>
       <pubDate>Sun, 15 Dec 2024 11:43:24 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
       <guid>https://1078249029.github.io/posts/rust/</guid>
-      <description>&lt;p&gt;本文是笔者学习Rust时系统总结的笔记，内部详细地介绍了Rust的特点以及语法，较为深入的探讨了Rust语言的语法，参考资料包括但不限于b站的&lt;a href=&#34;https://www.bilibili.com/video/BV1hp4y1k7SV&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;Rust编程语言入门教程&lt;/a&gt;，&lt;a href=&#34;https://course.rs/about-book.html&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;Rust语言圣经(Rust Course)&lt;/a&gt;，&lt;a href=&#34;https://rustcc.cn/&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;Rust语言中文社区&lt;/a&gt;，&lt;a href=&#34;https://doc.rust-lang.org/book/&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;The Rust Programming Language&lt;/a&gt;&lt;/p&gt;</description>
+      <description>&lt;p&gt;本文是笔者学习Rust时系统总结的笔记，内部详细地介绍了Rust的特点以及语法，较为深入的探讨了Rust语言的语资料包括但不限于b站视频&lt;a href=&#34;https://www.bilibili.com/video/BV1hp4y1k7SV&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;Rust编程语言入门教程&lt;/a&gt;，国人出品的开源书籍&lt;a href=&#34;https://course.rs/about-book.html&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;Rust语言圣经(Rust Course)&lt;/a&gt;，&lt;a href=&#34;https://rustcc.cn/&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;Rust语言中文社区&lt;/a&gt;，以及rust的官方书籍&lt;a href=&#34;https://doc.rust-lang.org/book/&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;The Rust Programming Language&lt;/a&gt;&lt;/p&gt;</description>
     </item>
     <item>
       <title>C&#43;&#43;</title>
       <link>https://1078249029.github.io/posts/cpp/</link>
       <pubDate>Sun, 14 Jan 2024 09:37:21 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
       <guid>https://1078249029.github.io/posts/cpp/</guid>
-      <description>&lt;p&gt;本文较为详细地介绍了C++的语法和使用中需要注意的坑，还介绍了STL库和Modern C++，甚至涉及C++20的部分新特性。在最后，我们大致的介绍了C++常用的设计模式&lt;/p&gt;</description>
+      <description>&lt;p&gt;本文较为详细地介绍了C++的语法和使用中可能遇到的坑，还介绍了STL库和Modern C++，例如C++20的部分新特性。在最后，我们大致的介绍了代码编写时常用的设计模式&lt;/p&gt;</description>
     </item>
     <item>
       <title>Python</title>

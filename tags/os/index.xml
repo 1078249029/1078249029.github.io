@@ -18,11 +18,11 @@
       <description>&lt;p&gt;本文是博主移植驱动工作的总结，详细介绍了移植过程以及遇到的问题及其解决方案，希望对各位有帮助。同时，代码已进入&lt;a href=&#34;https://github.com/RT-Thread/rt-thread/pull/9513&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;RT-Thread主线&lt;/a&gt;。博文同时发表在个人博客&lt;a href=&#34;wumingzi.top&#34; rel=&#34;&#34;&gt;wumingzi.top&lt;/a&gt;&lt;/p&gt;</description>
     </item>
     <item>
-      <title>Linux深入</title>
-      <link>https://1078249029.github.io/posts/linux-advanced/</link>
+      <title>Linux高级驱动</title>
+      <link>https://1078249029.github.io/posts/linux-advanced-drivers/</link>
       <pubDate>Fri, 23 Feb 2024 11:44:04 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
-      <guid>https://1078249029.github.io/posts/linux-advanced/</guid>
-      <description>&lt;p&gt;Linux驱动深入，包含PCIE，USB以及常用子系统的&lt;strong&gt;粗浅介绍&lt;/strong&gt;&lt;/p&gt;</description>
+      <guid>https://1078249029.github.io/posts/linux-advanced-drivers/</guid>
+      <description>&lt;p&gt;Linux高级驱动的粗浅介绍，包含PCIE，USB以及其他常用子系统&lt;/p&gt;</description>
     </item>
     <item>
       <title>Linux内核</title>

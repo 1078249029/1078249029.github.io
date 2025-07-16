@@ -190,9 +190,9 @@ __asm void vPortSVCHandler( void )
 ```
   
 * 为什么需要PendSV？
-    * pendsv是最低优先级的异常，常用于任务切换，这是为了保证系统实时性所提出的方法。在此之前，采用时间片流转的os经常遇到任务切换的时钟中断将其他中断打断的问题，甚至引发硬件错误。有了pendsv后，定时器中断被延迟到了普通中断之后，以此来保证普通中断的优先级，同时也不会忽略定时器中断。但是会引起上下文切换不精确的问题，通常情况下由pendsv引发的延时可以忽略，但在中断风暴中问题尤为严重
+    * pendsv是最低优先级的异常，常用于任务切换，这是为了保证系统实时性所提出的方法。在此之前，采用时间片流转的os经常遇到任务切换的时钟中断将其他中断打断的问题，甚至引发硬件错误。有了pendsv后，定时器中断被延迟到了普通中断之后(SysTick中断默认高优先级)，以此来保证普通中断的优先级，同时也不会忽略定时器中断。但是会引起上下文切换不精确的问题，通常情况下由pendsv引发的延时可以忽略，但在中断风暴中问题尤为严重
 
-![内核的优先级翻转](assets/241410816255828.webp)  
+![内核的优先级翻转](assets/20250629191050760_10776.webp)
 
 ![任务正常执行](assets/295570916251582.webp)  
 
@@ -575,9 +575,60 @@ int main()
 ```
 
 在时基函数调用时会用到
-![2024-01-11_19-53](assets/350415319240152.webp)  
-  
+```c
+/* 负责进入增加时基，任务时间自减的函数，定义在Config.h:
+#define xPortSysTickHandler	SysTick_Handler 也就是按配置的重装器和主频来触发 */
+void xPortSysTickHandler( void )
+{
+	uint32_t ISRreturn;
+	/* 关中断 */
+	//使用的是能在中断中使用的函数会如何？无影响,第九章实验现象可以完成，但是因为SysTick优先级过低而无用
+	ISRreturn = portSET_INTERRUPT_MASK_FROM_ISR();	
+	/* 更新系统时基 */
+	//xTaskIncrementTick();
+	xSemaphoreIncrementTick();
+	if(xTaskIncrementTick() != pdFALSE)
+	{
+		taskYIELD();
+	}
+	
+	/* 开中断 */
+	portCLEAR_INTERRUPT_MASK_FROM_ISR(ISRreturn);
 
+
+//	vPortRaiseBASEPRI();
+//	xTaskIncrementTick();
+//	vPortClearBASEPRIFromISR();
+}
+```
+核心的自增函数
+```c
+BaseType_t xTaskIncrementTick( void )
+{
+	TCB_t *pxTCB = NULL;
+// 	BaseType_t i = 0;
+	TickType_t xItemValue;
+	BaseType_t xSwitchRequired = pdFALSE;
+	
+	/* 更新系统时基计数器 xTickCount,xTickCount 是一个在 port.c 中定义的全局变量 */
+ 	const TickType_t xConstTickCount = xTickCount + 1;//常量赋值？是的，const可以被在定义时被变量赋值
+ 	xTickCount = xConstTickCount;
+ 	...
+}
+```
+xTickCount与xConstTickCount变量相互依赖而不写成xTickCount++的原因是后者的写法可能会导致静态条件的出现，而前者即使没有加锁也可以保证xTickCount是原子加的  
+
+并且taskYIELD本质上也是操作PendSV
+```c
+#define taskYIELD()						portYIELD()
+/* 触发 PendSV,产生上下文切换 */
+#define portYIELD()																\
+{																				\
+	portNVIC_INT_CTRL_REG = portNVIC_PENDSVSET_BIT;								\
+	__dsb( portSY_FULL_READ_WRITE );											\
+	__isb( portSY_FULL_READ_WRITE );											\
+}
+```
 
 ```c
 #include <stdio.h>

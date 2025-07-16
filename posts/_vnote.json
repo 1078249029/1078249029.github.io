@@ -1,5 +1,5 @@
 {
-    "created_time": "2025-04-12T03:38:54Z",
+    "created_time": "2025-07-08T07:48:43Z",
     "files": [
     ],
     "sub_directories": [
@@ -22,7 +22,7 @@
             "name": "Linux基础"
         },
         {
-            "name": "Linux深入"
+            "name": "Linux高级驱动"
         },
         {
             "name": "nginx反向代理trojan与rsshub"
@@ -34,7 +34,7 @@
             "name": "RISCV"
         },
         {
-            "name": "RT-Thread"
+            "name": "RT-Thread平台搭建实验"
         },
         {
             "name": "rtt技术分享"
@@ -47,6 +47,9 @@
         },
         {
             "name": "Vim复健计划"
+        },
+        {
+            "name": "嵌入式中的启动流程"
         },
         {
             "name": "工具链"

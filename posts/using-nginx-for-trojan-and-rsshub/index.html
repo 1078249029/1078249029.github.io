@@ -30,14 +30,14 @@
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 
-<link rel="canonical" href="https://1078249029.github.io/posts/using-nginx-for-trojan-and-rsshub/" /><link rel="prev" href="https://1078249029.github.io/posts/computer-network/" /><link rel="next" href="https://1078249029.github.io/posts/planting-esp32spi-to-rtthread/" />
+<link rel="canonical" href="https://1078249029.github.io/posts/using-nginx-for-trojan-and-rsshub/" /><link rel="prev" href="https://1078249029.github.io/posts/rtthread-platform-construction-experiment/" /><link rel="next" href="https://1078249029.github.io/posts/planting-esp32spi-to-rtthread/" />
 <link rel="stylesheet" href="/css/main.min.css"><link rel="stylesheet" href="/css/style.min.css"><script type="application/ld+json">{"@context": "https://schema.org","@type": "BlogPosting",
         "headline": "nginx反向代理trojan与rsshub",
         "inLanguage": "zh-cn",
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https://1078249029.github.io/posts/using-nginx-for-trojan-and-rsshub/"
-        },"genre": "posts","keywords":["Tech","RSS","Nginx","Life"],"wordcount":  3152 ,
+        },"genre": "posts","keywords":["Tech","RSS","Nginx","Life"],"wordcount":  3163 ,
         "url": "https://1078249029.github.io/posts/using-nginx-for-trojan-and-rsshub/","datePublished": "2024-10-19T10:48:46+08:00","dateModified": "2024-10-19T21:15:26+08:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -223,7 +223,7 @@
             <div class="post-meta-line"><svg class="icon"
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>&nbsp;<time datetime="2024-10-19">2024-10-19</time>&nbsp;<svg class="icon"
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg>&nbsp;<time datetime="2024-10-19">2024-10-19</time>&nbsp;<svg class="icon"
-    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;约 3152 字&nbsp;
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;约 3163 字&nbsp;
                     <svg class="icon"
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;预计阅读 14 分钟&nbsp;</div>
         </div><div class="details toc print:!tw-block" id="toc-static"  kept="">
@@ -264,7 +264,7 @@
 <h2 id="前置准备" class="headerLink">
     <a href="#%e5%89%8d%e7%bd%ae%e5%87%86%e5%a4%87" class="header-mark"></a>前置准备</h2><h3 id="购买服务器及域名" class="headerLink">
     <a href="#%e8%b4%ad%e4%b9%b0%e6%9c%8d%e5%8a%a1%e5%99%a8%e5%8f%8a%e5%9f%9f%e5%90%8d" class="header-mark"></a>购买服务器及域名</h3><p>可以从主流的服务器提供商购买服务器以及域名，我选择的服务器厂商是雨云(国际厂商可以选择racknerd或VMISS)，域名提供商是namesilo</p>
-<p>购买完毕后需要在国内DNS解析服务器上绑定ip与域名，可以选择腾讯DNS解析服务。绑定格式如下，需要注意的是我这里使用的二级域名需要额外在namesilo生成
+<p>购买完毕后需要在国内DNS解析服务器上绑定ip与域名，可以选择腾讯DNS解析服务。绑定格式如下，需要注意的是我这里使用的二级域名需要额外在namesilo生成<br>
 
 <figure><a class="lightgallery" href="/posts/using-nginx-for-trojan-and-rsshub/assets/555814913252497.webp" title="2024-10-19_13-49" data-thumbnail="/posts/using-nginx-for-trojan-and-rsshub/assets/555814913252497.webp" data-sub-html="<h2> </h2><p>2024-10-19_13-49</p>"><img   src='/posts/using-nginx-for-trojan-and-rsshub/assets/555814913252497.webp'   alt="2024-10-19_13-49" height="1479" width="2239"></a><figcaption class="image-caption">2024-10-19_13-49</figcaption>
     </figure></p>
@@ -758,7 +758,7 @@
       tw-scrollbar-thin
       "><span class="line"><span class="cl"><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">name</span> <span class="n">trojan</span><span class="o">-</span><span class="n">mariadb</span> <span class="o">--</span><span class="n">restart</span><span class="o">=</span><span class="n">always</span> <span class="o">-</span><span class="n">p</span> <span class="mi">3306</span><span class="o">:</span><span class="mi">3306</span> <span class="o">-</span><span class="n">v</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="nl">mariadb</span><span class="p">:</span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mysql</span> <span class="o">-</span><span class="n">e</span> <span class="n">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="n">trojan</span> <span class="o">-</span><span class="n">e</span> <span class="n">MYSQL_ROOT_HOST</span><span class="o">=%</span> <span class="o">-</span><span class="n">e</span> <span class="n">MYSQL_DATABASE</span><span class="o">=</span><span class="n">trojan</span> <span class="o">-</span><span class="n">d</span> <span class="nl">mariadb</span><span class="p">:</span><span class="mf">10.2</span></span></span></code></pre>
 </div>
-<p>注意MYSQL_ROOT_PASSWORD=trojan参数，这里我们下面安装trojan时需要输入数据库的密码就是trojan</p>
+<p>注意MYSQL_ROOT_PASSWORD=trojan参数是访问trojan-web的密码，我们下面安装trojan时需要输入数据库的密码就是trojan</p>
 <p>之后我们拉取trojan的镜像</p>
 <div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
   <div class="
@@ -851,7 +851,7 @@
       tw-scrollbar-thin
       "><span class="line"><span class="cl">docker pull jrohy/trojan</span></span></code></pre>
 </div>
-<p><strong>注意本次trojan使用桥接网络，这与jrohy大佬提供的命令不同</strong>，因此不需要将端口映射到主机，但为了后需的调整，我们这里预留4431和4432端口</p>
+<p><strong>注意本次trojan使用桥接网络，这与jrohy提供的命令不同</strong>，因此不需要将端口映射到主机，但为了后需的调整，我们这里预留4431和4432端口</p>
 <div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
   <div class="
     
@@ -1035,7 +1035,7 @@
       tw-scrollbar-thin
       "><span class="line"><span class="cl">docker <span class="nb">exec</span> -it trojan bash</span></span></code></pre>
 </div>
-<p>此时我们需要安装trojan，shell中输入trojan就行了</p>
+<p>此时我们需要安装trojan</p>
 <div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
   <div class="
     
@@ -1127,7 +1127,7 @@
       tw-scrollbar-thin
       "><span class="line"><span class="cl">trojan</span></span></code></pre>
 </div>
-<p>此时会进入安装界面，证书选择let&rsquo;s encrpt证书，域名绑定到服务商域名，此时会需要指定mysql或mariadb的ip和端口号，这里我们可以通过查看容器网络获得也可以给空之后修改(给空有可能安装错误)。这里如果你没有看到桥接网络的话需要设置mariadb网络为桥接bridge，默认端口号是3306，因此我这里的结果是172.17.0.4:3306</p>
+<p>进入安装界面，证书选择let&rsquo;s encrpt证书，域名绑定到服务商域名，此时会需要指定mysql或mariadb的ip和端口号，这里我们可以通过查看容器网络获得也可以给空等待安装完成之后再修改(给空有可能安装错误)。这里如果你没有看到桥接网络的话需要设置mariadb网络为桥接bridge，默认端口号是3306，因此我这里的结果是172.17.0.4:3306</p>
 <p>
 <figure><a class="lightgallery" href="/posts/using-nginx-for-trojan-and-rsshub/assets/528665713267981.webp" title="2024-10-19_13-57" data-thumbnail="/posts/using-nginx-for-trojan-and-rsshub/assets/528665713267981.webp" data-sub-html="<h2> </h2><p>2024-10-19_13-57</p>"><img   src='/posts/using-nginx-for-trojan-and-rsshub/assets/528665713267981.webp'   alt="2024-10-19_13-57" height="1482" width="2229"></a><figcaption class="image-caption">2024-10-19_13-57</figcaption>
     </figure></p>
@@ -1328,7 +1328,7 @@
 <p>接下来我们进行反向代理的配置</p>
 <h3 id="申请证书" class="headerLink">
     <a href="#%e7%94%b3%e8%af%b7%e8%af%81%e4%b9%a6" class="header-mark"></a>申请证书</h3><p>在配置反向代理前我们需要准备证书，这也是我们刚才在安装mariadb时跳过的步骤</p>
-<p>申请证书很简单，但需要提前获取ip以及域名，申请过程可以参考<a href="https://www.diaoan.xyz/using-certbot-apply-ssl-certificate/" target="_blank" rel="noopener noreferrer">Diaoan&rsquo;s Blog</a></p>
+<p>申请证书需要提前获取ip以及域名，申请过程可以参考<a href="https://www.diaoan.xyz/using-certbot-apply-ssl-certificate/" target="_blank" rel="noopener noreferrer">Diaoan&rsquo;s Blog</a></p>
 <p>我这里直接执行</p>
 <div class="code-block highlight is-open show-line-numbers  tw-group tw-my-2">
   <div class="
@@ -1514,7 +1514,7 @@
 </div>
 <p>记录好证书存放位置，之后我们正式开始进行反向代理的配置</p>
 <h3 id="网络拓扑图" class="headerLink">
-    <a href="#%e7%bd%91%e7%bb%9c%e6%8b%93%e6%89%91%e5%9b%be" class="header-mark"></a>网络拓扑图</h3><p>反向代理要搞清网络是非常有必要的，我当前网络拓扑图是这样的
+    <a href="#%e7%bd%91%e7%bb%9c%e6%8b%93%e6%89%91%e5%9b%be" class="header-mark"></a>网络拓扑图</h3><p>搭建反向代理时搞清网络脱坡是非常有必要的，我当前网络拓扑图是这样的
 
 <figure><a class="lightgallery" href="/posts/using-nginx-for-trojan-and-rsshub/assets/37634416260188.webp" title="服务器网络拓扑当前" data-thumbnail="/posts/using-nginx-for-trojan-and-rsshub/assets/37634416260188.webp" data-sub-html="<h2> </h2><p>服务器网络拓扑当前</p>"><img   src='/posts/using-nginx-for-trojan-and-rsshub/assets/37634416260188.webp'   alt="服务器网络拓扑当前" height="5710" width="5510"></a><figcaption class="image-caption">服务器网络拓扑当前</figcaption>
     </figure></p>
@@ -1522,9 +1522,9 @@
 
 <figure><a class="lightgallery" href="/posts/using-nginx-for-trojan-and-rsshub/assets/127214416256743.webp" title="服务器网络拓扑目标" data-thumbnail="/posts/using-nginx-for-trojan-and-rsshub/assets/127214416256743.webp" data-sub-html="<h2> </h2><p>服务器网络拓扑目标</p>"><img   src='/posts/using-nginx-for-trojan-and-rsshub/assets/127214416256743.webp'   alt="服务器网络拓扑目标" height="5710" width="5510"></a><figcaption class="image-caption">服务器网络拓扑目标</figcaption>
     </figure></p>
-<p>由此可见，我们应该配置trojan的两个个端口，nginx的两个端口。trojan两个端口的作用可以看<a href="https://p4gefau1t.github.io/trojan-go/basic/trojan/" target="_blank" rel="noopener noreferrer">官方文档</a>，简而言之，近端端口用来进行代理，远端端口用来检测到非法连接从而将非法流量转移到此端口上，因此这个端口可以设置为任意能够ping通的网页。而为了保证流量均由nginx控制，这里采用通过nginx转发trojan远程端口以及管理页面，同时由于远程端口可以任意指定，这里就把管理页面作为远程端口。传输协议方面，由于trojan配置文件需要指定证书文件，因此对于ssl协议的解析需要放在trojan容器内部进行，而rss内部没有解析的功能，我们就需要在nginx内部进行协议的处理</p>
+<p>由此可见，我们应该配置trojan的两个端口，nginx的两个端口。trojan两个端口的作用可以看<a href="https://p4gefau1t.github.io/trojan-go/basic/trojan/" target="_blank" rel="noopener noreferrer">官方文档</a>，简而言之，近端端口用来进行代理，远端端口用来检测到非法连接从而将非法流量转移到此端口上，因此这个端口可以设置为任意能够ping通的网页。而为了保证流量均由nginx控制，这里采用通过nginx转发trojan远程端口以及管理页面，同时由于远程端口可以任意指定，这里就把管理页面作为远程端口。传输协议方面，由于trojan配置文件需要指定证书文件，因此对于ssl协议的解析需要放在trojan容器内部进行，而rss内部没有解析的功能，我们就需要在nginx内部进行rss协议的处理</p>
 <h3 id="修改nginx配置项" class="headerLink">
-    <a href="#%e4%bf%ae%e6%94%b9nginx%e9%85%8d%e7%bd%ae%e9%a1%b9" class="header-mark"></a>修改nginx配置项</h3><p>首先保证nginx，rsshub，trojan均为桥接，保证在同一个容器网络中</p>
+    <a href="#%e4%bf%ae%e6%94%b9nginx%e9%85%8d%e7%bd%ae%e9%a1%b9" class="header-mark"></a>修改nginx配置项</h3><p>首先保证nginx，rsshub，trojan均为桥接，保证均处于同一个容器网络中</p>
 <p>而后修改nginx容器内的<code>/etc/nginx/nginx.conf</code>文件内容如下</p>
 <div class="code-block highlight is-closed show-line-numbers  tw-group tw-my-2">
   <div class="
@@ -1615,8 +1615,7 @@
       tw-overflow-y-hidden
       tw-overflow-x-auto
       tw-scrollbar-thin
-      "><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">user  nginx<span class="p">;</span>
+      "><span class="line"><span class="cl">user  nginx<span class="p">;</span>
 </span></span><span class="line"><span class="cl">worker_processes  auto<span class="p">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">error_log  /var/log/nginx/error.log notice<span class="p">;</span>
@@ -1671,7 +1670,7 @@
 </span></span><span class="line"><span class="cl">    <span class="c1">#gzip  on;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    include /etc/nginx/conf.d/*.conf<span class="p">;</span>
-</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1"># 如果端口设置与stream块相同的话就会导致冲突，因此这里只能监听http协议的80而不能监听https的443</span>
 </span></span><span class="line"><span class="cl">    server <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        listen 80<span class="p">;</span>
@@ -1685,28 +1684,28 @@
 </span></span><span class="line"><span class="cl">        ssl_certificate /etc/nginx/certs/rss.wumingzi.top/fullchain1.pem<span class="p">;</span>
 </span></span><span class="line"><span class="cl">        ssl_certificate_key /etc/nginx/certs/rss.wumingzi.top/privkey1.pem<span class="p">;</span>
 </span></span><span class="line"><span class="cl">        location / <span class="o">{</span>
-</span></span><span class="line"><span class="cl">          proxy_pass http://172.17.0.3:1200<span class="p">;</span> <span class="c1"># 转到rsshub容器的1200端口，此时需要解析协议，因此是http</span>
+</span></span><span class="line"><span class="cl">          proxy_pass http://172.17.0.3:1200<span class="p">;</span> <span class="c1"># 转到rsshub容器的1200端口，此时解析协议时信息流已经是未加密状态，因此是http</span>
 </span></span><span class="line"><span class="cl">        <span class="o">}</span>
 </span></span><span class="line"><span class="cl">  	<span class="o">}</span>
-</span></span><span class="line"><span class="cl">  	
+</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  	server <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        listen 82<span class="p">;</span> <span class="c1"># 监听trojan的远程端口，有流量产生时转发到对应服务</span>
-</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        server_name free.wumingzi.top<span class="p">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1"># 后台管理页面,通过 free.wumingzi.top/admin 访问</span>
 </span></span><span class="line"><span class="cl">        location /admin <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            proxy_pass   http://172.17.0.5:81/<span class="p">;</span> <span class="c1"># 将trojan已经解析的协议发送到nginx容器的81端口这里是trojan-web的协议端口</span>
 </span></span><span class="line"><span class="cl">        <span class="o">}</span>
-</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1"># 由于 trojan web 前端的部分资源是写在二进制中的，这些资源的访问路径固定</span>
 </span></span><span class="line"><span class="cl">        location ~* ^/<span class="o">(</span>static<span class="p">|</span>common<span class="p">|</span>auth<span class="p">|</span>trojan<span class="o">)</span>/ <span class="o">{</span>
-</span></span><span class="line"><span class="cl">            proxy_pass  http://172.17.0.5:81<span class="p">;</span> 
+</span></span><span class="line"><span class="cl">            proxy_pass  http://172.17.0.5:81<span class="p">;</span>
 </span></span><span class="line"><span class="cl">            proxy_http_version 1.1<span class="p">;</span>
 </span></span><span class="line"><span class="cl">            proxy_set_header Upgrade <span class="nv">$http_upgrade</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">            proxy_set_header Connection <span class="s2">&#34;Upgrade&#34;</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">            proxy_set_header Host <span class="nv">$host</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="o">}</span> 
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre>
 </div>
@@ -1987,8 +1986,8 @@
         </section>
     </div>
 
-    <div class="post-nav print:tw-hidden"><a href="/posts/computer-network/" class="prev" rel="prev" title="计算机网络"><svg class="icon"
-    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z"/></svg>计算机网络</a>
+    <div class="post-nav print:tw-hidden"><a href="/posts/rtthread-platform-construction-experiment/" class="prev" rel="prev" title="RT-Thread平台搭建实验"><svg class="icon"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z"/></svg>RT-Thread平台搭建实验</a>
             <a href="/posts/planting-esp32spi-to-rtthread/" class="next" rel="next" title="移植ESP32SPI驱动至rtthread教程">移植ESP32SPI驱动至rtthread教程<svg class="icon"
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/></svg></a></div>
 </div>
@@ -1997,7 +1996,7 @@
             <div class="footer-line">
                 <span id="run-time"></span>
             </div><div class="footer-line">
-                    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.147.9">Hugo</a>&nbsp;|&nbsp;Theme - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.4.1"><svg class="icon"
+                    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.148.1">Hugo</a>&nbsp;|&nbsp;Theme - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.4.1"><svg class="icon"
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg> DoIt</a>
                 </div><div class="footer-line"><svg class="icon"
     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 448c-110.532 0-200-89.451-200-200 0-110.531 89.451-200 200-200 110.532 0 200 89.451 200 200 0 110.532-89.451 200-200 200zm107.351-101.064c-9.614 9.712-45.53 41.396-104.065 41.396-82.43 0-140.484-61.425-140.484-141.567 0-79.152 60.275-139.401 139.762-139.401 55.531 0 88.738 26.62 97.593 34.779a11.965 11.965 0 0 1 1.936 15.322l-18.155 28.113c-3.841 5.95-11.966 7.282-17.499 2.921-8.595-6.776-31.814-22.538-61.708-22.538-48.303 0-77.916 35.33-77.916 80.082 0 41.589 26.888 83.692 78.277 83.692 32.657 0 56.843-19.039 65.726-27.225 5.27-4.857 13.596-4.039 17.82 1.738l19.865 27.17a11.947 11.947 0 0 1-1.152 15.518z"/></svg>2023 - 2025<span class="author">&nbsp;<a href="wumingzi.top" target="_blank" rel="noopener noreferrer">吾铭子</a></span></div>
@@ -2016,7 +2015,7 @@
 <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/lightgallery/lightgallery.min.css">
         <noscript><link rel="stylesheet" href="/lib/lightgallery/lightgallery.min.css"></noscript><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/katex/copy-tex.min.css">
         <noscript><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"></noscript>
-<script>window.config={"autocomplete.min.js":"/lib/autocomplete/autocomplete.min.js","comment":{},"lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"pagefind.js":"/pagefind/pagefind.js","search":{"highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","pageLength":null,"snippetLength":50,"termFrequency":null,"termSaturation":null,"termSimilarity":null,"type":"pagefind"}};</script><script
+<script>window.config={"autocomplete.min.js":"/lib/autocomplete/autocomplete.min.js","comment":{},"fuse.min.js":"/lib/fuse/fuse.min.js","lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"distance":null,"findAllMatches":null,"fuseIndexURL":"/index.json","highlightTag":"em","ignoreFieldNorm":null,"ignoreLocation":null,"isCaseSensitive":null,"location":null,"maxResultLength":10,"minMatchCharLength":null,"noResultsFound":"没有找到结果","snippetLength":50,"threshold":null,"type":"fuse","useExtendedSearch":null}};</script><script
     src="/lib/lightgallery/lightgallery.min.js"
     
       defer

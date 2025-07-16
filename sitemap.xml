@@ -3,13 +3,13 @@
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     ><url>
             <loc>https://1078249029.github.io/essay/</loc><lastmod>2025-04-07T10:59:37&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
-            <loc>https://1078249029.github.io/categories/</loc><lastmod>2025-06-01T17:41:22&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url><url>
-            <loc>https://1078249029.github.io/posts/</loc><lastmod>2025-06-01T17:41:22&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url><url>
-            <loc>https://1078249029.github.io/tags/</loc><lastmod>2025-06-01T17:41:22&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url><url>
-            <loc>https://1078249029.github.io/categories/tech/</loc><lastmod>2025-06-01T17:41:22&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url><url>
-            <loc>https://1078249029.github.io/tags/tech/</loc><lastmod>2025-06-01T17:41:22&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url><url>
-            <loc>https://1078249029.github.io/posts/booting-process-in-embedded/</loc><lastmod>2025-06-01T17:41:22&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url><url>
-            <loc>https://1078249029.github.io/</loc><lastmod>2025-06-01T17:41:22&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url><url>
+            <loc>https://1078249029.github.io/categories/</loc><lastmod>2025-06-01T17:41:22&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
+            <loc>https://1078249029.github.io/posts/</loc><lastmod>2025-06-01T17:41:22&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
+            <loc>https://1078249029.github.io/tags/</loc><lastmod>2025-06-01T17:41:22&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
+            <loc>https://1078249029.github.io/categories/tech/</loc><lastmod>2025-06-01T17:41:22&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
+            <loc>https://1078249029.github.io/tags/tech/</loc><lastmod>2025-06-01T17:41:22&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
+            <loc>https://1078249029.github.io/posts/booting-process-in-embedded/</loc><lastmod>2025-06-01T17:41:22&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
+            <loc>https://1078249029.github.io/</loc><lastmod>2025-06-01T17:41:22&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
             <loc>https://1078249029.github.io/friend/</loc><lastmod>2025-04-09T18:46:00&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
             <loc>https://1078249029.github.io/about/</loc><lastmod>2025-04-08T15:27:43&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
             <loc>https://1078249029.github.io/tags/computer-architecture/</loc><lastmod>2025-04-07T19:32:31&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
@@ -24,9 +24,10 @@
             <loc>https://1078249029.github.io/tags/nginx/</loc><lastmod>2024-10-19T21:15:26&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
             <loc>https://1078249029.github.io/posts/using-nginx-for-trojan-and-rsshub/</loc><lastmod>2024-10-19T21:15:26&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
             <loc>https://1078249029.github.io/tags/rss/</loc><lastmod>2024-10-19T21:15:26&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
+            <loc>https://1078249029.github.io/posts/rtthread-platform-construction-experiment/</loc><lastmod>2024-10-28T20:45:06&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
             <loc>https://1078249029.github.io/tags/network/</loc><lastmod>2024-09-09T13:51:35&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
             <loc>https://1078249029.github.io/posts/computer-network/</loc><lastmod>2024-09-09T13:51:35&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
-            <loc>https://1078249029.github.io/posts/linux-advanced/</loc><lastmod>2025-03-31T16:51:18&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
+            <loc>https://1078249029.github.io/posts/linux-advanced-drivers/</loc><lastmod>2025-03-31T16:51:18&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
             <loc>https://1078249029.github.io/posts/linux-kernel/</loc><lastmod>2024-10-28T19:39:58&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
             <loc>https://1078249029.github.io/posts/linux-basics/</loc><lastmod>2024-10-28T19:39:19&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
             <loc>https://1078249029.github.io/posts/cpp/</loc><lastmod>2025-04-04T09:37:57&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>

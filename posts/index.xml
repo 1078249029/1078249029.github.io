@@ -24,7 +24,7 @@
     <pubDate>Sun, 15 Dec 2024 11:43:24 &#43;0800</pubDate><author>
         <name>吾铭子</name>
     </author><guid>https://1078249029.github.io/posts/rust/</guid>
-    <description><![CDATA[<p>本文是笔者学习Rust时系统总结的笔记，内部详细地介绍了Rust的特点以及语法，较为深入的探讨了Rust语言的语法，参考资料包括但不限于b站的<a href="https://www.bilibili.com/video/BV1hp4y1k7SV" target="_blank" rel="noopener noreferrer">Rust编程语言入门教程</a>，<a href="https://course.rs/about-book.html" target="_blank" rel="noopener noreferrer">Rust语言圣经(Rust Course)</a>，<a href="https://rustcc.cn/" target="_blank" rel="noopener noreferrer">Rust语言中文社区</a>，<a href="https://doc.rust-lang.org/book/" target="_blank" rel="noopener noreferrer">The Rust Programming Language</a></p>]]></description>
+    <description><![CDATA[<p>本文是笔者学习Rust时系统总结的笔记，内部详细地介绍了Rust的特点以及语法，较为深入的探讨了Rust语言的语资料包括但不限于b站视频<a href="https://www.bilibili.com/video/BV1hp4y1k7SV" target="_blank" rel="noopener noreferrer">Rust编程语言入门教程</a>，国人出品的开源书籍<a href="https://course.rs/about-book.html" target="_blank" rel="noopener noreferrer">Rust语言圣经(Rust Course)</a>，<a href="https://rustcc.cn/" target="_blank" rel="noopener noreferrer">Rust语言中文社区</a>，以及rust的官方书籍<a href="https://doc.rust-lang.org/book/" target="_blank" rel="noopener noreferrer">The Rust Programming Language</a></p>]]></description>
 </item><item>
     <title>移植ESP32SPI驱动至rtthread教程</title>
     <link>https://1078249029.github.io/posts/planting-esp32spi-to-rtthread/</link>
@@ -40,6 +40,13 @@
     </author><guid>https://1078249029.github.io/posts/using-nginx-for-trojan-and-rsshub/</guid>
     <description><![CDATA[<p>个人搭建动态博客的详细过程，由Halo框架+NexT主题构成</p>]]></description>
 </item><item>
+    <title>RT-Thread平台搭建实验</title>
+    <link>https://1078249029.github.io/posts/rtthread-platform-construction-experiment/</link>
+    <pubDate>Mon, 17 Jun 2024 08:43:37 &#43;0800</pubDate><author>
+        <name>吾铭子</name>
+    </author><guid>https://1078249029.github.io/posts/rtthread-platform-construction-experiment/</guid>
+    <description><![CDATA[<p>本文为笔者的毕业设计相关内容，目的是使用嵌入式系统将振动数据发送至对应主机。系统使用stm32+rtthread作为基本结构，并选用其他中间件丰富系统功能。由于stm32的ram与rom资源紧缺，后期移植文件系统以及其他中间件会爆内存，因此笔者目前暂停这一方案，并转而使用ESP32C3为主控</p>]]></description>
+</item><item>
     <title>计算机网络</title>
     <link>https://1078249029.github.io/posts/computer-network/</link>
     <pubDate>Mon, 22 Apr 2024 15:49:01 &#43;0800</pubDate><author>
@@ -47,12 +54,12 @@
     </author><guid>https://1078249029.github.io/posts/computer-network/</guid>
     <description><![CDATA[<p>本文从OSI网络模型出发介绍计算机网络，并涉及多种有关计算机网络的应用。需要注意的是本文有较为浓厚的学术界气息，对于具体的协议使用本文不阐述</p>]]></description>
 </item><item>
-    <title>Linux深入</title>
-    <link>https://1078249029.github.io/posts/linux-advanced/</link>
+    <title>Linux高级驱动</title>
+    <link>https://1078249029.github.io/posts/linux-advanced-drivers/</link>
     <pubDate>Fri, 23 Feb 2024 11:44:04 &#43;0800</pubDate><author>
         <name>吾铭子</name>
-    </author><guid>https://1078249029.github.io/posts/linux-advanced/</guid>
-    <description><![CDATA[<p>Linux驱动深入，包含PCIE，USB以及常用子系统的<strong>粗浅介绍</strong></p>]]></description>
+    </author><guid>https://1078249029.github.io/posts/linux-advanced-drivers/</guid>
+    <description><![CDATA[<p>Linux高级驱动的粗浅介绍，包含PCIE，USB以及其他常用子系统</p>]]></description>
 </item><item>
     <title>Linux内核</title>
     <link>https://1078249029.github.io/posts/linux-kernel/</link>
@@ -67,12 +74,5 @@
         <name>吾铭子</name>
     </author><guid>https://1078249029.github.io/posts/linux-basics/</guid>
     <description><![CDATA[<p>基础的Linux应用与驱动开发</p>]]></description>
-</item><item>
-    <title>C&#43;&#43;</title>
-    <link>https://1078249029.github.io/posts/cpp/</link>
-    <pubDate>Sun, 14 Jan 2024 09:37:21 &#43;0800</pubDate><author>
-        <name>吾铭子</name>
-    </author><guid>https://1078249029.github.io/posts/cpp/</guid>
-    <description><![CDATA[<p>本文较为详细地介绍了C++的语法和使用中需要注意的坑，还介绍了STL库和Modern C++，甚至涉及C++20的部分新特性。在最后，我们大致的介绍了C++常用的设计模式</p>]]></description>
 </item></channel>
 </rss>
