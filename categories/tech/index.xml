@@ -1,147 +1,78 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Tech on 吾铭子</title>
-    <link>https://1078249029.github.io/categories/tech/</link>
-    <description>Recent content in Tech on 吾铭子</description>
-    <generator>Hugo</generator>
-    <language>zh-cn</language>
-    <managingEditor>1078249029@qq.com (吾铭子)</managingEditor>
-    <webMaster>1078249029@qq.com (吾铭子)</webMaster>
-    <lastBuildDate>Sun, 01 Jun 2025 17:41:22 +0800</lastBuildDate>
-    <atom:link href="https://1078249029.github.io/categories/tech/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>嵌入式中的启动流程</title>
-      <link>https://1078249029.github.io/posts/booting-process-in-embedded/</link>
-      <pubDate>Sun, 01 Jun 2025 17:41:22 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
-      <guid>https://1078249029.github.io/posts/booting-process-in-embedded/</guid>
-      <description>&lt;p&gt;较为系统的介绍rtos的ota技术以及linux系统的启动流程&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>RISC-V</title>
-      <link>https://1078249029.github.io/posts/risc-v/</link>
-      <pubDate>Wed, 01 Jan 2025 15:22:46 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
-      <guid>https://1078249029.github.io/posts/risc-v/</guid>
-      <description>&lt;p&gt;本文是笔者学习RISC-V时系统总结而成的，包含上下两部分，第一部分对RISC-V进行系统性介绍，包含RISC-V项目的基本情况与规范，基本命令的介绍，与OS的关系等内容。其参考资料为b站的&lt;a href=&#34;https://www.bilibili.com/video/BV1Q5411w7z5/&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;rvos&lt;/a&gt;，视频由中科院软件所汪辰主讲，PLCT项目负责人吴伟发布。第二部分系统的介绍了RISCV体系结构部分，虽然与源码级别工程仍有差距，但作为嵌入式软件/系统工程师来说深度广度足够了，该部分参考书籍为《RISCV体系结构编程与实践    -笨叔》，笨叔也有arm相关的著作以及更为出名的Linux相关的书籍，因此笔者也推荐使用笨叔的两本不同体系结构的书籍对比学习。&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Rust</title>
-      <link>https://1078249029.github.io/posts/rust/</link>
-      <pubDate>Sun, 15 Dec 2024 11:43:24 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
-      <guid>https://1078249029.github.io/posts/rust/</guid>
-      <description>&lt;p&gt;本文是笔者学习Rust时系统总结的笔记，内部详细地介绍了Rust的特点以及语法，较为深入的探讨了Rust语言的语资料包括但不限于b站视频&lt;a href=&#34;https://www.bilibili.com/video/BV1hp4y1k7SV&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;Rust编程语言入门教程&lt;/a&gt;，国人出品的开源书籍&lt;a href=&#34;https://course.rs/about-book.html&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;Rust语言圣经(Rust Course)&lt;/a&gt;，&lt;a href=&#34;https://rustcc.cn/&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;Rust语言中文社区&lt;/a&gt;，以及rust的官方书籍&lt;a href=&#34;https://doc.rust-lang.org/book/&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;The Rust Programming Language&lt;/a&gt;&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>移植ESP32SPI驱动至rtthread教程</title>
-      <link>https://1078249029.github.io/posts/planting-esp32spi-to-rtthread/</link>
-      <pubDate>Sat, 19 Oct 2024 10:50:25 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
-      <guid>https://1078249029.github.io/posts/planting-esp32spi-to-rtthread/</guid>
-      <description>&lt;p&gt;本文是博主移植驱动工作的总结，详细介绍了移植过程以及遇到的问题及其解决方案，希望对各位有帮助。同时，代码已进入&lt;a href=&#34;https://github.com/RT-Thread/rt-thread/pull/9513&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;RT-Thread主线&lt;/a&gt;。博文同时发表在个人博客&lt;a href=&#34;wumingzi.top&#34; rel=&#34;&#34;&gt;wumingzi.top&lt;/a&gt;&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>nginx反向代理trojan与rsshub</title>
-      <link>https://1078249029.github.io/posts/using-nginx-for-trojan-and-rsshub/</link>
-      <pubDate>Sat, 19 Oct 2024 10:48:46 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
-      <guid>https://1078249029.github.io/posts/using-nginx-for-trojan-and-rsshub/</guid>
-      <description>&lt;p&gt;个人搭建动态博客的详细过程，由Halo框架+NexT主题构成&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>RT-Thread平台搭建实验</title>
-      <link>https://1078249029.github.io/posts/rtthread-platform-construction-experiment/</link>
-      <pubDate>Mon, 17 Jun 2024 08:43:37 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
-      <guid>https://1078249029.github.io/posts/rtthread-platform-construction-experiment/</guid>
-      <description>&lt;p&gt;本文为笔者的毕业设计相关内容，目的是使用嵌入式系统将振动数据发送至对应主机。系统使用stm32+rtthread作为基本结构，并选用其他中间件丰富系统功能。由于stm32的ram与rom资源紧缺，后期移植文件系统以及其他中间件会爆内存，因此笔者目前暂停这一方案，并转而使用ESP32C3为主控&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>计算机网络</title>
-      <link>https://1078249029.github.io/posts/computer-network/</link>
-      <pubDate>Mon, 22 Apr 2024 15:49:01 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
-      <guid>https://1078249029.github.io/posts/computer-network/</guid>
-      <description>&lt;p&gt;本文从OSI网络模型出发介绍计算机网络，并涉及多种有关计算机网络的应用。需要注意的是本文有较为浓厚的学术界气息，对于具体的协议使用本文不阐述&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Linux高级驱动</title>
-      <link>https://1078249029.github.io/posts/linux-advanced-drivers/</link>
-      <pubDate>Fri, 23 Feb 2024 11:44:04 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
-      <guid>https://1078249029.github.io/posts/linux-advanced-drivers/</guid>
-      <description>&lt;p&gt;Linux高级驱动的粗浅介绍，包含PCIE，USB以及其他常用子系统&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Linux内核</title>
-      <link>https://1078249029.github.io/posts/linux-kernel/</link>
-      <pubDate>Wed, 21 Feb 2024 16:55:40 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
-      <guid>https://1078249029.github.io/posts/linux-kernel/</guid>
-      <description>&lt;p&gt;&lt;strong&gt;本文阐述系统为x86体系架构，idt，gdt，tss，系统启动引导过程均以x86架构为蓝本，arm不适用，并且由于参考资料过于过于久远，读者应谨慎参考&lt;/strong&gt;&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Linux基础</title>
-      <link>https://1078249029.github.io/posts/linux-basics/</link>
-      <pubDate>Tue, 23 Jan 2024 18:18:18 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
-      <guid>https://1078249029.github.io/posts/linux-basics/</guid>
-      <description>&lt;p&gt;基础的Linux应用与驱动开发&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>C&#43;&#43;</title>
-      <link>https://1078249029.github.io/posts/cpp/</link>
-      <pubDate>Sun, 14 Jan 2024 09:37:21 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
-      <guid>https://1078249029.github.io/posts/cpp/</guid>
-      <description>&lt;p&gt;本文较为详细地介绍了C++的语法和使用中可能遇到的坑，还介绍了STL库和Modern C++，例如C++20的部分新特性。在最后，我们大致的介绍了代码编写时常用的设计模式&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Python</title>
-      <link>https://1078249029.github.io/posts/python/</link>
-      <pubDate>Sun, 14 Jan 2024 09:37:13 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
-      <guid>https://1078249029.github.io/posts/python/</guid>
-      <description>&lt;p&gt;本文较为详细地介绍了Python的语法，参考资料为b站的&lt;a href=&#34;https://www.bilibili.com/video/BV1qW4y1a7fU/?share_source=copy_web&amp;amp;vd_source=af2e9dd8c2997005fd3692331c1df718&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;黑马程序员&lt;/a&gt;&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>工具链</title>
-      <link>https://1078249029.github.io/posts/toolchains/</link>
-      <pubDate>Tue, 02 Jan 2024 14:37:10 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
-      <guid>https://1078249029.github.io/posts/toolchains/</guid>
-      <description>&lt;p&gt;本文介绍了Git，GDB，Makefile，CMake四种C/C++编程中常用的工具链，还涉及一点GCC制作库文件的内容&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>项目</title>
-      <link>https://1078249029.github.io/posts/program/</link>
-      <pubDate>Mon, 01 Jan 2024 12:38:48 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
-      <guid>https://1078249029.github.io/posts/program/</guid>
-      <description>&lt;p&gt;参考书籍：《FreeRTOS 内核实现与应用开发实战指南》&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>杂项</title>
-      <link>https://1078249029.github.io/posts/miscs/</link>
-      <pubDate>Sun, 24 Dec 2023 10:07:45 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
-      <guid>https://1078249029.github.io/posts/miscs/</guid>
-      <description>&lt;p&gt;一些嵌入式软件工程师常用的知识点，以体系结构，OS和编译器为主要内容&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>FreeRTOS</title>
-      <link>https://1078249029.github.io/posts/freertos/</link>
-      <pubDate>Sun, 24 Dec 2023 10:06:40 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
-      <guid>https://1078249029.github.io/posts/freertos/</guid>
-      <description>&lt;p&gt;本文为FreeRTOS的系统性学习的总结，内容包含简单API的使用和RTOS的原理介绍，参考视资料为b站的&lt;a href=&#34;https://www.bilibili.com/video/BV1844y1g7ud/?spm_id_from=..search-card.all.click&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;韦东山视频&lt;/a&gt;，内部并未优化排版。&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>C复健计划</title>
-      <link>https://1078249029.github.io/posts/c-review/</link>
-      <pubDate>Wed, 18 Oct 2023 13:57:04 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
-      <guid>https://1078249029.github.io/posts/c-review/</guid>
-      <description>&lt;p&gt;本文是笔者研究生入学期间对C进行系统性复习总结而成的笔记，因此内部排版混乱，知识点散乱而不成系统，望读者谨慎参考&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>STM32</title>
-      <link>https://1078249029.github.io/posts/stm32/</link>
-      <pubDate>Wed, 18 Oct 2023 13:57:04 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
-      <guid>https://1078249029.github.io/posts/stm32/</guid>
-      <description>&lt;p&gt;本文是笔者研究生入学期间对STM32进行系统性学习总结而成的笔记，可用作入门参考资料使用，主要参考资料为b站江协科技的&lt;a href=&#34;https://www.bilibili.com/video/BV1th411z7sn/&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;STM32入门教程-2023版&lt;/a&gt;&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Vim复健计划</title>
-      <link>https://1078249029.github.io/posts/vim/</link>
-      <pubDate>Wed, 18 Oct 2023 13:57:04 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
-      <guid>https://1078249029.github.io/posts/vim/</guid>
-      <description>&lt;p&gt;本文是笔者研究生入学期间vim进行系统性复习总结而成的笔记，因此内部排版混乱，知识点散乱而不成系统，望读者谨慎参考&lt;/p&gt;</description>
-    </item>
-  </channel>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Tech - 分类 - 吾铭子</title>
+        <link>https://1078249029.github.io/categories/tech/</link>
+        <description>Tech - 分类 - 吾铭子</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>1078249029@qq.com (吾铭子)</managingEditor>
+            <webMaster>1078249029@qq.com (吾铭子)</webMaster><lastBuildDate>Sun, 01 Jun 2025 17:41:22 &#43;0800</lastBuildDate><atom:link href="https://1078249029.github.io/categories/tech/" rel="self" type="application/rss+xml" /><item>
+    <title>嵌入式中的启动流程</title>
+    <link>https://1078249029.github.io/posts/booting-process-in-embedded/</link>
+    <pubDate>Sun, 01 Jun 2025 17:41:22 &#43;0800</pubDate><author>
+        <name>吾铭子</name>
+    </author><guid>https://1078249029.github.io/posts/booting-process-in-embedded/</guid>
+    <description><![CDATA[<p>较为系统的介绍rtos的ota技术以及linux系统的启动流程</p>]]></description>
+</item><item>
+    <title>RISC-V</title>
+    <link>https://1078249029.github.io/posts/risc-v/</link>
+    <pubDate>Wed, 01 Jan 2025 15:22:46 &#43;0800</pubDate><author>
+        <name>吾铭子</name>
+    </author><guid>https://1078249029.github.io/posts/risc-v/</guid>
+    <description><![CDATA[<p>本文是笔者学习RISC-V时系统总结而成的，包含上下两部分，第一部分对RISC-V进行系统性介绍，包含RISC-V项目的基本情况与规范，基本命令的介绍，与OS的关系等内容。其参考资料为b站的<a href="https://www.bilibili.com/video/BV1Q5411w7z5/" target="_blank" rel="noopener noreferrer">rvos</a>，视频由中科院软件所汪辰主讲，PLCT项目负责人吴伟发布。第二部分系统的介绍了RISCV体系结构部分，虽然与源码级别工程仍有差距，但作为嵌入式软件/系统工程师来说深度广度足够了，该部分参考书籍为《RISCV体系结构编程与实践    -笨叔》，笨叔也有arm相关的著作以及更为出名的Linux相关的书籍，因此笔者也推荐使用笨叔的两本不同体系结构的书籍对比学习。</p>]]></description>
+</item><item>
+    <title>Rust</title>
+    <link>https://1078249029.github.io/posts/rust/</link>
+    <pubDate>Sun, 15 Dec 2024 11:43:24 &#43;0800</pubDate><author>
+        <name>吾铭子</name>
+    </author><guid>https://1078249029.github.io/posts/rust/</guid>
+    <description><![CDATA[<p>本文是笔者学习Rust时系统总结的笔记，内部详细地介绍了Rust的特点以及语法，较为深入的探讨了Rust语言的语资料包括但不限于b站视频<a href="https://www.bilibili.com/video/BV1hp4y1k7SV" target="_blank" rel="noopener noreferrer">Rust编程语言入门教程</a>，国人出品的开源书籍<a href="https://course.rs/about-book.html" target="_blank" rel="noopener noreferrer">Rust语言圣经(Rust Course)</a>，<a href="https://rustcc.cn/" target="_blank" rel="noopener noreferrer">Rust语言中文社区</a>，以及rust的官方书籍<a href="https://doc.rust-lang.org/book/" target="_blank" rel="noopener noreferrer">The Rust Programming Language</a></p>]]></description>
+</item><item>
+    <title>移植ESP32SPI驱动至rtthread教程</title>
+    <link>https://1078249029.github.io/posts/planting-esp32spi-to-rtthread/</link>
+    <pubDate>Sat, 19 Oct 2024 10:50:25 &#43;0800</pubDate><author>
+        <name>吾铭子</name>
+    </author><guid>https://1078249029.github.io/posts/planting-esp32spi-to-rtthread/</guid>
+    <description><![CDATA[<p>本文是博主移植驱动工作的总结，详细介绍了移植过程以及遇到的问题及其解决方案，希望对各位有帮助。同时，代码已进入<a href="https://github.com/RT-Thread/rt-thread/pull/9513" target="_blank" rel="noopener noreferrer">RT-Thread主线</a>。博文同时发表在个人博客<a href="wumingzi.top" rel="">wumingzi.top</a></p>]]></description>
+</item><item>
+    <title>nginx反向代理trojan与rsshub</title>
+    <link>https://1078249029.github.io/posts/using-nginx-for-trojan-and-rsshub/</link>
+    <pubDate>Sat, 19 Oct 2024 10:48:46 &#43;0800</pubDate><author>
+        <name>吾铭子</name>
+    </author><guid>https://1078249029.github.io/posts/using-nginx-for-trojan-and-rsshub/</guid>
+    <description><![CDATA[<p>个人搭建动态博客的详细过程，由Halo框架+NexT主题构成</p>]]></description>
+</item><item>
+    <title>RT-Thread平台搭建实验</title>
+    <link>https://1078249029.github.io/posts/rtthread-platform-construction-experiment/</link>
+    <pubDate>Mon, 17 Jun 2024 08:43:37 &#43;0800</pubDate><author>
+        <name>吾铭子</name>
+    </author><guid>https://1078249029.github.io/posts/rtthread-platform-construction-experiment/</guid>
+    <description><![CDATA[<p>本文为笔者的毕业设计相关内容，目的是使用嵌入式系统将振动数据发送至对应主机。系统使用stm32+rtthread作为基本结构，并选用其他中间件丰富系统功能。由于stm32的ram与rom资源紧缺，后期移植文件系统以及其他中间件会爆内存，因此笔者目前暂停这一方案，并转而使用ESP32C3为主控</p>]]></description>
+</item><item>
+    <title>计算机网络</title>
+    <link>https://1078249029.github.io/posts/computer-network/</link>
+    <pubDate>Mon, 22 Apr 2024 15:49:01 &#43;0800</pubDate><author>
+        <name>吾铭子</name>
+    </author><guid>https://1078249029.github.io/posts/computer-network/</guid>
+    <description><![CDATA[<p>本文从OSI网络模型出发介绍计算机网络，并涉及多种有关计算机网络的应用。需要注意的是本文有较为浓厚的学术界气息，对于具体的协议使用本文不阐述</p>]]></description>
+</item><item>
+    <title>Linux高级驱动</title>
+    <link>https://1078249029.github.io/posts/linux-advanced-drivers/</link>
+    <pubDate>Fri, 23 Feb 2024 11:44:04 &#43;0800</pubDate><author>
+        <name>吾铭子</name>
+    </author><guid>https://1078249029.github.io/posts/linux-advanced-drivers/</guid>
+    <description><![CDATA[<p>Linux高级驱动的粗浅介绍，包含PCIE，USB以及其他常用子系统</p>]]></description>
+</item><item>
+    <title>Linux内核</title>
+    <link>https://1078249029.github.io/posts/linux-kernel/</link>
+    <pubDate>Wed, 21 Feb 2024 16:55:40 &#43;0800</pubDate><author>
+        <name>吾铭子</name>
+    </author><guid>https://1078249029.github.io/posts/linux-kernel/</guid>
+    <description><![CDATA[<p><strong>本文阐述系统为x86体系架构，idt，gdt，tss，系统启动引导过程均以x86架构为蓝本，arm不适用，并且由于参考资料过于过于久远，读者应谨慎参考</strong></p>]]></description>
+</item><item>
+    <title>Linux基础</title>
+    <link>https://1078249029.github.io/posts/linux-basics/</link>
+    <pubDate>Tue, 23 Jan 2024 18:18:18 &#43;0800</pubDate><author>
+        <name>吾铭子</name>
+    </author><guid>https://1078249029.github.io/posts/linux-basics/</guid>
+    <description><![CDATA[<p>基础的Linux应用与驱动开发</p>]]></description>
+</item></channel>
 </rss>

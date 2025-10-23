@@ -1,42 +1,36 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Programing Language on 吾铭子</title>
-    <link>https://1078249029.github.io/tags/programing-language/</link>
-    <description>Recent content in Programing Language on 吾铭子</description>
-    <generator>Hugo</generator>
-    <language>zh-cn</language>
-    <managingEditor>1078249029@qq.com (吾铭子)</managingEditor>
-    <webMaster>1078249029@qq.com (吾铭子)</webMaster>
-    <lastBuildDate>Mon, 07 Apr 2025 19:32:31 +0800</lastBuildDate>
-    <atom:link href="https://1078249029.github.io/tags/programing-language/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Rust</title>
-      <link>https://1078249029.github.io/posts/rust/</link>
-      <pubDate>Sun, 15 Dec 2024 11:43:24 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
-      <guid>https://1078249029.github.io/posts/rust/</guid>
-      <description>&lt;p&gt;本文是笔者学习Rust时系统总结的笔记，内部详细地介绍了Rust的特点以及语法，较为深入的探讨了Rust语言的语资料包括但不限于b站视频&lt;a href=&#34;https://www.bilibili.com/video/BV1hp4y1k7SV&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;Rust编程语言入门教程&lt;/a&gt;，国人出品的开源书籍&lt;a href=&#34;https://course.rs/about-book.html&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;Rust语言圣经(Rust Course)&lt;/a&gt;，&lt;a href=&#34;https://rustcc.cn/&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;Rust语言中文社区&lt;/a&gt;，以及rust的官方书籍&lt;a href=&#34;https://doc.rust-lang.org/book/&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;The Rust Programming Language&lt;/a&gt;&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>C&#43;&#43;</title>
-      <link>https://1078249029.github.io/posts/cpp/</link>
-      <pubDate>Sun, 14 Jan 2024 09:37:21 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
-      <guid>https://1078249029.github.io/posts/cpp/</guid>
-      <description>&lt;p&gt;本文较为详细地介绍了C++的语法和使用中可能遇到的坑，还介绍了STL库和Modern C++，例如C++20的部分新特性。在最后，我们大致的介绍了代码编写时常用的设计模式&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Python</title>
-      <link>https://1078249029.github.io/posts/python/</link>
-      <pubDate>Sun, 14 Jan 2024 09:37:13 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
-      <guid>https://1078249029.github.io/posts/python/</guid>
-      <description>&lt;p&gt;本文较为详细地介绍了Python的语法，参考资料为b站的&lt;a href=&#34;https://www.bilibili.com/video/BV1qW4y1a7fU/?share_source=copy_web&amp;amp;vd_source=af2e9dd8c2997005fd3692331c1df718&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;黑马程序员&lt;/a&gt;&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>C复健计划</title>
-      <link>https://1078249029.github.io/posts/c-review/</link>
-      <pubDate>Wed, 18 Oct 2023 13:57:04 +0800</pubDate><author>1078249029@qq.com (吾铭子)</author>
-      <guid>https://1078249029.github.io/posts/c-review/</guid>
-      <description>&lt;p&gt;本文是笔者研究生入学期间对C进行系统性复习总结而成的笔记，因此内部排版混乱，知识点散乱而不成系统，望读者谨慎参考&lt;/p&gt;</description>
-    </item>
-  </channel>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Programing Language - 标签 - 吾铭子</title>
+        <link>https://1078249029.github.io/tags/programing-language/</link>
+        <description>Programing Language - 标签 - 吾铭子</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>1078249029@qq.com (吾铭子)</managingEditor>
+            <webMaster>1078249029@qq.com (吾铭子)</webMaster><lastBuildDate>Sun, 15 Dec 2024 11:43:24 &#43;0800</lastBuildDate><atom:link href="https://1078249029.github.io/tags/programing-language/" rel="self" type="application/rss+xml" /><item>
+    <title>Rust</title>
+    <link>https://1078249029.github.io/posts/rust/</link>
+    <pubDate>Sun, 15 Dec 2024 11:43:24 &#43;0800</pubDate><author>
+        <name>吾铭子</name>
+    </author><guid>https://1078249029.github.io/posts/rust/</guid>
+    <description><![CDATA[<p>本文是笔者学习Rust时系统总结的笔记，内部详细地介绍了Rust的特点以及语法，较为深入的探讨了Rust语言的语资料包括但不限于b站视频<a href="https://www.bilibili.com/video/BV1hp4y1k7SV" target="_blank" rel="noopener noreferrer">Rust编程语言入门教程</a>，国人出品的开源书籍<a href="https://course.rs/about-book.html" target="_blank" rel="noopener noreferrer">Rust语言圣经(Rust Course)</a>，<a href="https://rustcc.cn/" target="_blank" rel="noopener noreferrer">Rust语言中文社区</a>，以及rust的官方书籍<a href="https://doc.rust-lang.org/book/" target="_blank" rel="noopener noreferrer">The Rust Programming Language</a></p>]]></description>
+</item><item>
+    <title>C&#43;&#43;</title>
+    <link>https://1078249029.github.io/posts/cpp/</link>
+    <pubDate>Sun, 14 Jan 2024 09:37:21 &#43;0800</pubDate><author>
+        <name>吾铭子</name>
+    </author><guid>https://1078249029.github.io/posts/cpp/</guid>
+    <description><![CDATA[<p>本文较为详细地介绍了C++的语法和使用中可能遇到的坑，还介绍了STL库和Modern C++，例如C++20的部分新特性。在最后，我们大致的介绍了代码编写时常用的设计模式</p>]]></description>
+</item><item>
+    <title>Python</title>
+    <link>https://1078249029.github.io/posts/python/</link>
+    <pubDate>Sun, 14 Jan 2024 09:37:13 &#43;0800</pubDate><author>
+        <name>吾铭子</name>
+    </author><guid>https://1078249029.github.io/posts/python/</guid>
+    <description><![CDATA[<p>本文较为详细地介绍了Python的语法，参考资料为b站的<a href="https://www.bilibili.com/video/BV1qW4y1a7fU/?share_source=copy_web&amp;vd_source=af2e9dd8c2997005fd3692331c1df718" target="_blank" rel="noopener noreferrer">黑马程序员</a></p>]]></description>
+</item><item>
+    <title>C复健计划</title>
+    <link>https://1078249029.github.io/posts/c-review/</link>
+    <pubDate>Wed, 18 Oct 2023 13:57:04 &#43;0800</pubDate><author>
+        <name>吾铭子</name>
+    </author><guid>https://1078249029.github.io/posts/c-review/</guid>
+    <description><![CDATA[<p>本文是笔者研究生入学期间对C进行系统性复习总结而成的笔记，因此内部排版混乱，知识点散乱而不成系统，望读者谨慎参考</p>]]></description>
+</item></channel>
 </rss>
