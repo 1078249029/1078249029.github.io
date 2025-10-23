@@ -21,15 +21,17 @@
 
 尽管C++11引入了智能指针，但是为了兼容老程序，new和delete的方法也应值得注意  
 
-* C原生的melloc与free使用起来较为复杂，需要根据返回值来判断下一步做什么  
-* C原生的melloc与free也只进行内存申请但不进行对象实例化，也就是说C仅仅返回内存地址的指针，而C++返回的是一块特定类型的指针  
-* 更重要的是C++在调用new时会自动执行对象的构造函数，C原生的melloc与free则不支持  
+* C原生的malloc与free使用起来较为复杂，需要根据返回值来判断下一步做什么  
+* C原生的malloc与free也只进行内存申请但不进行对象实例化，也就是说C仅仅返回内存地址的指针，而C++返回的是一块特定类型的指针  
+* 更重要的是C++在调用new时会自动执行对象的构造函数，C原生的malloc与free则不支持  
 
 在使用delete回收数组时需要告诉他数组的类型
 ```cpp
 new int arr[10];
 delete [] arr;
 ```
+
+```cpp
 template<typename T, typename U>
 
 auto add2(T x, U y) -> decltype(x+y){    //C++14已经支持auto自动推导模板函数返回值了，因此此处的 -> decltype(x+y)可以省略
@@ -871,6 +873,40 @@ int main() {
 
 当父类有纯虚函数且子类构造函数在堆区申请了内存时可能会导致内存泄漏，这是因为父类在析构时并不能调用到子类的析构函数中，解决办法是将父类的析构函数变为虚析构函数。实际操作是在父类析构函数前加virtual关键字，并且当需要加上初始化参数时要么令其 = 0并在全局作用域内给出定义(空定义也可以)，或是让析构函数 = default。这是由于析构函数必须在父类中给出定义，如果不在父类中给出定义也必须在全局作用域内重写父类 = 0的析构函数的定义，否则在删除对象时就找不到与析构函数的定义，这会报链接错误。因此在使用虚析构时要么令其 = 0并在全局作用域内给出定义，要么或是让析构函数 = default。当然，这两种方法都不影响父类调用子类析构函数  
 
+下面是没有内存泄漏的正确写法
+```cpp
+class Animal {
+public:
+    virtual void shout() = 0;
+    virtual ~Animal() = 0;  // 纯虚析构函数
+};
+
+// 必须在类外定义（即使是空实现）
+Animal::~Animal() {}  // 必须提供定义，否则链接错误
+
+class Dog : public Animal {
+    // ... 同上
+public:
+    ~Dog() override {  // override 可选，但推荐
+        delete[] data;
+        cout << "Dog destructor" << endl;
+    }
+};
+```
+也可以使用下面的写法
+```cpp
+class Animal {
+public:
+    virtual void shout() = 0;
+    virtual ~Animal() = default;  // 使用default
+    // 或者：virtual ~Animal() {}  // 也可以直接提供空实现
+};
+
+class Dog : public Animal {
+    // ... 同上
+};
+```
+
 调用子类析构函数时是自动的
 
 ## 模板  
@@ -1516,7 +1552,7 @@ int main()
 ##### for_each算法  
 
 ```cpp
-for_each(iterator begin(), iterator end(), pred);
+for_each(iterator begin(), iterator end(), obj);
 ```
 
 ```cpp
@@ -1568,7 +1604,7 @@ int main()
 
 使用transform前必须使用resize方法指定容器大小
 ```cpp
-transform(iterator src_begin(), iterator src_end(), iterator des_begin(), pred);
+transform(iterator src_begin(), iterator src_end(), iterator des_begin(), obj);
 ```
 
 下民是示例：
@@ -1601,7 +1637,7 @@ int main() {
 
 find的返回结果是个迭代器，如果找到的话返回迭代器，没找到的话返回end()
 ```cpp
-container<type>::iterator it = find(iterator begin(), iterator end(), pred);
+container<type>::iterator it = find(iterator begin(), iterator end(), obj);
 ```
 下面是示例：
 ```cpp
@@ -1930,7 +1966,7 @@ container<type>::iterator it = set_difference(iterator begin1(), iterator end1()
 class myadd
 {
     public:
-    operator()(int a, int b)
+    int operator()(int a, int b)
     {
         return a + b;
     }
@@ -2448,7 +2484,7 @@ int main() {
     return 0;
 }
 ```
-第10行的`reference(v)`实际上进行了`reference(T&& v = int& v)`的操作，因此上面的代码块总会输出左值
+第10行的`reference(v)`实际上进行了`reference(T&& v => int& v)`的操作，因此上面的代码块总会输出左值
 
 ### 移动语义
 
@@ -2582,6 +2618,8 @@ static_cast<T&&> 传参: 左值引用
 我们还可以看到，`pass(v)`竟然可以传给`pass(T&& v)`。这实际上是由于`T&&`和`int&&`语义不同导致的，**当我们使用T&&作为模板参数时，该模板不仅支持右值的传入也支持左值的传入**，这是为了支持移动语义和完美转发而设计的。而使用类似int&&作为模板或函数参数时，仅支持int类型的右值传参。至于T&，它不支持移动语义和完美转发，因此只能支持任意类型的左值传参  
 
 {{< admonition type=warning title="" open=true >}}
+std::forward(a)会解析出最原始的a的值类型，并将其传递给下一层函数  
+
 当在调用链中传递右值时，有一处变为了左值且后续没有调用std::move()，那么这个值就被绑定为左值，该规则被称为引用折叠  
 
 当在调用链中传递左值时，若后续没有调用std::move()，那么这个值就依然为左值
@@ -2948,7 +2986,7 @@ noexcept(foo2()) = true
 #include <compare>
 #include <iostream>
 #include <set>
- 、
+
 struct Point
 {
     int x;
@@ -3010,10 +3048,9 @@ MyClass<int> obj(42);  // ✅ 明确指定模板参数
 template<typename T>
 Wrapper(int) -> Wrapper<double>;  // 强制推导 T = double
 ```
+虽然 auto 和尾返回类型推导可以用于函数的类型推导，但它们主要用于模板函数或返回值类型难以事先确定的情况  
 
-虽然auto和尾返回值类型推导可以用于函数类型推导，但是一般用于模板这种难以提前知道返回值类型的情况。对于普通函数则无必要。在auto和->联合使用时，auto只起占位符作用，与定义变量的int，double并无区别  
-
-对于函数来说尾返回类型不是必须的，只是为了便于浏览代码：
+对于普通函数来说，尾返回类型并不是必须的，仅仅是为了提高代码可读性
 ```cpp
 auto fun3() -> int    //将函数返回值推导为int类型
 {
@@ -3021,6 +3058,7 @@ auto fun3() -> int    //将函数返回值推导为int类型
     return a;
 }
 ```
+这里 auto 只是一个占位符，作用类似于写 int 或 double，而真正的返回类型由尾部的 -> int 来指定
 
 对于模板来说尾返回类型就是必须的，至少对于下面形式的模板是这样的：
 ```cpp
@@ -3042,7 +3080,8 @@ public:
     SomeString(const char * p) : str_(strdup(p)) {}    //这行代码等价于下面的
     /*    SomeString(const char * p){
     *         str_(strdup(p)) 
-    */    }
+    *    }
+    */
     SomeString(int alloc_size) : str_((char *)malloc(alloc_size)) {}
     //explicit SomeString(int alloc_size) : str_((char *)malloc(alloc_size)) {}
     ~SomeString() { free(str_); }

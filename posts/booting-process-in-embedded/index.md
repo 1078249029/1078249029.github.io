@@ -7,7 +7,7 @@
 
 ## mcu的bootloader与ota
 
-拥有ota功能的app通常会将flash等rom分为三个区域：bootloader，app以及download区域。bootloader区用于存储启动加载程序，其内部进行硬件初始化，判断是否需要刷写app以及刷写app的执行细节。app区存放应用程序，该区域也是bootloader的刷写对象。download区用于存放需要app镜像，该区域一般由app刷写，当app刷写完成后，下次启动时bootloader就会从该区域获得app镜像，并刷写到app区。因此在分区时，bootloader区可以给最小，app区域和download区给最大。对于采用不同更新和压缩方式的镜像，app区和download区的相对大小不同。例如当使用全量更新，不对镜像进行压缩时，app区和download区大小应当相等。当使用全量更新，对镜像进行gzip压缩时，download区大小应当是app区的50%(`gzip`压缩率在50%~70%之间)。对于进行增量更新(使用diff算法)，不进行压缩的情况，尽管大多数情况增量更新的镜像包都很小，但有时也会出现很大的情况，这时就需要根据经验设计这两个区域的大小了  
+拥有ota功能的app通常会将flash等rom分为三个区域：bootloader，app以及download区域。bootloader区用于存储启动加载程序，其内部进行硬件初始化，判断是否需要刷写app以及刷写app的执行细节。app区存放应用程序，该区域也是bootloader的刷写对象。download区用于存放app镜像，该区域一般由app自身或bootloader刷写，当app刷写完成后，下次启动时bootloader就会从该区域获得app镜像，并刷写到app区。因此在分区时，bootloader区可以给最小，app区域和download区给最大。对于采用不同更新和压缩方式的镜像，app区和download区的相对大小不同。例如当使用全量更新，不对镜像进行压缩时，app区和download区大小应当相等。当使用全量更新，对镜像进行gzip压缩时，download区大小应当是app区的50%(`gzip`压缩率在50%~70%之间)。对于进行增量更新(使用diff算法)，不进行压缩的情况，尽管大多数情况增量更新的镜像包都很小，但有时也会出现很大的情况，这时就需要根据经验设计这两个区域的大小了  
 
 每次系统启动时，bootloader都会检测当前是否需要进行升级，这可能是上次程序运行时app收到上位机发来的ota指令，也可能是本次启动时bootloader主动查询服务器是否有新的固件版本。当确定有新的固件版本时，新固件大小和内容等信息就已经发送到设备上了，之后bootloader只需要执行升级固件包操作随后调用软件重启代码(例如`NVIC_SystemReset`)，再次启动时就能进入更新后的app  
 
@@ -184,7 +184,7 @@ tty3::askfirst:-/bin/sh
 * 安装yaffs，步骤与上面类似
     * `make`(不需要menuconfig)
     * 将编译产物放到宿主机的/bin并给予执行权限
-* `mkyaffs2image myfs myfs.yaffs`，这样就制作完成映像文件系统了
+* `mkyaffs2image /path/from/root myfs.yaffs`，这样就制作完成映像文件系统了
 
 将映像文件烧录进带有内核的目标机上就可以启动根文件系统  
 
